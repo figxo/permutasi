@@ -3,6 +3,9 @@ import path from 'path';
 import '../assets/trust-i18n.js';
 
 const trustI18n = globalThis.__TRUST_I18N__;
+const EDU_FAQ_BY_LANG = JSON.parse(
+  fs.readFileSync(new URL('./edu-faq-i18n.json', import.meta.url), 'utf8')
+);
 
 export const HEAD_MARKER_START = '<!-- SITE_CONFIG:HEAD_START -->';
 export const HEAD_MARKER_END = '<!-- SITE_CONFIG:HEAD_END -->';
@@ -106,6 +109,152 @@ const INDEX_SEO_BY_LANG = {
     ogSiteName: 'Domain Name — domainname.web.id (日本語)',
     headline: '「domain」ドメイン置換ジェネレータ & 一括チェック',
     about: 'ドメイン名リサーチツール、SEOドメイン戦略、RFC 1035 DNS検証'
+  }
+};
+
+const EXT_STRATEGY_BY_LANG = {
+  id: {
+    title: 'Strategi Ekstensi Domain & Sinyal SERP Google (Target Market & Regional)',
+    intro: 'Dalam algoritma dan kebijakan Google Search, pemilihan ekstensi domain memberikan sinyal penargetan geografis (geotargeting) dan otoritas brand yang kuat:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Ekstensi generik global tanpa bias regional khusus. Sangat ideal jika target market Anda lintas negara (internasional) atau untuk authority website umum.',
+    locTitle: 'ccTLDs Lokal (.id, .co.id, .my.id)',
+    locDesc: 'Memberikan sinyal kuat geotargeting regional ke Google bahwa website ditujukan untuk audiens lokal (misal: Indonesia). Sangat mendongkrak peringkat di SERP lokal.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Ekstensi tematik modern yang memberi sinyal intent spesifik (SaaS, e-commerce, developer tool). Diperlakukan setara dengan gTLD oleh Google dalam hal SERP signal.'
+  },
+  es: {
+    title: 'Estrategia de Extensiones y Señales SERP de Google (Mercado y Región)',
+    intro: 'En los algoritmos de Google Search, la elección de la extensión proporciona fuertes señales de segmentación geográfica (geotargeting) y autoridad:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Extensiones genéricas globales sin sesgo regional específico. Ideales para mercados internacionales o sitios de autoridad general.',
+    locTitle: 'ccTLDs Locales (.es, .mx, .ar)',
+    locDesc: 'Proporcionan fuertes señales de geotargeting regional a Google indicando que el sitio se dirige a audiencias locales, mejorando el ranking SERP local.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Extensiones temáticas modernas que señalan intención específica (SaaS, e-commerce, herramientas de desarrollador). Tratadas igual que gTLDs.'
+  },
+  pt: {
+    title: 'Estratégia de Extensões e Sinais SERP do Google (Mercado & Regional)',
+    intro: 'Nos algoritmos e políticas do Google Search, a escolha da extensão fornece fortes sinais de direcionamento geográfico (geotargeting) e autoridade:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Extensões genéricas globais sem viés regional específico. Ideales para mercados internacionais transfronteiriços ou sites de autoridade geral.',
+    locTitle: 'ccTLDs Locales (.pt, .com.br)',
+    locDesc: 'Fornecem fortes sinais de geotargeting regional ao Google, indicando que o site visa audiências locais. Ótimo para impulsionar rankings SERP locais.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Extensões temáticas modernas que sinalizam intenção específica (SaaS, e-commerce, ferramenta de desenvolvedor). Tratadas igualmente aos gTLDs.'
+  },
+  fr: {
+    title: "Stratégie d'Extension et Signaux SERP de Google (Marché & Région)",
+    intro: "Dans les algorithmes de Google Search, le choix de l'extension fournit de forts signaux de ciblage géographique (geotargeting) et d'autorité :",
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: "Extensions génériques mondiales sans biais régional spécifique. Idéales pour le marché international ou les sites d'autorité générale.",
+    locTitle: 'ccTLDs Locaux (.fr, .be, .ch)',
+    locDesc: 'Fournissent de forts signaux de ciblage géographique régional à Google indiquant que le site cible des audiences locales. Excellent pour les classements SERP locaux.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Extensions thématiques modernes signalant une intention spécifique (SaaS, e-commerce, outil dev). Traitées à égalité avec les gTLDs.'
+  },
+  de: {
+    title: 'Domain-Endungs-Strategie & Google SERP-Signale (Zielmarkt & Region)',
+    intro: 'In den Algorithmen der Google-Suche liefert die Wahl der Domain-Endung starke Geotargeting- und Markenautoritätssignale:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Globale generische Endungen ohne regionalen Bias. Ideal für internationale Zielmärkte oder allgemeine Authority-Websites.',
+    locTitle: 'Lokale ccTLDs (.de, .at, .ch)',
+    locDesc: 'Bieten starke regionale Geotargeting-Signale an Google, dass die Website auf lokale Zielmärkte ausgerichtet ist. Verbessert lokale SERP-Rankings.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Moderne thematische Endungen mit spezifischer Intent-Signalwirkung (SaaS, E-Commerce, Dev-Tool). Werden in SERP-Signalen wie gTLDs behandelt.'
+  },
+  ru: {
+    title: 'Стратегия доменных зон и сигналы SERP Google (Регион и рынок)',
+    intro: 'В алгоритмах Google выбор доменной зоны дает мощные сигналы географического таргетинга (geotargeting) и авторитета бренда:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Глобальные общие зоны без специального регионального уклона. Идеально для трансграничных рынков или общих сайтов общего авторитета.',
+    locTitle: 'Локальные ccTLDs (.ru, .su, .рф)',
+    locDesc: 'Обеспечивают сильные сигналы регионального геотаргетинга для Google, указывая на русскоязычную аудиторию. Отлично повышает позиции в локальной выдаче.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Современные тематические зоны, сигнализирующие о конкретном намерении (SaaS, e-commerce, инструменты разработчика). Равны gTLD.'
+  },
+  ja: {
+    title: 'ドメイン拡張子戦略 & Google SERPシグナル (ターゲット市場 & 地域)',
+    intro: 'Google検索アルゴリズムにおいて、ドメイン拡張子の選択は強力なジオターゲティング（地域ターゲティング）とブランド権威のシグナルを提供します:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: '特定の地域バイアスがないグローバルな汎用拡張子。国境を越えた国際市場や一般的な権威サイトに最適です。',
+    locTitle: 'ローカル ccTLDs (.jp, .co.jp, .ne.jp)',
+    locDesc: 'ウェブサイトが国内オーディエンスをターゲットにしていることをGoogleに強く示す地域ジオターゲティングシグナルを提供します。国内SERPの順位向上に最適です。',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: '特定の意図（SaaS、EC、開発者ツール）を示す現代的なテーマ別拡張子。SERPシグナルではgTLDと同等に扱われます。'
+  }
+};
+
+const DOMAIN_RISKS_BY_LANG = {
+  id: {
+    title: 'Peringatan Risiko Penamaan Domain & Google Penalty',
+    intro: 'Saat melakukan riset dan pembuatan permutasi domain (khususnya untuk proyek massal atau domain drop/expired), Anda harus mewaspadai beberapa risiko fatal yang dapat memicu penalti dari algoritma Google:',
+    emdTitle: 'EMD (Exact Match Domain) Trap',
+    emdDesc: 'Menggunakan domain yang persis sama dengan keyword komersial (misal: beli-sepatu-murah.com) tanpa kualitas konten yang memadai rentan terkena Google EMD Update.',
+    spamTitle: 'Risiko Konten Otomatis Berkualitas Rendah',
+    spamDesc: 'Algoritma mesin pencari memfilter ribuan halaman otomatis berkualitas rendah yang tidak memiliki nilai informasi unik bagi pengguna.',
+    backlinkTitle: 'Riwayat Backlink & Reputasi Domain (Domain Bekas)',
+    backlinkDesc: 'Jika Anda membeli domain bekas (expired domain), selalu periksa riwayat arsip (Wayback Machine) dan profil tautannya agar tidak mewarisi penalti algoritmik dari situs berkualitas rendah.'
+  },
+  es: {
+    title: 'Riesgos en Nombres de Dominio y Advertencia de Penalización',
+    intro: 'Al investigar y generar permutaciones de dominio (especialmente para proyectos masivos o dominios expirados), tenga cuidado con los riesgos fatales:',
+    emdTitle: 'Trampa EMD (Exact Match Domain)',
+    emdDesc: 'Usar coincidencias exactas de palabras clave comerciales sin contenido de calidad hace que los sitios sean vulnerables a actualizaciones EMD de Google.',
+    spamTitle: 'Riesgo de Contenido Automatizado de Baja Calidad',
+    spamDesc: 'Los algoritmos de búsqueda filtran páginas automatizadas sin valor original para los usuarios.',
+    backlinkTitle: 'Historial de Enlaces y Reputación (Dominios Expirados)',
+    backlinkDesc: 'Al comprar dominios expirados, verifique siempre el historial de archivo (Wayback Machine) y perfiles de enlaces para evitar heredar penalizaciones algorítmicas.'
+  },
+  pt: {
+    title: 'Riscos de Nomes de Domínio e Alerta de Penalidade do Google',
+    intro: 'Ao pesquisar e gerar permutações de domínio (especialmente para projetos em massa ou dominios expirados/drop), tome cuidado com riscos fatais:',
+    emdTitle: 'Armadilha EMD (Exact Match Domain)',
+    emdDesc: 'Usar correspondências exatas de palavras-chave comerciais (ex: comprar-sapatos-baratos.pt) sem conteúdo de qualidade torna os sites vulneráveis a atualizações EMD.',
+    spamTitle: 'Risco de Conteúdo Automatizado de Baixa Qualidade',
+    spamDesc: 'Os sistemas de busca filtram páginas automatizadas sem valor editorial original para os usuários.',
+    backlinkTitle: 'Histórico de Links e Reputação (Domínios Expirados)',
+    backlinkDesc: 'Ao comprar domínios expirados, sempre verifique o histórico de arquivos (Wayback Machine) e perfis de links para evitar herdar penalizações algorítmicas.'
+  },
+  fr: {
+    title: 'Risques de Noms de Domaine et Alerte de Pénalité Google',
+    intro: 'Lors de la recherche et de la génération de permutations de domaine (surtout pour les projets en masse ou les domaines expirés), attention aux risques fatals :',
+    emdTitle: 'Piège EMD (Exact Match Domain)',
+    emdDesc: 'Utiliser des correspondances exactes de mots-clés commerciaux (ex: acheter-chaussures-pas-cher.fr) sans contenu de qualité expose aux mises à jour EMD.',
+    spamTitle: 'Risque de Contenu Automatisé de Faible Qualité',
+    spamDesc: 'Les moteurs de recherche filtrent les pages automatisées à faible valeur ajoutée dépourvues de contenu original.',
+    backlinkTitle: 'Historique de Liens et Réputation (Domaines Expirés)',
+    backlinkDesc: "Lors de l'achat de domaines expirés, vérifiez toujours l'historique d'archive (Wayback Machine) et les profils de liens pour éviter d'hériter de pénalités."
+  },
+  de: {
+    title: 'Domain-Risiken & Google Penalty Warnung',
+    intro: 'Bei der Recherche und Generierung von Domain-Permutationen (besonders für große Projekte oder alte/Dropped-Domains) lauern fatale Risiken:',
+    emdTitle: 'EMD (Exact Match Domain) Falle',
+    emdDesc: 'Die Nutzung exakter kommerzieller Keyword-Matches (z. B. billige-schuhe-kaufen.de) ohne hohe Content-Qualität macht anfällig für EMD-Updates.',
+    spamTitle: 'Risiko Minderwertiger Automatisierter Inhalte',
+    spamDesc: 'Suchmaschinen filtern automatisch generierte Seiten ohne eigenen redaktionellen Mehrwert für Besucher.',
+    backlinkTitle: 'Backlink-Historie & Domain-Reputation (Gebrauchte Domains)',
+    backlinkDesc: 'Prüfen Sie beim Kauf gebrauchter Domains immer das Archiv (Wayback Machine) und Backlink-Profile, um keine historischen Abstrafungen zu erben.'
+  },
+  ru: {
+    title: 'Риски нейминга и предупреждение о штрафах Google',
+    intro: 'При исследовании и генерации перестановок (особенно для массовых кампаний или перехваченных доменов) опасайтесь фатальных рисков:',
+    emdTitle: 'Ловушка EMD (Exact Match Domain)',
+    emdDesc: 'Использование точных коммерческих совпадений ключевых слов (например, kupit-obuv-nedorogo.ru) без высокого качества контента уязвимо для EMD-обновлений.',
+    spamTitle: 'Риск некачественного автоматического контента',
+    spamDesc: 'Поисковые системы отфильтровывают шаблонные автоматические страницы без оригинальной пользы для пользователей.',
+    backlinkTitle: 'История ссылок и репутация (Возрастные домены)',
+    backlinkDesc: 'При покупке доменов с историей всегда проверяйте архив (Wayback Machine) и профиль ссылок во избежание наследования санкций.'
+  },
+  ja: {
+    title: 'ドメイン命名のリスク & Googleペナルティの警告',
+    intro: 'ドメインの置換や生成（特に大規模プロジェクトや中古ドメインの場合）を行う際は、アルゴリズムペナルティを引き起こす致命的なリスクに注意してください:',
+    emdTitle: 'EMD（完全一致ドメイン）の罠',
+    emdDesc: '高品質なコンテンツなしで商用キーワードと完全に一致するドメイン（例: best-cheap-shoes.jp）を使用すると、GoogleのEMDアップデートの対象になりやすくなります。',
+    spamTitle: '低品質な自動生成コンテンツのリスク',
+    spamDesc: '検索エンジンは、独自の有益な情報を持たない大量の低品質ページをフィルタリングします。',
+    backlinkTitle: '被リンク履歴とドメイン評価 (中古ドメイン)',
+    backlinkDesc: '中古ドメインを取得する際は、過去のアーカイブ履歴（Wayback Machine）と被リンクプロファイルを必ず確認してください。'
   }
 };
 
@@ -341,7 +490,7 @@ export function renderStaticHtml(rawHtml, config, _options = {}) {
 function setElementInnerTextById(html, id, text) {
   const escapedId = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const regex = new RegExp(`(<([a-z0-9]+)[^>]*\\bid="${escapedId}"[^>]*>)([\\s\\S]*?)(<\\/\\2>)`, 'i');
-  return html.replace(regex, `$1${escapeHtmlText(text)}$4`);
+  return html.replace(regex, (_m, open, _tag, _body, close) => `${open}${escapeHtmlText(text)}${close}`);
 }
 
 function updateSelectedLangOption(html, lang) {
@@ -589,6 +738,101 @@ function localizeIndexHtml(rawHtml, lang, config) {
       return `<a href="${escapeHtmlAttr(href)}" hreflang="${escapeHtmlAttr(code)}" lang="${escapeHtmlAttr(code)}" data-footer-lang="${escapeHtmlAttr(code)}" onclick="${escapeHtmlAttr(onclickVal)}"${ariaAttr} class="${cls}">`;
     }
   );
+
+  const extStrat = EXT_STRATEGY_BY_LANG[lang];
+  if (extStrat) {
+    html = html.replace(
+      /(<article\s+id="extensionStrategySection"[^>]*\sdata-rendered-lang=")en(")/i,
+      `$1${escapeHtmlAttr(lang)}$2`
+    );
+    html = setElementInnerTextById(html, 'uiExtStratTitle', extStrat.title);
+    html = setElementInnerTextById(html, 'uiExtStratIntro', extStrat.intro);
+    html = setElementInnerTextById(html, 'uiExtGTitle', extStrat.gTitle);
+    html = setElementInnerTextById(html, 'uiExtGDesc', extStrat.gDesc);
+    html = setElementInnerTextById(html, 'uiExtLocTitle', extStrat.locTitle);
+    html = setElementInnerTextById(html, 'uiExtLocDesc', extStrat.locDesc);
+    html = setElementInnerTextById(html, 'uiExtNTitle', extStrat.nTitle);
+    html = setElementInnerTextById(html, 'uiExtNDesc', extStrat.nDesc);
+  }
+
+  const riskPack = DOMAIN_RISKS_BY_LANG[lang];
+  if (riskPack) {
+    html = html.replace(
+      /(<article\s+id="domainRisksSection"[^>]*\sdata-rendered-lang=")en(")/i,
+      `$1${escapeHtmlAttr(lang)}$2`
+    );
+    html = setElementInnerTextById(html, 'uiRiskTitle', riskPack.title);
+    html = setElementInnerTextById(html, 'uiRiskIntro', riskPack.intro);
+    html = setElementInnerTextById(html, 'uiRiskEmdTitle', riskPack.emdTitle);
+    html = setElementInnerTextById(html, 'uiRiskEmdDesc', riskPack.emdDesc);
+    html = setElementInnerTextById(html, 'uiRiskSpamTitle', riskPack.spamTitle);
+    html = setElementInnerTextById(html, 'uiRiskSpamDesc', riskPack.spamDesc);
+    html = setElementInnerTextById(html, 'uiRiskBacklinkTitle', riskPack.backlinkTitle);
+    html = setElementInnerTextById(html, 'uiRiskBacklinkDesc', riskPack.backlinkDesc);
+  }
+
+  const eduFaqPack = EDU_FAQ_BY_LANG[lang];
+  if (eduFaqPack) {
+    for (const secId of ['keywordStrategySection', 'domainExamplesSection', 'faqSection']) {
+      html = html.replace(
+        new RegExp(`(<(?:article|section)\\s+id="${secId}"[^>]*\\sdata-rendered-lang=")en(")`, 'i'),
+        `$1${escapeHtmlAttr(lang)}$2`
+      );
+    }
+
+    const eduMap = {
+      uiStratTitle: eduFaqPack.stratTitle,
+      uiStratKwTitle: eduFaqPack.stratKwTitle,
+      uiStratKw1: eduFaqPack.stratKw1,
+      uiStratKw2: eduFaqPack.stratKw2,
+      uiStratKw3: eduFaqPack.stratKw3,
+      uiStratBpTitle: eduFaqPack.stratBpTitle,
+      uiStratBp1: eduFaqPack.stratBp1,
+      uiStratBp2: eduFaqPack.stratBp2,
+      uiStratBp3: eduFaqPack.stratBp3,
+      uiStratBp4: eduFaqPack.stratBp4,
+      uiTipsCheckTitle: eduFaqPack.tipsCheckTitle,
+      uiTipsCheck1: eduFaqPack.tipsCheck1,
+      uiTipsCheck2: eduFaqPack.tipsCheck2,
+      uiTipsCheck3: eduFaqPack.tipsCheck3,
+      uiTipsAvoidTitle: eduFaqPack.tipsAvoidTitle,
+      uiTipsAvoid1: eduFaqPack.tipsAvoid1,
+      uiTipsAvoid2: eduFaqPack.tipsAvoid2,
+      uiTipsAvoid3: eduFaqPack.tipsAvoid3,
+      uiTipsCureTitle: eduFaqPack.tipsCureTitle,
+      uiTipsCure1: eduFaqPack.tipsCure1,
+      uiTipsCure2: eduFaqPack.tipsCure2,
+      uiTipsCure3: eduFaqPack.tipsCure3,
+      uiBadExTitle: eduFaqPack.badExTitle,
+      uiGoodExTitle: eduFaqPack.goodExTitle,
+      uiFaqTitle: eduFaqPack.faqTitle,
+      uiFaqSub: eduFaqPack.faqSub
+    };
+
+    for (let i = 1; i <= 4; i++) {
+      eduMap[`uiBad${i}Title`] = eduFaqPack[`bad${i}Title`];
+      eduMap[`uiBad${i}ExLabel`] = eduFaqPack.exampleLabel;
+      eduMap[`uiBad${i}Ex`] = eduFaqPack[`bad${i}Ex`];
+      eduMap[`uiBad${i}Reason`] = eduFaqPack[`bad${i}Reason`];
+      eduMap[`uiGood${i}Title`] = eduFaqPack[`good${i}Title`];
+      eduMap[`uiGood${i}ExLabel`] = eduFaqPack.exampleLabel;
+      eduMap[`uiGood${i}Ex`] = eduFaqPack[`good${i}Ex`];
+      eduMap[`uiGood${i}Reason`] = eduFaqPack[`good${i}Reason`];
+    }
+
+    if (Array.isArray(eduFaqPack.faqs)) {
+      eduFaqPack.faqs.forEach((item, idx) => {
+        eduMap[`uiFaqQ${idx}`] = item.q;
+        eduMap[`uiFaqA${idx}`] = item.a;
+      });
+    }
+
+    for (const [id, text] of Object.entries(eduMap)) {
+      if (text !== undefined) {
+        html = setElementInnerTextById(html, id, text);
+      }
+    }
+  }
 
   html = updateSelectedLangOption(html, lang);
   html = html.replace('</head>', `    <script>window.__STATIC_PAGE_LANG__ = ${JSON.stringify(lang)};</script>\n</head>`);

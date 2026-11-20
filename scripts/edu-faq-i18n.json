@@ -1,0 +1,555 @@
+{
+  "id": {
+    "stratTitle": "Strategi Keyword & Best Practices Pemilihan Nama Domain",
+    "stratKwTitle": "Strategi Pemilihan Keyword",
+    "stratKw1": "Keyword Utama ([primary]): Inti niche atau topik utama (contoh: calc, shop, travel). Harus relevan dengan core business atau intent audiens.",
+    "stratKw2": "Keyword Sekunder ([secondary]): Modifier atau kategori penjelas (contoh: pro, fast, hub). Membantu memperluas variasi dan konteks brand.",
+    "stratKw3": "Keyword Tersier ([tertiary]): Pelengkap format atau platform (contoh: app, go, io). Ideal untuk riset domain berskala besar.",
+    "stratBpTitle": "Best Practices Penamaan Domain",
+    "stratBp1": "Pendek & Mudah Diingat: Batasi panjang karakter agar mudah diketik dan diucapkan (maksimal 12-15 karakter).",
+    "stratBp2": "Hindari Salah Ejaan (Typos): Gunakan kombinasi huruf vokal/konsonan yang natural agar tidak membingungkan pengguna.",
+    "stratBp3": "Pertimbangkan Tanda Hubung (Dash): Penggunaan [dash] membantu keterbacaan domain multi-kata, namun gunakan secukupnya.",
+    "stratBp4": "Pilih Ekstensi Tepat: Gunakan .com untuk global, .id / .co.id untuk lokal Indonesia, atau ekstensi khusus niche.",
+    "tipsCheckTitle": "1. Cara Mengecek Riwayat & Risiko Domain",
+    "tipsCheck1": "Wayback Machine (Archive.org): Periksa apakah domain pernah digunakan untuk situs tidak relevan, redirect berulang, atau konten bermasalah di masa lalu.",
+    "tipsCheck2": "Pemeriksa Backlink (Ahrefs, Semrush, Moz): Analisis profil tautan untuk memastikan tidak ada anchor text tidak wajar atau tautan otomatis berkualitas rendah.",
+    "tipsCheck3": "Google Search Console (GSC): Cek apakah ada riwayat Manual Actions atau Security Issues jika domain tersebut adalah domain lama.",
+    "tipsAvoidTitle": "2. Cara Menghindari Risiko Penalti",
+    "tipsAvoid1": "Gunakan brand yang unik atau kombinasi natural (partial match domain / brandable) ketimbang EMD murni.",
+    "tipsAvoid2": "Jika membangun situs berskala besar, pastikan setiap halaman menghasilkan nilai unik dan informasi bermanfaat bagi pengguna.",
+    "tipsAvoid3": "Lakukan riset tuntas sebelum membeli domain bekas atau drop domain.",
+    "tipsCureTitle": "3. Cara Penanganan (Bisa Dipulihkan atau Tidak?)",
+    "tipsCure1": "Kasus EMD / Algoritmik Kualitas Konten: Bisa dipulihkan bertahap dengan merombak kualitas konten, menghapus halaman tipis, dan membangun otoritas brand asli.",
+    "tipsCure2": "Kasus Manual Actions (Penalti Manual Google): Bisa dipulihkan dengan membersihkan tautan tidak wajar, mengajukan Disavow File, lalu mengirim Reconsideration Request di GSC.",
+    "tipsCure3": "Kasus Riwayat Reputasi Buruk Berat: SULIT DIPULIHKAN (Burned Domain). Jika domain memiliki sejarah penalti berulang atau penyalahgunaan historis berat, reputasi algoritmiknya rusak permanen; lebih aman memulai dengan domain baru yang bersih.",
+    "badExTitle": "Contoh Pilihan Nama Domain yang Berisiko Buruk",
+    "exampleLabel": "Contoh:",
+    "bad1Title": "1. Berisiko Penalti Kualitas (Keyword Stuffing & EMD)",
+    "bad1Ex": "toko-sepatu-kulit-murah-jakarta-selatan.example",
+    "bad1Reason": "Terlalu banyak kata kunci menumpuk tanpa identitas brand yang jelas sehingga tampak tidak natural di mesin pencari.",
+    "bad2Title": "2. Berisiko Sulit Ditemukan Visitor (Sulit Diingat)",
+    "bad2Ex": "t0k0-1nj-s4ng4t-m3r1ah.example / kalkulator-online-terbaik-2026.example",
+    "bad2Reason": "Menggunakan angka leet-speak yang membingungkan atau terlalu panjang, membuat visitor salah ketik (typos) dan sulit mengingat brand Anda.",
+    "bad3Title": "3. Berisiko Tuntutan Hukum (Trademark Violation)",
+    "bad3Ex": "toko-resmi-merekterkenal.example / brand-populer-store.example",
+    "bad3Reason": "Mencatut nama merek dagang terdaftar (Trademark) tanpa izin. Berisiko tinggi terkena somasi, tuntutan hukum, hingga sengketa domain (UDRP).",
+    "bad4Title": "4. Berisiko Low CTR (Tampak Tidak Tepercaya)",
+    "bad4Ex": "promo-hadiah-cepat-99.example / unduh-berkas-cepat.example",
+    "bad4Reason": "Menggunakan pola frasa sensasional atau terlalu generik yang cenderung dihindari pengguna di hasil pencarian (SERP).",
+    "goodExTitle": "Contoh Pilihan Nama Domain yang Baik, Legal, & Aman",
+    "good1Title": "1. Brandable & Mudah Diingat",
+    "good1Ex": "calcly.com, shopiva.io, finit.app",
+    "good1Reason": "Pendek, unik, mudah dieja, tidak melanggar trademark, dan memiliki nilai jual jangka panjang (long-term brand equity).",
+    "good2Title": "2. Geo-Marketing & Sinyal Lokal Kuat",
+    "good2Ex": "solusicalc.id, tokokopi.co.id, jasafix.id",
+    "good2Reason": "Mengombinasikan brand/fungsi dengan ccTLD lokal (.id). Memberikan sinyal relevansi regional yang sangat kuat di SERP Google Indonesia.",
+    "good3Title": "3. Partial Match Domain (PMD) Aman",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.id",
+    "good3Reason": "Mengandung keyword relevan namun digabungkan dengan modifier atau nama brand pendek sehingga terhindar dari penalti EMD.",
+    "good4Title": "4. Aman Secara Hukum & Tinggi Kepercayaan (High CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.id, payfast.io",
+    "good4Reason": "Bebas dari pelanggaran hak cipta merek dagang (Trademark free), menggunakan ekstensi terpercaya (.com / .id), dan membangun kepercayaan pengguna sejak pandangan pertama di SERP.",
+    "faqTitle": "Pertanyaan yang Sering Diajukan (FAQ)",
+    "faqSub": "Jawaban teknis dan edukatif untuk domainer, spesialis SEO, pendiri startup, maupun pengembang.",
+    "faqs": [
+      {
+        "q": "1. Apa itu Generator Permutasi Domain dan bagaimana cara kerjanya?",
+        "a": "Generator Permutasi Domain adalah alat cerdas bagi peneliti, pengembang, pendiri startup, hingga investor domain untuk menghasilkan ratusan kombinasi nama domain yang unik dan brandable secara instan. Dengan mengisi hingga tiga kata kunci (Utama, Sekunder, dan Tersier), algoritma kombinatorial rekursif akan membentuk permutasi penuh 3 kata, subset 2 kata, serta varian 1 kata lengkap dengan opsi tanda hubung (-) maupun digabung (no-dash)."
+      },
+      {
+        "q": "2. Apakah domain yang dihasilkan memenuhi standar DNS (RFC 1035)?",
+        "a": "Ya. Setiap domain di domainname.web.id melalui proses validasi dan sanitasi ketat sesuai standar RFC 1035. Semua label domain dipastikan hanya berisi huruf kecil (a-z), angka (0-9), dan tanda hubung (-), tanpa tanda hubung di awal atau akhir, maksimal 63 karakter per label, dan panjang total di bawah 253 karakter."
+      },
+      {
+        "q": "3. Mengapa hasil domain otomatis diurutkan dari yang terpendek terlebih dahulu?",
+        "a": "Domain yang singkat dan ringkas memiliki nilai jauh lebih tinggi untuk branding, daya ingat SEO, serta trafik pengetikan langsung. Secara default, generator mengurutkan semua hasil valid dari jumlah karakter terpendek ke terpanjang (dengan batas aman 200 domain teratas) agar kandidat terbaik langsung terlihat di bagian paling atas."
+      },
+      {
+        "q": "4. Bagaimana cara kerja fitur \"Tambahkan Pola Anda Sendiri\"?",
+        "a": "Kotak pola kustom memudahkan pengguna mahir menyusun formula nama domain menggunakan placeholder seperti [primary], [secondary], [tertiary], [vokal], [konsonan], [angka], dan [dash]. Cukup klik tombol sisip cepat di bawah kotak input untuk merangkai formula dan mengembangkannya secara instan."
+      },
+      {
+        "q": "5. Bisakah saya melakukan riset cepat dan pengecekan backlink pada domain hasil generate?",
+        "a": "Tentu saja. Di sebelah setiap domain pada tabel analisis tersedia tombol pintasan aman untuk mengecek riwayat arsip di Wayback Machine (WM), menelusuri profil backlink di Ahrefs (BL), serta memverifikasi status indeks di Google Search via site: (GG) dengan perlindungan rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. Bagaimana cara kerja ekstensi adaptif bahasa, tombol berbagi lokal, dan privasi?",
+        "a": "Saat Anda memilih bahasa, aplikasi otomatis menyesuaikan rekomendasi ekstensi populer (misalnya .id, .my.id, .web.id untuk Indonesia) serta saluran berbagi lokal seperti WhatsApp dan Telegram. Seluruh pemrosesan berjalan langsung di browser tanpa pelacakan."
+      }
+    ]
+  },
+  "es": {
+    "stratTitle": "Estrategia de Palabras Clave y Mejores Prácticas de Dominios",
+    "stratKwTitle": "Estrategia de Palabras Clave",
+    "stratKw1": "Palabra Clave Principal ([primary]): Nicho o tema central (ej. calc, shop, travel). Debe alinearse con la intención del usuario.",
+    "stratKw2": "Palabra Clave Secundaria ([secondary]): Modificador o categoría descriptiva (ej. pro, fast, hub). Ayuda a expandir el contexto de marca.",
+    "stratKw3": "Palabra Clave Terciaria ([tertiary]): Sufijo de formato o plataforma (ej. app, go, io). Ideal para investigación de dominios a gran escala.",
+    "stratBpTitle": "Mejores Prácticas de Naming",
+    "stratBp1": "Corto y memorable: Limite la longitud de caracteres para facilitar la escritura y pronunciación (idealmente 12-15 caracteres).",
+    "stratBp2": "Evite errores tipográficos: Use combinaciones naturales de vocales y consonantes.",
+    "stratBp3": "Considere guiones: El uso de [dash] ayuda a la legibilidad de varias palabras, pero úselo con moderación.",
+    "stratBp4": "Elija extensiones correctas: Use .com para alcance global, ccTLDs para mercados locales, o extensiones de nicho.",
+    "tipsCheckTitle": "1. Cómo verificar el historial y riesgos",
+    "tipsCheck1": "Wayback Machine (Archive.org): Verifique si el dominio alojó contenido irrelevante, engañoso o de baja calidad en el pasado.",
+    "tipsCheck2": "Comprobador de Backlinks (Ahrefs, Semrush, Moz): Analice el perfil de enlaces para garantizar textos ancla naturales y limpios.",
+    "tipsCheck3": "Google Search Console (GSC): Verifique acciones manuales o problemas de seguridad históricos.",
+    "tipsAvoidTitle": "2. Cómo evitar riesgos de penalización",
+    "tipsAvoid1": "Use nombres de marca únicos o combinaciones naturales (partial match) en lugar de EMDs puros.",
+    "tipsAvoid2": "En sitios a gran escala, asegúrese de que cada página genere valor único y útil para los usuarios.",
+    "tipsAvoid3": "Realice una debida diligencia antes de comprar dominios expirados.",
+    "tipsCureTitle": "3. Solución (¿Recuperable o No?)",
+    "tipsCure1": "Casos algorítmicos EMD / Calidad: Recuperables gradualmente mejorando la calidad editorial y construyendo autoridad de marca genuina.",
+    "tipsCure2": "Acciones manuales (Manual Actions): Recuperables limpiando enlaces no naturales, enviando un archivo Disavow y solicitando revisión en GSC.",
+    "tipsCure3": "Historial negativo grave: Muy difícil de recuperar. Si un dominio arrastra sanciones severas de años anteriores, conviene empezar con un dominio nuevo y limpio.",
+    "badExTitle": "Ejemplos de Nombres de Dominio de Alto Riesgo",
+    "exampleLabel": "Ejemplo:",
+    "bad1Title": "1. Riesgo de Calidad (Keyword Stuffing y EMD)",
+    "bad1Ex": "comprar-zapatos-cuero-madrid-descuentos.example",
+    "bad1Reason": "Exceso de palabras clave acumuladas sin identidad de marca clara.",
+    "bad2Title": "2. Difícil de Encontrar / Difícil de Recordar",
+    "bad2Ex": "m3j0r-s0lut10n-c4lc-2026.example",
+    "bad2Reason": "Números l33t-speak confusos o longitud excesiva provocan errores tipográficos en los usuarios.",
+    "bad3Title": "3. Riesgo de Violación de Marca Registrada",
+    "bad3Ex": "tienda-oficial-marcafamosa.example / marca-popular-madrid.example",
+    "bad3Reason": "Uso no autorizado de marcas registradas. Alto riesgo de demandas y disputas de dominio (UDRP).",
+    "bad4Title": "4. Bajo CTR / Apariencia Poco Confiable",
+    "bad4Ex": "portal-promociones-99.example / centro-archivos-rapido.example",
+    "bad4Reason": "Frases promocionales genéricas o poco confiables evitadas por los usuarios en los resultados de búsqueda (SERP).",
+    "goodExTitle": "Ejemplos de Nombres de Dominio Buenos, Legales y Seguros",
+    "good1Title": "1. Con Marca y Memorables",
+    "good1Ex": "calcly.es, shopiva.io, finit.app",
+    "good1Reason": "Cortos, únicos, fáciles de deletrear, libres de marcas registradas y con gran valor de marca a largo plazo.",
+    "good2Title": "2. Geo-Marketing y Confianza Local",
+    "good2Ex": "solusicalc.es, cafemadrid.es, repara.es",
+    "good2Reason": "Combina marca/función con ccTLD local (.es), proporcionando fuertes señales de relevancia regional en SERPs locales.",
+    "good3Title": "3. Dominio de Coincidencia Parcial (PMD) Seguro",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.es",
+    "good3Reason": "Contiene palabras clave relevantes combinadas con modificadores o nombres de marca cortos, evitando penalizaciones EMD.",
+    "good4Title": "4. Legalmente Seguro y de Alta Confianza (Alto CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.es, payfast.io",
+    "good4Reason": "Libre de marcas registradas, utiliza extensiones confiables (.com / .es) y genera confianza instantánea en el usuario en la SERP.",
+    "faqTitle": "Preguntas Frecuentes (FAQ)",
+    "faqSub": "Respuestas técnicas y prácticas para inversores de dominios, especialistas SEO, fundadores de startups y freelancers.",
+    "faqs": [
+      {
+        "q": "1. ¿Qué es un Generador de Permutaciones de Dominio y cómo funciona?",
+        "a": "Es una herramienta diseñada para que investigadores, desarrolladores e inversores de dominios creen al instante cientos de combinaciones únicas y atractivas. Al ingresar hasta tres palabras clave (Principal, Secundaria y Terciaria), un algoritmo combinatorio recursivo genera permutaciones completas de 3 palabras, subconjuntos de 2 palabras y variantes de 1 palabra, con guion (-) y sin guion."
+      },
+      {
+        "q": "2. ¿Los dominios generados cumplen con los estándares DNS (RFC 1035)?",
+        "a": "Sí. Cada dominio en domainname.web.id pasa por una validación estricta conforme a la norma RFC 1035. Esto garantiza únicamente letras minúsculas (a-z), números (0-9) y guiones internos (-), sin guiones iniciales ni finales, un máximo de 63 caracteres por etiqueta y una longitud total inferior a 253 caracteres."
+      },
+      {
+        "q": "3. ¿Por qué los dominios se ordenan automáticamente del más corto al más largo?",
+        "a": "Los dominios cortos y directos tienen mucho más valor para el branding, el SEO y el tráfico por navegación directa. Nuestro motor ordena los resultados válidos desde la longitud mínima (hasta los 200 más cortos) para mostrar primero los candidatos más memorables."
+      },
+      {
+        "q": "4. ¿Cómo funciona la opción \"Añade tus propios patrones\"?",
+        "a": "El cuadro de patrones personalizados permite a usuarios avanzados crear fórmulas propias con marcadores como [primary], [secondary], [tertiary], [vocal], [número] y [dash]. Solo haz clic en las etiquetas rápidas para construir tu fórmula al instante."
+      },
+      {
+        "q": "5. ¿Puedo investigar el historial y los backlinks de los dominios generados?",
+        "a": "Por supuesto. Junto a cada dominio en la tabla de resultados incluimos accesos directos seguros para consultar el archivo histórico en Wayback Machine (WM), analizar backlinks en Ahrefs (BL) o verificar la indexación en Google con site: (GG), protegidos con rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. ¿Cómo se adaptan las extensiones, el idioma y los botones para compartir?",
+        "a": "Al cambiar entre los 8 idiomas disponibles, la plataforma adapta automáticamente las extensiones regionales sugeridas y prioriza los canales de envío locales (como WhatsApp y X en español), ejecutando todo localmente en tu navegador."
+      }
+    ]
+  },
+  "pt": {
+    "stratTitle": "Estratégia de Palavras-chave e Melhores Práticas de Domínio",
+    "stratKwTitle": "Estratégia de Palavras-chave",
+    "stratKw1": "Palavra-chave Principal ([primary]): Nicho ou tópico central (ex: calc, shop, travel). Deve estar alinhada com a intenção do usuário.",
+    "stratKw2": "Palavra-chave Secundária ([secondary]): Modificador ou categoria descritiva (ex: pro, fast, hub). Ajuda a expandir o contexto da marca.",
+    "stratKw3": "Palavra-chave Terciária ([tertiary]): Sufixo de formato ou plataforma (ex: app, go, io). Ideal para pesquisa de domínios em larga escala.",
+    "stratBpTitle": "Melhores Práticas de Naming",
+    "stratBp1": "Curto e Memorável: Limite o comprimento dos caracteres para facilitar digitação e pronúncia (idealmente 12-15 caracteres).",
+    "stratBp2": "Evite Erros de Digitação: Use combinações naturais de vogais e consoantes para evitar confusão.",
+    "stratBp3": "Considere Hífens: O uso de [dash] ajuda na legibilidade de várias palavras, mas use com moderação.",
+    "stratBp4": "Escolha Extensões Certas: Use .com para alcance global, ccTLDs locais para mercados específicos, ou extensões de nicho.",
+    "tipsCheckTitle": "1. Como Verificar o Histórico e Riscos",
+    "tipsCheck1": "Wayback Machine (Archive.org): Verifique se o domínio hospedou conteúdo irrelevante ou de baixa qualidade anteriormente.",
+    "tipsCheck2": "Verificador de Backlinks (Ahrefs, Semrush, Moz): Analise o perfil de links para garantir textos âncora naturais e limpos.",
+    "tipsCheck3": "Google Search Console (GSC): Verifique ações manuais ou problemas de segurança históricos.",
+    "tipsAvoidTitle": "2. Como Evitar Riscos de Penalização",
+    "tipsAvoid1": "Use nomes de marcas exclusivos ou combinações naturais (partial match) em vez de EMDs puros.",
+    "tipsAvoid2": "Para sites em grande escala, certifique-se de que cada página gere valor único e útil para os usuários.",
+    "tipsAvoid3": "Faça due diligence completa antes de comprar domínios expirados.",
+    "tipsCureTitle": "3. Solução (Recuperável vs. Difícil?)",
+    "tipsCure1": "Casos algorítmicos EMD / Qualidade: Recuperáveis gradualmente melhorando o conteúdo e construindo autoridade de marca genuína.",
+    "tipsCure2": "Casos de Ações Manuais (Manual Actions): Recuperáveis limpando links não naturais, enviando arquivo Disavow e solicitando Reconsideração.",
+    "tipsCure3": "Histórico Negativo Grave: Muito difícil recuperar. Se um domínio sofreu penalizações severas contínuas, recomenda-se começar com um domínio novo e limpo.",
+    "badExTitle": "Exemplos de Nomes de Domínio de Alto Risco",
+    "exampleLabel": "Exemplo:",
+    "bad1Title": "1. Risco de Qualidade (Keyword Stuffing & EMD)",
+    "bad1Ex": "comprar-calcado-couro-lisboa-descontos.example",
+    "bad1Reason": "Excesso de palavras-chave acumuladas sem identidade de marca clara.",
+    "bad2Title": "2. Difícil de Encontrar / Difícil de Lembrar",
+    "bad2Ex": "m3lh0r-s0luçã0-c4lc-2026.example",
+    "bad2Reason": "Números l33t-speak confusos ou comprimento excessivo causam erros de digitação nos usuários.",
+    "bad3Title": "3. Risco de Violação de Marca Registrada",
+    "bad3Ex": "loja-oficial-marcafamosa.example / marca-popular-lisboa.example",
+    "bad3Reason": "Uso não autorizado de marcas registradas. Alto risco de notificações extrajudiciais, processos e disputa de domínio (UDRP).",
+    "bad4Title": "4. Baixo CTR / Aparência Pouco Confiável",
+    "bad4Ex": "portal-ofertas-rapidas-99.example / central-arquivos-web.example",
+    "bad4Reason": "Frases promocionais genéricas ou padrões pouco confiáveis evitados por usuários na SERP.",
+    "goodExTitle": "Exemplos de Nomes de Domínio Bons, Legais e Seguros",
+    "good1Title": "1. Com Marca e Memorables",
+    "good1Ex": "calcly.pt, shopiva.io, finit.app",
+    "good1Reason": "Curtos, únicos, fáceis de soletrar, livres de marcas registradas e com forte valor de marca a longo prazo.",
+    "good2Title": "2. Geo-Marketing e Confianza Local",
+    "good2Ex": "solusicalc.pt, cafelisboa.pt, repara.pt",
+    "good2Reason": "Combina marca/função com ccTLD local (.pt), fornecendo fortes sinais de relevância regional em SERPs locais.",
+    "good3Title": "3. Domínio de Correspondência Parcial (PMD) Seguro",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.pt",
+    "good3Reason": "Contém palavras-chave relevantes combinadas com modificadores ou nomes de marca curtos, evitando penalizações EMD.",
+    "good4Title": "4. Legalmente Seguro e de Alta Confianza (Alto CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.pt, payfast.io",
+    "good4Reason": "Livre de marcas registradas, utiliza extensões confiáveis (.com / .pt) e gera confiança instantânea no usuário na SERP.",
+    "faqTitle": "Perguntas Frequentes (FAQ)",
+    "faqSub": "Respostas técnicas e educativas para investidores de domínios, especialistas em SEO, fundadores e freelancers.",
+    "faqs": [
+      {
+        "q": "1. O que é um Gerador de Permutações de Domínio e como ele funciona?",
+        "a": "É uma ferramenta inteligente criada para ajudar pesquisadores, desenvolvedores e investidores a gerar centenas de combinações únicas e memoráveis instantaneamente. Com até três palavras-chave, um algoritmo combinatório recursivo cria permutações completas de 3 palavras, subconjuntos de 2 palavras e variantes de 1 palavra, com hífen (-) e sem hífen."
+      },
+      {
+        "q": "2. Os domínios gerados seguem os padrões DNS (RFC 1035)?",
+        "a": "Sim! Cada domínio gerado em domainname.web.id passa por validação rigorosa conforme a norma RFC 1035: apenas letras minúsculas (a-z), números (0-9) e hífens internos (-), sem hífens no início ou fim, máximo de 63 caracteres por rótulo e comprimento total abaixo de 253 caracteres."
+      },
+      {
+        "q": "3. Por que os domínios são ordenados automaticamente dos mais curtos primeiro?",
+        "a": "Domínios curtos e diretos são muito mais valiosos para branding, SEO e tráfego direto. Por padrão, classificamos todos os resultados válidos do menor para o maior número de caracteres (até os 200 melhores) para destacar os nomes mais fortes no topo."
+      },
+      {
+        "q": "4. Como funciona o recurso \"Adicione seus próprios padrões\"?",
+        "a": "O campo de padrões personalizados permite criar fórmulas próprias com marcadores como [primary], [secondary], [tertiary], [vogal], [número] e [dash]. Basta clicar nas tags de inserção rápida abaixo da caixa para montar e expandir sua fórmula na hora."
+      },
+      {
+        "q": "5. Posso fazer pesquisas rápidas e checar backlinks dos domínios gerados?",
+        "a": "Com certeza. Ao lado de cada domínio na tabela de resultados há botões seguros de atalho para consultar o histórico no Wayback Machine (WM), verificar perfis de backlinks no Ahrefs (BL) ou checar a indexação via Google site: (GG), protegidos com rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. Como funcionam as extensões por idioma e a privacidade dos dados?",
+        "a": "Ao alternar entre os 8 idiomas, o sistema sugere extensões populares da região (como .pt e .com.br) e adapta os botões de compartilhamento (WhatsApp, LinkedIn e X). Todo o cálculo acontece localmente no navegador, sem rastreamento."
+      }
+    ]
+  },
+  "fr": {
+    "stratTitle": "Stratégie de Mots-clés et Bonnes Pratiques de Naming",
+    "stratKwTitle": "Stratégie de Mots-clés",
+    "stratKw1": "Mot-clé Principal ([primary]) : Cœur de niche ou sujet principal (ex: calc, shop, travel). Doit correspondre à l'intention de l'audience.",
+    "stratKw2": "Mot-clé Secondaire ([secondary]) : Modificateur ou catégorie descriptive (ex: pro, fast, hub). Aide à élargir le contexte de marque.",
+    "stratKw3": "Mot-clé Tertiaire ([tertiary]) : Suffixe de format ou de plateforme (ex: app, go, io). Idéal pour la recherche de domaines à grande échelle.",
+    "stratBpTitle": "Bonnes Pratiques de Naming",
+    "stratBp1": "Court et Mémorable : Limitez la longueur des caractères pour une frappe et une prononciation faciles (idéalement 12-15 caractères).",
+    "stratBp2": "Évitez les Fautes de Frappe : Utilisez des combinaisons naturelles de voyelles et consonnes.",
+    "stratBp3": "Considérez les Tirets : L'utilisation de [dash] aide à la lisibilité multi-mots, mais à utiliser avec modération.",
+    "stratBp4": "Choisissez les Bonnes Extensions : Utilisez .com pour l'international, les ccTLDs locaux pour les marchés cibles, ou des extensions de niche.",
+    "tipsCheckTitle": "1. Comment Vérifier l'Historique et les Risques",
+    "tipsCheck1": "Wayback Machine (Archive.org) : Vérifiez si le domaine a hébergé du contenu hors-sujet ou de faible qualité par le passé.",
+    "tipsCheck2": "Vérificateur de Backlinks (Ahrefs, Semrush, Moz) : Analysez le profil de liens pour garantir des textes d'ancrage naturels.",
+    "tipsCheck3": "Google Search Console (GSC) : Vérifiez les actions manuelles ou problèmes de sécurité historiques.",
+    "tipsAvoidTitle": "2. Comment Éviter les Risques de Pénalité",
+    "tipsAvoid1": "Utilisez des noms de marque uniques ou des combinaisons naturelles (partial match) plutôt que des EMDs purs.",
+    "tipsAvoid2": "Pour les sites à grande échelle, assurez-vous que chaque page génère une valeur unique et utile pour les utilisateurs.",
+    "tipsAvoid3": "Effectuez une due diligence rigoureuse avant d'acheter des domaines expirés.",
+    "tipsCureTitle": "3. Résolution (Récupérable ou Difficile ?)",
+    "tipsCure1": "Cas algorithmiques EMD / Qualité : Récupérables progressivement en améliorant le contenu et l'autorité de marque.",
+    "tipsCure2": "Cas d'Actions Manuelles : Récupérables en nettoyant les liens artificiels et en soumettant un fichier Disavow et une demande de réexamen.",
+    "tipsCure3": "Historique Négatif Grave : Très difficile à récupérer. Si un domaine a subi des pénalités lourdes durables, il est préférable de repartir sur un domaine neuf.",
+    "badExTitle": "Exemples de Noms de Domaine à Haut Risque",
+    "exampleLabel": "Exemple :",
+    "bad1Title": "1. Risque de Qualité (Keyword Stuffing & EMD)",
+    "bad1Ex": "acheter-chaussures-cuir-paris-soldes.example",
+    "bad1Reason": "Accumulation excessive de mots-clés sans identité de marque claire.",
+    "bad2Title": "2. Difficile à Trouver / Difficile à Retenir",
+    "bad2Ex": "m3ill3ur-s0lut10n-c4lc-2026.example",
+    "bad2Reason": "Chiffres l33t-speak confus ou longueur excessive entraînant des fautes de frappe chez les utilisateurs.",
+    "bad3Title": "3. Risque de Violation de Marque Déposée",
+    "bad3Ex": "boutique-officielle-marquecelèbre.example / marque-populaire-paris.example",
+    "bad3Reason": "Utilisation non autorisée de marques déposées. Risque élevé de mises en demeure, poursuites et litige de domaine (UDRP).",
+    "bad4Title": "4. Faible CTR / Apparence Peu Fiable",
+    "bad4Ex": "portail-offres-rapides-99.example / centre-fichiers-web.example",
+    "bad4Reason": "Formulations promotionnelles génériques souvent évitées par les utilisateurs dans les résultats de recherche (SERP).",
+    "goodExTitle": "Exemples de Noms de Domaine Bons, Légaux et Sûrs",
+    "good1Title": "1. De Marque et Mémorables",
+    "good1Ex": "calcly.fr, shopiva.io, finit.app",
+    "good1Reason": "Courts, uniques, faciles à orthographier, libres de droits et dotés d'une forte valeur de marque à long terme.",
+    "good2Title": "2. Geo-Marketing et Confiance Locale",
+    "good2Ex": "solusicalc.fr, cafe-paris.fr, repara.fr",
+    "good2Reason": "Combine la marque/fonction avec un ccTLD local (.fr), fournissant de forts signaux de pertinence régionale dans les SERP locales.",
+    "good3Title": "3. Domaine de Correspondance Partielle (PMD) Sûr",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.fr",
+    "good3Reason": "Contient des mots-clés pertinents combinés avec des modificateurs ou noms de marque courts, évitant les pénalités EMD.",
+    "good4Title": "4. Légalement Sûr et Haute Confiance (Haut CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.fr, payfast.io",
+    "good4Reason": "Libre de marques, utilise des extensions de confiance (.com / .fr) et inspire instantanément confiance dans les SERP.",
+    "faqTitle": "Foire Aux Questions (FAQ)",
+    "faqSub": "Réponses techniques et pratiques pour investisseurs de domaines, experts SEO, fondateurs de startups et freelances.",
+    "faqs": [
+      {
+        "q": "1. Qu’est-ce qu’un générateur de permutations de domaine et comment fonctionne-t-il ?",
+        "a": "C’est un outil intelligent conçu pour aider chercheurs, développeurs et investisseurs à générer instantanément des centaines de noms de domaine uniques et mémorables. À partir de 3 mots-clés maximum, un algorithme combinatoire récursif produit toutes les permutations à 3 mots, sous-ensembles à 2 mots et variantes à 1 mot, avec tiret (-) et sans tiret."
+      },
+      {
+        "q": "2. Les domaines générés respectent-ils les normes DNS (RFC 1035) ?",
+        "a": "Oui. Chaque domaine généré sur domainname.web.id est strictement validé selon la norme RFC 1035 : uniquement des lettres minuscules (a-z), des chiffres (0-9) et des tirets internes (-), sans tiret au début ou à la fin, 63 caractères maximum par étiquette et moins de 253 caractères au total."
+      },
+      {
+        "q": "3. Pourquoi les domaines sont-ils triés automatiquement du plus court au plus long ?",
+        "a": "Les domaines courts et percutants ont une valeur nettement supérieure pour l’image de marque, le SEO et le trafic direct. Le moteur classe par défaut les résultats valides par longueur croissante (jusqu’aux 200 plus courts) afin de mettre les meilleurs candidats en tête de liste."
+      },
+      {
+        "q": "4. Comment fonctionne la section « Ajoutez vos propres modèles » ?",
+        "a": "Le champ de formule personnalisée permet aux utilisateurs avancés de créer des combinaisons sur mesure avec les balises [primary], [secondary], [tertiary], [voyelle], [nombre] et [dash]. Cliquez simplement sur les boutons d’insertion rapide pour assembler et générer vos variantes."
+      },
+      {
+        "q": "5. Puis-je analyser rapidement les archives et backlinks des domaines générés ?",
+        "a": "Tout à fait. À côté de chaque domaine du tableau, des raccourcis sécurisés permettent de consulter les archives sur Wayback Machine (WM), vérifier les backlinks sur Ahrefs (BL) ou contrôler l’indexation Google via site: (GG), avec l’attribut rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. Comment s’adaptent les extensions régionales et la confidentialité ?",
+        "a": "Chaque édition linguistique propose des extensions adaptées (comme .fr, .com, .io) et des boutons de partage locaux (LinkedIn, X, WhatsApp). Tous les calculs s’exécutent localement dans votre navigateur sans cookies de suivi."
+      }
+    ]
+  },
+  "de": {
+    "stratTitle": "Keyword-Strategie & Best Practices für Domain-Naming",
+    "stratKwTitle": "Keyword-Strategie",
+    "stratKw1": "Primäres Keyword ([primary]): Kernthema oder Hauptnische (z. B. calc, shop, travel). Muss zur Intention der Zielgruppe passen.",
+    "stratKw2": "Sekundäres Keyword ([secondary]): Modifikator oder beschreibende Kategorie (z. B. pro, fast, hub). Erweitert den Markenkontext.",
+    "stratKw3": "Tertiäres Keyword ([tertiary]): Format- oder Plattform-Suffix (z. B. app, go, io). Ideal für groß angelegte Domain-Recherche.",
+    "stratBpTitle": "Best Practices für Naming",
+    "stratBp1": "Kurz & Einprägsam: Begrenzen Sie die Zeichenlänge für leichtes Tippen und Aussprechen (optimal 12-15 Zeichen).",
+    "stratBp2": "Typos vermeiden: Nutzen Sie natürliche Kombinationen aus Vokalen und Konsonanten.",
+    "stratBp3": "Bindestriche beachten: Die Nutzung von [dash] hilft bei der Lesbarkeit von Mehrwort-Domains, aber sparsam einsetzen.",
+    "stratBp4": "Richtige Endungen wählen: Nutzen Sie .com für global, lokale ccTLDs für regionale Märkte oder Nischenendungen.",
+    "tipsCheckTitle": "1. Historie & Risiken prüfen",
+    "tipsCheck1": "Wayback Machine (Archive.org): Prüfen Sie, ob die Domain früher für themenfremde oder minderwertige Inhalte genutzt wurde.",
+    "tipsCheck2": "Backlink-Checker (Ahrefs, Semrush, Moz): Analysieren Sie das Backlink-Profil auf natürliche Ankertexte.",
+    "tipsCheck3": "Google Search Console (GSC): Prüfen Sie historische manuelle Maßnahmen oder Sicherheitsprobleme.",
+    "tipsAvoidTitle": "2. Strafen vermeiden",
+    "tipsAvoid1": "Nutzen Sie einzigartige Brandnames oder natürliche Teilübereinstimmungen (Partial Match) statt reiner EMDs.",
+    "tipsAvoid2": "Stellen Sie bei großangelegten Projekten sicher, dass jede Seite echten Nutzen für Nutzer bietet.",
+    "tipsAvoid3": "Führen Sie vor dem Kauf von Drop-Domains gründliche Prüfungen durch.",
+    "tipsCureTitle": "3. Lösung (Wiederherstellbar vs. Schwierig)",
+    "tipsCure1": "Algorithmische EMD / Qualitätsfälle: Schrittweise erholbar durch bessere Inhaltsqualität und echten Markenaufbau.",
+    "tipsCure2": "Manuelle Maßnahmen (Manual Actions): Behebbar durch Bereinigung unnatürlicher Links, Disavow-Datei und Überprüfungsantrag.",
+    "tipsCure3": "Schwere negative Historie: Sehr schwer wiederherzustellen. Bei dauerhaften Altlasten empfiehlt sich ein Neustart mit einer sauberen Domain.",
+    "badExTitle": "Beispiele für risikoreiche / schlechte Domainnamen",
+    "exampleLabel": "Beispiel:",
+    "bad1Title": "1. Qualitätsrisiko (Keyword Stuffing & EMD)",
+    "bad1Ex": "beste-lederschuhe-muenchen-rabatt.example",
+    "bad1Reason": "Übermäßige Keyword-Anhäufung ohne klare Markenidentität wirkt unnatürlich.",
+    "bad2Title": "2. Schwer zu finden / Einprägsamkeit",
+    "bad2Ex": "d1e-b3st3-calc-t00ls-2026.example",
+    "bad2Reason": "Verwirrende Leet-Speak-Zahlen oder extreme Länge führen zu Tippfehlern und schlechter Markenbindung.",
+    "bad3Title": "3. Rechtliches Risiko (Markenrechtsverletzung)",
+    "bad3Ex": "offizieller-bekanntemarke-shop.example / marken-outlet-berlin.example",
+    "bad3Reason": "Unbefugte Nutzung geschützter Marken. Hohes Risiko für Abmahnungen, Klagen und Domain-Streitigkeiten (UDRP).",
+    "bad4Title": "4. Niedrige CTR / Wenig vertrauenswürdig",
+    "bad4Ex": "schnell-aktion-portal-99.example / datei-zentrum-web.example",
+    "bad4Reason": "Generische Werbeformulierungen werden in Suchergebnissen von Nutzern oft gemieden.",
+    "goodExTitle": "Beispiele für gute, legale & sichere Domainnamen",
+    "good1Title": "1. Markenbildend & Einprägsam",
+    "good1Ex": "calcly.de, shopiva.io, finit.app",
+    "good1Reason": "Kurz, einzigartig, leicht zu buchstabieren, frei von Markenrechten und mit starkem langfristigem Markenwert.",
+    "good2Title": "2. Geo-Marketing & Lokales Vertrauen",
+    "good2Ex": "solusicalc.de, kafe-berlin.de, repara.de",
+    "good2Reason": "Kombiniert Marke/Funktion mit lokaler ccTLD (.de) und liefert starke regionale Relevanzsignale in lokalen SERPs.",
+    "good3Title": "3. Sichere Partial Match Domain (PMD)",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.de",
+    "good3Reason": "Enthält relevante Keywords kombiniert mit Modifikatoren oder kurzen Markennamen, vermeidet EMD-Strafen.",
+    "good4Title": "4. Rechtlich sicher & hohes Vertrauen (Hohe CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.de, payfast.io",
+    "good4Reason": "Markenrechtlich frei, nutzt vertrauenswürdige Endungen (.com / .de) und schafft sofortiges Vertrauen in der SERP.",
+    "faqTitle": "Häufig gestellte Fragen (FAQ)",
+    "faqSub": "Technische und praxisnahe Antworten für Domainer, SEO-Spezialisten, Startup-Gründer und Entwickler.",
+    "faqs": [
+      {
+        "q": "1. Was ist ein Domain-Permutations-Generator und wie funktioniert er?",
+        "a": "Ein Domain-Permutations-Generator unterstützt Researcher, Entwickler, Gründer und Domain-Investoren dabei, sofort Hunderte einzigartige und markenstarke Domain-Kombinationen zu erzeugen. Aus bis zu drei Keywords erstellt ein rekursiver Kombinatorik-Algorithmus vollständige 3-Wort-Permutationen, 2-Wort-Teilmengen und 1-Wort-Varianten – mit Bindestrich (-) und zusammengeschrieben."
+      },
+      {
+        "q": "2. Entsprechen die generierten Domains den DNS-Standards (RFC 1035)?",
+        "a": "Ja. Jede Domain auf domainname.web.id wird streng nach RFC 1035 validiert und bereinigt: erlaubt sind nur Kleinbuchstaben (a-z), Ziffern (0-9) und Bindestriche (-), ohne Bindestrich am Anfang oder Ende, maximal 63 Zeichen pro DNS-Label und unter 253 Zeichen Gesamtlänge."
+      },
+      {
+        "q": "3. Warum werden die kürzesten Domains automatisch zuerst angezeigt?",
+        "a": "Kurze, prägnante Domains sind deutlich wertvoller für Branding, SEO und direkte Typ-in-Aufrufe. Standardmäßig sortiert unser Generator alle gültigen Ergebnisse von der kürzesten zur längsten Zeichenanzahl (maximal 200 Top-Kandidaten), sodass die stärksten Namen direkt oben erscheinen."
+      },
+      {
+        "q": "4. Wie funktioniert die Funktion „Eigene Muster hinzufügen“?",
+        "a": "Im Eingabefeld für eigene Muster können fortgeschrittene Nutzer individuelle Formeln mit Platzhaltern wie [primary], [secondary], [tertiary], [vokal], [nummer] und [dash] erstellen. Klicken Sie einfach auf die Schnell-Tags unter dem Feld, um Ihre Formel zusammenzustellen."
+      },
+      {
+        "q": "5. Kann ich eine schnelle Recherche und Backlink-Prüfung durchführen?",
+        "a": "Selbstverständlich. Neben jeder Domain in der Ergebnistabelle stehen sichere Direkt-Buttons für historische Snapshots in der Wayback Machine (WM), Backlink-Analysen in Ahrefs (BL) und den Google-Index via site: (GG) bereit – geschützt mit rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. Wie funktionieren sprachspezifische Endungen und der Datenschutz?",
+        "a": "Beim Wechsel zwischen den 8 Sprachen passt der Generator empfohlene TLDs (z. B. .de, .com, .io) sowie regionale Share-Kanäle (E-Mail, LinkedIn, WhatsApp) automatisch an. Alle Berechnungen laufen lokal im Browser ohne Tracking-Cookies."
+      }
+    ]
+  },
+  "ru": {
+    "stratTitle": "Стратегия ключевых слов и лучшие практики именования",
+    "stratKwTitle": "Стратегия ключевых слов",
+    "stratKw1": "Основное ключевое слово ([primary]): Суть ниши или главная тема (например, calc, shop, travel). Должно соответствовать намерениям аудитории.",
+    "stratKw2": "Вторичное ключевое слово ([secondary]): Модификатор или категория (например, pro, fast, hub). Помогает расширить контекст бренда.",
+    "stratKw3": "Третичное ключевое слово ([tertiary]): Суффикс формата или платформы (например, app, go, io). Идеально для масштабного подбора доменов.",
+    "stratBpTitle": "Лучшие практики нейминга",
+    "stratBp1": "Коротко и запоминаемо: Ограничивайте длину для легкого ввода и произношения (в идеале 12-15 символов).",
+    "stratBp2": "Избегайте опечаток: Используйте естественные сочетания гласных и согласных.",
+    "stratBp3": "Учитывайте дефисы: Использование [dash] помогает читаемости многословных доменов, но применяйте умеренно.",
+    "stratBp4": "Выбирайте правильные зоны: Используйте .com для глобального охвата, локальные ccTLD для региональных рынков или нишевые зоны.",
+    "tipsCheckTitle": "1. Проверка истории и рисков",
+    "tipsCheck1": "Wayback Machine (Archive.org): Проверьте, не размещались ли ранее на домене нерелевантные или низкокачественные материалы.",
+    "tipsCheck2": "Анализ бэклинков (Ahrefs, Semrush, Moz): Убедитесь в естественном и чистом профиле анкорных текстов.",
+    "tipsCheck3": "Google Search Console (GSC): Проверьте историю ручных мер (Manual Actions) или проблем безопасности.",
+    "tipsAvoidTitle": "2. Как избежать штрафов",
+    "tipsAvoid1": "Используйте уникальные бренды или естественные комбинации (Partial Match) вместо чистых EMD.",
+    "tipsAvoid2": "Для масштабных проектов гарантируйте уникальную ценность каждой страницы для пользователей.",
+    "tipsAvoid3": "Тщательно проверяйте купленные возрастные или освобождающиеся домены.",
+    "tipsCureTitle": "3. Решение (Восстановимо или нет?)",
+    "tipsCure1": "Алгоритмические EMD / Качество: Постепенно восстановимо за счет улучшения контента и развития бренда.",
+    "tipsCure2": "Ручные меры (Manual Actions): Исправимо путем очистки неестественных ссылок, отправки Disavow и запроса на пересмотр.",
+    "tipsCure3": "Тяжелая негативная история: Восстановить крайне сложно. При длительных прошлых санкциях лучше начать с нового чистого домена.",
+    "badExTitle": "Примеры рискованных / плохих доменных имен",
+    "exampleLabel": "Пример:",
+    "bad1Title": "1. Риск качества (Keyword Stuffing и EMD)",
+    "bad1Ex": "kupit-kozhanye-krossovki-moskva-skidka.example",
+    "bad1Reason": "Чрезмерное накопление ключей без четкого бренда выглядит неестественно.",
+    "bad2Title": "2. Трудно найти / Плохо запоминается",
+    "bad2Ex": "lutsh1e-s0lyut10n-calc-2026.example",
+    "bad2Reason": "Запутанные цифры leet-speak и избыточная длина вызывают опечатки у пользователей.",
+    "bad3Title": "3. Юридический риск (Нарушение товарных знаков)",
+    "bad3Ex": "oficialny-magazin-izvestnybrand.example / brand-store-moscow.example",
+    "bad3Reason": "Незаконное использование зарегистрированных брендов. Высокий риск претензий, судов и доменных споров (UDRP).",
+    "bad4Title": "4. Низкий CTR / Низкое доверие",
+    "bad4Ex": "bystry-portal-akcij-99.example / centr-fajlov-web.example",
+    "bad4Reason": "Слишком общие рекламные формулировки не вызывают доверия у пользователей в поисковой выдаче (SERP).",
+    "goodExTitle": "Примеры хороших, легальных и безопасных доменов",
+    "good1Title": "1. Брендовые и запоминающиеся",
+    "good1Ex": "calcly.ru, shopiva.io, finit.app",
+    "good1Reason": "Короткие, уникальные, легко произносятся, свободны от чужих товарных знаков и ценны в долгосрочной перспективе.",
+    "good2Title": "2. Гео-маркетинг и локальное доверие",
+    "good2Ex": "solusicalc.ru, kofe-moskva.ru, repara.su",
+    "good2Reason": "Сочетает бренд с локальной ccTLD (.ru), обеспечивая сильные сигналы региональной релевантности в локальной выдаче.",
+    "good3Title": "3. Безопасный Partial Match Domain (PMD)",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.ru",
+    "good3Reason": "Содержит ключевые слова с модификаторами или короткими брендами, избегая санкций EMD.",
+    "good4Title": "4. Юридически чистый и надежный (Высокий CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.ru, payfast.io",
+    "good4Reason": "Свободен от товарных знаков, использует надежные зоны (.com / .ru) и вызывает мгновенное доверие в SERP.",
+    "faqTitle": "Часто задаваемые вопросы (FAQ)",
+    "faqSub": "Технические и практические ответы для домейнеров, SEO-специалистов, основателей стартапов и разработчиков.",
+    "faqs": [
+      {
+        "q": "1. Что такое генератор перестановок доменов и как он работает?",
+        "a": "Это интеллектуальный инструмент, помогающий исследователям, разработчикам и доменным инвесторам мгновенно подбирать сотни уникальных и запоминающихся доменных имен. При вводе до трех ключевых слов рекурсивный комбинаторный алгоритм формирует все перестановки из 3 слов, комбинации из 2 слов и одиночные варианты — как с дефисом (-), так и слитно."
+      },
+      {
+        "q": "2. Соответствуют ли сгенерированные домены стандартам DNS (RFC 1035)?",
+        "a": "Да. Каждый домен на domainname.web.id проходит строгую валидацию и очистку по стандарту RFC 1035: допускаются только строчные латинские буквы (a-z), цифры (0-9) и внутренний дефис (-), без дефисов в начале или конце, до 63 символов в метке и менее 253 символов общей длины."
+      },
+      {
+        "q": "3. Почему результаты автоматически сортируются от самых коротких к длинным?",
+        "a": "Короткие и емкие домены обладают гораздо более высокой ценностью для бренда, SEO и прямого трафика. По умолчанию генератор выстраивает все валидные кандидаты по возрастанию длины (до 200 лучших вариантов), чтобы наиболее ценные имена всегда находились в самом верху."
+      },
+      {
+        "q": "4. Как работает функция «Добавьте свои шаблоны»?",
+        "a": "Поле пользовательских шаблонов позволяет опытным пользователям составлять собственные формулы с тегами [primary], [secondary], [tertiary], [гласная], [цифра] и [dash]. Просто нажимайте кнопки быстрой вставки под полем для создания нужных комбинаций."
+      },
+      {
+        "q": "5. Можно ли быстро проверить историю и обратные ссылки у найденных доменов?",
+        "a": "Разумеется. Рядом с каждым доменом в таблице предусмотрены безопасные кнопки для просмотра архивов в Wayback Machine (WM), анализа ссылочного профиля в Ahrefs (BL) и проверки индексации Google через site: (GG) с атрибутами rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. Как работают языковые доменные зоны, локальный шеринг и приватность?",
+        "a": "При переключении между 8 языками сервис автоматически адаптирует популярные зоны (например, .ru, .com) и кнопки отправки (Telegram, VK). Вся генерация выполняется локально в вашем браузере без отслеживающих cookie."
+      }
+    ]
+  },
+  "ja": {
+    "stratTitle": "キーワード戦略 & ドメイン命名のベストプラクティス",
+    "stratKwTitle": "キーワード戦略",
+    "stratKw1": "メインキーワード ([primary]): ニッチの中心または主要トピック（例: calc, shop, travel）。コアビジネスやユーザーの意図と一致している必要があります。",
+    "stratKw2": "セカンダリキーワード ([secondary]): 修飾子や説明カテゴリ（例: pro, fast, hub）。ブランドの文脈やバリエーションを広げます。",
+    "stratKw3": "ターティアルキーワード ([tertiary]): フォーマットやプラットフォームのサフィックス（例: app, go, io）。大規模なドメインリサーチに最適です。",
+    "stratBpTitle": "ネーミングのベストプラクティス",
+    "stratBp1": "短く覚えやすい: 入力と発音がしやすいよう文字数を制限します（理想は12〜15文字以内）。",
+    "stratBp2": "タイポの回避: ユーザーの混乱を防ぐため、母音と子音の自然な組み合わせを使用します。",
+    "stratBp3": "ハイフンの考慮: [dash]の使用は複数ワードの可読性を高めますが、控えめに使用してください。",
+    "stratBp4": "適切な拡張子の選択: グローバルには.com、国内市場にはローカルccTLD（.jpなど）、またはニッチな拡張子を選択します。",
+    "tipsCheckTitle": "1. 履歴とリスクの確認方法",
+    "tipsCheck1": "Wayback Machine (Archive.org): 過去に無関係なサイトや低品質な用途で使用されていなかったか確認します。",
+    "tipsCheck2": "バックリンクチェッカー (Ahrefs, Semrush, Moz): 不自然なアンカーテキストが含まれていないか分析します。",
+    "tipsCheck3": "Google Search Console (GSC): 取得するドメインに過去の手動ペナルティ（Manual Actions）やセキュリティ上の問題がないか確認します。",
+    "tipsAvoidTitle": "2. ペナルティリスクを回避する方法",
+    "tipsAvoid1": "純粋なEMDではなく、独自のブランド名や自然な部分一致（Partial Match）の組み合わせを使用します。",
+    "tipsAvoid2": "大規模サイトでは、ユーザーにとって本当に価値のあるユニークなコンテンツを各ページで提供します。",
+    "tipsAvoid3": "期限切れドメインや中古ドメインを購入する前に、徹底的なデューデリジェンスを行います。",
+    "tipsCureTitle": "3. 対処法（回復可能か）",
+    "tipsCure1": "アルゴリズム的なEMD / 品質事例: コンテンツの品質を全面的に見直し、本格的なブランド権威を構築することで段階的に回復可能です。",
+    "tipsCure2": "手動ペナルティ（Manual Actions）事例: 不自然な被リンクを整理し、Disavowファイルを送信してGSCで再審査リクエストを申請します。",
+    "tipsCure3": "深刻な過去履歴がある場合: 回復は非常に困難です。長年のペナルティ履歴が残っている場合は、クリーンな新規ドメインで再出発することをお勧めします。",
+    "badExTitle": "リスクの高い・悪いドメイン名の例",
+    "exampleLabel": "例:",
+    "bad1Title": "1. 品質リスク (キーワード詰め込み & EMD)",
+    "bad1Ex": "best-leather-shoes-tokyo-discounts.example",
+    "bad1Reason": "明確なブランドアイデンティティなしにキーワードを過剰に詰め込むと不自然に見えます。",
+    "bad2Title": "2. 見つけにくい / 覚えにくい",
+    "bad2Ex": "b3st-onl1n3-calc-t00ls-2026.example",
+    "bad2Reason": "分かりにくいリート数字や過度な長さにより、ユーザーがタイポ（入力ミス）を起こしやすく、ブランドが定着しません。",
+    "bad3Title": "3. 法的リスク (商標権侵害)",
+    "bad3Ex": "official-famousbrand-shop.example / popularbrand-tokyo.example",
+    "bad3Reason": "登録商標の無断使用。警告書、法的措置、ドメイン紛争（UDRP）の高リスクがあります。",
+    "bad4Title": "4. 低CTR / 信頼性の低い印象",
+    "bad4Ex": "fast-promo-portal-99.example / quick-files-hub.example",
+    "bad4Reason": "一般的な宣伝フレーズや信頼性に欠ける表現は、検索結果（SERP）でユーザーに敬遠されやすくなります。",
+    "goodExTitle": "良かった、法的にも安全なドメイン名の例",
+    "good1Title": "1. ブランド化しやすく覚えやすい",
+    "good1Ex": "calcly.com, shopiva.io, finit.app",
+    "good1Reason": "短く、ユニークで、スペルが簡単で、商標権侵害もなく、長期的なブランド価値を高めます。",
+    "good2Title": "2. ジオマーケティング & 高いローカル信頼性",
+    "good2Ex": "solusicalc.jp, tokokopi.co.jp, jasafix.jp",
+    "good2Reason": "ブランドや機能とローカルccTLD（.jp）を組み合わせることで、国内SERPで強力な地域関連性シグナルを提供します。",
+    "good3Title": "3. 安全な部分一致ドメイン (PMD)",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.jp",
+    "good3Reason": "関連キーワードを含みつつ、修飾子や短いブランド名と組み合わせることでEMDペナルティを回避します。",
+    "good4Title": "4. 法的に安全 & 高い信頼性 (高CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.jp, payfast.io",
+    "good4Reason": "商標フリーで、信頼性の高い拡張子（.com / .jp）を利用し、SERPでユーザーに即座の信頼感を与えます。",
+    "faqTitle": "よくある質問（FAQ）",
+    "faqSub": "ドメイナー、SEO担当者、スタートアップ創業者、開発者のための技術的・実践的なQ&Aです。",
+    "faqs": [
+      {
+        "q": "1. ドメイン置換ジェネレータとは何ですか？どのように動作しますか？",
+        "a": "リサーチャー、開発者、スタートアップ創業者、ドメイン投資家が、ブランド価値の高いユニークなドメイン候補を瞬時に数百件生成できるツールです。最大3つのキーワードを入力すると、再帰的組み合わせアルゴリズムによって3語全順列・2語サブセット・1語バリエーションをハイフンあり（-）となし（連結）の両方で生成します。"
+      },
+      {
+        "q": "2. 生成されたドメインはDNS標準（RFC 1035）に準拠していますか？",
+        "a": "はい。domainname.web.id で生成されるすべてのドメインは RFC 1035 に基づき厳格に検証されます。小文字アルファベット（a-z）・数字（0-9）・ハイフン（-）のみを使用し、先頭と末尾のハイフン禁止、各ラベル最大63文字、全体253文字未満を保証します。"
+      },
+      {
+        "q": "3. なぜ生成結果が文字数の短い順に自動ソートされるのですか？",
+        "a": "短く覚えやすいドメインはブランディング、SEO、ダイレクトアクセスにおいて非常に高い価値を持ちます。最短文字数から順に並べる（最大200件）ことで、最も魅力的なプレミアム候補をリスト最上部ですぐに見つけられます。"
+      },
+      {
+        "q": "4. 「独自パターンを追加」機能はどのように使いますか？",
+        "a": "カスタムパターン入力欄では、[primary]、[secondary]、[tertiary]、[母音]、[数字]、[dash] などのプレースホルダを使って独自の命名ルールを作成できます。入力欄下のクイック挿入ボタンをクリックするだけで簡単に式を組み立てられます。"
+      },
+      {
+        "q": "5. 生成したドメインの履歴や被リンクをすぐに調査できますか？",
+        "a": "はい。結果テーブルの各ドメイン横に、Wayback Machine（WM）での過去履歴確認、Ahrefs（BL）での被リンク分析、Google検索 site:（GG）でのインデックス確認を行える安全な外部リンク（rel=\"nofollow noopener noreferrer\" 適用）を用意しています。"
+      },
+      {
+        "q": "6. 言語ごとの拡張子対応や共有機能、プライバシーはどうなっていますか？",
+        "a": "8言語の切り替えに応じて地域に最適化されたTLD（日本語では .jp や .co.jp など）と共有チャンネル（X、LINEなど）へ自動対応します。すべての処理はブラウザ内で完結し、追跡Cookieは使用しません。"
+      }
+    ]
+  }
+}
