@@ -1,0 +1,16 @@
+{
+  "name": "domainlist",
+  "version": "1.0.0",
+  "description": "Domain Name Permutation & Idea Generator",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node scripts/build-static.mjs",
+    "lint": "node --check server.js && node --check scripts/site-builder.mjs && node --check scripts/build-static.mjs && node --check assets/trust-i18n.js"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

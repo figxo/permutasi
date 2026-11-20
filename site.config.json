@@ -1,0 +1,26 @@
+{
+  "siteUrl": "https://domainname.web.id",
+  "contactEmail": "admin@domainname.web.id",
+  "languages": ["en", "id", "es", "pt", "fr", "de", "ru", "ja"],
+  "googleAnalytics": {
+    "measurementId": ""
+  },
+  "googleSearchConsole": {
+    "verificationToken": ""
+  },
+  "googleAdSense": {
+    "publisherId": "",
+    "directSellerId": "f08c47fec0942fa0",
+    "enableAutoAdsScript": false,
+    "generateAdsTxt": true
+  },
+  "otherVerifications": {
+    "bingMsvalidate": "",
+    "yandexVerification": "",
+    "ahrefsSiteVerification": ""
+  },
+  "seo": {
+    "generateRobotsTxt": true,
+    "generateSitemapXml": true
+  }
+}
