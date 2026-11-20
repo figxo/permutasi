@@ -780,7 +780,18 @@ function localizeIndexHtml(rawHtml, lang, config) {
       );
     }
 
+    const advOptionsLabels = {
+      id: 'Kata Kunci Tambahan, Urutan & Pola Kustom',
+      es: 'Más Palabras Clave, Orden y Patrones',
+      pt: 'Mais Palavras-chave, Ordem e Padrões',
+      fr: 'Mots-clés, Ordre et Modèles Personnalisés',
+      de: 'Weitere Keywords, Wortfolge & Muster',
+      ru: 'Доп. слова, порядок и свои шаблоны',
+      ja: '追加キーワード・語順・独自パターン'
+    };
+
     const eduMap = {
+      uiAdvOptionsLabel: advOptionsLabels[lang],
       uiStratTitle: eduFaqPack.stratTitle,
       uiStratKwTitle: eduFaqPack.stratKwTitle,
       uiStratKw1: eduFaqPack.stratKw1,

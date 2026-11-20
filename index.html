@@ -133,7 +133,7 @@
 <body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased overflow-x-hidden transition-colors duration-150">
 
     <!-- Sticky Single-Row Header -->
-    <header id="siteHeader" class="sticky top-0 z-40 h-14 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <header id="siteHeader" class="sticky top-0 z-40 h-12 md:h-14 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
         <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 sm:gap-8">
             <!-- Zone 1: Brand Wordmark -->
             <a href="/" onclick="resetToHome(event)" id="brandHomeLink" class="inline-flex items-center gap-2.5 text-slate-900 dark:text-white font-bold tracking-tight text-base sm:text-lg whitespace-nowrap shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
@@ -212,162 +212,214 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-8 md:py-10 space-y-5 sm:space-y-7 md:space-y-10">
 
         <!-- Hero Section -->
-        <section class="max-w-4xl space-y-2.5">
-            <p class="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 leading-[1.4]">domainname.web.id · RFC 1035</p>
-            <h1 id="uiHeaderTitle" class="text-[22px] sm:text-[24px] md:text-[28px] lg:text-[32px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35] md:leading-[1.25] [text-wrap:balance]">
+        <section class="max-w-4xl space-y-2 sm:space-y-2.5">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-mono tracking-wide text-slate-500 dark:text-slate-400 leading-[1.3]">domainname.web.id</span>
+                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold uppercase tracking-wider bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800/70">
+                    <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                    RFC 1035
+                </span>
+            </div>
+            <h1 id="uiHeaderTitle" class="text-[21px] sm:text-[25px] md:text-[28px] lg:text-[32px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.25] [text-wrap:balance]">
                 "domain" Domain Permutation Generator &amp; Bulk Checker
             </h1>
-            <p id="uiHeaderSub" class="text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-400 leading-[1.5] md:leading-[1.6] max-w-2xl">
+            <p id="uiHeaderSub" class="text-[15px] md:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.55] md:leading-[1.6] max-w-2xl">
                 Instantly generate domain name combination ideas for research and domain portfolios.
             </p>
         </section>
 
         <!-- Core Multi-Column Workspace (Single-Column Mobile, 12-Col Desktop) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
 
             <!-- Column 1: Generator Form Card -->
-            <section id="generatorSection" aria-labelledby="uiSectionGenTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-6">
-                <h2 id="uiSectionGenTitle" class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.4] md:leading-[1.35]">
-                    Keyword &amp; Domain Permutation Formula Configuration
-                </h2>
+            <section id="generatorSection" aria-labelledby="uiSectionGenTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 md:space-y-6 min-w-0">
+                <div class="flex items-start gap-3">
+                    <span aria-hidden="true" class="mt-0.5 w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                    </span>
+                    <h2 id="uiSectionGenTitle" class="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">
+                        Keyword &amp; Domain Permutation Formula Configuration
+                    </h2>
+                </div>
 
-                <!-- 3-Keyword Flexible Inputs -->
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                <!-- Primary Keyword & Extensions (Always Above-the-Fold) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     <div>
-                        <label for="keywordInput" id="uiKeyword1Label" class="block text-[12px] sm:text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-300 leading-[1.45]">Primary Keyword:</label>
-                        <input type="text" id="keywordInput" value="domain" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] md:text-[15px] leading-[1.45] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
+                        <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Primary Keyword:</label>
+                        <input type="text" id="keywordInput" value="domain" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
                     </div>
                     <div>
-                        <label for="keyword2Input" id="uiKeyword2Label" class="block text-[12px] sm:text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-300 leading-[1.45]">Secondary Keyword:</label>
-                        <input type="text" id="keyword2Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] md:text-[15px] leading-[1.45] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
-                    </div>
-                    <div>
-                        <label for="keyword3Input" id="uiKeyword3Label" class="block text-[12px] sm:text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-300 leading-[1.45]">Tertiary Keyword:</label>
-                        <input type="text" id="keyword3Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] md:text-[15px] leading-[1.45] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
+                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Domain Extensions (comma separated):</label>
+                        <input type="text" id="extInput" value=".com, .net, .io, .org" oninput="generateDomains()" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
                     </div>
                 </div>
 
-                <!-- Extensions Input -->
+                <!-- Primary Touch-Friendly Action Button (Directly Visible Above-the-Fold) -->
                 <div>
-                    <label for="extInput" id="uiExtLabel" class="block text-[12px] sm:text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-300 leading-[1.45]">Domain Extensions (comma separated):</label>
-                    <input type="text" id="extInput" value=".com, .net, .io, .org" oninput="generateDomains()" class="w-full min-h-[44px] px-3.5 py-2 text-[13px] md:text-[14px] leading-[1.45] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
-                </div>
-
-                <!-- Hairline Section: Full Word-Order Permutations -->
-                <div class="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                        <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none">
-                            <input type="checkbox" id="fullWordPermCheckbox" checked onchange="generateDomains()" class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
-                            <span>
-                                <span id="uiWordPermLabel" class="block text-[14px] md:text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Full Word-Order Permutations (Dash &amp; No-Dash)</span>
-                                <span id="uiWordPermDesc" class="block text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400 mt-1 leading-[1.45] md:leading-[1.55]">Automatically generates all 3-word, 2-word subset, and single-keyword orderings in both hyphenated and joined formats across all extensions.</span>
-                            </span>
-                        </label>
-                        <span id="wordPermCountBadge" class="shrink-0 text-[11px] uppercase tracking-wider font-mono font-medium tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.4]">1 order · 1 variant</span>
-                    </div>
-
-                    <div id="wordPermOptionsWrap" class="space-y-2.5 pt-1">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span id="uiWordPermSizeLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Word Count:</span>
-                            <label for="wordPerm3Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                <input type="checkbox" id="wordPerm3Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                <span id="uiWordPerm3Label">3 Words</span>
-                            </label>
-                            <label for="wordPerm2Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                <input type="checkbox" id="wordPerm2Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                <span id="uiWordPerm2Label">2 Words</span>
-                            </label>
-                            <label for="wordPerm1Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                <input type="checkbox" id="wordPerm1Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                <span id="uiWordPerm1Label">1 Word</span>
-                            </label>
-                        </div>
-
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span id="uiWordPermFormatLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Separator:</span>
-                            <label for="wordPermDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                <input type="checkbox" id="wordPermDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                <span id="uiWordPermDashLabel">With Dash (-)</span>
-                            </label>
-                            <label for="wordPermNoDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                <span id="uiWordPermNoDashLabel">No-Dash (Joined)</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hairline Section: Add Your Own Patterns -->
-                <div class="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
-                    <div class="flex items-center justify-between gap-2">
-                        <label for="formulaInput" id="uiFormulaLabel" class="block text-[14px] md:text-[15px] font-semibold text-slate-800 dark:text-slate-200 leading-[1.45]">Add Your Own Patterns:</label>
-                        <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-2.5 py-1 text-[12px] md:text-[13px] font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-md transition-colors whitespace-nowrap shrink-0">
-                            Clear Pattern
-                        </button>
-                    </div>
-                    <textarea id="formulaInput" rows="2" oninput="generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono text-[13px] md:text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
-
-                    <div class="flex flex-wrap gap-1.5 sm:gap-2 items-center">
-                        <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mr-1 leading-[1.4]">Click to insert:</span>
-                        <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [primary]</button>
-                        <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [secondary]</button>
-                        <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [tertiary]</button>
-                        <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [dash]</button>
-                        <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [number]</button>
-                        <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [vowel]</button>
-                        <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/60 text-slate-800 dark:text-slate-200 hover:text-blue-700 dark:hover:text-blue-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 transition-colors whitespace-nowrap">+ [consonant]</button>
-                    </div>
-                    <p id="uiFormulaHint" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400 leading-[1.45] md:leading-[1.55]">
-                        Placeholders: <code>[primary]</code>, <code>[secondary]</code>, <code>[tertiary]</code>, <code>[vowel]</code>, <code>[consonant]</code>, <code>[number]</code>, <code>[dash]</code> (RFC 1035 Sanitized).
-                    </p>
-                </div>
-
-                <!-- Primary & Secondary Touch-Friendly Action Buttons -->
-                <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
-                    <button type="button" onclick="generateDomains()" id="uiGenBtn" class="min-h-[44px] w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                    <button type="button" onclick="generateDomains()" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                         Generate Permutations
                     </button>
-                    <div class="flex flex-wrap gap-2.5 sm:flex-1 sm:justify-end">
-                        <button type="button" onclick="copyToClipboard()" id="uiCopyBtn" class="min-h-[44px] flex-1 sm:flex-initial px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
-                            Copy List
-                        </button>
-                        <button type="button" onclick="downloadTxt()" id="uiDownloadBtn" class="min-h-[44px] flex-1 sm:flex-initial px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
-                            Download .txt
-                        </button>
-                        <a id="uiDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBulkCheckerLink(event)" class="min-h-[44px] w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap">
-                            Bulk Check DNSRobot
-                        </a>
-                    </div>
                 </div>
+
+                <!-- Collapsible Secondary Keywords, Word-Order Permutations & Custom Patterns (< md closed by default, md+ open) -->
+                <details id="advancedOptionsDetails" class="group rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
+                    <summary class="md:hidden flex items-center justify-between gap-3 px-3.5 py-2.5 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+                        <span class="inline-flex items-center gap-2 min-w-0">
+                            <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                            <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-slate-800 dark:text-slate-100 leading-[1.4]">More Keywords, Word Order &amp; Custom Patterns</span>
+                        </span>
+                        <svg aria-hidden="true" class="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </summary>
+
+                    <div class="px-3.5 pb-4 pt-3.5 md:p-0 space-y-4 md:space-y-5 border-t border-slate-200 dark:border-slate-800 md:border-t-0">
+                        <!-- Secondary & Tertiary Keywords -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                            <div>
+                                <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
+                                <input type="text" id="keyword2Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
+                            </div>
+                            <div>
+                                <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
+                                <input type="text" id="keyword3Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
+                            </div>
+                        </div>
+
+                        <!-- Hairline Section: Full Word-Order Permutations -->
+                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3">
+                            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                                <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none">
+                                    <input type="checkbox" id="fullWordPermCheckbox" checked onchange="generateDomains()" class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                    <span>
+                                        <span id="uiWordPermLabel" class="block text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Full Word-Order Permutations (Dash &amp; No-Dash)</span>
+                                        <span id="uiWordPermDesc" class="block text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.55]">Automatically generates all 3-word, 2-word subset, and single-keyword orderings in both hyphenated and joined formats across all extensions.</span>
+                                    </span>
+                                </label>
+                                <span id="wordPermCountBadge" class="self-start shrink-0 inline-flex items-center px-2 py-0.5 rounded-md bg-orange-50 dark:bg-orange-950/50 border border-orange-200/80 dark:border-orange-800/60 text-[11px] uppercase tracking-wider font-mono font-semibold tabular-nums text-orange-700 dark:text-orange-300 whitespace-nowrap leading-[1.4]">1 order · 1 variant</span>
+                            </div>
+
+                            <div id="wordPermOptionsWrap" class="space-y-2.5 pt-1">
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span id="uiWordPermSizeLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Word Count:</span>
+                                    <label for="wordPerm3Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
+                                        <input type="checkbox" id="wordPerm3Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
+                                        <span id="uiWordPerm3Label">3 Words</span>
+                                    </label>
+                                    <label for="wordPerm2Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
+                                        <input type="checkbox" id="wordPerm2Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
+                                        <span id="uiWordPerm2Label">2 Words</span>
+                                    </label>
+                                    <label for="wordPerm1Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
+                                        <input type="checkbox" id="wordPerm1Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
+                                        <span id="uiWordPerm1Label">1 Word</span>
+                                    </label>
+                                </div>
+
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span id="uiWordPermFormatLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Separator:</span>
+                                    <label for="wordPermDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
+                                        <input type="checkbox" id="wordPermDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
+                                        <span id="uiWordPermDashLabel">With Dash (-)</span>
+                                    </label>
+                                    <label for="wordPermNoDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
+                                        <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
+                                        <span id="uiWordPermNoDashLabel">No-Dash (Joined)</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hairline Section: Add Your Own Patterns -->
+                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
+                            <div class="flex items-center justify-between gap-2">
+                                <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-slate-800 dark:text-slate-200 leading-[1.45]">Add Your Own Patterns:</label>
+                                <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-2.5 py-1 text-[13px] font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-md transition-colors whitespace-nowrap shrink-0">
+                                    Clear Pattern
+                                </button>
+                            </div>
+                            <textarea id="formulaInput" rows="2" oninput="generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
+
+                            <div class="flex flex-wrap gap-1.5 sm:gap-2 items-center">
+                                <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mr-1 leading-[1.4]">Click to insert:</span>
+                                <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [primary]</button>
+                                <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [secondary]</button>
+                                <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [tertiary]</button>
+                                <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [dash]</button>
+                                <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [number]</button>
+                                <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [vowel]</button>
+                                <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [consonant]</button>
+                            </div>
+                            <p id="uiFormulaHint" class="text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 leading-[1.55]">
+                                Placeholders: <code>[primary]</code>, <code>[secondary]</code>, <code>[tertiary]</code>, <code>[vowel]</code>, <code>[consonant]</code>, <code>[number]</code>, <code>[dash]</code> (RFC 1035 Sanitized).
+                            </p>
+                        </div>
+                    </div>
+                </details>
+                <script>
+                    (function() {
+                        try {
+                            var advEl = document.getElementById('advancedOptionsDetails');
+                            var mq = window.matchMedia('(min-width: 768px)');
+                            if (advEl && mq.matches) advEl.setAttribute('open', '');
+                            if (advEl && mq.addEventListener) {
+                                mq.addEventListener('change', function(e) {
+                                    if (e.matches) advEl.setAttribute('open', '');
+                                });
+                            }
+                        } catch (e) {}
+                    })();
+                </script>
             </section>
 
             <!-- Column 2: Results Output & Analysis Table Card -->
-            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-5 min-w-0">
+            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 min-w-0">
                 <div class="space-y-1.5">
-                    <h2 id="uiSectionResTitle" class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.4] md:leading-[1.35]">
-                        Generated Domain Permutations
-                    </h2>
-                    <div id="statsBar" class="text-[12px] md:text-[13px] font-medium text-slate-600 dark:text-slate-400 tabular-nums leading-[1.45] md:leading-[1.5]">
-                        Total Domains Generated: 0
+                    <div class="flex items-start gap-3">
+                        <span aria-hidden="true" class="mt-0.5 w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                        </span>
+                        <div class="min-w-0">
+                            <h2 id="uiSectionResTitle" class="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">
+                                Generated Domain Permutations
+                            </h2>
+                            <div class="mt-1 flex items-center gap-2">
+                                <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0"></span>
+                                <div id="statsBar" class="text-[13px] md:text-[14px] font-semibold text-orange-700 dark:text-orange-300 tabular-nums leading-[1.45]">
+                                    Total Domains Generated: 0
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p id="truncationNotice" class="hidden text-[12px] md:text-[13px] font-medium text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/70 rounded-lg px-3 py-2 leading-[1.45] md:leading-[1.5]"></p>
+                    <p id="truncationNotice" class="hidden text-[13px] font-medium text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/70 rounded-lg px-3 py-2 leading-[1.5]"></p>
                 </div>
 
                 <!-- Raw Domain List Textarea (Shortest First) -->
                 <div>
                     <label id="uiOutputLabel" for="outputBox" class="sr-only">Generated Domain Permutation List</label>
-                    <textarea id="outputBox" readonly class="w-full h-56 sm:h-60 p-4 font-mono text-[12px] md:text-[13px] bg-slate-900 dark:bg-slate-950 text-emerald-400 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 resize-y leading-[1.5] md:leading-[1.6]" placeholder="Generated domains will appear here..."></textarea>
+                    <textarea id="outputBox" readonly class="w-full h-52 sm:h-60 p-3.5 sm:p-4 font-mono text-[13px] md:text-[13px] bg-slate-900 dark:bg-slate-950 text-emerald-400 border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 resize-y leading-[1.55] md:leading-[1.6]" placeholder="Generated domains will appear here..."></textarea>
+                </div>
+
+                <!-- Result Actions (Copy / Download / Bulk Check) -->
+                <div class="flex flex-wrap gap-2.5">
+                    <button type="button" onclick="copyToClipboard()" id="uiCopyBtn" class="min-h-[44px] flex-1 sm:flex-initial px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
+                        Copy List
+                    </button>
+                    <button type="button" onclick="downloadTxt()" id="uiDownloadBtn" class="min-h-[44px] flex-1 sm:flex-initial px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
+                        Download .txt
+                    </button>
+                    <a id="uiDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBulkCheckerLink(event)" class="min-h-[44px] w-full sm:w-auto sm:ml-auto inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap">
+                        Bulk Check DNSRobot
+                    </a>
                 </div>
 
                 <!-- Hairline Divider + Interactive Table with BL / WM / GG Shortcuts -->
-                <div id="domainAnalysisPanel" class="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+                <div id="domainAnalysisPanel" class="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div class="min-w-0">
                             <h3 id="uiAnalysisTitle" class="text-[16px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Quick Domain Backlink, Archive &amp; Index Inspector</h3>
-                            <p id="uiAnalysisSub" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400 mt-0.5 leading-[1.45] md:leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
+                            <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
                         </div>
                         <div class="sm:w-52 shrink-0">
                             <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
@@ -405,11 +457,11 @@
         <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto h-[100px] sm:h-[90px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
 
         <!-- Share & Export Link Section -->
-        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 space-y-4">
+        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                    <h2 id="uiShareTitle" class="text-[16px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4]">Share &amp; Export Link</h2>
-                    <p id="uiShareSub" class="text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 mt-0.5 leading-[1.45] md:leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
+                    <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4]">Share &amp; Export Link</h2>
+                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
                 </div>
                 <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-slate-50 dark:bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shrink-0">
                     <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
@@ -457,14 +509,20 @@
             <div class="space-y-8">
                 <div id="eduTopSections" class="space-y-8">
                     <article>
-                        <h2 class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-3 leading-[1.4] md:leading-[1.35]">Guide &amp; How to Use This Tool</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">1. Enter Keywords &amp; Extensions</h3>
+                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-4 leading-[1.35]">Guide &amp; How to Use This Tool</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">1. Enter Keywords &amp; Extensions</h3>
+                                </div>
                                 <p>Fill in Primary, Secondary, and Tertiary Keywords according to your niche or brand idea (e.g., calc, pro, app). Enter desired domain extensions separated by commas (e.g., .com, .io, .net).</p>
                             </div>
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">2. Build Pattern Formula &amp; RFC 1035</h3>
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">2. Build Pattern Formula &amp; RFC 1035</h3>
+                                </div>
                                 <p>Use placeholders like [primary], [secondary], [tertiary], [dash], [number], [vowel], and [consonant] with automatic RFC 1035 standard sanitization.</p>
                             </div>
                         </div>
@@ -473,15 +531,15 @@
 
                 <!-- Strategy & Best Practices (Static HTML) -->
                 <article id="keywordStrategySection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800">
-                    <h2 id="uiStratTitle" class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-4 leading-[1.4] md:leading-[1.35]">Keyword Strategy &amp; Domain Naming Best Practices</h2>
-                    <div class="space-y-2.5 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <h2 id="uiStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-4 leading-[1.35]">Keyword Strategy &amp; Domain Naming Best Practices</h2>
+                    <div class="space-y-3 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiStratKwTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Keyword Strategy</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <ul class="space-y-1.5 list-disc list-inside">
+                            <div class="px-4 pb-4 pt-0">
+                                <ul class="space-y-2 list-disc list-inside">
                                     <li id="uiStratKw1">Primary Keyword ([primary]): Core niche or main topic (e.g., calc, shop, travel). Must align with core business or audience intent.</li>
                                     <li id="uiStratKw2">Secondary Keyword ([secondary]): Modifier or descriptive category (e.g., pro, fast, hub). Helps expand brand context and variations.</li>
                                     <li id="uiStratKw3">Tertiary Keyword ([tertiary]): Format or platform suffix (e.g., app, go, io). Ideal for large-scale domain research.</li>
@@ -489,12 +547,12 @@
                             </div>
                         </details>
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiStratBpTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Domain Naming Best Practices</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <ul class="space-y-1.5 list-disc list-inside">
+                            <div class="px-4 pb-4 pt-0">
+                                <ul class="space-y-2 list-disc list-inside">
                                     <li id="uiStratBp1">Short &amp; Memorable: Limit character length for easy typing and pronunciation (ideally 12-15 characters).</li>
                                     <li id="uiStratBp2">Avoid Typos: Use natural combinations of vowels and consonants to prevent user confusion.</li>
                                     <li id="uiStratBp3">Consider Dashes: Using [dash] aids multi-word readability, but use sparingly.</li>
@@ -507,34 +565,34 @@
 
                 <!-- Extension Strategy (Static HTML) -->
                 <article id="extensionStrategySection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800">
-                    <h2 id="uiExtStratTitle" class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.4] md:leading-[1.35]">Domain Extension Strategy &amp; Google SERP Signals (Target Market &amp; Regional)</h2>
-                    <p id="uiExtStratIntro" class="text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-400 mb-4 leading-[1.5] md:leading-[1.6]">In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:</p>
-                    <div class="space-y-2.5 text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <h2 id="uiExtStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.35]">Domain Extension Strategy &amp; Google SERP Signals (Target Market &amp; Regional)</h2>
+                    <p id="uiExtStratIntro" class="text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 mb-4 leading-[1.6]">In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:</p>
+                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiExtGTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">gTLDs (.com, .net, .org)</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <p id="uiExtGDesc" class="text-[14px] md:text-[15px]">Global generic extensions with no specific regional bias. Ideal for cross-border international target markets or general authority websites.</p>
+                            <div class="px-4 pb-4 pt-0">
+                                <p id="uiExtGDesc" class="text-[15px] leading-[1.6]">Global generic extensions with no specific regional bias. Ideal for cross-border international target markets or general authority websites.</p>
                             </div>
                         </details>
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiExtLocTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Local ccTLDs (.us, .co.uk, .io)</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <p id="uiExtLocDesc" class="text-[14px] md:text-[15px]">Provide strong regional geotargeting signals to Google indicating the website targets local audiences. Great for boosting local SERP rankings.</p>
+                            <div class="px-4 pb-4 pt-0">
+                                <p id="uiExtLocDesc" class="text-[15px] leading-[1.6]">Provide strong regional geotargeting signals to Google indicating the website targets local audiences. Great for boosting local SERP rankings.</p>
                             </div>
                         </details>
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiExtNTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">nTLDs (.io, .app, .tech, .shop)</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <p id="uiExtNDesc" class="text-[14px] md:text-[15px]">Modern thematic extensions signaling specific intent (SaaS, e-commerce, developer tool). Treated equally to gTLDs in SERP signals.</p>
+                            <div class="px-4 pb-4 pt-0">
+                                <p id="uiExtNDesc" class="text-[15px] leading-[1.6]">Modern thematic extensions signaling specific intent (SaaS, e-commerce, developer tool). Treated equally to gTLDs in SERP signals.</p>
                             </div>
                         </details>
                     </div>
@@ -543,10 +601,10 @@
                 <!-- Domain Naming Risks & Google Penalty Warning (Static HTML) -->
                 <article id="domainRisksSection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
                     <div>
-                        <h2 id="uiRiskTitle" class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold text-red-700 dark:text-red-400 mb-1.5 leading-[1.4] md:leading-[1.35]">Domain Naming Risks &amp; Google Penalty Warning</h2>
-                        <p id="uiRiskIntro" class="text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">When researching and generating domain permutations (especially for bulk campaigns or expired/dropped domains), beware of fatal risks that can trigger algorithmic penalties:</p>
+                        <h2 id="uiRiskTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-red-700 dark:text-red-400 mb-1.5 leading-[1.35]">Domain Naming Risks &amp; Google Penalty Warning</h2>
+                        <p id="uiRiskIntro" class="text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">When researching and generating domain permutations (especially for bulk campaigns or expired/dropped domains), beware of fatal risks that can trigger algorithmic penalties:</p>
                     </div>
-                    <div class="space-y-2.5 text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-red-50/60 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60">
                             <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                 <span id="uiRiskEmdTitle" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300 leading-[1.45]">EMD (Exact Match Domain) Trap</span>
@@ -575,7 +633,7 @@
                             </div>
                         </details>
                     </div>
-                    <div class="space-y-2.5 text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
                             <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiTipsCheckTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">1. How to Check History &amp; Domain Risks</span>
@@ -619,18 +677,18 @@
                 </article>
 
                 <!-- Good vs Bad Domain Examples (Static HTML) -->
-                <article id="domainExamplesSection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 lg:grid-cols-2 gap-6 text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                <article id="domainExamplesSection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 lg:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                     <div class="space-y-3">
-                        <h2 id="uiBadExTitle" class="text-[16px] sm:text-[17px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4] md:leading-[1.35]">Examples of High-Risk / Poor Domain Names</h2>
-                        <div class="space-y-2.5">
+                        <h2 id="uiBadExTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.35]">Examples of High-Risk / Poor Domain Names</h2>
+                        <div class="space-y-3">
                             <details class="group rounded-lg bg-red-50/50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/60">
                                 <summary class="flex items-center justify-between gap-3 px-3.5 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                     <span id="uiBad1Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">1. Quality Risk (Keyword Stuffing &amp; EMD)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiBad1ExLabel">Example:</span> <code id="uiBad1Ex" class="font-mono">best-discount-leather-shoes-newyork.example</code></p>
-                                    <p id="uiBad1Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Excessive keyword stacking without distinct brand identity appears unnatural to search engines and users.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiBad1ExLabel">Example:</span> <code id="uiBad1Ex" class="font-mono break-all">best-discount-leather-shoes-newyork.example</code></p>
+                                    <p id="uiBad1Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Excessive keyword stacking without distinct brand identity appears unnatural to search engines and users.</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-red-50/50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/60">
@@ -638,9 +696,9 @@
                                     <span id="uiBad2Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">2. Hard to Find / Unmemorable</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiBad2ExLabel">Example:</span> <code id="uiBad2Ex" class="font-mono">b3st-onl1n3-calc-t00ls-2026.example</code></p>
-                                    <p id="uiBad2Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Confusing leet-speak numbers or excessive length lead to user typos and poor brand retention.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiBad2ExLabel">Example:</span> <code id="uiBad2Ex" class="font-mono break-all">b3st-onl1n3-calc-t00ls-2026.example</code></p>
+                                    <p id="uiBad2Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Confusing leet-speak numbers or excessive length lead to user typos and poor brand retention.</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-red-50/50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/60">
@@ -648,9 +706,9 @@
                                     <span id="uiBad3Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">3. Legal &amp; Trademark Violation Risk</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiBad3ExLabel">Example:</span> <code id="uiBad3Ex" class="font-mono">official-famousbrand-deals.example / popularbrand-outlet.example</code></p>
-                                    <p id="uiBad3Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Unauthorized use of registered trademarks. High risk of cease-and-desist, lawsuits, or domain dispute (UDRP).</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiBad3ExLabel">Example:</span> <code id="uiBad3Ex" class="font-mono break-all">official-famousbrand-deals.example / popularbrand-outlet.example</code></p>
+                                    <p id="uiBad3Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Unauthorized use of registered trademarks. High risk of cease-and-desist, lawsuits, or domain dispute (UDRP).</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-red-50/50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/60">
@@ -658,25 +716,25 @@
                                     <span id="uiBad4Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">4. Low CTR / Untrustworthy Appearance</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiBad4ExLabel">Example:</span> <code id="uiBad4Ex" class="font-mono">fast-bonus-portal-99.example / quick-files-hub.example</code></p>
-                                    <p id="uiBad4Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Generic promotional wording or low-trust naming patterns tend to earn lower click-through rates in search results.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiBad4ExLabel">Example:</span> <code id="uiBad4Ex" class="font-mono break-all">fast-bonus-portal-99.example / quick-files-hub.example</code></p>
+                                    <p id="uiBad4Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Generic promotional wording or low-trust naming patterns tend to earn lower click-through rates in search results.</p>
                                 </div>
                             </details>
                         </div>
                     </div>
 
                     <div class="space-y-3">
-                        <h2 id="uiGoodExTitle" class="text-[16px] sm:text-[17px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4] md:leading-[1.35]">Examples of Good, Legal, &amp; Safe Domain Names</h2>
-                        <div class="space-y-2.5">
+                        <h2 id="uiGoodExTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.35]">Examples of Good, Legal, &amp; Safe Domain Names</h2>
+                        <div class="space-y-3">
                             <details class="group rounded-lg bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-200 dark:border-emerald-900/60">
                                 <summary class="flex items-center justify-between gap-3 px-3.5 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600">
                                     <span id="uiGood1Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">1. Brandable &amp; Memorable</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiGood1ExLabel">Example:</span> <code id="uiGood1Ex" class="font-mono">calcly.com, shopiva.io, finit.app</code></p>
-                                    <p id="uiGood1Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Short, unique, easy to spell, trademark-free, with strong long-term brand equity.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiGood1ExLabel">Example:</span> <code id="uiGood1Ex" class="font-mono break-words">calcly.com, shopiva.io, finit.app</code></p>
+                                    <p id="uiGood1Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Short, unique, easy to spell, trademark-free, with strong long-term brand equity.</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-200 dark:border-emerald-900/60">
@@ -684,9 +742,9 @@
                                     <span id="uiGood2Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">2. Geo-Marketing &amp; Local Trust</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiGood2ExLabel">Example:</span> <code id="uiGood2Ex" class="font-mono">solusicalc.co.uk, coffeehouse.us, devhub.io</code></p>
-                                    <p id="uiGood2Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Combines brand/function with local target extensions, providing strong regional relevance signals in local SERPs.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiGood2ExLabel">Example:</span> <code id="uiGood2Ex" class="font-mono break-words">solusicalc.co.uk, coffeehouse.us, devhub.io</code></p>
+                                    <p id="uiGood2Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Combines brand/function with local target extensions, providing strong regional relevance signals in local SERPs.</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-200 dark:border-emerald-900/60">
@@ -694,9 +752,9 @@
                                     <span id="uiGood3Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">3. Safe Partial Match Domain (PMD)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiGood3ExLabel">Example:</span> <code id="uiGood3Ex" class="font-mono">calcpro.com, fixshop.net, travelhub.io</code></p>
-                                    <p id="uiGood3Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Contains relevant keywords combined with modifiers or short brand names, avoiding EMD penalties.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiGood3ExLabel">Example:</span> <code id="uiGood3Ex" class="font-mono break-words">calcpro.com, fixshop.net, travelhub.io</code></p>
+                                    <p id="uiGood3Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Contains relevant keywords combined with modifiers or short brand names, avoiding EMD penalties.</p>
                                 </div>
                             </details>
                             <details class="group rounded-lg bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-200 dark:border-emerald-900/60">
@@ -704,9 +762,9 @@
                                     <span id="uiGood4Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">4. Legally Safe &amp; High Trust (High CTR)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-3.5 pt-0 space-y-1">
-                                    <p><span id="uiGood4ExLabel">Example:</span> <code id="uiGood4Ex" class="font-mono">gadgetfix.com, fintechku.io, payfast.io</code></p>
-                                    <p id="uiGood4Reason" class="text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">Trademark-free, utilizes trusted extensions (.com / .io), and builds instant user trust in SERP.</p>
+                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                    <p><span id="uiGood4ExLabel">Example:</span> <code id="uiGood4Ex" class="font-mono break-words">gadgetfix.com, fintechku.io, payfast.io</code></p>
+                                    <p id="uiGood4Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Trademark-free, utilizes trusted extensions (.com / .io), and builds instant user trust in SERP.</p>
                                 </div>
                             </details>
                         </div>
@@ -721,10 +779,13 @@
         <!-- Accordion FAQ Section (Static HTML) -->
         <section id="faqSection" data-rendered-lang="en" aria-labelledby="uiFaqTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-8">
             <div class="pb-4 mb-2 border-b border-slate-200 dark:border-slate-800">
-                <h2 id="uiFaqTitle" class="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35] [text-wrap:balance]">
-                    Frequently Asked Questions
-                </h2>
-                <p id="uiFaqSub" class="text-[14px] md:text-[15px] text-slate-500 dark:text-slate-400 mt-1.5 leading-[1.5] md:leading-[1.6]">
+                <div class="flex items-center gap-2.5">
+                    <span aria-hidden="true" class="inline-flex items-center px-2 py-0.5 rounded-md bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/70 text-[11px] font-mono font-bold uppercase tracking-wider text-orange-700 dark:text-orange-300">FAQ</span>
+                    <h2 id="uiFaqTitle" class="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35] [text-wrap:balance]">
+                        Frequently Asked Questions
+                    </h2>
+                </div>
+                <p id="uiFaqSub" class="text-[15px] text-slate-600 dark:text-slate-300 mt-1.5 leading-[1.6]">
                     Technical and practical answers for domainers, SEO specialists, startup founders, and developers.
                 </p>
             </div>
@@ -736,7 +797,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA0">A Domain Permutation Generator is a specialized tool built to help researchers, developers, startup founders, and domain investors instantly generate hundreds of unique, brandable domain name combinations. By inputting up to three keywords (Primary, Secondary, and Tertiary), the engine runs a recursive combinatorial algorithm to produce full 3-word permutations, 2-word subsets, and 1-word variants in both hyphenated (-) and joined (no-dash) formats.</p>
                     </div>
                 </details>
@@ -747,7 +808,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA1">Yes. Every domain generated on domainname.web.id undergoes strict RFC 1035 validation and sanitization. All domain labels are normalized to lowercase letters (a-z), digits (0-9), and internal hyphens (-), with no leading or trailing hyphens, a maximum of 63 characters per DNS label, and an overall hostname length under 253 characters.</p>
                     </div>
                 </details>
@@ -758,7 +819,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA2">Short, punchy domains are significantly more valuable for branding, SEO memorability, and direct-navigation traffic. By default, the generator ranks all valid results from shortest character length to longest (capped at the top 200 domains) so you immediately spot the cleanest, most premium candidates at the top of the list.</p>
                     </div>
                 </details>
@@ -769,7 +830,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA3">The custom pattern box lets advanced users craft tailored naming formulas using placeholders such as [primary], [secondary], [tertiary], [vowel], [consonant], [number], and [dash]. Click the quick-insert tags below the input to assemble your formula and expand it into targeted variations.</p>
                     </div>
                 </details>
@@ -780,7 +841,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA4">Absolutely. Next to every domain in the analysis table, secure external shortcut buttons let you inspect historical snapshots on the Wayback Machine (WM), analyze backlink profiles on Ahrefs (BL), or check Google Search indexing via site: (GG) — all protected with target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;.</p>
                     </div>
                 </details>
@@ -791,7 +852,7 @@
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                     </summary>
-                    <div class="pb-4 pr-6 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
+                    <div class="pb-4 pr-2 sm:pr-6 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <p id="uiFaqA5">Switching between the 8 supported languages automatically suggests popular regional TLDs (such as .com, .io, .net for English or .id, .my.id, .web.id for Indonesian) and adapts the share buttons to your region. All permutation processing runs 100% locally in your browser without tracking cookies.</p>
                     </div>
                 </details>
@@ -799,7 +860,7 @@
         </section>
 
         <!-- Semantic Context Micro-Copy (Crawlable & Clean) -->
-        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[13px] md:text-[14px] text-slate-600 dark:text-slate-400 leading-[1.5] md:leading-[1.6] pt-2">
+        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6] pt-2">
             <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
                 <h2 id="uiSectionAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.4]">Domain Indexing &amp; Validation Context</h2>
                 <p id="aiCrawlerMicroCopy">This domain research page dynamically generates domain name combination matrices for primary keyword "domain", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.</p>
@@ -2407,6 +2468,7 @@
         const uiExtraDict = {
             en: {
                 navGen: 'Generator', navResults: 'Results', navGuide: 'Guide', navFaq: 'FAQ',
+                advOptionsLabel: 'More Keywords, Word Order & Custom Patterns',
                 thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thInspect: 'Inspect',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archive', ggTitle: 'Google Index (site:)',
                 truncNoticeTpl: 'Showing top {shown} shortest domains out of {total} generated to protect browser & script performance.',
@@ -2430,6 +2492,7 @@
             },
             id: {
                 navGen: 'Generator', navResults: 'Hasil', navGuide: 'Panduan', navFaq: 'FAQ',
+                advOptionsLabel: 'Kata Kunci Tambahan, Urutan & Pola Kustom',
                 thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thInspect: 'Cek',
                 blTitle: 'Cek Backlink Ahrefs', wmTitle: 'Arsip Wayback Machine', ggTitle: 'Indeks Google (site:)',
                 truncNoticeTpl: 'Menampilkan {shown} domain terpendek teratas dari total {total} hasil untuk menjaga kecepatan aplikasi.',
@@ -2453,6 +2516,7 @@
             },
             es: {
                 navGen: 'Generador', navResults: 'Resultados', navGuide: 'Guía', navFaq: 'FAQ',
+                advOptionsLabel: 'Más Palabras Clave, Orden y Patrones',
                 thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thInspect: 'Inspección',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Mostrando los {shown} dominios más cortos de {total} generados para mantener el rendimiento.',
@@ -2476,6 +2540,7 @@
             },
             pt: {
                 navGen: 'Gerador', navResults: 'Resultados', navGuide: 'Guia', navFaq: 'FAQ',
+                advOptionsLabel: 'Mais Palavras-chave, Ordem e Padrões',
                 thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thInspect: 'Analisar',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Arquivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Exibindo os {shown} domínios mais curtos de {total} gerados para preservar o desempenho.',
@@ -2499,6 +2564,7 @@
             },
             fr: {
                 navGen: 'Générateur', navResults: 'Résultats', navGuide: 'Guide', navFaq: 'FAQ',
+                advOptionsLabel: 'Mots-clés, Ordre et Modèles Personnalisés',
                 thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thInspect: 'Analyser',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archives Wayback Machine', ggTitle: 'Index Google (site:)',
                 truncNoticeTpl: 'Affichage des {shown} domaines les plus courts sur {total} générés pour optimiser la réactivité.',
@@ -2522,6 +2588,7 @@
             },
             de: {
                 navGen: 'Generator', navResults: 'Ergebnisse', navGuide: 'Leitfaden', navFaq: 'FAQ',
+                advOptionsLabel: 'Weitere Keywords, Wortfolge & Muster',
                 thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thInspect: 'Prüfen',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archiv', ggTitle: 'Google-Index (site:)',
                 truncNoticeTpl: 'Es werden die {shown} kürzesten Domains von insgesamt {total} Ergebnissen angezeigt.',
@@ -2545,6 +2612,7 @@
             },
             ru: {
                 navGen: 'Генератор', navResults: 'Результаты', navGuide: 'Руководство', navFaq: 'FAQ',
+                advOptionsLabel: 'Доп. слова, порядок и свои шаблоны',
                 thNum: '#', thDomain: 'Домен', thChars: 'Длина', thInspect: 'Проверка',
                 blTitle: 'Проверка обратных ссылок Ahrefs', wmTitle: 'Архив Wayback Machine', ggTitle: 'Индекс Google (site:)',
                 truncNoticeTpl: 'Показаны {shown} самых коротких доменов из {total} сгенерированных для высокой скорости работы.',
@@ -2568,6 +2636,7 @@
             },
             ja: {
                 navGen: 'ジェネレータ', navResults: '結果一覧', navGuide: 'ガイド', navFaq: 'FAQ',
+                advOptionsLabel: '追加キーワード・語順・独自パターン',
                 thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thInspect: '調査',
                 blTitle: 'Ahrefs バックリンク確認', wmTitle: 'Wayback Machine 履歴', ggTitle: 'Google インデックス (site:)',
                 truncNoticeTpl: 'パフォーマンス維持のため、生成された {total} 件のうち文字数が短い上位 {shown} 件を表示しています。',
@@ -3365,6 +3434,8 @@
             document.getElementById('btnVowel').innerText = t.btnVowelText;
             document.getElementById('btnCons').innerText = t.btnConsText;
             document.getElementById('uiGenBtn').innerText = t.genBtn;
+            const advOptionsLabelEl = document.getElementById('uiAdvOptionsLabel');
+            if (advOptionsLabelEl && t.advOptionsLabel) advOptionsLabelEl.innerText = t.advOptionsLabel;
             document.getElementById('uiCopyBtn').innerText = t.copyBtn;
             document.getElementById('uiDownloadBtn').innerText = t.downloadBtn;
             document.getElementById('uiDnsBtn').innerText = t.dnsBtn;
@@ -3493,24 +3564,36 @@
             topContainer.innerHTML = `
                     <!-- Guide / User Instructions -->
                     <article>
-                        <h2 class="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white mb-4 leading-[1.4] md:leading-[1.35]">
+                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white mb-4 leading-[1.35]">
                             ${s(t.guideTitle)}
                         </h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[14px] md:text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]">
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">${s(t.guide1Title)}</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide1Title)}</h3>
+                                </div>
                                 <p>${escapeHtmlText(t.guide1Text)}</p>
                             </div>
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">${s(t.guide2Title)}</h3>
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide2Title)}</h3>
+                                </div>
                                 <p>${escapeHtmlText(t.guide2Text)}</p>
                             </div>
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">${s(t.guide3Title)}</h3>
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide3Title)}</h3>
+                                </div>
                                 <p>${escapeHtmlText(t.guide3Text)}</p>
                             </div>
-                            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                                <h3 class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white mb-1 leading-[1.45]">${s(t.guide4Title)}</h3>
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                                <div class="flex items-center gap-2">
+                                    <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                                    <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide4Title)}</h3>
+                                </div>
                                 <p>${escapeHtmlText(t.guide4Text)}</p>
                             </div>
                         </div>
