@@ -1308,11 +1308,12 @@
             if (!code) return;
             link.setAttribute('href', localizeInternalHref(currentPage, code));
             link.setAttribute('hreflang', code);
+            link.setAttribute('lang', code);
             if (code === lang) {
-                link.className = 'px-2 py-1 rounded border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold';
+                link.className = 'px-2.5 py-1.5 text-xs rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold transition-colors';
                 link.setAttribute('aria-current', 'page');
             } else {
-                link.className = 'px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900';
+                link.className = 'px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors';
                 link.removeAttribute('aria-current');
             }
         });

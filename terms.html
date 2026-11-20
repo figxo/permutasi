@@ -83,9 +83,13 @@
     <!-- Sticky Header -->
     <header class="sticky top-0 z-40 h-16 bg-white/95 dark:bg-slate-950/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
         <div class="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-            <a href="/index.html" class="flex items-center gap-2.5 min-w-0 shrink-0 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 rounded-md">
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 text-white font-mono text-xs font-bold shrink-0">DN</span>
-                <span class="text-sm sm:text-base font-bold tracking-tight text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Domain Name</span>
+            <a href="/index.html" id="brandHomeLink" class="inline-flex items-center gap-2.5 text-slate-900 dark:text-white font-bold tracking-tight text-base sm:text-lg whitespace-nowrap shrink-0 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                <svg aria-hidden="true" class="w-6 h-6 text-blue-600 dark:text-blue-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M3.6 9h16.8M3.6 15h16.8"></path>
+                    <path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path>
+                </svg>
+                <span id="uiBrandWordmark">Domain Name</span>
             </a>
 
             <nav aria-label="Primary Navigation" class="hidden md:flex items-center gap-5 text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -98,17 +102,19 @@
             </nav>
 
             <div class="flex items-center gap-2 shrink-0">
-                <label for="langSelect" class="sr-only">Language</label>
-                <select id="langSelect" onchange="changeTrustLanguage(this.value)" class="min-h-[40px] bg-white dark:bg-slate-900 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer">
-                    <option value="en" selected>EN</option>
-                    <option value="id">ID</option>
-                    <option value="es">ES</option>
-                    <option value="pt">PT</option>
-                    <option value="fr">FR</option>
-                    <option value="de">DE</option>
-                    <option value="ru">RU</option>
-                    <option value="ja">JA</option>
-                </select>
+                <nav aria-label="Language Selector" class="flex items-center">
+                    <label for="langSelect" class="sr-only">Language</label>
+                    <select id="langSelect" onchange="changeTrustLanguage(this.value)" class="min-h-[40px] bg-white dark:bg-slate-900 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 px-2.5 sm:px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer">
+                        <option value="en" selected>English (EN)</option>
+                        <option value="id">Indonesia (ID)</option>
+                        <option value="es">Español (ES)</option>
+                        <option value="pt">Português (PT)</option>
+                        <option value="fr">Français (FR)</option>
+                        <option value="de">Deutsch (DE)</option>
+                        <option value="ru">Русский (RU)</option>
+                        <option value="ja">日本語 (JA)</option>
+                    </select>
+                </nav>
                 <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" class="inline-flex items-center justify-center min-h-[40px] min-w-[40px] rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                     <svg aria-hidden="true" class="hidden dark:block w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2m-15.07 7.07 1.41-1.41m11.32-11.32 1.41-1.41"></path></svg>
                     <svg aria-hidden="true" class="block dark:hidden w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
@@ -206,18 +212,18 @@
                     <p id="footerSlogan" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">Domain Ideas Permutation Generator • RFC 1035 Compliant</p>
                     <p class="text-[11px] font-mono text-slate-500">domainname.web.id</p>
                 </div>
-                <div class="md:col-span-5 space-y-2">
+                <div class="md:col-span-5 space-y-2.5">
                     <h3 id="footerEditionsTitle" class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Editions</h3>
-                    <div class="flex flex-wrap gap-2 text-xs">
-                        <a href="/terms.html" data-trust-edition="en" hreflang="en" aria-current="page" class="px-2 py-1 rounded border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold">EN</a>
-                        <a href="/id/terms.html" data-trust-edition="id" hreflang="id" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">ID</a>
-                        <a href="/es/terms.html" data-trust-edition="es" hreflang="es" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">ES</a>
-                        <a href="/pt/terms.html" data-trust-edition="pt" hreflang="pt" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">PT</a>
-                        <a href="/fr/terms.html" data-trust-edition="fr" hreflang="fr" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">FR</a>
-                        <a href="/de/terms.html" data-trust-edition="de" hreflang="de" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">DE</a>
-                        <a href="/ru/terms.html" data-trust-edition="ru" hreflang="ru" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">RU</a>
-                        <a href="/ja/terms.html" data-trust-edition="ja" hreflang="ja" class="px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900">JA</a>
-                    </div>
+                    <nav id="footerEditionsNav" aria-label="Multilingual Editions" class="flex flex-wrap gap-2">
+                        <a href="/terms.html" data-trust-edition="en" hreflang="en" lang="en" aria-current="page" class="px-2.5 py-1.5 text-xs rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold transition-colors">English (EN)</a>
+                        <a href="/id/terms.html" data-trust-edition="id" hreflang="id" lang="id" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Indonesia (ID)</a>
+                        <a href="/es/terms.html" data-trust-edition="es" hreflang="es" lang="es" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Español (ES)</a>
+                        <a href="/pt/terms.html" data-trust-edition="pt" hreflang="pt" lang="pt" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Português (PT)</a>
+                        <a href="/fr/terms.html" data-trust-edition="fr" hreflang="fr" lang="fr" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Français (FR)</a>
+                        <a href="/de/terms.html" data-trust-edition="de" hreflang="de" lang="de" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Deutsch (DE)</a>
+                        <a href="/ru/terms.html" data-trust-edition="ru" hreflang="ru" lang="ru" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Русский (RU)</a>
+                        <a href="/ja/terms.html" data-trust-edition="ja" hreflang="ja" lang="ja" class="px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">日本語 (JA)</a>
+                    </nav>
                 </div>
                 <div class="md:col-span-3 space-y-2">
                     <h3 id="footerLegalTitle" class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Information &amp; Legal</h3>

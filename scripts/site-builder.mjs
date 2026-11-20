@@ -457,10 +457,10 @@ function localizeTrustPageHtml(rawHtml, pageFile, lang, config) {
     (_m, href, code) => {
       const isCurrent = code === lang;
       const cls = isCurrent
-        ? 'px-2 py-1 rounded border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold'
-        : 'px-2 py-1 rounded border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900';
+        ? 'px-2.5 py-1.5 text-xs rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold transition-colors'
+        : 'px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors';
       const ariaAttr = isCurrent ? ' aria-current="page"' : '';
-      return `<a href="${escapeHtmlAttr(href)}" data-trust-edition="${escapeHtmlAttr(code)}" hreflang="${escapeHtmlAttr(code)}"${ariaAttr} class="${cls}">`;
+      return `<a href="${escapeHtmlAttr(href)}" data-trust-edition="${escapeHtmlAttr(code)}" hreflang="${escapeHtmlAttr(code)}" lang="${escapeHtmlAttr(code)}"${ariaAttr} class="${cls}">`;
     }
   );
 
@@ -576,6 +576,18 @@ function localizeIndexHtml(rawHtml, lang, config) {
   html = html.replace(
     /<script type="application\/ld\+json" id="schemaJsonLd">[\s\S]*?<\/script>/i,
     `<script type="application/ld+json" id="schemaJsonLd">\n    ${safeSchema}\n    </script>`
+  );
+
+  html = html.replace(
+    /<a\s+href="([^"]*)"\s+hreflang="([a-z-]+)"\s+lang="([a-z-]+)"\s+data-footer-lang="([a-z-]+)"\s+onclick="([^"]*)"[^>]*>/gi,
+    (_m, href, _hl, _l, code, onclickVal) => {
+      const isCurrent = code === lang;
+      const cls = isCurrent
+        ? 'px-2.5 py-1.5 text-xs rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold transition-colors'
+        : 'px-2.5 py-1.5 text-xs rounded-md border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors';
+      const ariaAttr = isCurrent ? ' aria-current="page"' : '';
+      return `<a href="${escapeHtmlAttr(href)}" hreflang="${escapeHtmlAttr(code)}" lang="${escapeHtmlAttr(code)}" data-footer-lang="${escapeHtmlAttr(code)}" onclick="${escapeHtmlAttr(onclickVal)}"${ariaAttr} class="${cls}">`;
+    }
   );
 
   html = updateSelectedLangOption(html, lang);
