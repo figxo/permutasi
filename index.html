@@ -224,10 +224,10 @@
                 </span>
             </div>
             <h1 id="uiHeaderTitle" class="text-[21px] sm:text-[25px] md:text-[28px] lg:text-[32px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.25] [text-wrap:balance]">
-                "domain" Domain Permutation Generator &amp; Bulk Checker
+                "domain" Domain Name Generator
             </h1>
             <p id="uiHeaderSub" class="text-[15px] md:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.55] md:leading-[1.6] max-w-2xl">
-                Instantly generate domain name combination ideas for research and domain portfolios.
+                Combine your keywords to find short, ready-to-use domain ideas in seconds.
             </p>
         </section>
 
@@ -241,7 +241,7 @@
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
                     </span>
                     <h2 id="uiSectionGenTitle" class="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">
-                        Keyword &amp; Domain Permutation Formula Configuration
+                        Create Domain Ideas
                     </h2>
                 </div>
 
@@ -249,18 +249,18 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                     <div>
                         <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Primary Keyword:</label>
-                        <input type="text" id="keywordInput" value="domain" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
+                        <input type="text" id="keywordInput" value="domain" oninput="updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
                     </div>
                     <div>
-                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Domain Extensions (comma separated):</label>
-                        <input type="text" id="extInput" value=".com, .net, .io, .org" oninput="generateDomains()" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
+                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Extensions (e.g. .com, .io):</label>
+                        <input type="text" id="extInput" value=".com, .net, .io, .org" oninput="generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
                     </div>
                 </div>
 
                 <!-- Primary Touch-Friendly Action Button (Directly Visible Above-the-Fold) -->
                 <div>
-                    <button type="button" onclick="generateDomains()" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-                        Generate Permutations
+                    <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                        Generate Domain Names
                     </button>
                 </div>
 
@@ -269,7 +269,7 @@
                     <summary class="md:hidden flex items-center justify-between gap-3 px-3.5 py-2.5 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                         <span class="inline-flex items-center gap-2 min-w-0">
                             <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-                            <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-slate-800 dark:text-slate-100 leading-[1.4]">More Keywords, Word Order &amp; Custom Patterns</span>
+                            <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-slate-800 dark:text-slate-100 leading-[1.4]">More Keywords &amp; Custom Options</span>
                         </span>
                         <svg aria-hidden="true" class="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </summary>
@@ -287,46 +287,50 @@
                             </div>
                         </div>
 
-                        <!-- Hairline Section: Full Word-Order Permutations -->
-                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                                <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none">
-                                    <input type="checkbox" id="fullWordPermCheckbox" checked onchange="generateDomains()" class="mt-1 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
-                                    <span>
-                                        <span id="uiWordPermLabel" class="block text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Full Word-Order Permutations (Dash &amp; No-Dash)</span>
-                                        <span id="uiWordPermDesc" class="block text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.55]">Automatically generates all 3-word, 2-word subset, and single-keyword orderings in both hyphenated and joined formats across all extensions.</span>
-                                    </span>
-                                </label>
-                                <span id="wordPermCountBadge" class="self-start shrink-0 inline-flex items-center px-2 py-0.5 rounded-md bg-orange-50 dark:bg-orange-950/50 border border-orange-200/80 dark:border-orange-800/60 text-[11px] uppercase tracking-wider font-mono font-semibold tabular-nums text-orange-700 dark:text-orange-300 whitespace-nowrap leading-[1.4]">1 order · 1 variant</span>
+                        <!-- Hairline Section: Word Order & Separator -->
+                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3.5">
+                            <div class="space-y-1.5">
+                                <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+                                    <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none min-h-[28px]">
+                                        <input type="checkbox" id="fullWordPermCheckbox" checked onchange="generateDomains()" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.4]">Mix Keyword Order</span>
+                                    </label>
+                                    <span id="wordPermCountBadge" class="inline-flex items-center text-[12px] font-medium tabular-nums text-orange-700 dark:text-orange-300 whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
+                                </div>
+                                <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
                             </div>
 
-                            <div id="wordPermOptionsWrap" class="space-y-2.5 pt-1">
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <span id="uiWordPermSizeLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Word Count:</span>
-                                    <label for="wordPerm3Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                        <input type="checkbox" id="wordPerm3Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                        <span id="uiWordPerm3Label">3 Words</span>
-                                    </label>
-                                    <label for="wordPerm2Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                        <input type="checkbox" id="wordPerm2Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                        <span id="uiWordPerm2Label">2 Words</span>
-                                    </label>
-                                    <label for="wordPerm1Checkbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                        <input type="checkbox" id="wordPerm1Checkbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                        <span id="uiWordPerm1Label">1 Word</span>
-                                    </label>
+                            <div id="wordPermOptionsWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                                <div class="space-y-1.5">
+                                    <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Word Count</span>
+                                    <div class="grid grid-cols-3 gap-2">
+                                        <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm1Checkbox" checked onchange="generateDomains()" aria-label="1 word" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                            <span id="uiWordPerm1Label">1</span>
+                                        </label>
+                                        <label for="wordPerm2Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm2Checkbox" checked onchange="generateDomains()" aria-label="2 words" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                            <span id="uiWordPerm2Label">2</span>
+                                        </label>
+                                        <label for="wordPerm3Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm3Checkbox" onchange="generateDomains()" aria-label="3 words" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                            <span id="uiWordPerm3Label">3</span>
+                                        </label>
+                                    </div>
                                 </div>
 
-                                <div class="flex flex-wrap items-center gap-2">
-                                    <span id="uiWordPermFormatLabel" class="text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-400 mr-1 leading-[1.4]">Separator:</span>
-                                    <label for="wordPermDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                        <input type="checkbox" id="wordPermDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                        <span id="uiWordPermDashLabel">With Dash (-)</span>
-                                    </label>
-                                    <label for="wordPermNoDashCheckbox" class="inline-flex items-center gap-1.5 min-h-[36px] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap">
-                                        <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="generateDomains()" class="rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer">
-                                        <span id="uiWordPermNoDashLabel">No-Dash (Joined)</span>
-                                    </label>
+                                <div class="space-y-1.5">
+                                    <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Separator</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPermDashCheckbox" onchange="generateDomains()" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                            <span id="uiWordPermDashLabel">With Dash (-)</span>
+                                        </label>
+                                        <label for="wordPermNoDashCheckbox" class="flex-1 min-w-[110px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="generateDomains()" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                            <span id="uiWordPermNoDashLabel">No Dash</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -374,7 +378,7 @@
             </section>
 
             <!-- Column 2: Results Output & Analysis Table Card -->
-            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 min-w-0">
+            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="scroll-mt-16 md:scroll-mt-20 lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 min-w-0">
                 <div class="space-y-1.5">
                     <div class="flex items-start gap-3">
                         <span aria-hidden="true" class="mt-0.5 w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
@@ -968,9 +972,9 @@
                     'Dukungan antarmuka multibahasa & riset ide nama domain'
                 ],
                 aiCrawlerSnippet: 'Halaman riset domain ini menghasilkan matriks kombinasi nama domain secara dinamis untuk keyword utama "{kw}", membantu pemasar digital dan pengembang menemukan domain berkualitas tinggi dengan validasi RFC 1035.',
-                headerTitle: 'Domain Permutation & Bulk Checker',
-                headerTitleTpl: 'Generator Permutasi Domain "{kw}" & Bulk Checker',
-                sectionGenTitle: 'Konfigurasi Keyword & Formula Permutasi Domain',
+                headerTitle: 'Generator Ide Nama Domain',
+                headerTitleTpl: 'Generator Ide Nama Domain "{kw}"',
+                sectionGenTitle: 'Buat Ide Nama Domain',
                 sectionResTitle: 'Hasil Permutasi Domain',
                 sectionAiTitle: '🤖 Konteks AI Search Engine & Indexing Domain',
                 bottomAiTitle: 'Ringkasan Formula Domain Name',
@@ -999,21 +1003,21 @@
                 footerLangNavAria: 'Edisi Bahasa',
                 footerLangLabel: '🌐 Edisi Bahasa:',
                 footerLeft: 'Generator Permutasi Ide Domain • Standar RFC 1035',
-                headerSub: 'Buat ide kombinasi nama domain secara instan untuk riset dan portofolio domain.',
+                headerSub: 'Gabungkan kata kunci untuk menemukan ide nama domain yang singkat dan siap pakai dalam hitungan detik.',
                 keyword1Label: 'Keyword Utama:',
                 keyword2Label: 'Keyword Sekunder:',
                 keyword3Label: 'Keyword Tersier:',
-                extLabel: 'Ekstensi Domain (pisahkan koma):',
-                wordPermLabel: '🔀 Permutasi Urutan Kata Penuh (Dash & Tanpa Dash)',
-                wordPermDesc: 'Otomatis menghasilkan semua variasi urutan 3 kata, kombinasi pasangan subset 2 kata, serta varian 1 keyword tunggal (mis. domain-name-buy, domain-buy, domain) dalam format dash maupun digabung langsung (no-dash) di seluruh ekstensi.',
-                wordPermBadgeTpl: '{orders} urutan • {variants} variasi',
-                wordPermSizeLabel: 'Kombinasi Kata:',
-                wordPerm3Label: '3 Kata',
-                wordPerm2Label: '2 Kata',
-                wordPerm1Label: '1 Kata',
-                wordPermFormatLabel: 'Format Pemisah:',
-                wordPermDashLabel: 'Dengan Dash (-)',
-                wordPermNoDashLabel: 'Tanpa Dash (Gabung)',
+                extLabel: 'Ekstensi Domain (mis. .com, .id):',
+                wordPermLabel: 'Acak Urutan Kata Kunci',
+                wordPermDesc: 'Otomatis acak urutan kata kunci untuk variasi nama lebih banyak.',
+                wordPermBadgeTpl: 'Susunan: {orders} · Variasi: {variants}',
+                wordPermSizeLabel: 'Jumlah Kata',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Pemisah',
+                wordPermDashLabel: 'Pakai Dash (-)',
+                wordPermNoDashLabel: 'Tanpa Dash',
                 formulaLabel: 'Tambahkan Pola Anda Sendiri:',
                 clearBtn: '🗑️ Hapus Pola',
                 clickToAdd: 'Klik untuk tambah:',
@@ -1025,7 +1029,7 @@
                 btnNumText: '+ [angka]',
                 btnVowelText: '+ [vokal]',
                 btnConsText: '+ [konsonan]',
-                genBtn: 'Generate Permutasi',
+                genBtn: 'Buat Nama Domain',
                 copyBtn: 'Copy Markdown / Text',
                 downloadBtn: 'Download .txt',
                 dnsBtn: 'Cek Massal di DNSRobot 🚀',
@@ -1157,9 +1161,9 @@
                     'Multilingual interface and domain name research support'
                 ],
                 aiCrawlerSnippet: 'This domain research page dynamically generates domain name combination matrices for primary keyword "{kw}", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.',
-                headerTitle: 'Domain Permutation & Bulk Checker',
-                headerTitleTpl: '"{kw}" Domain Permutation Generator & Bulk Checker',
-                sectionGenTitle: 'Keyword & Domain Permutation Formula Configuration',
+                headerTitle: 'Domain Name Generator',
+                headerTitleTpl: '"{kw}" Domain Name Generator',
+                sectionGenTitle: 'Create Domain Ideas',
                 sectionResTitle: 'Generated Domain Permutations',
                 sectionAiTitle: '🤖 AI Search Engine & Domain Indexing Context',
                 bottomAiTitle: 'Domain Name Formula Summary',
@@ -1188,21 +1192,21 @@
                 footerLangNavAria: 'Multilingual Editions',
                 footerLangLabel: '🌐 Editions:',
                 footerLeft: 'Domain Ideas Permutation Generator • RFC 1035 Compliant',
-                headerSub: 'Instantly generate domain name combination ideas for research and domain portfolios.',
+                headerSub: 'Combine your keywords to find short, ready-to-use domain ideas in seconds.',
                 keyword1Label: 'Primary Keyword:',
                 keyword2Label: 'Secondary Keyword:',
                 keyword3Label: 'Tertiary Keyword:',
-                extLabel: 'Domain Extensions (comma separated):',
-                wordPermLabel: '🔀 Full Word-Order Permutations (Dash & No-Dash)',
-                wordPermDesc: 'Automatically generates all 3-word, 2-word subset, and single-keyword orderings in both hyphenated (domain-name-buy, domain-buy) and joined (domainnamebuy, domainbuy, domain) formats across all extensions.',
-                wordPermBadgeTpl: '{orders} order(s) • {variants} variant(s)',
-                wordPermSizeLabel: 'Word Count:',
-                wordPerm3Label: '3 Words',
-                wordPerm2Label: '2 Words',
-                wordPerm1Label: '1 Word',
-                wordPermFormatLabel: 'Separator:',
+                extLabel: 'Extensions (e.g. .com, .io):',
+                wordPermLabel: 'Mix Keyword Order',
+                wordPermDesc: 'Automatically mix your keywords into extra name ideas.',
+                wordPermBadgeTpl: 'Orders: {orders} · Ideas: {variants}',
+                wordPermSizeLabel: 'Word Count',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Separator',
                 wordPermDashLabel: 'With Dash (-)',
-                wordPermNoDashLabel: 'No-Dash (Joined)',
+                wordPermNoDashLabel: 'No Dash',
                 formulaLabel: 'Add Your Own Patterns:',
                 clearBtn: '🗑️ Clear Pattern',
                 clickToAdd: 'Click to insert:',
@@ -1214,7 +1218,7 @@
                 btnNumText: '+ [number]',
                 btnVowelText: '+ [vowel]',
                 btnConsText: '+ [consonant]',
-                genBtn: 'Generate Permutations',
+                genBtn: 'Generate Domain Names',
                 copyBtn: 'Copy Markdown / Text',
                 downloadBtn: 'Download .txt',
                 dnsBtn: 'Bulk Check on DNSRobot 🚀',
@@ -1346,9 +1350,9 @@
                     'Soporte multilingüe e investigación de ideas de dominios'
                 ],
                 aiCrawlerSnippet: 'Esta página de investigación de dominios genera dinámicamente matrices de combinación de nombres de dominio para la palabra clave "{kw}", ayudando a los desarrolladores a descubrir dominios con validación RFC 1035.',
-                headerTitle: 'Permutación de Dominios y Verificador Masivo',
-                headerTitleTpl: 'Generador de Permutaciones "{kw}" y Verificador Masivo',
-                sectionGenTitle: 'Configuración de Palabras Clave y Fórmula de Permutación',
+                headerTitle: 'Generador de Nombres de Dominio',
+                headerTitleTpl: 'Generador de Dominios "{kw}"',
+                sectionGenTitle: 'Crear Ideas de Dominio',
                 sectionResTitle: 'Resultados de Permutación de Dominios',
                 sectionAiTitle: '🤖 Contexto para Motores de IA e Indexación de Dominios',
                 bottomAiTitle: 'Resumen de Fórmula de Nombres de Dominio',
@@ -1377,21 +1381,21 @@
                 footerLangNavAria: 'Ediciones de Idioma',
                 footerLangLabel: '🌐 Idiomas:',
                 footerLeft: 'Generador de Permutaciones de Ideas de Dominio • Conforme a RFC 1035',
-                headerSub: 'Genere instantáneamente ideas de combinación de nombres de dominio para investigación y carteras de dominios.',
+                headerSub: 'Combina tus palabras clave y encuentra ideas de dominios cortos y listos para usar al instante.',
                 keyword1Label: 'Palabra Clave Principal:',
                 keyword2Label: 'Palabra Clave Secundaria:',
                 keyword3Label: 'Palabra Clave Terciaria:',
-                extLabel: 'Extensiones de Dominio (separadas por comas):',
-                wordPermLabel: '🔀 Permutaciones Completas de Palabras (Guion y Sin Guion)',
-                wordPermDesc: 'Genera automáticamente todos los ordenamientos de 3 palabras, subconjuntos de 2 palabras y variantes de 1 palabra clave con guion (domain-name-buy, domain-buy) y sin guion (domainnamebuy, domainbuy, domain) en todas las extensiones.',
-                wordPermBadgeTpl: '{orders} orden(es) • {variants} variante(s)',
-                wordPermSizeLabel: 'Combinación:',
-                wordPerm3Label: '3 Palabras',
-                wordPerm2Label: '2 Palabras',
-                wordPerm1Label: '1 Palabra',
-                wordPermFormatLabel: 'Separador:',
+                extLabel: 'Extensiones (ej. .com, .es):',
+                wordPermLabel: 'Combinar Orden de Palabras',
+                wordPermDesc: 'Mezcla tus palabras clave automáticamente para crear más ideas.',
+                wordPermBadgeTpl: 'Órdenes: {orders} · Ideas: {variants}',
+                wordPermSizeLabel: 'Cantidad de palabras',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Separador',
                 wordPermDashLabel: 'Con Guion (-)',
-                wordPermNoDashLabel: 'Sin Guion (Unido)',
+                wordPermNoDashLabel: 'Sin Guion',
                 formulaLabel: 'Añade Tus Propios Patrones:',
                 clearBtn: '🗑️ Borrar Patrón',
                 clickToAdd: 'Hacer clic para insertar:',
@@ -1403,7 +1407,7 @@
                 btnNumText: '+ [número]',
                 btnVowelText: '+ [vocal]',
                 btnConsText: '+ [consonante]',
-                genBtn: 'Generar Permutaciones',
+                genBtn: 'Generar Nombres de Dominio',
                 copyBtn: 'Copiar Markdown / Texto',
                 downloadBtn: 'Descargar .txt',
                 dnsBtn: 'Verificación masiva en DNSRobot 🚀',
@@ -1535,9 +1539,9 @@
                     'Suporte multilíngue e pesquisa de ideias de domínio'
                 ],
                 aiCrawlerSnippet: 'Esta página de pesquisa de domínios gera dinamicamente matrizes de combinação de nomes de domínio para a palavra-chave "{kw}", auxiliando profissionais de SEO e desenvolvedores.',
-                headerTitle: 'Permutação de Domínios e Verificador em Massa',
-                headerTitleTpl: 'Gerador de Permutações "{kw}" e Verificador em Massa',
-                sectionGenTitle: 'Configuração de Palavras-chave e Fórmula de Permutação',
+                headerTitle: 'Gerador de Nomes de Domínio',
+                headerTitleTpl: 'Gerador de Domínios "{kw}"',
+                sectionGenTitle: 'Criar Ideias de Domínio',
                 sectionResTitle: 'Resultados de Permutação de Domínios',
                 sectionAiTitle: '🤖 Contexto de Mecanismos de IA e Indexação de Domínios',
                 bottomAiTitle: 'Resumo da Fórmula de Nomes de Domínio',
@@ -1566,21 +1570,21 @@
                 footerLangNavAria: 'Edições de Idioma',
                 footerLangLabel: '🌐 Idiomas:',
                 footerLeft: 'Gerador de Permutações de Ideias de Domínio • Compatível com RFC 1035',
-                headerSub: 'Gere instantaneamente ideias de combinação de nomes de domínio para pesquisa e portfólios de domínio.',
+                headerSub: 'Combine suas palavras-chave e encontre ideias de domínios curtos e prontos para usar em segundos.',
                 keyword1Label: 'Palavra-chave Principal:',
                 keyword2Label: 'Palavra-chave Secundária:',
                 keyword3Label: 'Palavra-chave Terciária:',
-                extLabel: 'Extensões de Domínio (separadas por vírgula):',
-                wordPermLabel: '🔀 Permutações Completas de Palavras (Hífen e Sem Hífen)',
-                wordPermDesc: 'Gera automaticamente todas as ordenações de 3 palavras, subconjuntos de 2 palavras e variantes de 1 palavra-chave com hífen (domain-name-buy, domain-buy) e sem hífen (domainnamebuy, domainbuy, domain) em todas as extensões.',
-                wordPermBadgeTpl: '{orders} ordem(ns) • {variants} variante(s)',
-                wordPermSizeLabel: 'Combinação:',
-                wordPerm3Label: '3 Palavras',
-                wordPerm2Label: '2 Palavras',
-                wordPerm1Label: '1 Palavra',
-                wordPermFormatLabel: 'Separador:',
+                extLabel: 'Extensões (ex. .com, .pt):',
+                wordPermLabel: 'Combinar Ordem das Palavras',
+                wordPermDesc: 'Misture suas palavras-chave automaticamente para gerar mais ideias.',
+                wordPermBadgeTpl: 'Ordens: {orders} · Ideias: {variants}',
+                wordPermSizeLabel: 'Nº de palavras',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Separador',
                 wordPermDashLabel: 'Com Hífen (-)',
-                wordPermNoDashLabel: 'Sem Hífen (Unido)',
+                wordPermNoDashLabel: 'Sem Hífen',
                 formulaLabel: 'Adicione Seus Próprios Padrões:',
                 clearBtn: '🗑️ Limpar Padrão',
                 clickToAdd: 'Clique para inserir:',
@@ -1592,7 +1596,7 @@
                 btnNumText: '+ [número]',
                 btnVowelText: '+ [vogal]',
                 btnConsText: '+ [consoante]',
-                genBtn: 'Gerar Permutações',
+                genBtn: 'Gerar Nomes de Domínio',
                 copyBtn: 'Copiar Markdown / Texto',
                 downloadBtn: 'Baixar .txt',
                 dnsBtn: 'Verificação em Massa no DNSRobot 🚀',
@@ -1724,9 +1728,9 @@
                     'Interface multilingue et support de recherche de noms de domaine'
                 ],
                 aiCrawlerSnippet: 'Cette page de recherche de domaines génère dynamiquement des matrices de combinaison de noms de domaine pour le mot-clé principal "{kw}", aidant les spécialistes marketing.',
-                headerTitle: 'Permutation de Domaines et Vérificateur en Masse',
-                headerTitleTpl: 'Générateur de Permutations "{kw}" et Vérificateur en Masse',
-                sectionGenTitle: 'Configuration des Mots-clés et Formule de Permutation',
+                headerTitle: 'Générateur de Noms de Domaine',
+                headerTitleTpl: 'Générateur de Domaines « {kw} »',
+                sectionGenTitle: 'Créer des Idées de Domaine',
                 sectionResTitle: 'Résultats des Permutations de Domaines',
                 sectionAiTitle: '🤖 Contexte Moteur de Recherche IA et Indexation de Domaines',
                 bottomAiTitle: 'Résumé de Formule de Nom de Domaine',
@@ -1755,21 +1759,21 @@
                 footerLangNavAria: 'Éditions Multilingues',
                 footerLangLabel: '🌐 Éditions :',
                 footerLeft: 'Générateur de Permutations d\'Idées de Domaines • Conforme RFC 1035',
-                headerSub: 'Générez instantanément des idées de combinaison de noms de domaine pour la recherche et les portefeuilles de domaines.',
+                headerSub: 'Combinez vos mots-clés pour trouver des idées de domaines courts et prêts à l’emploi en quelques secondes.',
                 keyword1Label: 'Mot-clé Principal :',
                 keyword2Label: 'Mot-clé Secondaire :',
                 keyword3Label: 'Mot-clé Tertiaire :',
-                extLabel: 'Extensions de Domaine (séparées par des virgules) :',
-                wordPermLabel: '🔀 Permutations Complètes des Mots (Tiret & Sans Tiret)',
-                wordPermDesc: 'Génère automatiquement tous les ordres de 3 mots, sous-ensembles de 2 mots et variantes à 1 mot-clé avec tiret (domain-name-buy, domain-buy) et accolés (domainnamebuy, domainbuy, domain) sur toutes les extensions.',
-                wordPermBadgeTpl: '{orders} ordre(s) • {variants} variante(s)',
-                wordPermSizeLabel: 'Combinaison :',
-                wordPerm3Label: '3 Mots',
-                wordPerm2Label: '2 Mots',
-                wordPerm1Label: '1 Mot',
-                wordPermFormatLabel: 'Séparateur :',
+                extLabel: 'Extensions (ex. .com, .fr) :',
+                wordPermLabel: 'Mélanger l’ordre des mots',
+                wordPermDesc: 'Mélange vos mots-clés automatiquement pour créer plus d’idées.',
+                wordPermBadgeTpl: 'Ordres : {orders} · Idées : {variants}',
+                wordPermSizeLabel: 'Nombre de mots',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Séparateur',
                 wordPermDashLabel: 'Avec Tiret (-)',
-                wordPermNoDashLabel: 'Sans Tiret (Accolé)',
+                wordPermNoDashLabel: 'Sans Tiret',
                 formulaLabel: 'Ajoutez Vos Propres Motifs :',
                 clearBtn: '🗑️ Effacer le Motif',
                 clickToAdd: 'Cliquer pour insérer :',
@@ -1781,7 +1785,7 @@
                 btnNumText: '+ [nombre]',
                 btnVowelText: '+ [voyelle]',
                 btnConsText: '+ [consonne]',
-                genBtn: 'Générer des Permutations',
+                genBtn: 'Générer des Noms de Domaine',
                 copyBtn: 'Copier Markdown / Texte',
                 downloadBtn: 'Télécharger .txt',
                 dnsBtn: 'Vérification en Masse sur DNSRobot 🚀',
@@ -1913,9 +1917,9 @@
                     'Mehrsprachige Oberfläche und Unterstützung für Domain-Recherche'
                 ],
                 aiCrawlerSnippet: 'Diese Domain-Forschungsseite generiert dynamisch Domainnamen-Kombinationsmatrizen für das Hauptschlüsselwort "{kw}" mit RFC 1035-Validierung.',
-                headerTitle: 'Domain-Permutation & Bulk-Prüfer',
-                headerTitleTpl: '"{kw}" Domain-Permutationsgenerator & Bulk-Prüfer',
-                sectionGenTitle: 'Keyword-Konfiguration & Permutationsformel',
+                headerTitle: 'Domainnamen-Generator',
+                headerTitleTpl: '„{kw}“ Domainnamen-Generator',
+                sectionGenTitle: 'Domain-Ideen erstellen',
                 sectionResTitle: 'Generierte Domain-Permutationen',
                 sectionAiTitle: '🤖 KI-Suchmaschinen- & Domain-Indexierungskontext',
                 bottomAiTitle: 'Domainnamen-Formel-Zusammenfassung',
@@ -1944,19 +1948,19 @@
                 footerLangNavAria: 'Sprachausgaben',
                 footerLangLabel: '🌐 Sprachen:',
                 footerLeft: 'Domain-Ideen Permutations-Generator • RFC 1035-konform',
-                headerSub: 'Generieren Sie sofort Domainnamen-Kombinationsideen für Recherche und Domain-Portfolios.',
+                headerSub: 'Kombinieren Sie Ihre Keywords und finden Sie in Sekunden kurze, sofort nutzbare Domain-Ideen.',
                 keyword1Label: 'Primäres Keyword:',
                 keyword2Label: 'Sekundäres Keyword:',
                 keyword3Label: 'Tertiäres Keyword:',
-                extLabel: 'Domain-Endungen (durch Komma getrennt):',
-                wordPermLabel: '🔀 Vollständige Wortfolge-Permutationen (Bindestrich & Ohne)',
-                wordPermDesc: 'Erzeugt automatisch alle 3-Wort-, 2-Wort-Teilmengen- und 1-Keyword-Varianten mit Bindestrich (domain-name-buy, domain-buy) und ohne Bindestrich (domainnamebuy, domainbuy, domain) für alle Endungen.',
-                wordPermBadgeTpl: '{orders} Reihenfolge(n) • {variants} Variante(n)',
-                wordPermSizeLabel: 'Wortanzahl:',
-                wordPerm3Label: '3 Wörter',
-                wordPerm2Label: '2 Wörter',
-                wordPerm1Label: '1 Wort',
-                wordPermFormatLabel: 'Trennzeichen:',
+                extLabel: 'Endungen (z. B. .com, .de):',
+                wordPermLabel: 'Wörter automatisch kombinieren',
+                wordPermDesc: 'Kombiniert Ihre Keywords automatisch zu weiteren Namensideen.',
+                wordPermBadgeTpl: 'Muster: {orders} · Ideen: {variants}',
+                wordPermSizeLabel: 'Wortanzahl',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Trennzeichen',
                 wordPermDashLabel: 'Mit Bindestrich (-)',
                 wordPermNoDashLabel: 'Ohne Bindestrich',
                 formulaLabel: 'Eigene Muster hinzufügen:',
@@ -1970,7 +1974,7 @@
                 btnNumText: '+ [nummer]',
                 btnVowelText: '+ [vokal]',
                 btnConsText: '+ [konsonant]',
-                genBtn: 'Permutationen generieren',
+                genBtn: 'Domainnamen generieren',
                 copyBtn: 'Markdown / Text kopieren',
                 downloadBtn: '.txt herunterladen',
                 dnsBtn: 'Massenprüfung auf DNSRobot 🚀',
@@ -2102,9 +2106,9 @@
                     'Многоязычный интерфейс и поддержка подбора доменных имен'
                 ],
                 aiCrawlerSnippet: 'Эта страница подбора доменов генерирует матрицы комбинаций доменных имен для ключевого слова "{kw}" с проверкой по стандарту RFC 1035.',
-                headerTitle: 'Перестановка доменов и пакетная проверка',
-                headerTitleTpl: 'Генератор перестановок доменов «{kw}» и пакетная проверка',
-                sectionGenTitle: 'Настройка ключевых слов и формулы перестановок',
+                headerTitle: 'Генератор доменных имен',
+                headerTitleTpl: 'Генератор доменов «{kw}»',
+                sectionGenTitle: 'Создать идеи доменов',
                 sectionResTitle: 'Результаты перестановок доменов',
                 sectionAiTitle: '🤖 Контекст ИИ-поиска и индексации доменов',
                 bottomAiTitle: 'Сводка формулы доменных имен',
@@ -2133,21 +2137,21 @@
                 footerLangNavAria: 'Языковые версии',
                 footerLangLabel: '🌐 Версии:',
                 footerLeft: 'Генератор перестановок идей доменов • Соответствие RFC 1035',
-                headerSub: 'Мгновенно создавайте идеи комбинаций доменных имен для исследований и портфолио доменов.',
+                headerSub: 'Объединяйте ключевые слова и за секунды находите короткие, готовые к использованию доменные имена.',
                 keyword1Label: 'Основное ключевое слово:',
                 keyword2Label: 'Вторичное ключевое слово:',
                 keyword3Label: 'Третичное ключевое слово:',
-                extLabel: 'Доменные зоны (через запятую):',
-                wordPermLabel: '🔀 Полные перестановки порядка слов (с дефисом и без)',
-                wordPermDesc: 'Автоматически генерирует все перестановки из 3 слов, подмножества из 2 слов и одиночные варианты (1 слово) с дефисом (domain-name-buy, domain-buy) и слитно (domainnamebuy, domainbuy, domain) для всех доменных зон.',
-                wordPermBadgeTpl: '{orders} перест. • {variants} вар.',
-                wordPermSizeLabel: 'Комбинации:',
-                wordPerm3Label: '3 слова',
-                wordPerm2Label: '2 слова',
-                wordPerm1Label: '1 слово',
-                wordPermFormatLabel: 'Разделитель:',
+                extLabel: 'Доменные зоны (напр. .com, .ru):',
+                wordPermLabel: 'Перемешать порядок слов',
+                wordPermDesc: 'Автоматически меняет порядок слов для новых вариантов.',
+                wordPermBadgeTpl: 'Сочетаний: {orders} · Идей: {variants}',
+                wordPermSizeLabel: 'Число слов',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: 'Разделитель',
                 wordPermDashLabel: 'С дефисом (-)',
-                wordPermNoDashLabel: 'Без дефиса (слитно)',
+                wordPermNoDashLabel: 'Без дефиса',
                 formulaLabel: 'Добавьте свои шаблоны:',
                 clearBtn: '🗑️ Очистить шаблон',
                 clickToAdd: 'Нажмите для вставки:',
@@ -2159,7 +2163,7 @@
                 btnNumText: '+ [цифра]',
                 btnVowelText: '+ [гласная]',
                 btnConsText: '+ [согласная]',
-                genBtn: 'Сгенерировать',
+                genBtn: 'Подобрать домены',
                 copyBtn: 'Копировать Markdown / Текст',
                 downloadBtn: 'Скачать .txt',
                 dnsBtn: 'Массовая проверка в DNSRobot 🚀',
@@ -2291,9 +2295,9 @@
                     '多言語対応UIおよびドメイン名リサーチ支援'
                 ],
                 aiCrawlerSnippet: 'このドメインリサーチページは、主要キーワード「{kw}」のドメイン名組み合わせマトリックスを動的に生成し、RFC 1035検証をサポートします。',
-                headerTitle: 'ドメイン置換＆一括チェッカー',
-                headerTitleTpl: '「{kw}」ドメイン置換ジェネレーター＆一括チェッカー',
-                sectionGenTitle: 'キーワード設定・置換パターン数式',
+                headerTitle: 'ドメイン名ジェネレーター',
+                headerTitleTpl: '「{kw}」ドメイン名ジェネレーター',
+                sectionGenTitle: 'ドメイン候補を作成',
                 sectionResTitle: '生成ドメイン一覧',
                 sectionAiTitle: '🤖 AI検索エンジン & ドメインインデックスコンテキスト',
                 bottomAiTitle: 'ドメイン名数式の概要',
@@ -2322,21 +2326,21 @@
                 footerLangNavAria: '多言語エディション',
                 footerLangLabel: '🌐 言語版:',
                 footerLeft: 'ドメインアイデア置換ジェネレーター • RFC 1035 準拠',
-                headerSub: 'リサーチやドメインポートフォリオ向けのドメイン名組み合わせアイデアを即座に生成します。',
+                headerSub: 'キーワードを組み合わせるだけで、短くて使いやすいドメイン候補を数秒で見つけられます。',
                 keyword1Label: 'メインキーワード:',
                 keyword2Label: 'セカンダリキーワード:',
                 keyword3Label: 'ターティアルキーワード:',
-                extLabel: 'ドメイン拡張子 (カンマ区切り):',
-                wordPermLabel: '🔀 完全語順パーミュテーション（ハイフンあり・なし両対応）',
-                wordPermDesc: '3語・2語サブセット・1語単体のすべてのバリエーションをハイフン区切り（domain-name-buy, domain-buy）と連結（domainnamebuy, domainbuy, domain）の両形式で全拡張子に自動生成します。',
-                wordPermBadgeTpl: '{orders}通り • {variants}形式',
-                wordPermSizeLabel: '語数:',
-                wordPerm3Label: '3語',
-                wordPerm2Label: '2語',
-                wordPerm1Label: '1語',
-                wordPermFormatLabel: '区切り:',
+                extLabel: 'ドメイン拡張子 (例: .com, .jp):',
+                wordPermLabel: 'キーワードの組み合わせ設定',
+                wordPermDesc: 'キーワードの順番を自動で組み合わせて候補を増やします。',
+                wordPermBadgeTpl: '並び: {orders} · 候補: {variants}',
+                wordPermSizeLabel: '単語数',
+                wordPerm3Label: '3',
+                wordPerm2Label: '2',
+                wordPerm1Label: '1',
+                wordPermFormatLabel: '区切り',
                 wordPermDashLabel: 'ハイフンあり (-)',
-                wordPermNoDashLabel: 'ハイフンなし (連結)',
+                wordPermNoDashLabel: 'ハイフンなし',
                 formulaLabel: '独自のパターンを追加:',
                 clearBtn: '🗑️ パターンをクリア',
                 clickToAdd: 'クリックして挿入:',
@@ -2348,7 +2352,7 @@
                 btnNumText: '+ [数字]',
                 btnVowelText: '+ [母音]',
                 btnConsText: '+ [子音]',
-                genBtn: '置換パターンを生成',
+                genBtn: 'ドメイン名を生成',
                 copyBtn: 'Markdown / テキストをコピー',
                 downloadBtn: '.txtをダウンロード',
                 dnsBtn: 'DNSRobotで一括確認 🚀',
@@ -2468,7 +2472,7 @@
         const uiExtraDict = {
             en: {
                 navGen: 'Generator', navResults: 'Results', navGuide: 'Guide', navFaq: 'FAQ',
-                advOptionsLabel: 'More Keywords, Word Order & Custom Patterns',
+                advOptionsLabel: 'More Keywords & Custom Options',
                 thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thInspect: 'Inspect',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archive', ggTitle: 'Google Index (site:)',
                 truncNoticeTpl: 'Showing top {shown} shortest domains out of {total} generated to protect browser & script performance.',
@@ -2492,7 +2496,7 @@
             },
             id: {
                 navGen: 'Generator', navResults: 'Hasil', navGuide: 'Panduan', navFaq: 'FAQ',
-                advOptionsLabel: 'Kata Kunci Tambahan, Urutan & Pola Kustom',
+                advOptionsLabel: 'Kata Kunci Tambahan & Opsi Lanjutan',
                 thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thInspect: 'Cek',
                 blTitle: 'Cek Backlink Ahrefs', wmTitle: 'Arsip Wayback Machine', ggTitle: 'Indeks Google (site:)',
                 truncNoticeTpl: 'Menampilkan {shown} domain terpendek teratas dari total {total} hasil untuk menjaga kecepatan aplikasi.',
@@ -2516,7 +2520,7 @@
             },
             es: {
                 navGen: 'Generador', navResults: 'Resultados', navGuide: 'Guía', navFaq: 'FAQ',
-                advOptionsLabel: 'Más Palabras Clave, Orden y Patrones',
+                advOptionsLabel: 'Más Palabras y Opciones Extra',
                 thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thInspect: 'Inspección',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Mostrando los {shown} dominios más cortos de {total} generados para mantener el rendimiento.',
@@ -2540,7 +2544,7 @@
             },
             pt: {
                 navGen: 'Gerador', navResults: 'Resultados', navGuide: 'Guia', navFaq: 'FAQ',
-                advOptionsLabel: 'Mais Palavras-chave, Ordem e Padrões',
+                advOptionsLabel: 'Mais Palavras e Opções Extras',
                 thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thInspect: 'Analisar',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Arquivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Exibindo os {shown} domínios mais curtos de {total} gerados para preservar o desempenho.',
@@ -2564,7 +2568,7 @@
             },
             fr: {
                 navGen: 'Générateur', navResults: 'Résultats', navGuide: 'Guide', navFaq: 'FAQ',
-                advOptionsLabel: 'Mots-clés, Ordre et Modèles Personnalisés',
+                advOptionsLabel: 'Plus de Mots et Options Avancées',
                 thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thInspect: 'Analyser',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archives Wayback Machine', ggTitle: 'Index Google (site:)',
                 truncNoticeTpl: 'Affichage des {shown} domaines les plus courts sur {total} générés pour optimiser la réactivité.',
@@ -2588,7 +2592,7 @@
             },
             de: {
                 navGen: 'Generator', navResults: 'Ergebnisse', navGuide: 'Leitfaden', navFaq: 'FAQ',
-                advOptionsLabel: 'Weitere Keywords, Wortfolge & Muster',
+                advOptionsLabel: 'Weitere Keywords & Optionen',
                 thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thInspect: 'Prüfen',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archiv', ggTitle: 'Google-Index (site:)',
                 truncNoticeTpl: 'Es werden die {shown} kürzesten Domains von insgesamt {total} Ergebnissen angezeigt.',
@@ -2612,7 +2616,7 @@
             },
             ru: {
                 navGen: 'Генератор', navResults: 'Результаты', navGuide: 'Руководство', navFaq: 'FAQ',
-                advOptionsLabel: 'Доп. слова, порядок и свои шаблоны',
+                advOptionsLabel: 'Доп. слова и настройки',
                 thNum: '#', thDomain: 'Домен', thChars: 'Длина', thInspect: 'Проверка',
                 blTitle: 'Проверка обратных ссылок Ahrefs', wmTitle: 'Архив Wayback Machine', ggTitle: 'Индекс Google (site:)',
                 truncNoticeTpl: 'Показаны {shown} самых коротких доменов из {total} сгенерированных для высокой скорости работы.',
@@ -2636,7 +2640,7 @@
             },
             ja: {
                 navGen: 'ジェネレータ', navResults: '結果一覧', navGuide: 'ガイド', navFaq: 'FAQ',
-                advOptionsLabel: '追加キーワード・語順・独自パターン',
+                advOptionsLabel: '追加キーワードと詳細設定',
                 thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thInspect: '調査',
                 blTitle: 'Ahrefs バックリンク確認', wmTitle: 'Wayback Machine 履歴', ggTitle: 'Google インデックス (site:)',
                 truncNoticeTpl: 'パフォーマンス維持のため、生成された {total} 件のうち文字数が短い上位 {shown} 件を表示しています。',
@@ -3818,7 +3822,7 @@
             return finalDomain;
         }
 
-        function generateDomains() {
+        function generateDomains(options) {
             const rawKeyword = document.getElementById('keywordInput').value.trim().toLowerCase();
             const rawKeyword2 = document.getElementById('keyword2Input').value.trim().toLowerCase();
             const rawKeyword3 = document.getElementById('keyword3Input').value.trim().toLowerCase();
@@ -4012,6 +4016,19 @@
             renderDomainAnalysisList(true);
             updateBottomAiNarrative(t, rawKeyword || 'domain', rawKeyword2, rawKeyword3, formula, extensions, results);
             updateShareUI();
+
+            if (options && options.scrollToResults) {
+                const resultsEl = document.getElementById('resultsSection');
+                if (resultsEl && typeof resultsEl.scrollIntoView === 'function') {
+                    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    requestAnimationFrame(() => {
+                        resultsEl.scrollIntoView({
+                            behavior: prefersReduced ? 'auto' : 'smooth',
+                            block: 'start'
+                        });
+                    });
+                }
+            }
         }
 
         function loadMoreAnalysisRows() {
