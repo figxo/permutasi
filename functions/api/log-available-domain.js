@@ -1,5 +1,6 @@
 const MAX_LOGGED_DOMAIN_LENGTH = 25;
 const DOMAIN_HOSTNAME_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/;
+const SUPPORTED_LANGS = new Set(['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja']);
 
 let schemaReadyPromise = null;
 
@@ -17,6 +18,11 @@ function normalizeDomain(rawDomain) {
   return String(rawDomain || '').trim().toLowerCase();
 }
 
+function normalizeLang(rawLang) {
+  const code = String(rawLang || '').trim().toLowerCase();
+  return SUPPORTED_LANGS.has(code) ? code : 'en';
+}
+
 function extractExtension(domain) {
   const dotIdx = domain.indexOf('.');
   return dotIdx > 0 ? domain.slice(dotIdx) : '';
@@ -25,18 +31,30 @@ function extractExtension(domain) {
 async function ensureAvailableDomainsSchema(db) {
   if (!schemaReadyPromise) {
     schemaReadyPromise = (async () => {
+      await db.prepare(`
+        CREATE TABLE IF NOT EXISTS available_domains (
+          domain TEXT PRIMARY KEY,
+          extension TEXT NOT NULL,
+          char_length INTEGER NOT NULL,
+          lang TEXT NOT NULL DEFAULT 'en',
+          check_method TEXT NOT NULL,
+          check_source TEXT NOT NULL,
+          checked_at INTEGER NOT NULL,
+          checked_at_iso TEXT NOT NULL
+        )
+      `).run();
+
+      const tableInfoStmt = db.prepare('PRAGMA table_info(available_domains)');
+      if (typeof tableInfoStmt.all === 'function') {
+        const info = await tableInfoStmt.all();
+        const cols = Array.isArray(info && info.results) ? info.results : [];
+        const hasLang = cols.some((col) => col && col.name === 'lang');
+        if (!hasLang) {
+          await db.prepare("ALTER TABLE available_domains ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'").run();
+        }
+      }
+
       await db.batch([
-        db.prepare(`
-          CREATE TABLE IF NOT EXISTS available_domains (
-            domain TEXT PRIMARY KEY,
-            extension TEXT NOT NULL,
-            char_length INTEGER NOT NULL,
-            check_method TEXT NOT NULL,
-            check_source TEXT NOT NULL,
-            checked_at INTEGER NOT NULL,
-            checked_at_iso TEXT NOT NULL
-          )
-        `),
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_checked_at
           ON available_domains (checked_at DESC)
@@ -48,6 +66,10 @@ async function ensureAvailableDomainsSchema(db) {
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_char_length
           ON available_domains (char_length, checked_at DESC)
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_lang
+          ON available_domains (lang, checked_at DESC)
         `)
       ]);
     })().catch((err) => {
@@ -102,6 +124,7 @@ export async function onRequestPost(context) {
   }
 
   const charLength = domain.length;
+  const lang = normalizeLang(body.lang || body.language);
   const rawMethod = String(body.checkMethod || body.method || 'RDAP').trim().toUpperCase();
   const checkMethod = rawMethod === 'NS' ? 'NS' : 'RDAP';
   const rawSource = String(body.checkSource || body.source || 'manual').trim().toLowerCase();
@@ -121,20 +144,22 @@ export async function onRequestPost(context) {
         domain,
         extension,
         char_length,
+        lang,
         check_method,
         check_source,
         checked_at,
         checked_at_iso
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
       ON CONFLICT(domain) DO UPDATE SET
         extension = excluded.extension,
         char_length = excluded.char_length,
+        lang = excluded.lang,
         check_method = excluded.check_method,
         check_source = excluded.check_source,
         checked_at = excluded.checked_at,
         checked_at_iso = excluded.checked_at_iso
     `)
-      .bind(domain, extension, charLength, checkMethod, checkSource, checkedAt, checkedAtIso)
+      .bind(domain, extension, charLength, lang, checkMethod, checkSource, checkedAt, checkedAtIso)
       .run();
 
     return jsonResponse({
@@ -143,6 +168,7 @@ export async function onRequestPost(context) {
       domain,
       extension,
       charLength,
+      lang,
       checkMethod,
       checkSource,
       checkedAt,
