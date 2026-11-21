@@ -245,28 +245,30 @@
                     </h2>
                 </div>
 
-                <!-- Primary Keyword & Extensions (Always Above-the-Fold) -->
-                <div id="basicKeywordExtBlock" onfocusin="setActiveGenerateSlot('basic')" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-2 min-w-0">
-                        <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.4]">Primary Keyword:</label>
-                        <input type="text" id="keywordInput" value="business" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
+                <!-- Box 1: Primary Keyword & Extensions (Orange Base #de3723, White Text) -->
+                <div id="primaryKeywordBox" onfocusin="setActiveGenerateSlot('basic')" class="bg-[#de3723] text-white rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
+                    <div id="basicKeywordExtBlock" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-2 min-w-0">
+                            <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold text-white leading-[1.4]">Primary Keyword:</label>
+                            <input type="text" id="keywordInput" value="business" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder="Example: calc, shop">
+                        </div>
+                        <div class="flex flex-col gap-2 min-w-0">
+                            <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold text-white leading-[1.4]">Extensions (e.g. .com, .io):</label>
+                            <input type="text" id="extInput" value=".com, .net, .io, .org" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder=".net, .com, .io">
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-2 min-w-0">
-                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.4]">Extensions (e.g. .com, .io):</label>
-                        <input type="text" id="extInput" value=".com, .net, .io, .org" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
-                    </div>
-                </div>
 
-                <!-- Primary Touch-Friendly Action Button (Directly Visible Above-the-Fold) -->
-                <div id="genBtnBasicWrap" class="pt-1">
-                    <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-                        Generate Domain Names
-                    </button>
+                    <!-- Primary Touch-Friendly Action Button (Mutually Exclusive with Bottom Pattern Button) -->
+                    <div id="genBtnBasicWrap" class="pt-1">
+                        <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-[15px] font-semibold rounded-lg shadow-sm border border-white/25 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
+                            Generate Domain Names
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Collapsible Secondary Keywords, Word-Order Permutations & Custom Patterns (< md closed by default, md+ open) -->
-                <details id="advancedOptionsDetails" class="scroll-mt-16 md:scroll-mt-20 group rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
-                    <summary class="md:hidden flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+                <details id="advancedOptionsDetails" class="scroll-mt-16 md:scroll-mt-20 group rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
+                    <summary class="md:hidden flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                         <span class="inline-flex items-center gap-2 min-w-0">
                             <span aria-hidden="true" class="inline-flex items-center gap-1 px-1.5 py-1 rounded-md bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 text-orange-600 dark:text-orange-400 shrink-0">
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
@@ -277,60 +279,60 @@
                         <svg aria-hidden="true" class="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </summary>
 
-                    <div class="px-4 py-5 md:p-0 flex flex-col gap-5 border-t border-slate-200 dark:border-slate-800 md:border-t-0">
+                    <div class="px-3.5 py-4 sm:px-4 sm:py-5 md:p-0 flex flex-col gap-5 md:gap-6 border-t border-slate-200 dark:border-slate-800 md:border-t-0">
                         <!-- Secondary & Tertiary Keywords -->
-                        <div onfocusin="setActiveGenerateSlot('basic')" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div onfocusin="setActiveGenerateSlot('basic')" class="rounded-xl p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
-                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
+                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
                             </div>
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
-                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
+                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
                             </div>
                         </div>
 
-                        <!-- Hairline Section: Word Order & Separator -->
-                        <div id="wordOrderSeparatorBlock" onclick="setActiveGenerateSlot('basic')" onchange="setActiveGenerateSlot('basic')" onfocusin="setActiveGenerateSlot('basic')" class="pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                        <!-- Box 2: Mix Keyword Order (Deep Blue Base #131354, White Text) -->
+                        <div id="wordOrderSeparatorBlock" onclick="setActiveGenerateSlot('basic')" onchange="setActiveGenerateSlot('basic')" onfocusin="setActiveGenerateSlot('basic')" class="bg-[#131354] text-white rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
                             <div class="flex flex-col gap-2">
                                 <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
                                     <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none min-h-[28px]">
-                                        <input type="checkbox" id="fullWordPermCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
-                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.4]">Mix Keyword Order</span>
+                                        <input type="checkbox" id="fullWordPermCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="mt-0.5 h-4 w-4 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
+                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-white leading-[1.4]">Mix Keyword Order</span>
                                     </label>
-                                    <span id="wordPermCountBadge" class="inline-flex items-center text-[12px] font-medium tabular-nums text-orange-700 dark:text-orange-300 whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
+                                    <span id="wordPermCountBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[12px] font-semibold tabular-nums text-white whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
                                 </div>
-                                <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
+                                <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-white/90 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
                             </div>
 
                             <div id="wordPermOptionsWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-0.5">
                                 <div class="flex flex-col gap-2.5">
-                                    <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Word Count</span>
+                                    <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-white leading-[1.4]">Word Count</span>
                                     <div class="grid grid-cols-3 gap-2">
-                                        <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
-                                            <input type="checkbox" id="wordPerm1Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="1 word" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm1Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="1 word" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm1Label">1</span>
                                         </label>
-                                        <label for="wordPerm2Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
-                                            <input type="checkbox" id="wordPerm2Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="2 words" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <label for="wordPerm2Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm2Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="2 words" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm2Label">2</span>
                                         </label>
-                                        <label for="wordPerm3Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
-                                            <input type="checkbox" id="wordPerm3Checkbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="3 words" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <label for="wordPerm3Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPerm3Checkbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="3 words" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm3Label">3</span>
                                         </label>
                                     </div>
                                 </div>
 
                                 <div class="flex flex-col gap-2.5">
-                                    <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Separator</span>
+                                    <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-white leading-[1.4]">Separator</span>
                                     <div class="flex flex-wrap gap-2">
-                                        <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
-                                            <input type="checkbox" id="wordPermDashCheckbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[13px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPermDashCheckbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPermDashLabel">With Dash (-)</span>
                                         </label>
-                                        <label for="wordPermNoDashCheckbox" class="flex-1 min-w-[110px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
-                                            <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
+                                        <label for="wordPermNoDashCheckbox" class="flex-1 min-w-[110px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[13px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                            <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPermNoDashLabel">No Dash</span>
                                         </label>
                                     </div>
@@ -338,33 +340,33 @@
                             </div>
                         </div>
 
-                        <!-- Hairline Section: Add Your Own Patterns -->
-                        <div id="patternOptionsBlock" onclick="setActiveGenerateSlot('pattern')" onfocusin="setActiveGenerateSlot('pattern')" class="pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
+                        <!-- Box 3: Add Your Own Patterns (Green/Teal Base #669999, White Text) -->
+                        <div id="patternOptionsBlock" onclick="setActiveGenerateSlot('pattern')" onfocusin="setActiveGenerateSlot('pattern')" class="bg-[#669999] text-white rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
                             <div class="flex items-center justify-between gap-2">
-                                <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-slate-800 dark:text-slate-200 leading-[1.45]">Add Your Own Patterns:</label>
-                                <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-2.5 py-1 text-[13px] font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-md transition-colors whitespace-nowrap shrink-0">
+                                <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-white leading-[1.45]">Add Your Own Patterns:</label>
+                                <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-3 py-1.5 text-[13px] font-semibold text-rose-700 bg-white hover:bg-rose-50 border border-white/90 shadow-sm rounded-md transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                     Clear Pattern
                                 </button>
                             </div>
-                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
+                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#669999] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
 
                             <div class="flex flex-wrap gap-2 items-center">
-                                <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mr-1 leading-[1.4]">Click to insert:</span>
-                                <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/70 text-blue-700 dark:text-blue-300 text-[12px] font-mono font-semibold rounded-md border border-blue-200 dark:border-blue-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">+ [primary]</button>
-                                <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 text-emerald-700 dark:text-emerald-300 text-[12px] font-mono font-semibold rounded-md border border-emerald-200 dark:border-emerald-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600">+ [secondary]</button>
-                                <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[36px] px-2.5 py-1 bg-violet-50 dark:bg-violet-950/60 hover:bg-violet-100 dark:hover:bg-violet-900/70 text-violet-700 dark:text-violet-300 text-[12px] font-mono font-semibold rounded-md border border-violet-200 dark:border-violet-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600">+ [tertiary]</button>
-                                <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-[12px] font-mono font-semibold rounded-md border border-slate-300 dark:border-slate-600 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">+ [dash]</button>
-                                <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[36px] px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/70 text-amber-800 dark:text-amber-300 text-[12px] font-mono font-semibold rounded-md border border-amber-200 dark:border-amber-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">+ [number]</button>
-                                <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[36px] px-2.5 py-1 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/70 text-rose-700 dark:text-rose-300 text-[12px] font-mono font-semibold rounded-md border border-rose-200 dark:border-rose-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600">+ [vowel]</button>
-                                <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[36px] px-2.5 py-1 bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900/70 text-teal-700 dark:text-teal-300 text-[12px] font-mono font-semibold rounded-md border border-teal-200 dark:border-teal-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600">+ [consonant]</button>
+                                <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-white font-semibold mr-1 leading-[1.4]">Click to insert:</span>
+                                <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[12px] font-mono font-semibold rounded-md border border-blue-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [primary]</button>
+                                <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[12px] font-mono font-semibold rounded-md border border-emerald-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [secondary]</button>
+                                <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-violet-50 hover:bg-violet-100 text-violet-800 text-[12px] font-mono font-semibold rounded-md border border-violet-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [tertiary]</button>
+                                <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-[12px] font-mono font-semibold rounded-md border border-slate-300 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [dash]</button>
+                                <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 text-[12px] font-mono font-semibold rounded-md border border-amber-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [number]</button>
+                                <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 text-[12px] font-mono font-semibold rounded-md border border-rose-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [vowel]</button>
+                                <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 text-[12px] font-mono font-semibold rounded-md border border-cyan-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [consonant]</button>
                             </div>
-                        </div>
 
-                        <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
-                        <div id="genBtnPatternWrap" class="hidden pt-4 border-t border-slate-200 dark:border-slate-800">
-                            <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
-                                Generate Domain Names
-                            </button>
+                            <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
+                            <div id="genBtnPatternWrap" class="hidden pt-3 border-t border-white/25">
+                                <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-[15px] font-semibold rounded-lg shadow-sm border border-white/25 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#669999]">
+                                    Generate Domain Names
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </details>
