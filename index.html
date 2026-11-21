@@ -353,7 +353,7 @@
 
                     <!-- Primary Touch-Friendly Action Button (Mutually Exclusive with Bottom Pattern Button) -->
                     <div id="genBtnBasicWrap" class="pt-1">
-                        <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-[#00b67a] hover:bg-[#009e6a] text-white text-[15px] font-semibold rounded-lg shadow-sm border border-white/35 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
+                        <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-[#131354] hover:bg-[#1c1c75] text-[#FDFEFE] text-[15px] font-semibold rounded-lg shadow-sm border border-white/25 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
                             Generate Domain Names
                         </button>
                     </div>
@@ -373,44 +373,44 @@
                     </summary>
 
                     <div class="px-3.5 py-4 sm:px-4 sm:py-5 md:p-0 flex flex-col gap-5 md:gap-6 border-t border-[#2165b3]/20 md:border-t-0">
-                        <!-- Secondary & Tertiary Keywords -->
-                        <div onfocusin="setActiveGenerateSlot('basic')" class="rounded-xl p-4 sm:p-5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Secondary & Tertiary Keywords (Teal Accent #578686, White Text) -->
+                        <div onfocusin="setActiveGenerateSlot('basic')" class="rounded-xl p-4 sm:p-5 bg-[#578686] text-[#FFFFFF] border border-[#446b6b] shadow-sm grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="flex flex-col gap-2 min-w-0">
-                                <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
-                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
+                                <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-[#FFFFFF] leading-[1.45]">Secondary Keyword:</label>
+                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: pro, online">
                             </div>
                             <div class="flex flex-col gap-2 min-w-0">
-                                <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
-                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
+                                <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-[#FFFFFF] leading-[1.45]">Tertiary Keyword:</label>
+                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: app, hub">
                             </div>
                         </div>
 
-                        <!-- Box 2: Mix Keyword Order (Deep Blue Base #131354, White Text) -->
-                        <div id="wordOrderSeparatorBlock" onclick="setActiveGenerateSlot('basic')" onchange="setActiveGenerateSlot('basic')" onfocusin="setActiveGenerateSlot('basic')" class="bg-[#131354] text-white rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
+                        <!-- Box 2: Word Count (Green/Teal Base #669999, White Text) -->
+                        <div id="wordOrderSeparatorBlock" onclick="setActiveGenerateSlot('basic')" onchange="setActiveGenerateSlot('basic')" onfocusin="setActiveGenerateSlot('basic')" class="bg-[#669999] text-[#FFFFFF] rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
                             <div class="flex flex-col gap-2">
                                 <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
                                     <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none min-h-[28px]">
                                         <input type="checkbox" id="fullWordPermCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="mt-0.5 h-4 w-4 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
-                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-white leading-[1.4]">Mix Keyword Order</span>
+                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-[#FFFFFF] leading-[1.4]">Word Count</span>
                                     </label>
-                                    <span id="wordPermCountBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[12px] font-semibold tabular-nums text-white whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
+                                    <span id="wordPermCountBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[12px] font-semibold tabular-nums text-[#FFFFFF] whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
                                 </div>
-                                <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-white/90 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
+                                <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-[#FFFFFF]/95 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
                             </div>
 
                             <div id="wordPermOptionsWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-0.5">
                                 <div class="flex flex-col gap-2.5">
-                                    <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-white leading-[1.4]">Word Count</span>
+                                    <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-[#FFFFFF] leading-[1.4]">Word Count</span>
                                     <div class="grid grid-cols-3 gap-2">
-                                        <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                        <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-[#FFFFFF] hover:bg-[#ECF2F2] text-[14px] font-semibold text-[#292929] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
                                             <input type="checkbox" id="wordPerm1Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="1 word" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm1Label">1</span>
                                         </label>
-                                        <label for="wordPerm2Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                        <label for="wordPerm2Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-[#FFFFFF] hover:bg-[#ECF2F2] text-[14px] font-semibold text-[#292929] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
                                             <input type="checkbox" id="wordPerm2Checkbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="2 words" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm2Label">2</span>
                                         </label>
-                                        <label for="wordPerm3Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[14px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                        <label for="wordPerm3Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-white/90 bg-[#FFFFFF] hover:bg-[#ECF2F2] text-[14px] font-semibold text-[#292929] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
                                             <input type="checkbox" id="wordPerm3Checkbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" aria-label="3 words" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPerm3Label">3</span>
                                         </label>
@@ -418,13 +418,13 @@
                                 </div>
 
                                 <div class="flex flex-col gap-2.5">
-                                    <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-white leading-[1.4]">Separator</span>
+                                    <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-[#FFFFFF] leading-[1.4]">Separator</span>
                                     <div class="flex flex-wrap gap-2">
-                                        <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[13px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                        <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-[#FFFFFF] hover:bg-[#ECF2F2] text-[13px] font-semibold text-[#292929] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
                                             <input type="checkbox" id="wordPermDashCheckbox" onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPermDashLabel">With Dash (-)</span>
                                         </label>
-                                        <label for="wordPermNoDashCheckbox" class="flex-1 min-w-[110px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-white hover:bg-slate-100 text-[13px] font-semibold text-[#111827] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
+                                        <label for="wordPermNoDashCheckbox" class="flex-1 min-w-[110px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-white/90 bg-[#FFFFFF] hover:bg-[#ECF2F2] text-[13px] font-semibold text-[#292929] shadow-sm cursor-pointer select-none whitespace-nowrap transition-colors">
                                             <input type="checkbox" id="wordPermNoDashCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="h-4 w-4 rounded border-slate-400 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                             <span id="uiWordPermNoDashLabel">No Dash</span>
                                         </label>
@@ -433,18 +433,18 @@
                             </div>
                         </div>
 
-                        <!-- Box 3: Add Your Own Patterns (Green/Teal Base #669999, White Text) -->
-                        <div id="patternOptionsBlock" onclick="setActiveGenerateSlot('pattern')" onfocusin="setActiveGenerateSlot('pattern')" class="bg-[#669999] text-white rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
+                        <!-- Box 3: Add Your Own Patterns (Deep Blue Base #131354, White Text) -->
+                        <div id="patternOptionsBlock" onclick="setActiveGenerateSlot('pattern')" onfocusin="setActiveGenerateSlot('pattern')" class="bg-[#131354] text-[#FFFFFF] rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
                             <div class="flex items-center justify-between gap-2">
-                                <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-white leading-[1.45]">Add Your Own Patterns:</label>
-                                <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-3 py-1.5 text-[13px] font-semibold text-rose-700 bg-white hover:bg-rose-50 border border-white/90 shadow-sm rounded-md transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-[#FFFFFF] leading-[1.45]">Add Your Own Patterns:</label>
+                                <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-3 py-1.5 text-[13px] font-semibold text-rose-700 bg-[#FFFFFF] hover:bg-rose-50 border border-white/90 shadow-sm rounded-md transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                     Clear Pattern
                                 </button>
                             </div>
-                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#669999] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
+                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#131354] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
 
                             <div class="flex flex-wrap gap-2 items-center">
-                                <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-white font-semibold mr-1 leading-[1.4]">Click to insert:</span>
+                                <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-[#FFFFFF] font-semibold mr-1 leading-[1.4]">Click to insert:</span>
                                 <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[12px] font-mono font-semibold rounded-md border border-blue-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [primary]</button>
                                 <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[12px] font-mono font-semibold rounded-md border border-emerald-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [secondary]</button>
                                 <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-violet-50 hover:bg-violet-100 text-violet-800 text-[12px] font-mono font-semibold rounded-md border border-violet-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [tertiary]</button>
@@ -456,7 +456,7 @@
 
                             <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
                             <div id="genBtnPatternWrap" class="hidden pt-3 border-t border-white/25">
-                                <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-[#00b67a] hover:bg-[#009e6a] text-white text-[15px] font-semibold rounded-lg shadow-sm border border-white/35 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#669999]">
+                                <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-5 py-2.5 bg-[#c83e0c] hover:bg-[#a83208] text-[#FFFFFF] text-[15px] font-bold rounded-lg shadow-sm border border-[#f58c65]/50 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#131354]">
                                     Generate Domain Names
                                 </button>
                             </div>
@@ -532,16 +532,16 @@
         </div>
 
         <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
-        <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-4 min-w-0">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] p-4 sm:p-6 md:p-7 flex flex-col gap-4 md:gap-5 min-w-0">
+            <div class="bg-[#B87900] text-[#FFFFFF] rounded-xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-sm">
                 <div class="flex flex-col gap-1.5 min-w-0">
-                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
-                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
+                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#FFFFFF] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
+                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#FFFFFF]/95 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto shrink-0">
                     <div class="w-full sm:w-48 shrink-0">
                         <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
-                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
+                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#B87900] cursor-pointer">
                             <option id="uiStatusOptAll" value="all">Select Status: All</option>
                             <option id="uiStatusOptAvailable" value="available">Available</option>
                             <option id="uiStatusOptTaken" value="taken">Taken</option>
@@ -550,49 +550,49 @@
                     </div>
                     <div class="w-full sm:w-60 md:w-64 shrink-0">
                         <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Filter domains (e.g. .com, -0)...">
+                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#B87900]" placeholder="Filter domains (e.g. .com, -0)...">
                     </div>
                 </div>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-medium text-slate-500 dark:text-slate-400 tabular-nums leading-[1.4]"></div>
+                <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-semibold text-[#3F3042] tabular-nums leading-[1.4]"></div>
             </div>
 
             <!-- Batch Selection Action Bar -->
-            <div id="domainBatchActionBar" class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 p-3 sm:p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80">
+            <div id="domainBatchActionBar" class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 p-3 sm:p-4 rounded-xl bg-[#ECF2F2] border border-[#C9D8D8]">
                 <div class="flex flex-wrap items-center gap-2.5 min-w-0">
-                    <span id="domainSelectionStatus" class="text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 tabular-nums">0 selected</span>
-                    <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <span id="domainSelectionStatus" class="text-[12px] md:text-[13px] font-semibold text-[#292929] tabular-nums">0 selected</span>
+                    <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors">
                         Clear
                     </button>
                 </div>
                 <div class="flex flex-wrap items-center gap-3">
-                    <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-200 dark:border-rose-800/70 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-950/70 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Remove Selected
                     </button>
-                    <button type="button" id="uiBatchCopyBtn" onclick="copyBatchDomains('text')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchCopyBtn" onclick="copyBatchDomains('text')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Copy
                     </button>
-                    <button type="button" id="uiBatchCopyMdBtn" onclick="copyBatchDomains('markdown')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchCopyMdBtn" onclick="copyBatchDomains('markdown')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Copy MD
                     </button>
-                    <button type="button" id="uiBatchDownloadBtn" onclick="downloadBatchDomainsTxt()" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchDownloadBtn" onclick="downloadBatchDomainsTxt()" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Export .txt
                     </button>
-                    <a id="batchDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBatchDnsLink(event)" class="min-h-[40px] w-full sm:w-auto inline-flex items-center justify-center px-3.5 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors whitespace-nowrap">
+                    <a id="batchDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBatchDnsLink(event)" class="min-h-[40px] w-full sm:w-auto inline-flex items-center justify-center px-3.5 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors whitespace-nowrap">
                         Bulk Check
                     </a>
                 </div>
             </div>
 
-            <!-- Responsive Horizontal-Scroll Table -->
-            <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg max-h-[28rem] overflow-y-auto">
+            <!-- Responsive Horizontal-Scroll Table (Orange Theme) -->
+            <div class="overflow-x-auto border border-[#f05422]/40 rounded-xl max-h-[28rem] overflow-y-auto bg-[#FFFFFF] shadow-sm">
                 <table class="w-full lg:min-w-[640px] text-left border-collapse">
-                    <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
+                    <thead class="sticky top-0 z-10 bg-[#f05422] border-b border-[#d64416] text-[11px] uppercase tracking-wider font-bold text-[#FFFFFF]">
                         <tr>
                             <th scope="col" class="py-3 px-2 sm:px-3 w-9 sm:w-10 text-center">
-                                <input type="checkbox" id="selectAllVisibleCheckbox" onchange="toggleSelectAllVisible(this.checked)" aria-label="Select all visible domains" class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer align-middle">
+                                <input type="checkbox" id="selectAllVisibleCheckbox" onchange="toggleSelectAllVisible(this.checked)" aria-label="Select all visible domains" class="w-4 h-4 rounded border-white/90 bg-white text-[#f05422] focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f05422] cursor-pointer align-middle">
                             </th>
                             <th scope="col" id="uiThNum" class="hidden lg:table-cell py-3 px-2.5 w-11 tabular-nums">#</th>
                             <th scope="col" id="uiThDomain" class="py-3 px-2 sm:px-3">Domain Name</th>
@@ -602,12 +602,12 @@
                             <th scope="col" id="uiThInspect" class="py-3 px-2 sm:px-3 w-36 sm:w-40 text-right">Inspect</th>
                         </tr>
                     </thead>
-                    <tbody id="domainAnalysisList" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900 text-[13px] md:text-[14px] leading-[1.45] md:leading-[1.5]"></tbody>
+                    <tbody id="domainAnalysisList" class="divide-y divide-[#f05422]/20 bg-[#FFFFFF] text-[13px] md:text-[14px] text-[#292929] leading-[1.45] md:leading-[1.5]"></tbody>
                 </table>
             </div>
 
             <div id="domainAnalysisMoreWrap" class="text-center hidden pt-1">
-                <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[40px] px-4 py-1.5 text-[12px] md:text-[13px] font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors">
+                <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[40px] px-4 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#f9e1d9]/75 hover:bg-[#f9e1d9] text-[#292929] border border-[#f05422]/35 rounded-lg transition-colors">
                     Show More (+100)
                 </button>
             </div>
@@ -617,31 +617,31 @@
         <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto min-h-[100px] sm:min-h-[90px] bg-white dark:bg-slate-900/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex items-center justify-center"></div>
 
         <!-- Share & Export Link Section -->
-        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5">
+        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
                 <div class="flex flex-col gap-1.5 min-w-0">
-                    <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4]">Share &amp; Export Link</h2>
-                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-slate-600 dark:text-slate-300 leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
+                    <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-[#292929] leading-[1.4]">Share &amp; Export Link</h2>
+                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-[#3F3042] leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
                 </div>
-                <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-slate-50 dark:bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shrink-0">
-                    <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-[#292929] cursor-pointer select-none bg-[#ECF2F2] px-3 py-1.5 rounded-lg border border-[#C9D8D8] shrink-0">
+                    <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-[#578686] text-[#0C723F] focus:ring-[#0C723F] cursor-pointer">
                     <span id="uiShareIncludeCountLabel">Include generated domain count in share text</span>
                 </label>
             </div>
 
             <div>
                 <label id="uiShareUrlLabel" for="shareUrlPreview" class="sr-only">Active Shareable Link</label>
-                <input type="text" id="shareUrlPreview" readonly onclick="this.select()" class="w-full min-h-[44px] px-3.5 py-2 font-mono text-[12px] md:text-[13px] bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" value="">
+                <input type="text" id="shareUrlPreview" readonly onclick="this.select()" class="w-full min-h-[44px] px-3.5 py-2 font-mono text-[12px] md:text-[13px] bg-[#ECF2F2]/60 text-[#292929] border border-[#C9D8D8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2165b3]" value="">
             </div>
 
             <!-- Localized Share Buttons + Universal Copy All -->
             <div class="flex flex-col gap-3 pt-1">
-                <p id="uiLocalizedShareHeading" class="text-[11px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 leading-[1.4]">
+                <p id="uiLocalizedShareHeading" class="text-[11px] uppercase tracking-wider font-semibold text-[#3F3042] leading-[1.4]">
                     Recommended Share Channels
                 </p>
-                <div class="flex flex-wrap items-center gap-3">
-                    <div id="localizedShareButtons" class="flex flex-wrap items-center gap-3"></div>
-                    <button type="button" onclick="copyAllDomainsShare()" id="uiShareCopyAllBtn" class="min-h-[44px] inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-blue-50 dark:hover:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                <div class="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-2.5 sm:gap-3">
+                    <div id="localizedShareButtons" class="contents sm:flex sm:flex-wrap sm:items-center sm:gap-3"></div>
+                    <button type="button" onclick="copyAllDomainsShare()" id="uiShareCopyAllBtn" class="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 bg-[#de3723] hover:bg-[#c52f1d] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#de3723] focus-visible:ring-offset-2">
                         <svg aria-hidden="true" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         <span id="uiShareCopyAllText">Copy All</span>
                     </button>
@@ -649,19 +649,19 @@
             </div>
 
             <!-- Quick Copy Utilities -->
-            <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-                <button type="button" onclick="copyShareLink()" id="uiShareCopyUrlBtn" class="min-h-[40px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-[12px] md:text-[13px] font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+            <div class="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-stretch md:items-center gap-2.5 sm:gap-3 pt-4 border-t border-[#C9D8D8]">
+                <button type="button" onclick="copyShareLink()" id="uiShareCopyUrlBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#2165b3] hover:bg-[#1a5293] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2165b3] focus-visible:ring-offset-2">
                     Copy Link
                 </button>
-                <button type="button" onclick="copyHtmlAnchor()" id="uiShareCopyHtmlBtn" class="min-h-[40px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-[12px] md:text-[13px] font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                <button type="button" onclick="copyHtmlAnchor()" id="uiShareCopyHtmlBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#578686] hover:bg-[#466e6e] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686] focus-visible:ring-offset-2">
                     Copy HTML &lt;a&gt;
                 </button>
-                <button type="button" onclick="copyWhatsAppMessage()" id="uiShareCopyMsgBtn" class="min-h-[40px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-[12px] md:text-[13px] font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
+                <button type="button" onclick="copyWhatsAppMessage()" id="uiShareCopyMsgBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#0C723F] hover:bg-[#095a31] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F] focus-visible:ring-offset-2">
                     Copy Share Text
                 </button>
             </div>
 
-            <p id="shareFeedback" aria-live="polite" class="text-[12px] md:text-[13px] font-medium text-emerald-700 dark:text-emerald-400 min-h-[1rem] hidden"></p>
+            <p id="shareFeedback" aria-live="polite" class="text-[12px] md:text-[13px] font-semibold text-[#0C723F] min-h-[1rem] hidden"></p>
         </section>
 
         <!-- Localized Guide & Educational Content -->
@@ -1370,7 +1370,7 @@
                 keyword2Label: 'Secondary Keyword:',
                 keyword3Label: 'Tertiary Keyword:',
                 extLabel: 'Extensions (e.g. .com, .io):',
-                wordPermLabel: 'Mix Keyword Order',
+                wordPermLabel: 'Word Count',
                 wordPermDesc: 'Automatically mix your keywords into extra name ideas.',
                 wordPermBadgeTpl: 'Orders: {orders} · Ideas: {variants}',
                 wordPermSizeLabel: 'Word Count',
@@ -3269,17 +3269,23 @@
         function getSharePlatformPrimaryClasses(platform) {
             switch (platform) {
                 case 'whatsapp':
-                    return 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm';
+                    return 'bg-[#0C723F] hover:bg-[#095a31] text-[#FFFFFF] shadow-sm focus-visible:ring-[#0C723F]';
                 case 'x':
-                    return 'bg-slate-900 dark:bg-slate-100 hover:bg-slate-800 dark:hover:bg-white text-white dark:text-slate-900 shadow-sm';
+                    return 'bg-[#131354] hover:bg-[#0e0e42] text-[#FFFFFF] shadow-sm focus-visible:ring-[#131354]';
                 case 'telegram':
-                    return 'bg-sky-600 hover:bg-sky-700 text-white shadow-sm';
+                    return 'bg-[#578686] hover:bg-[#466e6e] text-[#FFFFFF] shadow-sm focus-visible:ring-[#578686]';
                 case 'linkedin':
-                    return 'bg-blue-700 hover:bg-blue-800 text-white shadow-sm';
+                    return 'bg-[#2165b3] hover:bg-[#1a5293] text-[#FFFFFF] shadow-sm focus-visible:ring-[#2165b3]';
+                case 'reddit':
+                    return 'bg-[#f05422] hover:bg-[#d64416] text-[#FFFFFF] shadow-sm focus-visible:ring-[#f05422]';
                 case 'email':
-                    return 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm';
+                    return 'bg-[#B87900] hover:bg-[#9c6700] text-[#FFFFFF] shadow-sm focus-visible:ring-[#B87900]';
+                case 'vk':
+                    return 'bg-[#2165b3] hover:bg-[#1a5293] text-[#FFFFFF] shadow-sm focus-visible:ring-[#2165b3]';
+                case 'line':
+                    return 'bg-[#0C723F] hover:bg-[#095a31] text-[#FFFFFF] shadow-sm focus-visible:ring-[#0C723F]';
                 default:
-                    return 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm';
+                    return 'bg-[#669999] hover:bg-[#548282] text-[#FFFFFF] shadow-sm focus-visible:ring-[#669999]';
             }
         }
 
@@ -3305,11 +3311,9 @@
                 const icon = SHARE_PLATFORM_ICONS[btn.platform] || '';
                 const isMail = btn.platform === 'email';
                 const targetAttrs = isMail ? '' : ' target="_blank" rel="nofollow noopener noreferrer"';
-                const styleClasses = btn.primary
-                    ? getSharePlatformPrimaryClasses(btn.platform)
-                    : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700';
+                const styleClasses = getSharePlatformPrimaryClasses(btn.platform);
 
-                return `<a href="${escapeHtmlAttr(href)}"${targetAttrs} data-share-platform="${escapeHtmlAttr(btn.platform)}" class="min-h-[44px] inline-flex items-center justify-center gap-2 ${styleClasses} text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">${icon}<span>${escapeHtmlText(btn.label)}</span></a>`;
+                return `<a href="${escapeHtmlAttr(href)}"${targetAttrs} data-share-platform="${escapeHtmlAttr(btn.platform)}" class="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 ${styleClasses} text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">${icon}<span>${escapeHtmlText(btn.label)}</span></a>`;
             }).join('');
         }
 
@@ -4915,7 +4919,7 @@
 
             if (lastGeneratedDomains.length === 0) {
                 lastVisibleAnalysisDomains = [];
-                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
+                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-[#3F3042] text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = '';
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
                 syncBatchSelectionUi();
@@ -4924,7 +4928,7 @@
 
             if (filtered.length === 0) {
                 lastVisibleAnalysisDomains = [];
-                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
+                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-[#3F3042] text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = (t.analysisShowingTpl || 'Showing {shown} of {total} domains').replace(/\{shown\}/g, '0').replace(/\{total\}/g, String(lastGeneratedDomains.length));
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
                 syncBatchSelectionUi();
@@ -4952,29 +4956,30 @@
                 const globalIdx = domainToGlobalIndex.has(domain) ? domainToGlobalIndex.get(domain) : idx;
                 const availCellHtml = renderAvailabilityCellHtml(domain, globalIdx, t);
                 const isSelected = selectedDomains.has(domain);
+                const rowBgClass = idx % 2 === 1 ? 'bg-[#f9e1d9]' : 'bg-[#FFFFFF]';
 
                 return `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+                    <tr class="${rowBgClass} hover:bg-[#f4cec2] transition-colors">
                         <td class="py-2.5 px-2 sm:px-3 text-center whitespace-nowrap">
-                            <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer align-middle">
+                            <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-[#f05422]/55 bg-[#FFFFFF] text-[#f05422] focus:ring-[#f05422] cursor-pointer align-middle">
                         </td>
-                        <td class="hidden lg:table-cell py-2.5 px-2.5 text-[12px] md:text-[13px] font-mono tabular-nums text-slate-400 dark:text-slate-500 whitespace-nowrap leading-[1.45]">${idx + 1}</td>
-                        <td class="py-2.5 px-2 sm:px-3 font-mono text-[13px] md:text-[14px] font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap leading-[1.45] md:leading-[1.5]">
+                        <td class="hidden lg:table-cell py-2.5 px-2.5 text-[12px] md:text-[13px] font-mono tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${idx + 1}</td>
+                        <td class="py-2.5 px-2 sm:px-3 font-mono text-[13px] md:text-[14px] font-semibold text-[#292929] whitespace-nowrap leading-[1.45] md:leading-[1.5]">
                             <div class="inline-flex items-center gap-1.5 sm:gap-2">
                                 <span>${safeDomain}</span>
-                                <button type="button" data-copy-domain="${safeDomainAttr}" onclick="copySingleDomain(this.getAttribute('data-copy-domain'), this)" title="${copyTitle}" aria-label="${copyTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                                <button type="button" data-copy-domain="${safeDomainAttr}" onclick="copySingleDomain(this.getAttribute('data-copy-domain'), this)" title="${copyTitle}" aria-label="${copyTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]">
                                     <svg aria-hidden="true" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 </button>
                             </div>
                         </td>
-                        <td class="hidden lg:table-cell py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td class="hidden lg:table-cell py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
                         <td data-avail-domain="${safeDomainAttr}" class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">${availCellHtml}</td>
-                        <td class="lg:hidden py-2.5 px-2 sm:px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td class="lg:hidden py-2.5 px-2 sm:px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
                         <td class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">
                             <div class="inline-flex items-center justify-end gap-2">
-                                <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors">BL</a>
-                                <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors">WM</a>
-                                <a href="${escapeHtmlAttr(googleHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${ggTitle}" aria-label="${ggTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">GG</a>
+                                <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#f05422] hover:text-[#f05422] transition-colors">BL</a>
+                                <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#578686] hover:text-[#578686] transition-colors">WM</a>
+                                <a href="${escapeHtmlAttr(googleHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${ggTitle}" aria-label="${ggTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#0C723F] hover:text-[#0C723F] transition-colors">GG</a>
                             </div>
                         </td>
                     </tr>
