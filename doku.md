@@ -164,4 +164,4 @@ Jika akun atau repository GitHub Anda terkena *suspend* atau *limitation* oleh s
 3. **Alternatif 2 — Gunakan GitLab + Cloudflare Pages**:
    - Cloudflare Pages mendukung integrasi Git resmi dengan **GitLab** (`Connect to Git -> GitLab`) selain GitHub.
 4. **Banding Akun GitHub yang Sudah Terlanjur Kena Limit**:
-   - Ajukan permohonan peninjauan resmi di [support.github.com/contact/reinstatement](https://support.github.com/contact/reinstatement) dan jelaskan bahwa repositori adalah utilitas riset penamaan domain & validasi DNS RFC 1035 (*false positive*), serta tidak melakukan aktivitas spam/scraping otomatis.
+   - Ajukan permohonan peninjauan resmi di [support.github.com/contact/reinstatement](https://support.github.com/contact/reinstatement) dan jelaskan bahwa repositori adalah utilitas riset penamaan domain & validasi DNS RFC 1035 (*false positive*), serta tidak melakukan aktivitas spam/scraping otomatis..
