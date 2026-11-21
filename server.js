@@ -90,6 +90,9 @@ app.get('/ads.txt', (_req, res) => {
 app.post('/api/log-available-domain', express.json({ limit: '8kb' }), (req, res) => {
   const domain = String(req.body?.domain || '').trim().toLowerCase();
   const status = String(req.body?.status || '').trim().toLowerCase();
+  const lang = SUPPORTED_LANGUAGES.includes(String(req.body?.lang || '').trim().toLowerCase())
+    ? String(req.body.lang).trim().toLowerCase()
+    : 'en';
   if (status !== 'available' || !domain || domain.length > 25) {
     return res.status(400).json({ ok: false, logged: false, error: 'Only available domains <= 25 chars are accepted.' });
   }
@@ -98,6 +101,7 @@ app.post('/api/log-available-domain', express.json({ limit: '8kb' }), (req, res)
     logged: false,
     skipped: true,
     domain,
+    lang,
     reason: 'Local Express preview (persists to Cloudflare D1 via functions/api/log-available-domain.js in production)'
   });
 });

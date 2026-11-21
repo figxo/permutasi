@@ -4860,10 +4860,14 @@
                 const checkedAt = Number.isFinite(Number(entry.checkedAt)) && Number(entry.checkedAt) > 0
                     ? Number(entry.checkedAt)
                     : Date.now();
+                const activeLang = (typeof currentLang === 'string' && currentLang.trim())
+                    ? currentLang.trim().toLowerCase()
+                    : 'en';
                 const payload = {
                     domain: normDomain,
                     extension: extractDomainExtension(normDomain),
                     charLength: normDomain.length,
+                    lang: activeLang,
                     status: 'available',
                     checkMethod: entry.method === 'NS' ? 'NS' : 'RDAP',
                     checkSource: checkSource === 'auto' ? 'auto' : 'manual',
