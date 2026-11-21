@@ -387,13 +387,13 @@
                             </div>
                         </div>
 
-                        <!-- Box 2: Word Count (Green/Teal Base #669999, White Text) -->
+                        <!-- Box 2: Shuffle Keywords (Green/Teal Base #669999, White Text) -->
                         <div id="wordOrderSeparatorBlock" onclick="setActiveGenerateSlot('basic')" onchange="setActiveGenerateSlot('basic')" onfocusin="setActiveGenerateSlot('basic')" class="bg-[#669999] text-[#FFFFFF] rounded-xl p-4 sm:p-5 md:p-6 shadow-sm flex flex-col gap-4">
                             <div class="flex flex-col gap-2">
                                 <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
                                     <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none min-h-[28px]">
                                         <input type="checkbox" id="fullWordPermCheckbox" checked onchange="setActiveGenerateSlot('basic'); generateDomains()" class="mt-0.5 h-4 w-4 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
-                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-[#FFFFFF] leading-[1.4]">Word Count</span>
+                                        <span id="uiWordPermLabel" class="text-[15px] font-semibold text-[#FFFFFF] leading-[1.4]">Shuffle Keywords</span>
                                     </label>
                                     <span id="wordPermCountBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[12px] font-semibold tabular-nums text-[#FFFFFF] whitespace-nowrap leading-[1.4]">Orders: 1 · Ideas: 1</span>
                                 </div>
@@ -1384,7 +1384,7 @@
                 keyword2Label: 'Secondary Keyword:',
                 keyword3Label: 'Tertiary Keyword:',
                 extLabel: 'Extensions (e.g. .com, .io):',
-                wordPermLabel: 'Word Count',
+                wordPermLabel: 'Shuffle Keywords',
                 wordPermDesc: 'Automatically mix your keywords into extra name ideas.',
                 wordPermBadgeTpl: 'Orders: {orders} · Ideas: {variants}',
                 wordPermSizeLabel: 'Word Count',
