@@ -265,7 +265,7 @@
                 </div>
 
                 <!-- Collapsible Secondary Keywords, Word-Order Permutations & Custom Patterns (< md closed by default, md+ open) -->
-                <details id="advancedOptionsDetails" class="group rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
+                <details id="advancedOptionsDetails" class="scroll-mt-16 md:scroll-mt-20 group rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
                     <summary class="md:hidden flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                         <span class="inline-flex items-center gap-2 min-w-0">
                             <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
@@ -279,11 +279,11 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
-                                <input type="text" id="keyword2Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
+                                <input type="text" id="keyword2Input" value="" oninput="updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
                             </div>
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
-                                <input type="text" id="keyword3Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
+                                <input type="text" id="keyword3Input" value="" oninput="updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
                             </div>
                         </div>
 
@@ -359,6 +359,13 @@
                                 Placeholders: <code>[primary]</code>, <code>[secondary]</code>, <code>[tertiary]</code>, <code>[vowel]</code>, <code>[consonant]</code>, <code>[number]</code>, <code>[dash]</code> (RFC 1035 Sanitized).
                             </p>
                         </div>
+
+                        <!-- Bottom-of-Options Generate Action (Direct Re-Generate Without Scrolling Up) -->
+                        <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                                Generate Domain Names
+                            </button>
+                        </div>
                     </div>
                 </details>
                 <script>
@@ -416,6 +423,14 @@
                     <a id="uiDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBulkCheckerLink(event)" class="min-h-[44px] w-full sm:w-auto sm:ml-auto inline-flex items-center justify-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap">
                         Bulk Check DNSRobot
                     </a>
+                </div>
+
+                <!-- Quick Shortcut to Open & Jump Directly to Secondary Keywords / Custom Pattern -->
+                <div class="flex items-center">
+                    <button type="button" onclick="openAdvancedOptionsAndFocus()" id="uiEditOptionsShortcutBtn" class="min-h-[44px] w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-orange-200 dark:border-orange-800/70 bg-orange-50/70 dark:bg-orange-950/40 hover:bg-orange-100/80 dark:hover:bg-orange-950/70 text-[13px] md:text-[14px] font-semibold text-orange-800 dark:text-orange-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+                        <svg aria-hidden="true" class="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                        <span id="uiEditOptionsShortcutLabel">Edit Keywords &amp; Pattern</span>
+                    </button>
                 </div>
 
                 <!-- Hairline Divider + Interactive Table with BL / WM / GG Shortcuts -->
@@ -2475,6 +2490,7 @@
             en: {
                 navGen: 'Generator', navResults: 'Results', navGuide: 'Guide', navFaq: 'FAQ',
                 advOptionsLabel: 'More Keywords & Custom Options',
+                editOptionsShortcut: 'Edit Keywords & Pattern',
                 thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thInspect: 'Inspect',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archive', ggTitle: 'Google Index (site:)',
                 truncNoticeTpl: 'Showing top {shown} shortest domains out of {total} generated to protect browser & script performance.',
@@ -2499,6 +2515,7 @@
             id: {
                 navGen: 'Generator', navResults: 'Hasil', navGuide: 'Panduan', navFaq: 'FAQ',
                 advOptionsLabel: 'Kata Kunci Tambahan & Opsi Lanjutan',
+                editOptionsShortcut: 'Ubah Kata Kunci & Pola',
                 thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thInspect: 'Cek',
                 blTitle: 'Cek Backlink Ahrefs', wmTitle: 'Arsip Wayback Machine', ggTitle: 'Indeks Google (site:)',
                 truncNoticeTpl: 'Menampilkan {shown} domain terpendek teratas dari total {total} hasil untuk menjaga kecepatan aplikasi.',
@@ -2523,6 +2540,7 @@
             es: {
                 navGen: 'Generador', navResults: 'Resultados', navGuide: 'Guía', navFaq: 'FAQ',
                 advOptionsLabel: 'Más Palabras y Opciones Extra',
+                editOptionsShortcut: 'Editar Palabras y Patrón',
                 thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thInspect: 'Inspección',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Mostrando los {shown} dominios más cortos de {total} generados para mantener el rendimiento.',
@@ -2547,6 +2565,7 @@
             pt: {
                 navGen: 'Gerador', navResults: 'Resultados', navGuide: 'Guia', navFaq: 'FAQ',
                 advOptionsLabel: 'Mais Palavras e Opções Extras',
+                editOptionsShortcut: 'Editar Palavras e Padrão',
                 thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thInspect: 'Analisar',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Arquivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Exibindo os {shown} domínios mais curtos de {total} gerados para preservar o desempenho.',
@@ -2571,6 +2590,7 @@
             fr: {
                 navGen: 'Générateur', navResults: 'Résultats', navGuide: 'Guide', navFaq: 'FAQ',
                 advOptionsLabel: 'Plus de Mots et Options Avancées',
+                editOptionsShortcut: 'Modifier Mots & Modèles',
                 thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thInspect: 'Analyser',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archives Wayback Machine', ggTitle: 'Index Google (site:)',
                 truncNoticeTpl: 'Affichage des {shown} domaines les plus courts sur {total} générés pour optimiser la réactivité.',
@@ -2595,6 +2615,7 @@
             de: {
                 navGen: 'Generator', navResults: 'Ergebnisse', navGuide: 'Leitfaden', navFaq: 'FAQ',
                 advOptionsLabel: 'Weitere Keywords & Optionen',
+                editOptionsShortcut: 'Keywords & Muster ändern',
                 thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thInspect: 'Prüfen',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archiv', ggTitle: 'Google-Index (site:)',
                 truncNoticeTpl: 'Es werden die {shown} kürzesten Domains von insgesamt {total} Ergebnissen angezeigt.',
@@ -2619,6 +2640,7 @@
             ru: {
                 navGen: 'Генератор', navResults: 'Результаты', navGuide: 'Руководство', navFaq: 'FAQ',
                 advOptionsLabel: 'Доп. слова и настройки',
+                editOptionsShortcut: 'Изменить слова и шаблон',
                 thNum: '#', thDomain: 'Домен', thChars: 'Длина', thInspect: 'Проверка',
                 blTitle: 'Проверка обратных ссылок Ahrefs', wmTitle: 'Архив Wayback Machine', ggTitle: 'Индекс Google (site:)',
                 truncNoticeTpl: 'Показаны {shown} самых коротких доменов из {total} сгенерированных для высокой скорости работы.',
@@ -2643,6 +2665,7 @@
             ja: {
                 navGen: 'ジェネレータ', navResults: '結果一覧', navGuide: 'ガイド', navFaq: 'FAQ',
                 advOptionsLabel: '追加キーワードと詳細設定',
+                editOptionsShortcut: 'キーワード・パターンを変更',
                 thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thInspect: '調査',
                 blTitle: 'Ahrefs バックリンク確認', wmTitle: 'Wayback Machine 履歴', ggTitle: 'Google インデックス (site:)',
                 truncNoticeTpl: 'パフォーマンス維持のため、生成された {total} 件のうち文字数が短い上位 {shown} 件を表示しています。',
@@ -3440,8 +3463,12 @@
             document.getElementById('btnVowel').innerText = t.btnVowelText;
             document.getElementById('btnCons').innerText = t.btnConsText;
             document.getElementById('uiGenBtn').innerText = t.genBtn;
+            const advGenBtnEl = document.getElementById('uiAdvGenBtn');
+            if (advGenBtnEl && t.genBtn) advGenBtnEl.innerText = t.genBtn;
             const advOptionsLabelEl = document.getElementById('uiAdvOptionsLabel');
             if (advOptionsLabelEl && t.advOptionsLabel) advOptionsLabelEl.innerText = t.advOptionsLabel;
+            const editShortcutLabelEl = document.getElementById('uiEditOptionsShortcutLabel');
+            if (editShortcutLabelEl && t.editOptionsShortcut) editShortcutLabelEl.innerText = t.editOptionsShortcut;
             document.getElementById('uiCopyBtn').innerText = t.copyBtn;
             document.getElementById('uiDownloadBtn').innerText = t.downloadBtn;
             document.getElementById('uiDnsBtn').innerText = t.dnsBtn;
@@ -3822,6 +3849,33 @@
                 return null;
             }
             return finalDomain;
+        }
+
+        function openAdvancedOptionsAndFocus() {
+            const advEl = document.getElementById('advancedOptionsDetails');
+            const kw2El = document.getElementById('keyword2Input');
+            if (advEl) {
+                advEl.open = true;
+                advEl.setAttribute('open', '');
+                const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                requestAnimationFrame(() => {
+                    advEl.scrollIntoView({
+                        behavior: prefersReduced ? 'auto' : 'smooth',
+                        block: 'start'
+                    });
+                    if (kw2El && typeof kw2El.focus === 'function') {
+                        setTimeout(() => {
+                            try {
+                                kw2El.focus({ preventScroll: true });
+                            } catch (e) {
+                                kw2El.focus();
+                            }
+                        }, prefersReduced ? 0 : 280);
+                    }
+                });
+            } else if (kw2El) {
+                kw2El.focus();
+            }
         }
 
         function generateDomains(options) {
