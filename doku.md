@@ -13,6 +13,8 @@ Berdasarkan audit langsung terhadap seluruh file sumber (`package.json`, `site.c
 | **Keamanan GitHub (`.gitignore`)** | Siap | `node_modules/`, `dist/`, `.env`, `.env.local`, `.env.*.local`, `*.log`, `.DS_Store` sudah dikecualikan agar tidak ikut ter-commit. |
 | **Kebersihan Kode Sumber** | Siap | `site.config.json` bebas dari token/ID sensitif (`measurementId`, `verificationToken`, `publisherId` kosong). Tidak ada `localhost` atau *hardcoded secret* di HTML/JS. |
 | **Build Statis (`npm run build`)** | Siap | Menjalankan `node scripts/build-static.mjs` tanpa bergantung pada `express` atau library native eksternal; menghasilkan **48 file HTML** (`en` di root, `id/es/pt/fr/de/ru/ja` di subdirektori), `robots.txt`, `sitemap.xml`, `_redirects`, `_headers`, `assets/`, dan `ads.txt` (jika `ADSENSE_CLIENT_ID` terisi). |
+| **Validasi Sintaks (`npm run lint`)** | Siap | Memverifikasi `server.js`, `scripts/site-builder.mjs`, `scripts/build-static.mjs`, dan `assets/trust-i18n.js` menggunakan `node --check`. |
+| **Cache Ketersediaan (`localStorage`)** | Siap | Hasil cek DoH/RDAP disimpan di `localStorage` (`domainAvailabilityCacheV1`) dengan kunci lowercase ternormalisasi, TTL (default 6 jam untuk `available`/`taken`, 5 menit untuk `check`), pruning otomatis, fallback aman `try...catch`, serta tombol re-check per baris. |
 | **Cloudflare Secrets / Env Vars** | Siap | `scripts/site-builder.mjs` membaca override dari `process.env` saat proses build Cloudflare berjalan (`SITE_URL`, `CONTACT_EMAIL`, `GA_MEASUREMENT_ID`, `GSC_VERIFICATION`, `ADSENSE_CLIENT_ID`, `ADSENSE_DIRECT_SELLER_ID`, `ADSENSE_ENABLE_AUTO_ADS`, `BING_VERIFICATION`, `YANDEX_VERIFICATION`, `AHREFS_SITE_VERIFICATION`). |
 | **Mode AdSense Non-Auto Ads** | Siap | `enableAutoAdsScript` bernilai `false` di `site.config.json` dan dapat dikontrol via `ADSENSE_ENABLE_AUTO_ADS=false`. Seluruh halaman memiliki penanda kotak putih putus-putus maksimal 2 slot (1 slot di `contact.html`). |
 | **Security & Cache Headers (`_headers`)** | Siap | Build otomatis menghasilkan `dist/_headers` (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, dan `Cache-Control`). |
@@ -164,4 +166,50 @@ Jika akun atau repository GitHub Anda terkena *suspend* atau *limitation* oleh s
 3. **Alternatif 2 — Gunakan GitLab + Cloudflare Pages**:
    - Cloudflare Pages mendukung integrasi Git resmi dengan **GitLab** (`Connect to Git -> GitLab`) selain GitHub.
 4. **Banding Akun GitHub yang Sudah Terlanjur Kena Limit**:
-   - Ajukan permohonan peninjauan resmi di [support.github.com/contact/reinstatement](https://support.github.com/contact/reinstatement) dan jelaskan bahwa repositori adalah utilitas riset penamaan domain & validasi DNS RFC 1035 (*false positive*), serta tidak melakukan aktivitas spam/scraping otomatis..
+   - Ajukan permohonan peninjauan resmi di [support.github.com/contact/reinstatement](https://support.github.com/contact/reinstatement) dan jelaskan bahwa repositori adalah utilitas riset penamaan domain & validasi DNS RFC 1035 (*false positive*), serta tidak melakukan aktivitas spam/scraping otomatis.
+
+---
+
+## 7. Dokumentasi Teknis Fitur Terbaru (`index.html` & `dist/`)
+
+Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cache lokal yang aktif pada aplikasi:
+
+### A. Cache Ketersediaan Domain di `localStorage`
+- **Kunci Penyimpanan**: `domainAvailabilityCacheV1` berisi objek JSON `{ version: 1, entries: { "<domain_lowercase>": { status, rawStatus, method, checkedAt, ttlMs } } }`.
+- **Normalisasi & Status**: Kunci domain selalu dinormalisasi ke huruf kecil (`normalizeDomainCacheKey`). Nilai `status` distandarkan menjadi `available | taken | check` (dengan `rawStatus` menyimpan detail `available | taken | no-ns | error` dan `method` menyimpan `NS | RDAP`).
+- **TTL & Konfigurasi**:
+  - Rentang TTL aman dikunci antara **1 menit** (`60.000 ms`) hingga **24 jam** (`86.400.000 ms`).
+  - Default TTL adalah **6 jam** untuk status `available` dan `taken`, serta **5 menit** untuk status `check` (`no-ns` / `error`).
+  - Dapat dikonfigurasi ulang via `window.__AVAILABILITY_CACHE_TTL_MS__` atau item `localStorage` `domainAvailabilityCacheTtlMs`.
+- **Cache-First Lookup, Hidrasi & Keamanan Kuota**:
+  - Saat `DOMContentLoaded`, `hydrateAvailabilityCacheFromStorage()` memuat entri yang masih valid ke `Map` memori sebelum generasi awal dan pengecekan otomatis berjalan, sehingga reload halaman, filter status (`All`, `Available`, `Taken`, `Check`), serta filter domain tidak memicu query ulang ke DoH/RDAP.
+  - Seluruh baca/tulis `localStorage` dibungkus `try...catch` dengan fallback aman ke memori jika browser memblokir storage atau melebihi kuota (`QuotaExceededError`), disertai *periodic pruning* tiap **5 menit** dan batas maksimal **1.000 entri**.
+- **Force Re-Check (Bypass Cache)**:
+  - Baris berstatus `Available` / `Taken` menampilkan usia cache pada tooltip serta tombol **Re-check** (`data-recheck-domain`) untuk memaksa lookup ulang ke DNS-over-HTTPS / RDAP dan menimpa entri cache; klik eksplisit pada tombol `Check`, `No NS`, atau `Retry` juga memicu pengecekan segar.
+
+### B. Sistem Warna, Layout Responsif & Token Desain
+1. **Form Generator (`#generatorSection`)**:
+   - **Primary Keyword & Extensions**: Latar `#de3723` teks putih dengan tombol **Generate Domain Names** (`#131354`, rata tengah, lebar sesuai isi tombol, border putih tegas, hover kontras `#FFFFFF` / `#131354`).
+   - **Mobile Toggle `Add / Customize`**: Latar biru `#2165b3` dengan teks putih.
+   - **Secondary & Tertiary Keyword**: Latar `#578686` dengan label putih dan input berlatar `#FFFFFF`.
+   - **Shuffle Keywords (Word Count & Separator)**: Latar `#669999` dengan teks putih (`Shuffle Keywords` untuk label bahasa Inggris dari *Acak Urutan Kata Kunci*).
+   - **Add Your Own Patterns**: Latar `#131354` teks putih, tombol sisip placeholder berkode warna berbeda (`+ [primary]`, `+ [secondary]`, `+ [tertiary]`, `+ [dash]`, `+ [number]`, `+ [vowel]`, `+ [consonant]`), serta tombol **Generate Domain Names** oranye tua (`#c83e0c`, rata tengah, lebar sesuai isi tombol, border putih, hover kontras `#FFFFFF` / `#c83e0c`).
+   - Kedua tombol **Generate Domain Names** bekerja secara *mutually exclusive* (`activeGenerateSlot: 'basic' | 'pattern'`).
+2. **Bagian Permutasi & Tabel Analisis (`#domainAnalysisPanel`)**:
+   - Blok `#resultsSection` (*Generated Domain Permutations*) disembunyikan secara aman (`hidden`) tanpa menghapus state maupun logika copy/export/bulk-check.
+   - Kotak header **Domain Availability, Backlink, Archive & Index Data** memakai Soft Teal `#ECF2F2` dengan teks gelap `#292929`.
+   - Tabel domain bernuansa oranye: header `#f05422` teks putih dan baris selang-seling `#FFFFFF` dan `#f9e1d9` (hover `#f4cec2`).
+   - Pada layar mobile/tablet (`< lg`), kolom `#` disembunyikan dan urutan kolom menjadi `DOMAIN NAME` → `AVAILABILITY` → `CHARS` → `INSPECT` (`BL`, `WM`, `GG`).
+   - Tombol batch (`Remove Selected`, `Copy`, `Copy MD`, `Export .txt`, `Bulk Check`) tetap aktif penuh dengan tombol `Bulk Check` bergaya netral sepadan `Copy MD`.
+3. **Share & Export Link (`#shareExportSection`)**:
+   - Responsif penuh: bertumpuk full-width (`grid-cols-1`) di smartphone, sejajar di tablet/desktop (`sm:flex` / `sm:grid-cols-3` / `md:flex`), dengan tombol berwarna-warni selaras palet halaman (`#0C723F`, `#131354`, `#578686`, `#2165b3`, `#f05422`, `#B87900`, `#de3723`).
+4. **Konten Edukasi, FAQ, & Context Cards (`#editorial-design-tokens`)**:
+   - Menggunakan token warna CSS *framework-agnostic* (`--surface-base: #FFFFFF`, `--surface-teal-soft: #ECF2F2`, `--surface-neutral: #EDEDED`, `--surface-teal-accent: #578686`, `--text-primary: #292929`, `--text-secondary: #3F3042`, `--text-on-teal: #FDFEFE`, `--accent-positive: #0C723F`) secara konsisten pada 6 bagian panduan/referensi, **Frequently Asked Questions**, serta kartu **AI Search Engine & Domain Indexing Context** dan **Domain Name Formula Summary**.
+
+### C. Verifikasi Sebelum Commit / Deploy
+Jalankan kedua perintah berikut untuk memastikan sintaks JS dan build statis bersih:
+```bash
+npm run lint
+npm run build
+```
+

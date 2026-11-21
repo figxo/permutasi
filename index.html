@@ -4360,13 +4360,308 @@
 
         const AUTO_CHECK_LIMIT = 5;
         const MAX_CHECK_DOMAIN_LENGTH = 30;
+        const AVAILABILITY_CACHE_STORAGE_KEY = 'domainAvailabilityCacheV1';
+        const AVAILABILITY_CACHE_MIN_TTL_MS = 60 * 1000;
+        const AVAILABILITY_CACHE_MAX_TTL_MS = 24 * 60 * 60 * 1000;
+        const AVAILABILITY_CACHE_DEFAULT_TTL_MS = 6 * 60 * 60 * 1000;
+        const AVAILABILITY_CACHE_CHECK_TTL_MS = 5 * 60 * 1000;
+        const AVAILABILITY_CACHE_MAX_ENTRIES = 1000;
+        const AVAILABILITY_CACHE_PRUNE_INTERVAL_MS = 5 * 60 * 1000;
         const domainAvailabilityCache = new Map();
         const availabilityInFlight = new Map();
         const autoCheckPendingDomains = new Set();
         let autoCheckDebounceTimer = null;
         let autoCheckGenerationId = 0;
         let hasDoneInitialAutoCheck = false;
+        let lastCachePruneAt = 0;
         let ianaRdapBootstrapPromise = null;
+
+        function normalizeDomainCacheKey(domain) {
+            return String(domain || '').trim().toLowerCase();
+        }
+
+        function canonicalizeAvailabilityStatus(rawStatus) {
+            if (rawStatus === 'available') return 'available';
+            if (rawStatus === 'taken') return 'taken';
+            return 'check';
+        }
+
+        function clampAvailabilityTtlMs(ttlMs, fallbackMs) {
+            const parsed = Number(ttlMs);
+            if (!Number.isFinite(parsed) || parsed <= 0) return fallbackMs;
+            return Math.min(AVAILABILITY_CACHE_MAX_TTL_MS, Math.max(AVAILABILITY_CACHE_MIN_TTL_MS, parsed));
+        }
+
+        function getConfiguredAvailabilityTtlMs(status) {
+            const canonical = canonicalizeAvailabilityStatus(status);
+            if (canonical === 'check') return AVAILABILITY_CACHE_CHECK_TTL_MS;
+            let overrideVal = null;
+            if (typeof window !== 'undefined' && window.__AVAILABILITY_CACHE_TTL_MS__ != null) {
+                overrideVal = window.__AVAILABILITY_CACHE_TTL_MS__;
+            } else {
+                try {
+                    const storedTtl = localStorage.getItem('domainAvailabilityCacheTtlMs');
+                    if (storedTtl) overrideVal = storedTtl;
+                } catch (e) {}
+            }
+            return overrideVal != null
+                ? clampAvailabilityTtlMs(overrideVal, AVAILABILITY_CACHE_DEFAULT_TTL_MS)
+                : AVAILABILITY_CACHE_DEFAULT_TTL_MS;
+        }
+
+        function isAvailabilityEntryExpired(entry, nowMs) {
+            if (!entry || typeof entry !== 'object') return true;
+            const checkedAt = Number(entry.checkedAt);
+            if (!Number.isFinite(checkedAt) || checkedAt <= 0) return true;
+            const ttlMs = clampAvailabilityTtlMs(entry.ttlMs, getConfiguredAvailabilityTtlMs(entry.status));
+            return nowMs < checkedAt || (nowMs - checkedAt) >= ttlMs;
+        }
+
+        function normalizeCachedEntry(rawEntry) {
+            if (!rawEntry || typeof rawEntry !== 'object') return null;
+            const rawStatus = typeof rawEntry.rawStatus === 'string' && rawEntry.rawStatus
+                ? rawEntry.rawStatus
+                : (typeof rawEntry.status === 'string' ? rawEntry.status : 'check');
+            const status = canonicalizeAvailabilityStatus(rawEntry.status || rawStatus);
+            const checkedAt = Number(rawEntry.checkedAt);
+            if (!Number.isFinite(checkedAt) || checkedAt <= 0) return null;
+            const ttlMs = clampAvailabilityTtlMs(rawEntry.ttlMs, getConfiguredAvailabilityTtlMs(status));
+            return {
+                status,
+                rawStatus: rawStatus === 'available' || rawStatus === 'taken' || rawStatus === 'no-ns' || rawStatus === 'error'
+                    ? rawStatus
+                    : status,
+                method: typeof rawEntry.method === 'string' ? rawEntry.method : '',
+                checkedAt,
+                ttlMs
+            };
+        }
+
+        function readAvailabilityStorageEntries() {
+            try {
+                if (typeof localStorage === 'undefined') return {};
+                const raw = localStorage.getItem(AVAILABILITY_CACHE_STORAGE_KEY);
+                if (!raw) return {};
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object') {
+                    if (parsed.entries && typeof parsed.entries === 'object' && !Array.isArray(parsed.entries)) {
+                        return parsed.entries;
+                    }
+                    if (!Array.isArray(parsed) && parsed.version == null) {
+                        return parsed;
+                    }
+                }
+            } catch (e) {}
+            return {};
+        }
+
+        function writeAvailabilityStorageEntries(entriesMapObj) {
+            try {
+                if (typeof localStorage === 'undefined') return false;
+                const payload = JSON.stringify({
+                    version: 1,
+                    entries: entriesMapObj
+                });
+                localStorage.setItem(AVAILABILITY_CACHE_STORAGE_KEY, payload);
+                return true;
+            } catch (e) {
+                try {
+                    const keys = Object.keys(entriesMapObj || {})
+                        .sort((a, b) => (Number(entriesMapObj[b]?.checkedAt) || 0) - (Number(entriesMapObj[a]?.checkedAt) || 0))
+                        .slice(0, Math.max(50, Math.floor(AVAILABILITY_CACHE_MAX_ENTRIES / 2)));
+                    const trimmed = {};
+                    keys.forEach((k) => { trimmed[k] = entriesMapObj[k]; });
+                    localStorage.setItem(AVAILABILITY_CACHE_STORAGE_KEY, JSON.stringify({
+                        version: 1,
+                        entries: trimmed
+                    }));
+                    return true;
+                } catch (e2) {
+                    return false;
+                }
+            }
+        }
+
+        function pruneExpiredAvailabilityCache(forcePrune) {
+            const nowMs = Date.now();
+            if (!forcePrune && (nowMs - lastCachePruneAt) < AVAILABILITY_CACHE_PRUNE_INTERVAL_MS) {
+                return;
+            }
+            lastCachePruneAt = nowMs;
+
+            domainAvailabilityCache.forEach((entry, key) => {
+                if (!entry || entry.status === 'checking') return;
+                if (isAvailabilityEntryExpired(entry, nowMs)) {
+                    domainAvailabilityCache.delete(key);
+                }
+            });
+
+            const stored = readAvailabilityStorageEntries();
+            const cleanEntries = {};
+            const validKeys = [];
+            let changed = false;
+
+            Object.keys(stored).forEach((rawKey) => {
+                const normKey = normalizeDomainCacheKey(rawKey);
+                const normalized = normalizeCachedEntry(stored[rawKey]);
+                if (!normKey || !normalized || isAvailabilityEntryExpired(normalized, nowMs)) {
+                    changed = true;
+                    return;
+                }
+                if (normKey !== rawKey) changed = true;
+                cleanEntries[normKey] = normalized;
+                validKeys.push(normKey);
+            });
+
+            if (validKeys.length > AVAILABILITY_CACHE_MAX_ENTRIES) {
+                validKeys.sort((a, b) => cleanEntries[b].checkedAt - cleanEntries[a].checkedAt);
+                const kept = {};
+                validKeys.slice(0, AVAILABILITY_CACHE_MAX_ENTRIES).forEach((k) => {
+                    kept[k] = cleanEntries[k];
+                });
+                writeAvailabilityStorageEntries(kept);
+                return;
+            }
+
+            if (changed) {
+                writeAvailabilityStorageEntries(cleanEntries);
+            }
+        }
+
+        function hydrateAvailabilityCacheFromStorage() {
+            const nowMs = Date.now();
+            const stored = readAvailabilityStorageEntries();
+            const cleanEntries = {};
+            const validKeys = [];
+            let needsPruneWrite = false;
+
+            Object.keys(stored).forEach((rawKey) => {
+                const normKey = normalizeDomainCacheKey(rawKey);
+                const normalized = normalizeCachedEntry(stored[rawKey]);
+                if (!normKey || !normalized || isAvailabilityEntryExpired(normalized, nowMs)) {
+                    needsPruneWrite = true;
+                    return;
+                }
+                if (normKey !== rawKey) needsPruneWrite = true;
+                cleanEntries[normKey] = normalized;
+                validKeys.push(normKey);
+                if (!domainAvailabilityCache.has(normKey)) {
+                    domainAvailabilityCache.set(normKey, normalized);
+                }
+            });
+
+            if (validKeys.length > AVAILABILITY_CACHE_MAX_ENTRIES) {
+                validKeys.sort((a, b) => cleanEntries[b].checkedAt - cleanEntries[a].checkedAt);
+                const kept = {};
+                validKeys.slice(0, AVAILABILITY_CACHE_MAX_ENTRIES).forEach((k) => {
+                    kept[k] = cleanEntries[k];
+                });
+                writeAvailabilityStorageEntries(kept);
+            } else if (needsPruneWrite) {
+                writeAvailabilityStorageEntries(cleanEntries);
+            }
+            lastCachePruneAt = nowMs;
+        }
+
+        function getAvailabilityCacheEntry(domain) {
+            const normKey = normalizeDomainCacheKey(domain);
+            if (!normKey) return null;
+            const nowMs = Date.now();
+            if ((nowMs - lastCachePruneAt) >= AVAILABILITY_CACHE_PRUNE_INTERVAL_MS) {
+                pruneExpiredAvailabilityCache(true);
+            }
+
+            const memEntry = domainAvailabilityCache.get(normKey);
+            if (memEntry) {
+                if (memEntry.status === 'checking') return memEntry;
+                if (!isAvailabilityEntryExpired(memEntry, nowMs)) {
+                    return memEntry;
+                }
+                domainAvailabilityCache.delete(normKey);
+            }
+
+            const stored = readAvailabilityStorageEntries();
+            if (stored && Object.prototype.hasOwnProperty.call(stored, normKey)) {
+                const normalized = normalizeCachedEntry(stored[normKey]);
+                if (normalized && !isAvailabilityEntryExpired(normalized, nowMs)) {
+                    domainAvailabilityCache.set(normKey, normalized);
+                    return normalized;
+                }
+                delete stored[normKey];
+                writeAvailabilityStorageEntries(stored);
+            }
+            return null;
+        }
+
+        function setAvailabilityCacheEntry(domain, entry) {
+            const normKey = normalizeDomainCacheKey(domain);
+            if (!normKey || !entry) return null;
+
+            if (entry.status === 'checking') {
+                const checkingEntry = {
+                    status: 'checking',
+                    rawStatus: 'checking',
+                    method: '',
+                    checkedAt: Date.now(),
+                    ttlMs: AVAILABILITY_CACHE_MIN_TTL_MS
+                };
+                domainAvailabilityCache.set(normKey, checkingEntry);
+                return checkingEntry;
+            }
+
+            const nowMs = Date.now();
+            const rawStatus = entry.rawStatus || entry.status || 'check';
+            const status = canonicalizeAvailabilityStatus(rawStatus);
+            const persistedEntry = {
+                status,
+                rawStatus,
+                method: typeof entry.method === 'string' ? entry.method : '',
+                checkedAt: Number.isFinite(Number(entry.checkedAt)) && Number(entry.checkedAt) > 0
+                    ? Number(entry.checkedAt)
+                    : nowMs,
+                ttlMs: getConfiguredAvailabilityTtlMs(status)
+            };
+
+            domainAvailabilityCache.set(normKey, persistedEntry);
+
+            const stored = readAvailabilityStorageEntries();
+            const cleanEntries = {};
+            const validKeys = [];
+            Object.keys(stored).forEach((k) => {
+                const nk = normalizeDomainCacheKey(k);
+                if (!nk || nk === normKey) return;
+                const norm = normalizeCachedEntry(stored[k]);
+                if (norm && !isAvailabilityEntryExpired(norm, nowMs)) {
+                    cleanEntries[nk] = norm;
+                    validKeys.push(nk);
+                }
+            });
+            cleanEntries[normKey] = persistedEntry;
+            validKeys.push(normKey);
+
+            if (validKeys.length > AVAILABILITY_CACHE_MAX_ENTRIES) {
+                validKeys.sort((a, b) => cleanEntries[b].checkedAt - cleanEntries[a].checkedAt);
+                const capped = {};
+                validKeys.slice(0, AVAILABILITY_CACHE_MAX_ENTRIES).forEach((k) => {
+                    capped[k] = cleanEntries[k];
+                });
+                writeAvailabilityStorageEntries(capped);
+            } else {
+                writeAvailabilityStorageEntries(cleanEntries);
+            }
+            return persistedEntry;
+        }
+
+        function formatCacheAgeLabel(checkedAt) {
+            const ts = Number(checkedAt);
+            if (!Number.isFinite(ts) || ts <= 0) return '';
+            const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+            if (diffSec < 60) return 'just now';
+            const diffMin = Math.floor(diffSec / 60);
+            if (diffMin < 60) return `${diffMin}m ago`;
+            const diffHr = Math.floor(diffMin / 60);
+            return `${diffHr}h ago`;
+        }
 
         const KNOWN_RDAP_SERVERS = {
             com: 'https://rdap.verisign.com/com/v1/',
@@ -4513,7 +4808,7 @@
 
         function matchesAvailabilityFilter(domain, statusFilter) {
             if (!statusFilter || statusFilter === 'all') return true;
-            const entry = domainAvailabilityCache.get(domain);
+            const entry = getAvailabilityCacheEntry(domain);
             if (statusFilter === 'available') {
                 return Boolean(entry && entry.status === 'available');
             }
@@ -4527,9 +4822,10 @@
             return true;
         }
 
-        function updateDomainAvailabilityCell(domain) {
+        function updateDomainAvailabilityCell(domain, isCheckingTransition) {
+            const normTarget = normalizeDomainCacheKey(domain);
             const statusFilter = getAnalysisFilterStatus();
-            if (statusFilter === 'available' || statusFilter === 'taken') {
+            if (!isCheckingTransition && (statusFilter === 'available' || statusFilter === 'taken')) {
                 renderDomainAnalysisList(false);
                 return;
             }
@@ -4539,44 +4835,52 @@
             const t = dict[currentLang] || dict.en;
             const globalIdx = lastGeneratedDomains.indexOf(domain);
             for (let i = 0; i < cells.length; i++) {
-                if (cells[i].getAttribute('data-avail-domain') === domain) {
+                if (normalizeDomainCacheKey(cells[i].getAttribute('data-avail-domain')) === normTarget) {
                     cells[i].innerHTML = renderAvailabilityCellHtml(domain, globalIdx, t);
                 }
             }
         }
 
         async function checkSingleDomainAvailability(domain, forceRecheck) {
-            if (!domain || domain.length > MAX_CHECK_DOMAIN_LENGTH) return;
+            const normDomain = normalizeDomainCacheKey(domain);
+            if (!normDomain || normDomain.length > MAX_CHECK_DOMAIN_LENGTH) return;
             if (!forceRecheck) {
-                const existing = domainAvailabilityCache.get(domain);
-                if (existing && (existing.status === 'available' || existing.status === 'taken' || existing.status === 'checking')) {
-                    return;
+                const existing = getAvailabilityCacheEntry(normDomain);
+                if (existing && (existing.status === 'available' || existing.status === 'taken' || existing.status === 'checking' || existing.rawStatus === 'no-ns')) {
+                    updateDomainAvailabilityCell(domain, false);
+                    return existing;
                 }
             }
-            if (availabilityInFlight.has(domain)) {
-                return availabilityInFlight.get(domain);
+            if (availabilityInFlight.has(normDomain)) {
+                return availabilityInFlight.get(normDomain);
             }
 
             const task = (async () => {
-                domainAvailabilityCache.set(domain, { status: 'checking', method: '' });
-                updateDomainAvailabilityCell(domain);
+                setAvailabilityCacheEntry(normDomain, { status: 'checking', method: '' });
+                updateDomainAvailabilityCell(domain, true);
 
-                const nsResult = await checkNsViaDoh(domain);
+                const nsResult = await checkNsViaDoh(normDomain);
                 if (nsResult.ok && nsResult.hasNs) {
-                    domainAvailabilityCache.set(domain, { status: 'taken', method: 'NS' });
-                    updateDomainAvailabilityCell(domain);
-                    return;
+                    const saved = setAvailabilityCacheEntry(normDomain, { status: 'taken', rawStatus: 'taken', method: 'NS' });
+                    updateDomainAvailabilityCell(domain, false);
+                    return saved;
                 }
 
-                const rdapResult = await checkRdapAvailability(domain);
-                domainAvailabilityCache.set(domain, rdapResult);
-                updateDomainAvailabilityCell(domain);
+                const rdapResult = await checkRdapAvailability(normDomain);
+                const saved = setAvailabilityCacheEntry(normDomain, {
+                    status: canonicalizeAvailabilityStatus(rdapResult.status),
+                    rawStatus: rdapResult.status,
+                    method: rdapResult.method || ''
+                });
+                updateDomainAvailabilityCell(domain, false);
+                return saved;
             })().finally(() => {
                 autoCheckPendingDomains.delete(domain);
-                availabilityInFlight.delete(domain);
+                autoCheckPendingDomains.delete(normDomain);
+                availabilityInFlight.delete(normDomain);
             });
 
-            availabilityInFlight.set(domain, task);
+            availabilityInFlight.set(normDomain, task);
             return task;
         }
 
@@ -4593,8 +4897,8 @@
             if (targets.length === 0) return;
 
             const queue = targets.filter((d) => {
-                const cached = domainAvailabilityCache.get(d);
-                return !cached || cached.status === 'error';
+                const cached = getAvailabilityCacheEntry(d);
+                return !cached || cached.rawStatus === 'error';
             });
             queue.forEach((d) => autoCheckPendingDomains.add(d));
             if (queue.length === 0) return;
@@ -4627,8 +4931,8 @@
                 return `<span title="${overLimitTitle}" class="inline-flex items-center px-2 py-1 text-[11px] font-medium rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border border-slate-200/80 dark:border-slate-700/70 whitespace-nowrap select-none">${overLimitLabel}</span>`;
             }
 
-            const entry = domainAvailabilityCache.get(domain);
-            const isAutoPending = autoCheckPendingDomains.has(domain);
+            const entry = getAvailabilityCacheEntry(domain);
+            const isAutoPending = autoCheckPendingDomains.has(domain) || autoCheckPendingDomains.has(normalizeDomainCacheKey(domain));
             const safeDomainAttr = escapeHtmlAttr(domain);
 
             const checkLabel = escapeHtmlText(t.availCheckBtn || 'Check');
@@ -4637,23 +4941,27 @@
             const takenLabel = escapeHtmlText(t.availTaken || 'Taken');
             const noNsLabel = escapeHtmlText(t.availNoNs || 'No NS');
             const retryLabel = escapeHtmlText(t.availRetry || 'Retry');
+            const recheckTitle = escapeHtmlAttr(t.availRecheckTitle || 'Re-check availability (bypass cache)');
 
             if (entry) {
+                const ageText = formatCacheAgeLabel(entry.checkedAt);
+                const ageSuffix = ageText ? ` · Checked ${ageText}` : '';
+
                 if (entry.status === 'checking') {
                     return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
                 }
                 if (entry.status === 'available') {
-                    return `<span title="NS empty · RDAP 404" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 whitespace-nowrap">${availableLabel}</span>`;
+                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr('NS empty · RDAP 404' + ageSuffix)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 whitespace-nowrap">${availableLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true)" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
                 }
                 if (entry.status === 'taken') {
-                    const methodNote = entry.method === 'NS' ? 'NS Record found' : 'RDAP 200';
-                    return `<span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span>`;
+                    const methodNote = (entry.method === 'NS' ? 'NS Record found' : 'RDAP 200') + ageSuffix;
+                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true)" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
                 }
-                if (entry.status === 'no-ns') {
-                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="No NS record (RDAP unavailable for this TLD)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${noNsLabel}</button>`;
+                if (entry.rawStatus === 'no-ns') {
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="${escapeHtmlAttr('No NS record (RDAP unavailable for this TLD)' + ageSuffix + ' — Click to re-check')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${noNsLabel}</button>`;
                 }
-                if (entry.status === 'error') {
-                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${retryLabel}</button>`;
+                if (entry.rawStatus === 'error') {
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="${escapeHtmlAttr('Lookup failed' + ageSuffix + ' — Click to retry')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${retryLabel}</button>`;
                 }
             }
 
@@ -4661,7 +4969,7 @@
                 return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
             }
 
-            return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), false)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
+            return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
         }
 
         function getBatchTargetDomains() {
@@ -5294,6 +5602,10 @@
 
         // Initialize on load (defaults cleanly to 'en' for Global SEO when ?lang= is omitted, supports ?kw=, ?kw2=, ?kw3= and GAS injected params)
         window.addEventListener('DOMContentLoaded', function() {
+            hydrateAvailabilityCacheFromStorage();
+            setInterval(function() {
+                pruneExpiredAvailabilityCache(false);
+            }, AVAILABILITY_CACHE_PRUNE_INTERVAL_MS);
             setActiveGenerateSlot('basic');
             const urlParams = new URLSearchParams(window.location.search);
             const gasParams = (typeof window !== 'undefined' && window.__GAS_INIT_PARAMS__) ? window.__GAS_INIT_PARAMS__ : {};
