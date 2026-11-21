@@ -533,15 +533,15 @@
 
         <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
         <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] p-4 sm:p-6 md:p-7 flex flex-col gap-4 md:gap-5 min-w-0">
-            <div class="bg-[#B87900] text-[#FFFFFF] rounded-xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-sm">
+            <div class="bg-[#ECF2F2] text-[#292929] border border-[#C9D8D8] rounded-xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-sm">
                 <div class="flex flex-col gap-1.5 min-w-0">
-                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#FFFFFF] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
-                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#FFFFFF]/95 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
+                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#292929] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
+                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#292929]/90 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto shrink-0">
                     <div class="w-full sm:w-48 shrink-0">
                         <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
-                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#B87900] cursor-pointer">
+                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686] cursor-pointer">
                             <option id="uiStatusOptAll" value="all">Select Status: All</option>
                             <option id="uiStatusOptAvailable" value="available">Available</option>
                             <option id="uiStatusOptTaken" value="taken">Taken</option>
@@ -550,7 +550,7 @@
                     </div>
                     <div class="w-full sm:w-60 md:w-64 shrink-0">
                         <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#B87900]" placeholder="Filter domains (e.g. .com, -0)...">
+                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686]" placeholder="Filter domains (e.g. .com, -0)...">
                     </div>
                 </div>
             </div>
@@ -1036,15 +1036,25 @@
             </div>
         </section>
 
-        <!-- Semantic Context Micro-Copy (Crawlable & Clean) -->
-        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
-            <div class="py-5 px-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-                <h2 id="uiSectionAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Domain Indexing &amp; Validation Context</h2>
-                <p id="aiCrawlerMicroCopy">This domain research page dynamically generates domain name combination matrices for primary keyword "business", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.</p>
+        <!-- Semantic Context Micro-Copy (Crawlable & Clean, Styled Like FAQ) -->
+        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] leading-[1.6]">
+            <div class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-5 md:p-6 flex flex-col gap-4">
+                <div class="edu-callout-header rounded-xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2">
+                    <h2 id="uiSectionAiTitle" class="edu-heading text-[16px] sm:text-[17px] md:text-[18px] font-bold leading-[1.35]">AI Search Engine &amp; Domain Indexing Context</h2>
+                    <span aria-hidden="true" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider text-[#FDFEFE] shrink-0">INDEX</span>
+                </div>
+                <div class="edu-card-soft rounded-xl p-4 sm:p-5 flex-1">
+                    <p id="aiCrawlerMicroCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">This domain research page dynamically generates domain name combination matrices for primary keyword "business", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.</p>
+                </div>
             </div>
-            <div id="aiBottomNarrativeSection" class="py-5 px-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-                <h2 id="uiBottomAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Domain Name Formula Summary</h2>
-                <p id="aiBottomNarrativeCopy">The domain permutation list for "business" uses numeric digit variations and hyphen (dash) variations based on the "[primary] + [dash] + [number]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
+            <div id="aiBottomNarrativeSection" class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-5 md:p-6 flex flex-col gap-4">
+                <div class="edu-callout-header rounded-xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2">
+                    <h2 id="uiBottomAiTitle" class="edu-heading text-[16px] sm:text-[17px] md:text-[18px] font-bold leading-[1.35]">Domain Name Formula Summary</h2>
+                    <span aria-hidden="true" class="edu-badge-positive inline-flex items-center px-2.5 py-0.5 rounded-md border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider shrink-0">RFC 1035</span>
+                </div>
+                <div class="edu-card-neutral rounded-xl p-4 sm:p-5 flex-1">
+                    <p id="aiBottomNarrativeCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">The domain permutation list for "business" uses numeric digit variations and hyphen (dash) variations based on the "[primary] + [dash] + [number]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
+                </div>
             </div>
         </section>
     </main>
