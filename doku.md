@@ -206,7 +206,14 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 4. **Konten Edukasi, FAQ, & Context Cards (`#editorial-design-tokens`)**:
    - Menggunakan token warna CSS *framework-agnostic* (`--surface-base: #FFFFFF`, `--surface-teal-soft: #ECF2F2`, `--surface-neutral: #EDEDED`, `--surface-teal-accent: #578686`, `--text-primary: #292929`, `--text-secondary: #3F3042`, `--text-on-teal: #FDFEFE`, `--accent-positive: #0C723F`) secara konsisten pada 6 bagian panduan/referensi, **Frequently Asked Questions**, serta kartu **AI Search Engine & Domain Indexing Context** dan **Domain Name Formula Summary**.
 
-### C. Verifikasi Sebelum Commit / Deploy
+### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
+- **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
+- **Auto-Bootstrap Schema (`db.batch`)**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains` dan 3 indeks (`idx_available_domains_checked_at`, `idx_available_domains_extension`, `idx_available_domains_char_length`) jika belum ada.
+- **Kolom & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, lalu melakukan upsert (`ON CONFLICT(domain) DO UPDATE`) untuk `domain` (`PRIMARY KEY`), `extension` (mis. `.io`, `.com`, `.web.id`), `char_length`, `check_method` (`RDAP` / `NS`), `check_source` (`auto` / `manual`), `checked_at` (epoch ms), dan `checked_at_iso`.
+- **Konfigurasi `wrangler.toml`**: Menyediakan binding `[[d1_databases]]` dengan `binding = "DB"` dan `pages_build_output_dir = "dist"`. Buat database via `npx wrangler d1 create domainname_available_domains` lalu isi `database_id` di `wrangler.toml` (atau hubungkan binding `DB` di **Cloudflare Pages -> Settings -> Functions -> D1 database bindings**).
+- **Trigger Sisi Klien**: Setiap pengecekan jaringan segar (*non-cache hit*) yang menghasilkan `available` dengan `domain.length <= 25` mengirim `POST` non-blocking (`keepalive: true`) ke `/api/log-available-domain` (`checkSource: 'auto'` untuk cek otomatis, `'manual'` untuk klik tombol cek/re-check). Error jaringan diabaikan diam-diam agar UI tetap responsif.
+
+### D. Verifikasi Sebelum Commit / Deploy
 Jalankan kedua perintah berikut untuk memastikan sintaks JS dan build statis bersih:
 ```bash
 npm run lint
