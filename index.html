@@ -4841,9 +4841,49 @@
             }
         }
 
-        async function checkSingleDomainAvailability(domain, forceRecheck) {
+        const AVAILABLE_DOMAIN_LOG_MAX_LENGTH = 25;
+        const AVAILABLE_DOMAIN_LOG_ENDPOINT = '/api/log-available-domain';
+
+        function extractDomainExtension(domain) {
+            const norm = normalizeDomainCacheKey(domain);
+            const dotIdx = norm.indexOf('.');
+            return dotIdx > 0 ? norm.slice(dotIdx) : '';
+        }
+
+        function logAvailableDomainToD1(domain, entry, checkSource) {
+            try {
+                const normDomain = normalizeDomainCacheKey(domain);
+                if (!normDomain || normDomain.length > AVAILABLE_DOMAIN_LOG_MAX_LENGTH) return;
+                if (!entry || entry.status !== 'available') return;
+                if (typeof fetch !== 'function') return;
+
+                const checkedAt = Number.isFinite(Number(entry.checkedAt)) && Number(entry.checkedAt) > 0
+                    ? Number(entry.checkedAt)
+                    : Date.now();
+                const payload = {
+                    domain: normDomain,
+                    extension: extractDomainExtension(normDomain),
+                    charLength: normDomain.length,
+                    status: 'available',
+                    checkMethod: entry.method === 'NS' ? 'NS' : 'RDAP',
+                    checkSource: checkSource === 'auto' ? 'auto' : 'manual',
+                    checkedAt,
+                    checkedAtIso: new Date(checkedAt).toISOString()
+                };
+
+                fetch(AVAILABLE_DOMAIN_LOG_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                    keepalive: true
+                }).catch(() => {});
+            } catch (e) {}
+        }
+
+        async function checkSingleDomainAvailability(domain, forceRecheck, checkSource) {
             const normDomain = normalizeDomainCacheKey(domain);
             if (!normDomain || normDomain.length > MAX_CHECK_DOMAIN_LENGTH) return;
+            const normalizedSource = checkSource === 'auto' ? 'auto' : 'manual';
             if (!forceRecheck) {
                 const existing = getAvailabilityCacheEntry(normDomain);
                 if (existing && (existing.status === 'available' || existing.status === 'taken' || existing.status === 'checking' || existing.rawStatus === 'no-ns')) {
@@ -4873,6 +4913,9 @@
                     method: rdapResult.method || ''
                 });
                 updateDomainAvailabilityCell(domain, false);
+                if (saved && saved.status === 'available' && normDomain.length <= AVAILABLE_DOMAIN_LOG_MAX_LENGTH) {
+                    logAvailableDomainToD1(normDomain, saved, normalizedSource);
+                }
                 return saved;
             })().finally(() => {
                 autoCheckPendingDomains.delete(domain);
@@ -4916,7 +4959,7 @@
                         if (genId !== autoCheckGenerationId) return;
                         const nextDomain = activeQueue[cursor++];
                         if (!autoCheckPendingDomains.has(nextDomain)) continue;
-                        await checkSingleDomainAvailability(nextDomain, false);
+                        await checkSingleDomainAvailability(nextDomain, false, 'auto');
                     }
                 });
                 await Promise.all(workers);
@@ -4951,17 +4994,17 @@
                     return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
                 }
                 if (entry.status === 'available') {
-                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr('NS empty · RDAP 404' + ageSuffix)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 whitespace-nowrap">${availableLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true)" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
+                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr('NS empty · RDAP 404' + ageSuffix)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 whitespace-nowrap">${availableLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true, 'manual')" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
                 }
                 if (entry.status === 'taken') {
                     const methodNote = (entry.method === 'NS' ? 'NS Record found' : 'RDAP 200') + ageSuffix;
-                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true)" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
+                    return `<span class="inline-flex items-center gap-1 whitespace-nowrap"><span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span><button type="button" data-recheck-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-recheck-domain'), true, 'manual')" title="${recheckTitle}" aria-label="${recheckTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]"><svg aria-hidden="true" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg></button></span>`;
                 }
                 if (entry.rawStatus === 'no-ns') {
-                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="${escapeHtmlAttr('No NS record (RDAP unavailable for this TLD)' + ageSuffix + ' — Click to re-check')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${noNsLabel}</button>`;
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true, 'manual')" title="${escapeHtmlAttr('No NS record (RDAP unavailable for this TLD)' + ageSuffix + ' — Click to re-check')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${noNsLabel}</button>`;
                 }
                 if (entry.rawStatus === 'error') {
-                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="${escapeHtmlAttr('Lookup failed' + ageSuffix + ' — Click to retry')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${retryLabel}</button>`;
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true, 'manual')" title="${escapeHtmlAttr('Lookup failed' + ageSuffix + ' — Click to retry')}" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-[#f05422] hover:text-[#f05422] transition-colors whitespace-nowrap">${retryLabel}</button>`;
                 }
             }
 
@@ -4969,7 +5012,7 @@
                 return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
             }
 
-            return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
+            return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true, 'manual')" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
         }
 
         function getBatchTargetDomains() {

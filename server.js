@@ -87,6 +87,21 @@ app.get('/ads.txt', (_req, res) => {
   res.type('text/plain').send(adsTxt);
 });
 
+app.post('/api/log-available-domain', express.json({ limit: '8kb' }), (req, res) => {
+  const domain = String(req.body?.domain || '').trim().toLowerCase();
+  const status = String(req.body?.status || '').trim().toLowerCase();
+  if (status !== 'available' || !domain || domain.length > 25) {
+    return res.status(400).json({ ok: false, logged: false, error: 'Only available domains <= 25 chars are accepted.' });
+  }
+  return res.status(202).json({
+    ok: true,
+    logged: false,
+    skipped: true,
+    domain,
+    reason: 'Local Express preview (persists to Cloudflare D1 via functions/api/log-available-domain.js in production)'
+  });
+});
+
 app.use(express.static(path.join(__dirname), { index: false }));
 
 app.listen(PORT, '0.0.0.0', () => {

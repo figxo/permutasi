@@ -1,0 +1,11 @@
+name = "domainname-web-id"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+# Cloudflare D1 Database Binding (used by functions/api/log-available-domain.js via context.env.DB)
+# Create the database with: npx wrangler d1 create domainname_available_domains
+# Then replace <YOUR_CLOUDFLARE_D1_DATABASE_ID> with the generated database_id
+[[d1_databases]]
+binding = "DB"
+database_name = "domainname_available_domains"
+database_id = "<YOUR_CLOUDFLARE_D1_DATABASE_ID>"
