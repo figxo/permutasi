@@ -195,7 +195,7 @@
 
         <!-- Mobile Slide-Down Drawer -->
         <div id="mobileNavDrawer" class="hidden lg:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-4 py-3 shadow-sm">
-            <nav aria-label="Mobile Navigation" class="flex flex-col space-y-1 text-sm font-medium">
+            <nav aria-label="Mobile Navigation" class="flex flex-col gap-1 text-sm font-medium">
                 <a href="#generatorSection" onclick="closeMobileMenu()" id="uiMobileNavGen" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Generator</a>
                 <a href="#resultsSection" onclick="closeMobileMenu()" id="uiMobileNavResults" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Results</a>
                 <a href="#localizedEducationalContent" onclick="closeMobileMenu()" id="uiMobileNavGuide" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Guide</a>
@@ -212,10 +212,10 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-8 md:py-10 space-y-5 sm:space-y-7 md:space-y-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:py-8 md:py-10 flex flex-col gap-9 sm:gap-9 md:gap-10">
 
         <!-- Hero Section -->
-        <section class="max-w-4xl space-y-2 sm:space-y-2.5">
+        <section class="max-w-4xl flex flex-col gap-2.5 md:gap-3">
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs font-mono tracking-wide text-slate-500 dark:text-slate-400 leading-[1.3]">domainname.web.id</span>
                 <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-mono font-semibold uppercase tracking-wider bg-orange-50 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800/70">
@@ -232,10 +232,10 @@
         </section>
 
         <!-- Core Multi-Column Workspace (Single-Column Mobile, 12-Col Desktop) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 lg:gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-9 md:gap-7 lg:gap-8 items-start">
 
             <!-- Column 1: Generator Form Card -->
-            <section id="generatorSection" aria-labelledby="uiSectionGenTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 md:space-y-6 min-w-0">
+            <section id="generatorSection" aria-labelledby="uiSectionGenTitle" class="lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5 md:gap-6 min-w-0">
                 <div class="flex items-start gap-3">
                     <span aria-hidden="true" class="mt-0.5 w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
@@ -246,19 +246,19 @@
                 </div>
 
                 <!-- Primary Keyword & Extensions (Always Above-the-Fold) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                    <div>
-                        <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Primary Keyword:</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="flex flex-col gap-2 min-w-0">
+                        <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.4]">Primary Keyword:</label>
                         <input type="text" id="keywordInput" value="domain" oninput="updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: calc, shop">
                     </div>
-                    <div>
-                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.4]">Extensions (e.g. .com, .io):</label>
+                    <div class="flex flex-col gap-2 min-w-0">
+                        <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.4]">Extensions (e.g. .com, .io):</label>
                         <input type="text" id="extInput" value=".com, .net, .io, .org" oninput="generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder=".net, .com, .io">
                     </div>
                 </div>
 
                 <!-- Primary Touch-Friendly Action Button (Directly Visible Above-the-Fold) -->
-                <div>
+                <div class="pt-1">
                     <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="min-h-[44px] w-full px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[15px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                         Generate Domain Names
                     </button>
@@ -266,7 +266,7 @@
 
                 <!-- Collapsible Secondary Keywords, Word-Order Permutations & Custom Patterns (< md closed by default, md+ open) -->
                 <details id="advancedOptionsDetails" class="group rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 md:border-0 md:bg-transparent">
-                    <summary class="md:hidden flex items-center justify-between gap-3 px-3.5 py-2.5 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
+                    <summary class="md:hidden flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500">
                         <span class="inline-flex items-center gap-2 min-w-0">
                             <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                             <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-slate-800 dark:text-slate-100 leading-[1.4]">More Keywords &amp; Custom Options</span>
@@ -274,23 +274,23 @@
                         <svg aria-hidden="true" class="w-4 h-4 text-orange-600 dark:text-orange-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </summary>
 
-                    <div class="px-3.5 pb-4 pt-3.5 md:p-0 space-y-4 md:space-y-5 border-t border-slate-200 dark:border-slate-800 md:border-t-0">
+                    <div class="px-4 py-5 md:p-0 flex flex-col gap-5 border-t border-slate-200 dark:border-slate-800 md:border-t-0">
                         <!-- Secondary & Tertiary Keywords -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                            <div>
-                                <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-2 min-w-0">
+                                <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Secondary Keyword:</label>
                                 <input type="text" id="keyword2Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: pro, online">
                             </div>
-                            <div>
-                                <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold mb-1.5 text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
+                            <div class="flex flex-col gap-2 min-w-0">
+                                <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-slate-700 dark:text-slate-200 leading-[1.45]">Tertiary Keyword:</label>
                                 <input type="text" id="keyword3Input" value="" oninput="updateDynamicSEO(); generateDomains();" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Example: app, hub">
                             </div>
                         </div>
 
                         <!-- Hairline Section: Word Order & Separator -->
-                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3.5">
-                            <div class="space-y-1.5">
-                                <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
+                        <div class="pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-1.5">
                                     <label for="fullWordPermCheckbox" class="inline-flex items-start gap-2.5 cursor-pointer select-none min-h-[28px]">
                                         <input type="checkbox" id="fullWordPermCheckbox" checked onchange="generateDomains()" class="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer shrink-0">
                                         <span id="uiWordPermLabel" class="text-[15px] font-semibold text-slate-900 dark:text-white leading-[1.4]">Mix Keyword Order</span>
@@ -300,8 +300,8 @@
                                 <p id="uiWordPermDesc" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Automatically mix your keywords into extra name ideas.</p>
                             </div>
 
-                            <div id="wordPermOptionsWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
-                                <div class="space-y-1.5">
+                            <div id="wordPermOptionsWrap" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-0.5">
+                                <div class="flex flex-col gap-2.5">
                                     <span id="uiWordPermSizeLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Word Count</span>
                                     <div class="grid grid-cols-3 gap-2">
                                         <label for="wordPerm1Checkbox" class="inline-flex items-center justify-center gap-2 min-h-[44px] px-2.5 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[14px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
 
-                                <div class="space-y-1.5">
+                                <div class="flex flex-col gap-2.5">
                                     <span id="uiWordPermFormatLabel" class="block text-[12px] font-semibold text-slate-600 dark:text-slate-400 leading-[1.4]">Separator</span>
                                     <div class="flex flex-wrap gap-2">
                                         <label for="wordPermDashCheckbox" class="flex-1 min-w-[115px] inline-flex items-center justify-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-600 text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none whitespace-nowrap transition-colors">
@@ -336,7 +336,7 @@
                         </div>
 
                         <!-- Hairline Section: Add Your Own Patterns -->
-                        <div class="pt-4 md:pt-5 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
+                        <div class="pt-5 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-3">
                             <div class="flex items-center justify-between gap-2">
                                 <label for="formulaInput" id="uiFormulaLabel" class="block text-[15px] font-semibold text-slate-800 dark:text-slate-200 leading-[1.45]">Add Your Own Patterns:</label>
                                 <button type="button" onclick="clearFormula()" id="uiClearBtn" class="min-h-[36px] px-2.5 py-1 text-[13px] font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-md transition-colors whitespace-nowrap shrink-0">
@@ -345,7 +345,7 @@
                             </div>
                             <textarea id="formulaInput" rows="2" oninput="generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
 
-                            <div class="flex flex-wrap gap-1.5 sm:gap-2 items-center">
+                            <div class="flex flex-wrap gap-2 items-center">
                                 <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mr-1 leading-[1.4]">Click to insert:</span>
                                 <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [primary]</button>
                                 <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [secondary]</button>
@@ -378,17 +378,17 @@
             </section>
 
             <!-- Column 2: Results Output & Analysis Table Card -->
-            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="scroll-mt-16 md:scroll-mt-20 lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4 sm:space-y-5 min-w-0">
-                <div class="space-y-1.5">
+            <section id="resultsSection" aria-labelledby="uiSectionResTitle" class="scroll-mt-16 md:scroll-mt-20 lg:col-span-6 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5 min-w-0">
+                <div class="flex flex-col gap-2.5">
                     <div class="flex items-start gap-3">
                         <span aria-hidden="true" class="mt-0.5 w-7 h-7 rounded-lg bg-orange-50 dark:bg-orange-950/60 border border-orange-200/80 dark:border-orange-800/60 flex items-center justify-center text-orange-600 dark:text-orange-400 shrink-0">
                             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                         </span>
-                        <div class="min-w-0">
+                        <div class="flex flex-col gap-1.5 min-w-0">
                             <h2 id="uiSectionResTitle" class="text-[16px] sm:text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">
                                 Generated Domain Permutations
                             </h2>
-                            <div class="mt-1 flex items-center gap-2">
+                            <div class="flex items-center gap-2">
                                 <span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0"></span>
                                 <div id="statsBar" class="text-[13px] md:text-[14px] font-semibold text-orange-700 dark:text-orange-300 tabular-nums leading-[1.45]">
                                     Total Domains Generated: 0
@@ -406,7 +406,7 @@
                 </div>
 
                 <!-- Result Actions (Copy / Download / Bulk Check) -->
-                <div class="flex flex-wrap gap-2.5">
+                <div class="flex flex-wrap gap-3 pt-1">
                     <button type="button" onclick="copyToClipboard()" id="uiCopyBtn" class="min-h-[44px] flex-1 sm:flex-initial px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium rounded-lg transition-colors whitespace-nowrap">
                         Copy List
                     </button>
@@ -419,11 +419,11 @@
                 </div>
 
                 <!-- Hairline Divider + Interactive Table with BL / WM / GG Shortcuts -->
-                <div id="domainAnalysisPanel" class="pt-5 border-t border-slate-200 dark:border-slate-800 space-y-3.5">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                        <div class="min-w-0">
+                <div id="domainAnalysisPanel" class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+                        <div class="flex flex-col gap-1.5 min-w-0">
                             <h3 id="uiAnalysisTitle" class="text-[16px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Quick Domain Backlink, Archive &amp; Index Inspector</h3>
-                            <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
+                            <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
                         </div>
                         <div class="sm:w-52 shrink-0">
                             <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
@@ -438,10 +438,10 @@
                         <table class="w-full min-w-[440px] text-left border-collapse">
                             <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
                                 <tr>
-                                    <th scope="col" id="uiThNum" class="py-2.5 px-3 w-12 tabular-nums">#</th>
-                                    <th scope="col" id="uiThDomain" class="py-2.5 px-3">Domain Name</th>
-                                    <th scope="col" id="uiThChars" class="py-2.5 px-3 w-16 text-right tabular-nums">Chars</th>
-                                    <th scope="col" id="uiThInspect" class="py-2.5 px-3 w-40 text-right">Inspect</th>
+                                    <th scope="col" id="uiThNum" class="py-3 px-3 w-12 tabular-nums">#</th>
+                                    <th scope="col" id="uiThDomain" class="py-3 px-3">Domain Name</th>
+                                    <th scope="col" id="uiThChars" class="py-3 px-3 w-16 text-right tabular-nums">Chars</th>
+                                    <th scope="col" id="uiThInspect" class="py-3 px-3 w-40 text-right">Inspect</th>
                                 </tr>
                             </thead>
                             <tbody id="domainAnalysisList" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900 text-[13px] md:text-[14px] leading-[1.45] md:leading-[1.5]"></tbody>
@@ -461,11 +461,11 @@
         <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto h-[100px] sm:h-[90px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
 
         <!-- Share & Export Link Section -->
-        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 space-y-4">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                <div>
+        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+                <div class="flex flex-col gap-1.5 min-w-0">
                     <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4]">Share &amp; Export Link</h2>
-                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-slate-600 dark:text-slate-300 mt-1 leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
+                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-slate-600 dark:text-slate-300 leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
                 </div>
                 <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 cursor-pointer select-none bg-slate-50 dark:bg-slate-800/70 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 shrink-0">
                     <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-slate-300 dark:border-slate-600 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
@@ -479,12 +479,12 @@
             </div>
 
             <!-- Localized Share Buttons + Universal Copy All -->
-            <div class="space-y-2.5 pt-1">
+            <div class="flex flex-col gap-3 pt-1">
                 <p id="uiLocalizedShareHeading" class="text-[11px] uppercase tracking-wider font-semibold text-slate-500 dark:text-slate-400 leading-[1.4]">
                     Recommended Share Channels
                 </p>
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <div id="localizedShareButtons" class="flex flex-wrap items-center gap-2.5"></div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div id="localizedShareButtons" class="flex flex-wrap items-center gap-3"></div>
                     <button type="button" onclick="copyAllDomainsShare()" id="uiShareCopyAllBtn" class="min-h-[44px] inline-flex items-center justify-center gap-2 bg-white dark:bg-slate-900 hover:bg-blue-50 dark:hover:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                         <svg aria-hidden="true" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         <span id="uiShareCopyAllText">Copy All</span>
@@ -493,7 +493,7 @@
             </div>
 
             <!-- Quick Copy Utilities -->
-            <div class="flex flex-wrap items-center gap-2.5 pt-2.5 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
                 <button type="button" onclick="copyShareLink()" id="uiShareCopyUrlBtn" class="min-h-[40px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-[12px] md:text-[13px] font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap">
                     Copy Link
                 </button>
@@ -509,20 +509,20 @@
         </section>
 
         <!-- Localized Guide & Educational Content -->
-        <section id="localizedEducationalContent" aria-label="Domain SEO Guide, Strategy &amp; Validation" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-8">
-            <div class="space-y-8">
-                <div id="eduTopSections" class="space-y-8">
-                    <article>
-                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-4 leading-[1.35]">Guide &amp; How to Use This Tool</h2>
+        <section id="localizedEducationalContent" aria-label="Domain SEO Guide, Strategy &amp; Validation" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-8">
+            <div class="flex flex-col gap-8 md:gap-9">
+                <div id="eduTopSections" class="flex flex-col gap-8">
+                    <article class="flex flex-col gap-4">
+                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white leading-[1.35]">Guide &amp; How to Use This Tool</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">1. Enter Keywords &amp; Extensions</h3>
                                 </div>
                                 <p>Fill in Primary, Secondary, and Tertiary Keywords according to your niche or brand idea (e.g., calc, pro, app). Enter desired domain extensions separated by commas (e.g., .com, .io, .net).</p>
                             </div>
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">2. Build Pattern Formula &amp; RFC 1035</h3>
@@ -534,16 +534,16 @@
                 </div>
 
                 <!-- Strategy & Best Practices (Static HTML) -->
-                <article id="keywordStrategySection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800">
-                    <h2 id="uiStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-4 leading-[1.35]">Keyword Strategy &amp; Domain Naming Best Practices</h2>
-                    <div class="space-y-3 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                <article id="keywordStrategySection" data-rendered-lang="en" class="pt-7 md:pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                    <h2 id="uiStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white leading-[1.35]">Keyword Strategy &amp; Domain Naming Best Practices</h2>
+                    <div class="flex flex-col gap-3 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
                             <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiStratKwTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">Keyword Strategy</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
                             <div class="px-4 pb-4 pt-0">
-                                <ul class="space-y-2 list-disc list-inside">
+                                <ul class="flex flex-col gap-2 list-disc list-inside">
                                     <li id="uiStratKw1">Primary Keyword ([primary]): Core niche or main topic (e.g., calc, shop, travel). Must align with core business or audience intent.</li>
                                     <li id="uiStratKw2">Secondary Keyword ([secondary]): Modifier or descriptive category (e.g., pro, fast, hub). Helps expand brand context and variations.</li>
                                     <li id="uiStratKw3">Tertiary Keyword ([tertiary]): Format or platform suffix (e.g., app, go, io). Ideal for large-scale domain research.</li>
@@ -556,7 +556,7 @@
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
                             <div class="px-4 pb-4 pt-0">
-                                <ul class="space-y-2 list-disc list-inside">
+                                <ul class="flex flex-col gap-2 list-disc list-inside">
                                     <li id="uiStratBp1">Short &amp; Memorable: Limit character length for easy typing and pronunciation (ideally 12-15 characters).</li>
                                     <li id="uiStratBp2">Avoid Typos: Use natural combinations of vowels and consonants to prevent user confusion.</li>
                                     <li id="uiStratBp3">Consider Dashes: Using [dash] aids multi-word readability, but use sparingly.</li>
@@ -568,10 +568,12 @@
                 </article>
 
                 <!-- Extension Strategy (Static HTML) -->
-                <article id="extensionStrategySection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800">
-                    <h2 id="uiExtStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.35]">Domain Extension Strategy &amp; Google SERP Signals (Target Market &amp; Regional)</h2>
-                    <p id="uiExtStratIntro" class="text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 mb-4 leading-[1.6]">In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:</p>
-                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                <article id="extensionStrategySection" data-rendered-lang="en" class="pt-7 md:pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <h2 id="uiExtStratTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-slate-900 dark:text-white leading-[1.35]">Domain Extension Strategy &amp; Google SERP Signals (Target Market &amp; Regional)</h2>
+                        <p id="uiExtStratIntro" class="text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:</p>
+                    </div>
+                    <div class="flex flex-col gap-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
                             <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiExtGTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">gTLDs (.com, .net, .org)</span>
@@ -603,48 +605,48 @@
                 </article>
 
                 <!-- Domain Naming Risks & Google Penalty Warning (Static HTML) -->
-                <article id="domainRisksSection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
-                    <div>
-                        <h2 id="uiRiskTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-red-700 dark:text-red-400 mb-1.5 leading-[1.35]">Domain Naming Risks &amp; Google Penalty Warning</h2>
+                <article id="domainRisksSection" data-rendered-lang="en" class="pt-7 md:pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <h2 id="uiRiskTitle" class="text-[18px] md:text-[20px] lg:text-[22px] font-bold text-red-700 dark:text-red-400 leading-[1.35]">Domain Naming Risks &amp; Google Penalty Warning</h2>
                         <p id="uiRiskIntro" class="text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">When researching and generating domain permutations (especially for bulk campaigns or expired/dropped domains), beware of fatal risks that can trigger algorithmic penalties:</p>
                     </div>
-                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                    <div class="flex flex-col gap-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-red-50/60 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                 <span id="uiRiskEmdTitle" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300 leading-[1.45]">EMD (Exact Match Domain) Trap</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
+                            <div class="px-4 pb-4 pt-0">
                                 <p id="uiRiskEmdDesc">Using exact commercial keyword matches (e.g., best-cheap-shoes.com) without high content quality makes sites vulnerable to Google EMD updates.</p>
                             </div>
                         </details>
                         <details class="group rounded-lg bg-red-50/60 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                 <span id="uiRiskSpamTitle" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300 leading-[1.45]">Low-Quality Automated Content Risk</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
+                            <div class="px-4 pb-4 pt-0">
                                 <p id="uiRiskSpamDesc">Search ranking systems actively filter thousands of thin, low-value automated pages that lack original substance for visitors.</p>
                             </div>
                         </details>
                         <details class="group rounded-lg bg-red-50/60 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                 <span id="uiRiskBacklinkTitle" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300 leading-[1.45]">Prior Backlink &amp; Reputation History (Aged Domains)</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
+                            <div class="px-4 pb-4 pt-0">
                                 <p id="uiRiskBacklinkDesc">When acquiring previously registered domains, always verify archive history (Wayback Machine) and link profiles to avoid inheriting algorithmic downgrades from low-quality link networks.</p>
                             </div>
                         </details>
                     </div>
-                    <div class="space-y-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                    <div class="flex flex-col gap-3 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiTipsCheckTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">1. How to Check History &amp; Domain Risks</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <ul class="space-y-1 list-disc list-inside">
+                            <div class="px-4 pb-4 pt-0">
+                                <ul class="flex flex-col gap-1.5 list-disc list-inside">
                                     <li id="uiTipsCheck1">Wayback Machine (Archive.org): Verify whether the domain previously hosted unrelated, deceptive, or low-quality content.</li>
                                     <li id="uiTipsCheck2">Backlink Checker (Ahrefs, Semrush, Moz): Audit referring links to ensure clean, natural anchor text distributions.</li>
                                     <li id="uiTipsCheck3">Google Search Console (GSC): Check for historical Manual Actions or Security Issues if acquiring an aged domain.</li>
@@ -652,12 +654,12 @@
                             </div>
                         </details>
                         <details class="group rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
                                 <span id="uiTipsAvoidTitle" class="text-[15px] md:text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.45]">2. How to Avoid Penalty Risks</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <ul class="space-y-1 list-disc list-inside">
+                            <div class="px-4 pb-4 pt-0">
+                                <ul class="flex flex-col gap-1.5 list-disc list-inside">
                                     <li id="uiTipsAvoid1">Use unique brandable names or natural partial match combinations rather than pure EMDs.</li>
                                     <li id="uiTipsAvoid2">For large-scale sites, ensure every page delivers unique, genuinely useful value for real users.</li>
                                     <li id="uiTipsAvoid3">Conduct thorough due diligence before purchasing dropped or aged domains.</li>
@@ -665,12 +667,12 @@
                             </div>
                         </details>
                         <details class="group rounded-lg bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">
+                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">
                                 <span id="uiTipsCureTitle" class="text-[15px] md:text-[16px] font-semibold text-amber-900 dark:text-amber-300 leading-[1.45]">3. Resolution (Recoverable vs. Non-Recoverable)</span>
                                 <svg aria-hidden="true" class="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                             </summary>
-                            <div class="px-4 pb-3.5 pt-0">
-                                <ul class="space-y-1 list-disc list-inside">
+                            <div class="px-4 pb-4 pt-0">
+                                <ul class="flex flex-col gap-1.5 list-disc list-inside">
                                     <li id="uiTipsCure1">Algorithmic EMD / Content Quality Cases: Gradually recoverable by upgrading editorial quality, pruning thin pages, and building authentic brand authority.</li>
                                     <li id="uiTipsCure2">Manual Actions Cases: Recoverable by cleaning unnatural backlinks, submitting a Disavow file, and filing a Reconsideration Request via GSC.</li>
                                     <li id="uiTipsCure3">Severe Negative History Domains: Very hard to recover. If an aged domain carries persistent manual flags or years of abusive history, starting fresh on a clean domain is strongly recommended.</li>
@@ -681,16 +683,16 @@
                 </article>
 
                 <!-- Good vs Bad Domain Examples (Static HTML) -->
-                <article id="domainExamplesSection" data-rendered-lang="en" class="pt-6 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 lg:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
-                    <div class="space-y-3">
+                <article id="domainExamplesSection" data-rendered-lang="en" class="pt-7 md:pt-8 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+                    <div class="flex flex-col gap-3.5">
                         <h2 id="uiBadExTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.35]">Examples of High-Risk / Poor Domain Names</h2>
-                        <div class="space-y-3">
+                        <div class="flex flex-col gap-3">
                             <details class="group rounded-lg bg-red-50/50 dark:bg-red-950/25 border border-red-200 dark:border-red-900/60">
                                 <summary class="flex items-center justify-between gap-3 px-3.5 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600">
                                     <span id="uiBad1Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">1. Quality Risk (Keyword Stuffing &amp; EMD)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiBad1ExLabel">Example:</span> <code id="uiBad1Ex" class="font-mono break-all">best-discount-leather-shoes-newyork.example</code></p>
                                     <p id="uiBad1Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Excessive keyword stacking without distinct brand identity appears unnatural to search engines and users.</p>
                                 </div>
@@ -700,7 +702,7 @@
                                     <span id="uiBad2Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">2. Hard to Find / Unmemorable</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiBad2ExLabel">Example:</span> <code id="uiBad2Ex" class="font-mono break-all">b3st-onl1n3-calc-t00ls-2026.example</code></p>
                                     <p id="uiBad2Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Confusing leet-speak numbers or excessive length lead to user typos and poor brand retention.</p>
                                 </div>
@@ -710,7 +712,7 @@
                                     <span id="uiBad3Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">3. Legal &amp; Trademark Violation Risk</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiBad3ExLabel">Example:</span> <code id="uiBad3Ex" class="font-mono break-all">official-famousbrand-deals.example / popularbrand-outlet.example</code></p>
                                     <p id="uiBad3Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Unauthorized use of registered trademarks. High risk of cease-and-desist, lawsuits, or domain dispute (UDRP).</p>
                                 </div>
@@ -720,7 +722,7 @@
                                     <span id="uiBad4Title" class="text-[15px] md:text-[16px] font-semibold text-red-900 dark:text-red-300">4. Low CTR / Untrustworthy Appearance</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-red-700 dark:text-red-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiBad4ExLabel">Example:</span> <code id="uiBad4Ex" class="font-mono break-all">fast-bonus-portal-99.example / quick-files-hub.example</code></p>
                                     <p id="uiBad4Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Generic promotional wording or low-trust naming patterns tend to earn lower click-through rates in search results.</p>
                                 </div>
@@ -728,15 +730,15 @@
                         </div>
                     </div>
 
-                    <div class="space-y-3">
+                    <div class="flex flex-col gap-3.5">
                         <h2 id="uiGoodExTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.35]">Examples of Good, Legal, &amp; Safe Domain Names</h2>
-                        <div class="space-y-3">
+                        <div class="flex flex-col gap-3">
                             <details class="group rounded-lg bg-emerald-50/50 dark:bg-emerald-950/25 border border-emerald-200 dark:border-emerald-900/60">
                                 <summary class="flex items-center justify-between gap-3 px-3.5 py-3 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600">
                                     <span id="uiGood1Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">1. Brandable &amp; Memorable</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiGood1ExLabel">Example:</span> <code id="uiGood1Ex" class="font-mono break-words">calcly.com, shopiva.io, finit.app</code></p>
                                     <p id="uiGood1Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Short, unique, easy to spell, trademark-free, with strong long-term brand equity.</p>
                                 </div>
@@ -746,7 +748,7 @@
                                     <span id="uiGood2Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">2. Geo-Marketing &amp; Local Trust</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiGood2ExLabel">Example:</span> <code id="uiGood2Ex" class="font-mono break-words">solusicalc.co.uk, coffeehouse.us, devhub.io</code></p>
                                     <p id="uiGood2Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Combines brand/function with local target extensions, providing strong regional relevance signals in local SERPs.</p>
                                 </div>
@@ -756,7 +758,7 @@
                                     <span id="uiGood3Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">3. Safe Partial Match Domain (PMD)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiGood3ExLabel">Example:</span> <code id="uiGood3Ex" class="font-mono break-words">calcpro.com, fixshop.net, travelhub.io</code></p>
                                     <p id="uiGood3Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Contains relevant keywords combined with modifiers or short brand names, avoiding EMD penalties.</p>
                                 </div>
@@ -766,7 +768,7 @@
                                     <span id="uiGood4Title" class="text-[15px] md:text-[16px] font-semibold text-emerald-900 dark:text-emerald-300">4. Legally Safe &amp; High Trust (High CTR)</span>
                                     <svg aria-hidden="true" class="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                 </summary>
-                                <div class="px-3.5 pb-4 pt-0 space-y-1.5">
+                                <div class="px-3.5 pb-4 pt-0 flex flex-col gap-2">
                                     <p><span id="uiGood4ExLabel">Example:</span> <code id="uiGood4Ex" class="font-mono break-words">gadgetfix.com, fintechku.io, payfast.io</code></p>
                                     <p id="uiGood4Reason" class="text-[14px] leading-[1.55] text-slate-600 dark:text-slate-300">Trademark-free, utilizes trusted extensions (.com / .io), and builds instant user trust in SERP.</p>
                                 </div>
@@ -781,15 +783,15 @@
         <div role="region" aria-label="AdSense Placement Slot 2" data-ad-slot-position="index-between-guide-and-faq" data-ad-recommended-size="728x250 / 336x280 (Desktop) | 336x280 (Mobile)" class="w-full max-w-[336px] md:max-w-[728px] mx-auto h-[280px] md:h-[250px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
 
         <!-- Accordion FAQ Section (Static HTML) -->
-        <section id="faqSection" data-rendered-lang="en" aria-labelledby="uiFaqTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-8">
-            <div class="pb-4 mb-2 border-b border-slate-200 dark:border-slate-800">
+        <section id="faqSection" data-rendered-lang="en" aria-labelledby="uiFaqTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-8 flex flex-col gap-2">
+            <div class="pb-4 border-b border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                 <div class="flex items-center gap-2.5">
                     <span aria-hidden="true" class="inline-flex items-center px-2 py-0.5 rounded-md bg-orange-50 dark:bg-orange-950/60 border border-orange-200 dark:border-orange-800/70 text-[11px] font-mono font-bold uppercase tracking-wider text-orange-700 dark:text-orange-300">FAQ</span>
                     <h2 id="uiFaqTitle" class="text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35] [text-wrap:balance]">
                         Frequently Asked Questions
                     </h2>
                 </div>
-                <p id="uiFaqSub" class="text-[15px] text-slate-600 dark:text-slate-300 mt-1.5 leading-[1.6]">
+                <p id="uiFaqSub" class="text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
                     Technical and practical answers for domainers, SEO specialists, startup founders, and developers.
                 </p>
             </div>
@@ -864,24 +866,24 @@
         </section>
 
         <!-- Semantic Context Micro-Copy (Crawlable & Clean) -->
-        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6] pt-2">
-            <div class="p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <h2 id="uiSectionAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.4]">Domain Indexing &amp; Validation Context</h2>
+        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] text-slate-600 dark:text-slate-300 leading-[1.6]">
+            <div class="py-5 px-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+                <h2 id="uiSectionAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Domain Indexing &amp; Validation Context</h2>
                 <p id="aiCrawlerMicroCopy">This domain research page dynamically generates domain name combination matrices for primary keyword "domain", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.</p>
             </div>
-            <div id="aiBottomNarrativeSection" class="p-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                <h2 id="uiBottomAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white mb-2 leading-[1.4]">Domain Name Formula Summary</h2>
+            <div id="aiBottomNarrativeSection" class="py-5 px-4 sm:p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+                <h2 id="uiBottomAiTitle" class="text-[16px] sm:text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Domain Name Formula Summary</h2>
                 <p id="aiBottomNarrativeCopy">The domain permutation list for "domain" uses numeric digit variations and hyphen (dash) variations based on the "[primary] + [dash] + [number]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
             </div>
         </section>
     </main>
 
     <!-- Multi-Column Clean Footer -->
-    <footer class="mt-12 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <footer class="mt-10 md:mt-12 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-9 md:py-10 flex flex-col gap-8">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
                 <!-- Col 1: Brand & Slogan -->
-                <div class="md:col-span-4 space-y-2">
+                <div class="md:col-span-4 flex flex-col gap-2">
                     <a href="/" onclick="resetToHome(event)" class="inline-flex items-center gap-2 text-[17px] md:text-[18px] font-bold text-slate-900 dark:text-white">
                         <span>Domain Name</span>
                     </a>
@@ -892,7 +894,7 @@
                 </div>
 
                 <!-- Col 2: Quick Multilingual Editions (Crawlable) -->
-                <div class="md:col-span-5 space-y-2.5">
+                <div class="md:col-span-5 flex flex-col gap-3">
                     <h3 id="uiFooterLangLabel" class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Editions</h3>
                     <nav id="uiFooterLangNav" aria-label="Multilingual Editions" class="flex flex-wrap gap-2">
                         <a href="/" hreflang="en" lang="en" data-footer-lang="en" onclick="selectLanguageFromFooter(event, 'en')" class="px-2.5 py-1.5 text-xs rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold transition-colors">English (EN)</a>
@@ -907,9 +909,9 @@
                 </div>
 
                 <!-- Col 3: Informational & Legal Links (Crawlable Pages) -->
-                <div class="md:col-span-3 space-y-2.5">
+                <div class="md:col-span-3 flex flex-col gap-3">
                     <h3 id="uiFooterInfoTitle" class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Information</h3>
-                    <ul class="space-y-1.5 text-[13px] md:text-[14px]">
+                    <ul class="flex flex-col gap-2 text-[13px] md:text-[14px]">
                         <li><a href="/about.html" id="uiFooterAbout" class="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors">About</a></li>
                         <li><a href="/privacy-policy.html" id="uiFooterPrivacy" class="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors">Privacy Policy</a></li>
                         <li><a href="/terms.html" id="uiFooterTerms" class="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 transition-colors">Terms of Service</a></li>
@@ -919,7 +921,7 @@
                 </div>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-2 text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">
+            <div class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-2 text-[12px] md:text-[13px] text-slate-500 dark:text-slate-400">
                 <p id="uiFooterCopyright">&copy; 2026 Domain Name (domainname.web.id). All rights reserved.</p>
             </div>
         </div>
@@ -927,7 +929,7 @@
 
     <!-- Info Modal (About / Terms / Privacy) -->
     <div id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
-        <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 space-y-4">
+        <div class="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl py-5 px-4 sm:p-6 flex flex-col gap-4">
             <div class="flex items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-3">
                 <h3 id="infoModalTitle" class="text-[17px] md:text-[20px] font-bold text-slate-900 dark:text-white leading-[1.4]">About Domain Name</h3>
                 <button type="button" onclick="closeInfoModal()" aria-label="Close modal" class="min-h-[36px] min-w-[36px] inline-flex items-center justify-center rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
@@ -3567,33 +3569,33 @@
             const s = (v) => escapeHtmlText(stripUiEmoji(v));
             topContainer.innerHTML = `
                     <!-- Guide / User Instructions -->
-                    <article>
-                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white mb-4 leading-[1.35]">
+                    <article class="flex flex-col gap-4">
+                        <h2 class="text-[18px] md:text-[20px] lg:text-[22px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">
                             ${s(t.guideTitle)}
                         </h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[15px] lg:text-[16px] text-slate-600 dark:text-slate-300 leading-[1.6]">
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide1Title)}</h3>
                                 </div>
                                 <p>${escapeHtmlText(t.guide1Text)}</p>
                             </div>
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide2Title)}</h3>
                                 </div>
                                 <p>${escapeHtmlText(t.guide2Text)}</p>
                             </div>
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide3Title)}</h3>
                                 </div>
                                 <p>${escapeHtmlText(t.guide3Text)}</p>
                             </div>
-                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                            <div class="p-4 sm:p-5 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800 flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span aria-hidden="true" class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
                                     <h3 class="text-[16px] font-semibold text-slate-900 dark:text-white leading-[1.4]">${s(t.guide4Title)}</h3>
@@ -4083,7 +4085,7 @@
                         <td class="py-2.5 px-3 font-mono text-[13px] md:text-[14px] font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap leading-[1.45] md:leading-[1.5]">${safeDomain}</td>
                         <td class="py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
                         <td class="py-2 px-3 text-right whitespace-nowrap">
-                            <div class="inline-flex items-center justify-end gap-1.5">
+                            <div class="inline-flex items-center justify-end gap-2">
                                 <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors">BL</a>
                                 <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors">WM</a>
                                 <a href="${escapeHtmlAttr(googleHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${ggTitle}" aria-label="${ggTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">GG</a>
