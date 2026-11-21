@@ -4850,6 +4850,21 @@
             return dotIdx > 0 ? norm.slice(dotIdx) : '';
         }
 
+        function getSelectedHeaderLanguageCode() {
+            try {
+                const langSelectEl = document.getElementById('langSelect');
+                const dropdownLang = langSelectEl && typeof langSelectEl.value === 'string'
+                    ? langSelectEl.value.trim().toLowerCase()
+                    : '';
+                if (dropdownLang && dict[dropdownLang]) {
+                    return dropdownLang;
+                }
+            } catch (e) {}
+            return (typeof currentLang === 'string' && dict[currentLang])
+                ? currentLang.trim().toLowerCase()
+                : 'en';
+        }
+
         function logAvailableDomainToD1(domain, entry, checkSource) {
             try {
                 const normDomain = normalizeDomainCacheKey(domain);
@@ -4860,14 +4875,12 @@
                 const checkedAt = Number.isFinite(Number(entry.checkedAt)) && Number(entry.checkedAt) > 0
                     ? Number(entry.checkedAt)
                     : Date.now();
-                const activeLang = (typeof currentLang === 'string' && currentLang.trim())
-                    ? currentLang.trim().toLowerCase()
-                    : 'en';
+                const selectedHeaderLang = getSelectedHeaderLanguageCode();
                 const payload = {
                     domain: normDomain,
                     extension: extractDomainExtension(normDomain),
                     charLength: normDomain.length,
-                    lang: activeLang,
+                    lang: selectedHeaderLang,
                     status: 'available',
                     checkMethod: entry.method === 'NS' ? 'NS' : 'RDAP',
                     checkSource: checkSource === 'auto' ? 'auto' : 'manual',
