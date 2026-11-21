@@ -8,4 +8,4 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "domainname_available_domains"
-database_id = "<YOUR_CLOUDFLARE_D1_DATABASE_ID>"
+database_id = "9e1cfd96-c929-4d8c-871d-727b55f5776f"
