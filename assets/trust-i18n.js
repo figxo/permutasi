@@ -20,6 +20,11 @@
         const hashPart = hashIdx !== -1 ? rawHref.slice(hashIdx) : '';
         const cleanRaw = (hashIdx !== -1 ? rawHref.slice(0, hashIdx) : rawHref).split('?')[0];
         const normalized = cleanRaw.replace(/^\/+/, '');
+        if (cleanRaw === '/' || normalized === '' || (pathPartsSingle(normalized) && SUPPORTED_LANGS.includes(normalized.replace(/\/$/, '')))) {
+            if (!lang || lang === 'en') return `/${hashPart}`;
+            return `/${lang}/${hashPart}`;
+        }
+        function pathPartsSingle(s) { return !s.replace(/\/$/, '').includes('/'); }
         let filePart = normalized;
         const pathParts = normalized.split('/');
         if (pathParts.length === 2 && SUPPORTED_LANGS.includes(pathParts[0])) {
@@ -1383,7 +1388,6 @@
             navTerms: c.navTerms,
             navDisclaimer: c.navDisclaimer,
             navContact: c.navContact,
-            navOpenTool: c.openTool,
             footerSlogan: c.footerSlogan,
             footerEditionsTitle: c.footerEditions,
             footerLegalTitle: c.footerLegal,

@@ -577,7 +577,6 @@ function localizeTrustPageHtml(rawHtml, pageFile, lang, config) {
     navTerms: chrome.navTerms,
     navDisclaimer: chrome.navDisclaimer,
     navContact: chrome.navContact,
-    navOpenTool: chrome.openTool,
     footerSlogan: chrome.footerSlogan,
     footerEditionsTitle: chrome.footerEditions,
     footerLegalTitle: chrome.footerLegal,
@@ -593,9 +592,13 @@ function localizeTrustPageHtml(rawHtml, pageFile, lang, config) {
   }
 
   // Localize internal header/footer navigation links (except data-trust-edition pills)
-  html = html.replace(/<a\s+([^>]*?)href="(\/(?:index|about|privacy-policy|terms|disclaimer|contact)\.html)"([^>]*)>/gi, (full, pre, href, post) => {
+  html = html.replace(/<a\s+([^>]*?)href="(\/|\/(?:index|about|privacy-policy|terms|disclaimer|contact)\.html)"([^>]*)>/gi, (full, pre, href, post) => {
     if (/data-trust-edition="/i.test(pre) || /data-trust-edition="/i.test(post)) {
       return full;
+    }
+    if (href === '/') {
+      const homeHref = lang === 'en' ? '/' : `/${lang}/`;
+      return `<a ${pre}href="${homeHref}"${post}>`;
     }
     return `<a ${pre}href="${trustI18n.localizeInternalHref(href, lang)}"${post}>`;
   });
