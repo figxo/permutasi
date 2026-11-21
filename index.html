@@ -436,45 +436,46 @@
                     </button>
                 </div>
 
-                <!-- Hairline Divider + Interactive Table with BL / WM / GG Shortcuts -->
-                <div id="domainAnalysisPanel" class="pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
-                        <div class="flex flex-col gap-1.5 min-w-0">
-                            <h3 id="uiAnalysisTitle" class="text-[16px] md:text-[18px] font-bold text-slate-900 dark:text-white leading-[1.4]">Quick Domain Backlink, Archive &amp; Index Inspector</h3>
-                            <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
-                        </div>
-                        <div class="sm:w-52 shrink-0">
-                            <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                            <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Filter domains (e.g. .com, -0)...">
-                        </div>
-                    </div>
-
-                    <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-medium text-slate-500 dark:text-slate-400 tabular-nums leading-[1.4]"></div>
-
-                    <!-- Responsive Horizontal-Scroll Table -->
-                    <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg max-h-96 overflow-y-auto">
-                        <table class="w-full min-w-[540px] text-left border-collapse">
-                            <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
-                                <tr>
-                                    <th scope="col" id="uiThNum" class="py-3 px-3 w-12 tabular-nums">#</th>
-                                    <th scope="col" id="uiThDomain" class="py-3 px-3">Domain Name</th>
-                                    <th scope="col" id="uiThChars" class="py-3 px-3 w-16 text-right tabular-nums">Chars</th>
-                                    <th scope="col" id="uiThAvail" class="py-3 px-3 w-28 text-right">Availability</th>
-                                    <th scope="col" id="uiThInspect" class="py-3 px-3 w-40 text-right">Inspect</th>
-                                </tr>
-                            </thead>
-                            <tbody id="domainAnalysisList" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900 text-[13px] md:text-[14px] leading-[1.45] md:leading-[1.5]"></tbody>
-                        </table>
-                    </div>
-
-                    <div id="domainAnalysisMoreWrap" class="text-center hidden pt-1">
-                        <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[40px] px-4 py-1.5 text-[12px] md:text-[13px] font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors">
-                            Show More (+100)
-                        </button>
-                    </div>
-                </div>
             </section>
         </div>
+
+        <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
+        <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-4 min-w-0">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+                <div class="flex flex-col gap-1.5 min-w-0">
+                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
+                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Shortcuts: BL (Ahrefs), WM (Wayback Machine), GG (Google site:). Protected with <code>rel="nofollow noopener noreferrer"</code>.</p>
+                </div>
+                <div class="sm:w-64 shrink-0">
+                    <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
+                    <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Filter domains (e.g. .com, -0)...">
+                </div>
+            </div>
+
+            <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-medium text-slate-500 dark:text-slate-400 tabular-nums leading-[1.4]"></div>
+
+            <!-- Responsive Horizontal-Scroll Table -->
+            <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg max-h-[28rem] overflow-y-auto">
+                <table class="w-full min-w-[540px] text-left border-collapse">
+                    <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
+                        <tr>
+                            <th scope="col" id="uiThNum" class="py-3 px-3 w-12 tabular-nums">#</th>
+                            <th scope="col" id="uiThDomain" class="py-3 px-3">Domain Name</th>
+                            <th scope="col" id="uiThChars" class="py-3 px-3 w-16 text-right tabular-nums">Chars</th>
+                            <th scope="col" id="uiThAvail" class="py-3 px-3 w-32 text-right">Availability</th>
+                            <th scope="col" id="uiThInspect" class="py-3 px-3 w-44 text-right">Inspect</th>
+                        </tr>
+                    </thead>
+                    <tbody id="domainAnalysisList" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900 text-[13px] md:text-[14px] leading-[1.45] md:leading-[1.5]"></tbody>
+                </table>
+            </div>
+
+            <div id="domainAnalysisMoreWrap" class="text-center hidden pt-1">
+                <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[40px] px-4 py-1.5 text-[12px] md:text-[13px] font-medium bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-lg transition-colors">
+                    Show More (+100)
+                </button>
+            </div>
+        </section>
 
         <!-- ADSENSE MANUAL SLOT 1: Desktop 970x90 / 728x90 Leaderboard | Mobile 320x100 Large Banner -->
         <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto h-[100px] sm:h-[90px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
@@ -1069,7 +1070,7 @@
                 waMsgWithCountTpl: 'Halo! Cek daftar {count} ide permutasi domain untuk keyword "{kw}" (validasi RFC 1035) di sini:\n{url}',
                 waMsgWithoutCountTpl: 'Halo! Cek generator permutasi domain untuk keyword "{kw}" (validasi RFC 1035) di sini:\n{url}',
                 totalLabel: 'Total Domain Tercipta: ',
-                analysisTitle: '🔍 Cek Cepat Backlink, Arsip & Indeks Domain',
+                analysisTitle: '🔍 Data Ketersediaan, Backlink, Arsip & Indeks Domain',
                 analysisSub: 'Analisis cepat tiap domain lewat Ahrefs, Wayback Machine, dan Google Index. Dilindungi rel="nofollow noopener noreferrer" agar aman dari kebocoran SEO juice.',
                 analysisFilterLabel: 'Filter daftar domain',
                 analysisFilterPlaceholder: 'Filter domain (misal: .com, -0)...',
@@ -1258,7 +1259,7 @@
                 waMsgWithCountTpl: 'Hi! Check out {count} domain permutation ideas for keyword "{kw}" (RFC 1035 validated) here:\n{url}',
                 waMsgWithoutCountTpl: 'Hi! Check out this domain permutation generator for keyword "{kw}" (RFC 1035 validated) here:\n{url}',
                 totalLabel: 'Total Domains Generated: ',
-                analysisTitle: '🔍 Quick Domain Backlink, Archive & Index Inspector',
+                analysisTitle: '🔍 Domain Availability, Backlink, Archive & Index Data',
                 analysisSub: 'Inspect each domain via Ahrefs, Wayback Machine, or Google Index. Protected with rel="nofollow noopener noreferrer" to prevent SEO juice leakage.',
                 analysisFilterLabel: 'Filter generated domains',
                 analysisFilterPlaceholder: 'Filter domains (e.g. .com, -0)...',
@@ -1447,7 +1448,7 @@
                 waMsgWithCountTpl: '¡Hola! Mira esta lista de {count} ideas de permutación de dominios para "{kw}" (validación RFC 1035):\n{url}',
                 waMsgWithoutCountTpl: '¡Hola! Mira este generador de permutaciones de dominios para "{kw}" (validación RFC 1035):\n{url}',
                 totalLabel: 'Total de dominios generados: ',
-                analysisTitle: '🔍 Inspector Rápido de Backlinks, Archivo e Índice',
+                analysisTitle: '🔍 Datos de Disponibilidad, Backlinks, Archivo e Índice',
                 analysisSub: 'Analiza cada dominio en Ahrefs, Wayback Machine y Google Index. Protegido con rel="nofollow noopener noreferrer" para evitar fugas de SEO juice.',
                 analysisFilterLabel: 'Filtrar dominios generados',
                 analysisFilterPlaceholder: 'Filtrar dominios (ej: .com, -0)...',
@@ -1636,7 +1637,7 @@
                 waMsgWithCountTpl: 'Olá! Confira esta lista com {count} ideias de permutação de domínios para "{kw}" (validação RFC 1035):\n{url}',
                 waMsgWithoutCountTpl: 'Olá! Confira este gerador de permutações de domínios para "{kw}" (validação RFC 1035):\n{url}',
                 totalLabel: 'Total de domínios gerados: ',
-                analysisTitle: '🔍 Inspetor Rápido de Backlinks, Arquivo e Índice',
+                analysisTitle: '🔍 Dados de Disponibilidade, Backlinks, Arquivo e Índice',
                 analysisSub: 'Verifique cada domínio no Ahrefs, Wayback Machine e Google Index. Protegido com rel="nofollow noopener noreferrer" contra perda de SEO juice.',
                 analysisFilterLabel: 'Filtrar domínios gerados',
                 analysisFilterPlaceholder: 'Filtrar domínios (ex: .com, -0)...',
@@ -1825,7 +1826,7 @@
                 waMsgWithCountTpl: 'Bonjour ! Découvrez {count} idées de permutations de domaines pour « {kw} » (validation RFC 1035) ici :\n{url}',
                 waMsgWithoutCountTpl: 'Bonjour ! Découvrez ce générateur de permutations de domaines pour « {kw} » (validation RFC 1035) ici :\n{url}',
                 totalLabel: 'Total de domaines générés : ',
-                analysisTitle: '🔍 Inspecteur Rapide de Backlinks, Archives et Index',
+                analysisTitle: '🔍 Disponibilité, Backlinks, Archives et Index du Domaine',
                 analysisSub: 'Analysez chaque domaine via Ahrefs, Wayback Machine et Google Index. Protégé par rel="nofollow noopener noreferrer" contre toute fuite de jus SEO.',
                 analysisFilterLabel: 'Filtrer les domaines générés',
                 analysisFilterPlaceholder: 'Filtrer (ex: .com, -0)...',
@@ -2014,7 +2015,7 @@
                 waMsgWithCountTpl: 'Hallo! Sieh dir {count} Domain-Permutationsideen für „{kw}“ (RFC 1035 validiert) hier an:\n{url}',
                 waMsgWithoutCountTpl: 'Hallo! Sieh dir diesen Domain-Permutationsgenerator für „{kw}“ (RFC 1035 validiert) hier an:\n{url}',
                 totalLabel: 'Generierte Domains gesamt: ',
-                analysisTitle: '🔍 Schneller Backlink-, Archiv- & Index-Check',
+                analysisTitle: '🔍 Domain-Verfügbarkeit, Backlink-, Archiv- & Index-Daten',
                 analysisSub: 'Prüfen Sie jede Domain über Ahrefs, Wayback Machine und Google Index. Geschützt mit rel="nofollow noopener noreferrer" gegen Link-Juice-Verlust.',
                 analysisFilterLabel: 'Generierte Domains filtern',
                 analysisFilterPlaceholder: 'Domains filtern (z. B. .com, -0)...',
@@ -2203,7 +2204,7 @@
                 waMsgWithCountTpl: 'Привет! Посмотри список из {count} идей перестановок доменов для «{kw}» (валидация RFC 1035):\n{url}',
                 waMsgWithoutCountTpl: 'Привет! Посмотри генератор перестановок доменов для «{kw}» (валидация RFC 1035):\n{url}',
                 totalLabel: 'Всего создано доменов: ',
-                analysisTitle: '🔍 Быстрая проверка бэклинков, архива и индекса',
+                analysisTitle: '🔍 Доступность доменов, бэклинки, архив и индекс',
                 analysisSub: 'Анализ каждого домена через Ahrefs, Wayback Machine и Google Index. Защищено rel="nofollow noopener noreferrer" от утечки SEO-веса.',
                 analysisFilterLabel: 'Фильтр сгенерированных доменов',
                 analysisFilterPlaceholder: 'Фильтр (напр. .com, -0)...',
@@ -2392,7 +2393,7 @@
                 waMsgWithCountTpl: 'こんにちは！「{kw}」のドメイン候補 {count}件（RFC 1035準拠）はこちらで確認できます：\n{url}',
                 waMsgWithoutCountTpl: 'こんにちは！「{kw}」のドメイン置換ジェネレーター（RFC 1035準拠）はこちらで確認できます：\n{url}',
                 totalLabel: '生成されたドメイン数: ',
-                analysisTitle: '🔍 ドメイン被リンク・履歴・インデックス高速チェック',
+                analysisTitle: '🔍 ドメイン空き状況・被リンク・履歴・インデックスデータ',
                 analysisSub: '各ドメインをAhrefs・Wayback Machine・Google検索で即座に調査できます。SEOジュース流出防止のため rel="nofollow noopener noreferrer" を適用済みです。',
                 analysisFilterLabel: '生成ドメインを絞り込む',
                 analysisFilterPlaceholder: '絞り込み (例: .com, -0)...',
