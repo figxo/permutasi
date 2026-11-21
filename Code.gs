@@ -50,7 +50,7 @@ function doGet(e) {
   var kw2 = String(params.kw2 || params.keyword2 || '').trim();
   var kw3 = String(params.kw3 || params.keyword3 || '').trim();
 
-  var activeDisplay = [kw || 'domain', kw2, kw3].filter(function(item) {
+  var activeDisplay = [kw || 'business', kw2, kw3].filter(function(item) {
     return Boolean(item);
   }).join(' ');
 

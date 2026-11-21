@@ -350,17 +350,14 @@
 
                             <div class="flex flex-wrap gap-2 items-center">
                                 <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold mr-1 leading-[1.4]">Click to insert:</span>
-                                <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [primary]</button>
-                                <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [secondary]</button>
-                                <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [tertiary]</button>
-                                <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [dash]</button>
-                                <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [number]</button>
-                                <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [vowel]</button>
-                                <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-orange-50 dark:hover:bg-orange-950/50 text-slate-800 dark:text-slate-200 hover:text-orange-700 dark:hover:text-orange-300 text-[12px] font-mono font-medium rounded-md border border-slate-200 dark:border-slate-700 hover:border-orange-300 dark:hover:border-orange-700 transition-colors whitespace-nowrap">+ [consonant]</button>
+                                <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[36px] px-2.5 py-1 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/70 text-blue-700 dark:text-blue-300 text-[12px] font-mono font-semibold rounded-md border border-blue-200 dark:border-blue-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">+ [primary]</button>
+                                <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[36px] px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/70 text-emerald-700 dark:text-emerald-300 text-[12px] font-mono font-semibold rounded-md border border-emerald-200 dark:border-emerald-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600">+ [secondary]</button>
+                                <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[36px] px-2.5 py-1 bg-violet-50 dark:bg-violet-950/60 hover:bg-violet-100 dark:hover:bg-violet-900/70 text-violet-700 dark:text-violet-300 text-[12px] font-mono font-semibold rounded-md border border-violet-200 dark:border-violet-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600">+ [tertiary]</button>
+                                <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[36px] px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-[12px] font-mono font-semibold rounded-md border border-slate-300 dark:border-slate-600 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">+ [dash]</button>
+                                <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[36px] px-2.5 py-1 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/70 text-amber-800 dark:text-amber-300 text-[12px] font-mono font-semibold rounded-md border border-amber-200 dark:border-amber-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">+ [number]</button>
+                                <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[36px] px-2.5 py-1 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/70 text-rose-700 dark:text-rose-300 text-[12px] font-mono font-semibold rounded-md border border-rose-200 dark:border-rose-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-600">+ [vowel]</button>
+                                <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[36px] px-2.5 py-1 bg-teal-50 dark:bg-teal-950/60 hover:bg-teal-100 dark:hover:bg-teal-900/70 text-teal-700 dark:text-teal-300 text-[12px] font-mono font-semibold rounded-md border border-teal-200 dark:border-teal-800/80 transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-600">+ [consonant]</button>
                             </div>
-                            <p id="uiFormulaHint" class="text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 leading-[1.55]">
-                                Placeholders: <code>[primary]</code>, <code>[secondary]</code>, <code>[tertiary]</code>, <code>[vowel]</code>, <code>[consonant]</code>, <code>[number]</code>, <code>[dash]</code> (RFC 1035 Sanitized).
-                            </p>
                         </div>
 
                         <!-- Bottom-of-Options Generate Action (Direct Re-Generate Without Scrolling Up) -->
@@ -441,29 +438,73 @@
 
         <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
         <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-4 min-w-0">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div class="flex flex-col gap-1.5 min-w-0">
                     <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
                     <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
                 </div>
-                <div class="sm:w-64 shrink-0">
-                    <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                    <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Filter domains (e.g. .com, -0)...">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto shrink-0">
+                    <div class="w-full sm:w-48 shrink-0">
+                        <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
+                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
+                            <option id="uiStatusOptAll" value="all">Select Status: All</option>
+                            <option id="uiStatusOptAvailable" value="available">Available</option>
+                            <option id="uiStatusOptTaken" value="taken">Taken</option>
+                            <option id="uiStatusOptCheck" value="check">Check</option>
+                        </select>
+                    </div>
+                    <div class="w-full sm:w-60 md:w-64 shrink-0">
+                        <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
+                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600" placeholder="Filter domains (e.g. .com, -0)...">
+                    </div>
                 </div>
             </div>
 
-            <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-medium text-slate-500 dark:text-slate-400 tabular-nums leading-[1.4]"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-medium text-slate-500 dark:text-slate-400 tabular-nums leading-[1.4]"></div>
+            </div>
+
+            <!-- Batch Selection Action Bar -->
+            <div id="domainBatchActionBar" class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 p-3 sm:p-3.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80">
+                <div class="flex flex-wrap items-center gap-2.5 min-w-0">
+                    <span id="domainSelectionStatus" class="text-[12px] md:text-[13px] font-medium text-slate-700 dark:text-slate-200 tabular-nums">0 selected</span>
+                    <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        Clear
+                    </button>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-200 dark:border-rose-800/70 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-950/70 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                        Remove Selected
+                    </button>
+                    <button type="button" id="uiBatchCopyBtn" onclick="copyBatchDomains('text')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                        Copy
+                    </button>
+                    <button type="button" id="uiBatchCopyMdBtn" onclick="copyBatchDomains('markdown')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                        Copy MD
+                    </button>
+                    <button type="button" id="uiBatchDownloadBtn" onclick="downloadBatchDomainsTxt()" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                        Export .txt
+                    </button>
+                    <a id="batchDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBatchDnsLink(event)" class="min-h-[40px] w-full sm:w-auto inline-flex items-center justify-center px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[12px] md:text-[13px] font-semibold rounded-lg shadow-sm transition-colors whitespace-nowrap">
+                        Bulk Check
+                    </a>
+                </div>
+            </div>
 
             <!-- Responsive Horizontal-Scroll Table -->
             <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg max-h-[28rem] overflow-y-auto">
-                <table class="w-full min-w-[540px] text-left border-collapse">
+                <table class="w-full lg:min-w-[640px] text-left border-collapse">
                     <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
                         <tr>
-                            <th scope="col" id="uiThNum" class="py-3 px-3 w-12 tabular-nums">#</th>
-                            <th scope="col" id="uiThDomain" class="py-3 px-3">Domain Name</th>
-                            <th scope="col" id="uiThChars" class="py-3 px-3 w-16 text-right tabular-nums">Chars</th>
-                            <th scope="col" id="uiThAvail" class="py-3 px-3 w-32 text-right">Availability</th>
-                            <th scope="col" id="uiThInspect" class="py-3 px-3 w-44 text-right">Inspect</th>
+                            <th scope="col" class="py-3 px-2 sm:px-3 w-9 sm:w-10 text-center">
+                                <input type="checkbox" id="selectAllVisibleCheckbox" onchange="toggleSelectAllVisible(this.checked)" aria-label="Select all visible domains" class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer align-middle">
+                            </th>
+                            <th scope="col" id="uiThNum" class="hidden lg:table-cell py-3 px-2.5 w-11 tabular-nums">#</th>
+                            <th scope="col" id="uiThDomain" class="py-3 px-2 sm:px-3">Domain Name</th>
+                            <th scope="col" id="uiThChars" class="hidden lg:table-cell py-3 px-3 w-16 text-right tabular-nums ui-th-chars">Chars</th>
+                            <th scope="col" id="uiThAvail" class="py-3 px-2 sm:px-3 w-24 sm:w-32 text-right">Availability</th>
+                            <th scope="col" class="lg:hidden py-3 px-2 sm:px-3 w-14 text-right tabular-nums ui-th-chars">Chars</th>
+                            <th scope="col" id="uiThInspect" class="py-3 px-2 sm:px-3 w-36 sm:w-40 text-right">Inspect</th>
                         </tr>
                     </thead>
                     <tbody id="domainAnalysisList" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900 text-[13px] md:text-[14px] leading-[1.45] md:leading-[1.5]"></tbody>
@@ -478,7 +519,7 @@
         </section>
 
         <!-- ADSENSE MANUAL SLOT 1: Desktop 970x90 / 728x90 Leaderboard | Mobile 320x100 Large Banner -->
-        <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto h-[100px] sm:h-[90px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
+        <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto min-h-[100px] sm:min-h-[90px] bg-white dark:bg-slate-900/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex items-center justify-center"></div>
 
         <!-- Share & Export Link Section -->
         <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5">
@@ -800,7 +841,7 @@
         </section>
 
         <!-- ADSENSE MANUAL SLOT 2: Desktop 728x250 / 336x280 | Mobile 336x280 Rectangle -->
-        <div role="region" aria-label="AdSense Placement Slot 2" data-ad-slot-position="index-between-guide-and-faq" data-ad-recommended-size="728x250 / 336x280 (Desktop) | 336x280 (Mobile)" class="w-full max-w-[336px] md:max-w-[728px] mx-auto h-[280px] md:h-[250px] bg-white border-2 border-dashed border-slate-300 rounded-xl"></div>
+        <div role="region" aria-label="AdSense Placement Slot 2" data-ad-slot-position="index-between-guide-and-faq" data-ad-recommended-size="728x250 / 336x280 (Desktop) | 336x280 (Mobile)" class="w-full max-w-[336px] md:max-w-[728px] mx-auto min-h-[280px] md:min-h-[250px] bg-white dark:bg-slate-900/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex items-center justify-center"></div>
 
         <!-- Accordion FAQ Section (Static HTML) -->
         <section id="faqSection" data-rendered-lang="en" aria-labelledby="uiFaqTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-8 flex flex-col gap-2">
@@ -2498,6 +2539,13 @@
                 editOptionsShortcut: 'Edit Keywords & Pattern',
                 thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thAvail: 'Availability', thInspect: 'Inspect',
                 availCheckBtn: 'Check', availChecking: 'Checking...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Retry',
+                availOverLimit: '>30 chars', availOverLimitTitle: 'Availability check is limited to domains up to 30 characters',
+                statusFilterLabel: 'Filter by availability status', statusOptAll: 'Select Status: All', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
+                selectAllAria: 'Select all visible domains', selectDomainAria: 'Select domain', copyDomainTitle: 'Copy domain',
+                toastSingleCopiedTpl: 'Copied: {domain}',
+                batchSelectedTpl: '{selected} selected', batchAllFallbackTpl: '0 selected · actions apply to all ({total})', batchClearSel: 'Clear',
+                batchRemoveBtn: 'Remove Selected', batchCopyBtn: 'Copy', batchCopyMdBtn: 'Copy MD', batchExportBtn: 'Export .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: 'Removed {count} domain(s) from the list.', toastBatchCopiedTpl: 'Copied {count} domain(s) to clipboard.', toastBatchCopiedMdTpl: 'Copied {count} domain(s) as Markdown.',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archive', ggTitle: 'Google Index (site:)',
                 truncNoticeTpl: 'Showing top {shown} shortest domains out of {total} generated to protect browser & script performance.',
                 toastCopied: 'Domain list copied to clipboard.',
@@ -2524,6 +2572,13 @@
                 editOptionsShortcut: 'Ubah Kata Kunci & Pola',
                 thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thAvail: 'Status', thInspect: 'Cek',
                 availCheckBtn: 'Check', availChecking: 'Mengecek...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Ulangi',
+                availOverLimit: '>30 kar.', availOverLimitTitle: 'Cek ketersediaan dibatasi untuk domain maksimal 30 karakter',
+                statusFilterLabel: 'Filter berdasarkan status ketersediaan', statusOptAll: 'Pilih Status: Semua', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
+                selectAllAria: 'Pilih semua domain yang terlihat', selectDomainAria: 'Pilih domain', copyDomainTitle: 'Salin domain',
+                toastSingleCopiedTpl: 'Disalin: {domain}',
+                batchSelectedTpl: '{selected} dipilih', batchAllFallbackTpl: '0 dipilih · aksi berlaku ke semua ({total})', batchClearSel: 'Batal',
+                batchRemoveBtn: 'Hapus Terpilih', batchCopyBtn: 'Salin', batchCopyMdBtn: 'Salin MD', batchExportBtn: 'Ekspor .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: '{count} domain dihapus dari daftar.', toastBatchCopiedTpl: '{count} domain disalin ke clipboard.', toastBatchCopiedMdTpl: '{count} domain disalin sebagai Markdown.',
                 blTitle: 'Cek Backlink Ahrefs', wmTitle: 'Arsip Wayback Machine', ggTitle: 'Indeks Google (site:)',
                 truncNoticeTpl: 'Menampilkan {shown} domain terpendek teratas dari total {total} hasil untuk menjaga kecepatan aplikasi.',
                 toastCopied: 'Daftar domain berhasil disalin ke clipboard.',
@@ -2550,6 +2605,13 @@
                 editOptionsShortcut: 'Editar Palabras y Patrón',
                 thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thAvail: 'Estado', thInspect: 'Inspección',
                 availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponible', availTaken: 'Ocupado', availNoNs: 'Sin NS', availRetry: 'Reintentar',
+                availOverLimit: '>30 car.', availOverLimitTitle: 'La verificación se limita a dominios de hasta 30 caracteres',
+                statusFilterLabel: 'Filtrar por disponibilidad', statusOptAll: 'Elegir Estado: Todos', statusOptAvailable: 'Disponible', statusOptTaken: 'Ocupado', statusOptCheck: 'Check',
+                selectAllAria: 'Seleccionar todos los dominios visibles', selectDomainAria: 'Seleccionar dominio', copyDomainTitle: 'Copiar dominio',
+                toastSingleCopiedTpl: 'Copiado: {domain}',
+                batchSelectedTpl: '{selected} seleccionados', batchAllFallbackTpl: '0 seleccionados · acciones para todos ({total})', batchClearSel: 'Limpiar',
+                batchRemoveBtn: 'Eliminar Selección', batchCopyBtn: 'Copiar', batchCopyMdBtn: 'Copiar MD', batchExportBtn: 'Exportar .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: 'Se eliminaron {count} dominio(s) de la lista.', toastBatchCopiedTpl: 'Se copiaron {count} dominio(s) al portapapeles.', toastBatchCopiedMdTpl: 'Se copiaron {count} dominio(s) en Markdown.',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Mostrando los {shown} dominios más cortos de {total} generados para mantener el rendimiento.',
                 toastCopied: 'Lista de dominios copiada al portapapeles.',
@@ -2576,6 +2638,13 @@
                 editOptionsShortcut: 'Editar Palavras e Padrão',
                 thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thAvail: 'Status', thInspect: 'Analisar',
                 availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponível', availTaken: 'Registrado', availNoNs: 'Sem NS', availRetry: 'Tentar',
+                availOverLimit: '>30 car.', availOverLimitTitle: 'A verificação é limitada a domínios com até 30 caracteres',
+                statusFilterLabel: 'Filtrar por disponibilidade', statusOptAll: 'Selecionar Status: Todos', statusOptAvailable: 'Disponível', statusOptTaken: 'Registrado', statusOptCheck: 'Check',
+                selectAllAria: 'Selecionar todos os domínios visíveis', selectDomainAria: 'Selecionar domínio', copyDomainTitle: 'Copiar domínio',
+                toastSingleCopiedTpl: 'Copiado: {domain}',
+                batchSelectedTpl: '{selected} selecionados', batchAllFallbackTpl: '0 selecionados · ações para todos ({total})', batchClearSel: 'Limpar',
+                batchRemoveBtn: 'Remover Selecionados', batchCopyBtn: 'Copiar', batchCopyMdBtn: 'Copiar MD', batchExportBtn: 'Exportar .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: '{count} domínio(s) removido(s) da lista.', toastBatchCopiedTpl: '{count} domínio(s) copiado(s).', toastBatchCopiedMdTpl: '{count} domínio(s) copiado(s) em Markdown.',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Arquivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Exibindo os {shown} domínios mais curtos de {total} gerados para preservar o desempenho.',
                 toastCopied: 'Lista de domínios copiada para a área de transferência.',
@@ -2602,6 +2671,13 @@
                 editOptionsShortcut: 'Modifier Mots & Modèles',
                 thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thAvail: 'Statut', thInspect: 'Analyser',
                 availCheckBtn: 'Check', availChecking: 'Vérification...', availAvailable: 'Disponible', availTaken: 'Pris', availNoNs: 'Sans NS', availRetry: 'Réessayer',
+                availOverLimit: '>30 car.', availOverLimitTitle: 'La vérification est limitée aux domaines de 30 caractères maximum',
+                statusFilterLabel: 'Filtrer par disponibilité', statusOptAll: 'Choisir Statut : Tous', statusOptAvailable: 'Disponible', statusOptTaken: 'Pris', statusOptCheck: 'Check',
+                selectAllAria: 'Sélectionner tous les domaines visibles', selectDomainAria: 'Sélectionner le domaine', copyDomainTitle: 'Copier le domaine',
+                toastSingleCopiedTpl: 'Copié : {domain}',
+                batchSelectedTpl: '{selected} sélectionné(s)', batchAllFallbackTpl: '0 sélectionné · actions sur tous ({total})', batchClearSel: 'Effacer',
+                batchRemoveBtn: 'Supprimer la sélection', batchCopyBtn: 'Copier', batchCopyMdBtn: 'Copier MD', batchExportBtn: 'Exporter .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: '{count} domaine(s) retiré(s) de la liste.', toastBatchCopiedTpl: '{count} domaine(s) copié(s).', toastBatchCopiedMdTpl: '{count} domaine(s) copié(s) en Markdown.',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archives Wayback Machine', ggTitle: 'Index Google (site:)',
                 truncNoticeTpl: 'Affichage des {shown} domaines les plus courts sur {total} générés pour optimiser la réactivité.',
                 toastCopied: 'Liste des domaines copiée dans le presse-papiers.',
@@ -2628,6 +2704,13 @@
                 editOptionsShortcut: 'Keywords & Muster ändern',
                 thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thAvail: 'Status', thInspect: 'Prüfen',
                 availCheckBtn: 'Check', availChecking: 'Prüfe...', availAvailable: 'Frei', availTaken: 'Belegt', availNoNs: 'Kein NS', availRetry: 'Erneut',
+                availOverLimit: '>30 Z.', availOverLimitTitle: 'Verfügbarkeitsprüfung ist auf Domains bis 30 Zeichen begrenzt',
+                statusFilterLabel: 'Nach Verfügbarkeit filtern', statusOptAll: 'Status wählen: Alle', statusOptAvailable: 'Frei', statusOptTaken: 'Belegt', statusOptCheck: 'Check',
+                selectAllAria: 'Alle sichtbaren Domains auswählen', selectDomainAria: 'Domain auswählen', copyDomainTitle: 'Domain kopieren',
+                toastSingleCopiedTpl: 'Kopiert: {domain}',
+                batchSelectedTpl: '{selected} ausgewählt', batchAllFallbackTpl: '0 ausgewählt · Aktionen für alle ({total})', batchClearSel: 'Leeren',
+                batchRemoveBtn: 'Auswahl entfernen', batchCopyBtn: 'Kopieren', batchCopyMdBtn: 'MD kopieren', batchExportBtn: '.txt Export', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: '{count} Domain(s) aus der Liste entfernt.', toastBatchCopiedTpl: '{count} Domain(s) kopiert.', toastBatchCopiedMdTpl: '{count} Domain(s) als Markdown kopiert.',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archiv', ggTitle: 'Google-Index (site:)',
                 truncNoticeTpl: 'Es werden die {shown} kürzesten Domains von insgesamt {total} Ergebnissen angezeigt.',
                 toastCopied: 'Domainliste in die Zwischenablage kopiert.',
@@ -2654,6 +2737,13 @@
                 editOptionsShortcut: 'Изменить слова и шаблон',
                 thNum: '#', thDomain: 'Домен', thChars: 'Длина', thAvail: 'Статус', thInspect: 'Проверка',
                 availCheckBtn: 'Check', availChecking: 'Проверка...', availAvailable: 'Свободен', availTaken: 'Занят', availNoNs: 'Нет NS', availRetry: 'Повтор',
+                availOverLimit: '>30 симв.', availOverLimitTitle: 'Проверка доступности ограничена доменами до 30 символов',
+                statusFilterLabel: 'Фильтр по статусу доступности', statusOptAll: 'Выбор статуса: Все', statusOptAvailable: 'Свободен', statusOptTaken: 'Занят', statusOptCheck: 'Check',
+                selectAllAria: 'Выбрать все видимые домены', selectDomainAria: 'Выбрать домен', copyDomainTitle: 'Копировать домен',
+                toastSingleCopiedTpl: 'Скопировано: {domain}',
+                batchSelectedTpl: 'Выбрано: {selected}', batchAllFallbackTpl: 'Выбрано: 0 · действия для всех ({total})', batchClearSel: 'Сброс',
+                batchRemoveBtn: 'Удалить выбранные', batchCopyBtn: 'Копировать', batchCopyMdBtn: 'Копировать MD', batchExportBtn: 'Экспорт .txt', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: 'Удалено доменов: {count}.', toastBatchCopiedTpl: 'Скопировано доменов: {count}.', toastBatchCopiedMdTpl: 'Скопировано доменов в Markdown: {count}.',
                 blTitle: 'Проверка обратных ссылок Ahrefs', wmTitle: 'Архив Wayback Machine', ggTitle: 'Индекс Google (site:)',
                 truncNoticeTpl: 'Показаны {shown} самых коротких доменов из {total} сгенерированных для высокой скорости работы.',
                 toastCopied: 'Список доменов скопирован в буфер обмена.',
@@ -2680,6 +2770,13 @@
                 editOptionsShortcut: 'キーワード・パターンを変更',
                 thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thAvail: '空き状況', thInspect: '調査',
                 availCheckBtn: 'Check', availChecking: '確認中...', availAvailable: '取得可能', availTaken: '登録済', availNoNs: 'NSなし', availRetry: '再試行',
+                availOverLimit: '30文字超', availOverLimitTitle: '空き状況チェックは30文字以下のドメインのみ対応しています',
+                statusFilterLabel: '空き状況で絞り込み', statusOptAll: 'ステータス選択: すべて', statusOptAvailable: '取得可能', statusOptTaken: '登録済', statusOptCheck: 'Check',
+                selectAllAria: '表示中のドメインをすべて選択', selectDomainAria: 'ドメインを選択', copyDomainTitle: 'ドメインをコピー',
+                toastSingleCopiedTpl: 'コピー完了: {domain}',
+                batchSelectedTpl: '{selected} 件選択中', batchAllFallbackTpl: '0 件選択 · 全体（{total} 件）に適用', batchClearSel: '解除',
+                batchRemoveBtn: '選択を削除', batchCopyBtn: 'コピー', batchCopyMdBtn: 'MDコピー', batchExportBtn: '.txt保存', batchBulkCheckBtn: 'Bulk Check',
+                toastBatchRemovedTpl: '{count} 件のドメインを削除しました。', toastBatchCopiedTpl: '{count} 件のドメインをコピーしました。', toastBatchCopiedMdTpl: '{count} 件をMarkdown形式でコピーしました。',
                 blTitle: 'Ahrefs バックリンク確認', wmTitle: 'Wayback Machine 履歴', ggTitle: 'Google インデックス (site:)',
                 truncNoticeTpl: 'パフォーマンス維持のため、生成された {total} 件のうち文字数が短い上位 {shown} 件を表示しています。',
                 toastCopied: 'ドメインリストをクリップボードにコピーしました。',
@@ -2709,6 +2806,9 @@
         let lastGeneratedCount = 0;
         let lastGeneratedTotalRaw = 0;
         let lastGeneratedDomains = [];
+        let lastFilteredAnalysisDomains = [];
+        let lastVisibleAnalysisDomains = [];
+        const selectedDomains = new Set();
         let analysisRenderLimit = 100;
         let shareFeedbackTimer = null;
         let toastTimer = null;
@@ -3467,7 +3567,6 @@
 
             document.getElementById('uiClearBtn').innerText = t.clearBtn;
             document.getElementById('uiClickToAdd').innerText = t.clickToAdd;
-            document.getElementById('uiFormulaHint').innerHTML = t.formulaHint;
             document.getElementById('formulaInput').value = t.defaultFormula;
             document.getElementById('btnKw1').innerText = t.btnKw1Text;
             document.getElementById('btnKw2').innerText = t.btnKw2Text;
@@ -3533,9 +3632,24 @@
 
             setElText('uiThNum', t.thNum);
             setElText('uiThDomain', t.thDomain);
-            setElText('uiThChars', t.thChars);
+            document.querySelectorAll('.ui-th-chars').forEach((el) => {
+                if (t.thChars) el.innerText = stripUiEmoji(t.thChars);
+            });
             setElText('uiThAvail', t.thAvail);
             setElText('uiThInspect', t.thInspect);
+            setElText('uiAnalysisStatusFilterLabel', t.statusFilterLabel);
+            setElText('uiStatusOptAll', t.statusOptAll);
+            setElText('uiStatusOptAvailable', t.statusOptAvailable);
+            setElText('uiStatusOptTaken', t.statusOptTaken);
+            setElText('uiStatusOptCheck', t.statusOptCheck);
+            setElText('uiBatchClearSelBtn', t.batchClearSel);
+            setElText('uiBatchRemoveBtn', t.batchRemoveBtn);
+            setElText('uiBatchCopyBtn', t.batchCopyBtn);
+            setElText('uiBatchCopyMdBtn', t.batchCopyMdBtn);
+            setElText('uiBatchDownloadBtn', t.batchExportBtn);
+            setElText('batchDnsBtn', t.batchBulkCheckBtn);
+            const selectAllEl = document.getElementById('selectAllVisibleCheckbox');
+            if (selectAllEl && t.selectAllAria) selectAllEl.setAttribute('aria-label', t.selectAllAria);
             setElText('uiFaqTitle', t.faqTitle);
             setElText('uiFaqSub', t.faqSub);
             setElText('uiFooterInfoTitle', t.footerInfoTitle);
@@ -4070,6 +4184,10 @@
 
             lastGeneratedDomains = results;
             lastGeneratedCount = results.length;
+            const activeResultSet = new Set(results);
+            Array.from(selectedDomains).forEach((d) => {
+                if (!activeResultSet.has(d)) selectedDomains.delete(d);
+            });
             document.getElementById('outputBox').value = results.join('\n');
             document.getElementById('statsBar').innerText = `${t.totalLabel}${results.length}`;
 
@@ -4086,8 +4204,8 @@
             const isImmediateAutoCheck = !hasDoneInitialAutoCheck || Boolean(options && options.scrollToResults);
             hasDoneInitialAutoCheck = true;
 
-            renderDomainAnalysisList(true);
             scheduleAutoAvailabilityChecks(results, isImmediateAutoCheck);
+            renderDomainAnalysisList(true);
             updateBottomAiNarrative(t, rawKeyword || 'business', rawKeyword2, rawKeyword3, formula, extensions, results);
             updateShareUI();
 
@@ -4106,9 +4224,10 @@
         }
 
         const AUTO_CHECK_LIMIT = 5;
-        const MAX_CHECK_DOMAIN_LENGTH = 14;
+        const MAX_CHECK_DOMAIN_LENGTH = 30;
         const domainAvailabilityCache = new Map();
         const availabilityInFlight = new Map();
+        const autoCheckPendingDomains = new Set();
         let autoCheckDebounceTimer = null;
         let autoCheckGenerationId = 0;
         let hasDoneInitialAutoCheck = false;
@@ -4252,7 +4371,33 @@
             }
         }
 
+        function getAnalysisFilterStatus() {
+            const sel = document.getElementById('analysisStatusFilter');
+            return sel ? String(sel.value || 'all') : 'all';
+        }
+
+        function matchesAvailabilityFilter(domain, statusFilter) {
+            if (!statusFilter || statusFilter === 'all') return true;
+            const entry = domainAvailabilityCache.get(domain);
+            if (statusFilter === 'available') {
+                return Boolean(entry && entry.status === 'available');
+            }
+            if (statusFilter === 'taken') {
+                return Boolean(entry && entry.status === 'taken');
+            }
+            if (statusFilter === 'check') {
+                if (domain.length > MAX_CHECK_DOMAIN_LENGTH) return false;
+                return !entry || (entry.status !== 'available' && entry.status !== 'taken');
+            }
+            return true;
+        }
+
         function updateDomainAvailabilityCell(domain) {
+            const statusFilter = getAnalysisFilterStatus();
+            if (statusFilter === 'available' || statusFilter === 'taken') {
+                renderDomainAnalysisList(false);
+                return;
+            }
             const listEl = document.getElementById('domainAnalysisList');
             if (!listEl) return;
             const cells = listEl.querySelectorAll('[data-avail-domain]');
@@ -4266,7 +4411,7 @@
         }
 
         async function checkSingleDomainAvailability(domain, forceRecheck) {
-            if (!domain) return;
+            if (!domain || domain.length > MAX_CHECK_DOMAIN_LENGTH) return;
             if (!forceRecheck) {
                 const existing = domainAvailabilityCache.get(domain);
                 if (existing && (existing.status === 'available' || existing.status === 'taken' || existing.status === 'checking')) {
@@ -4292,6 +4437,7 @@
                 domainAvailabilityCache.set(domain, rdapResult);
                 updateDomainAvailabilityCell(domain);
             })().finally(() => {
+                autoCheckPendingDomains.delete(domain);
                 availabilityInFlight.delete(domain);
             });
 
@@ -4305,24 +4451,32 @@
                 autoCheckDebounceTimer = null;
             }
             const genId = ++autoCheckGenerationId;
-            const targets = (Array.isArray(domains) ? domains : []).slice(0, AUTO_CHECK_LIMIT);
+            autoCheckPendingDomains.clear();
+            const targets = (Array.isArray(domains) ? domains : [])
+                .slice(0, AUTO_CHECK_LIMIT)
+                .filter((d) => d && d.length <= MAX_CHECK_DOMAIN_LENGTH);
             if (targets.length === 0) return;
+
+            const queue = targets.filter((d) => {
+                const cached = domainAvailabilityCache.get(d);
+                return !cached || cached.status === 'error';
+            });
+            queue.forEach((d) => autoCheckPendingDomains.add(d));
+            if (queue.length === 0) return;
 
             const delay = immediate ? 30 : 420;
             autoCheckDebounceTimer = setTimeout(async () => {
                 if (genId !== autoCheckGenerationId) return;
-                const queue = targets.filter((d) => {
-                    const cached = domainAvailabilityCache.get(d);
-                    return !cached || cached.status === 'error';
-                });
-                if (queue.length === 0) return;
+                const activeQueue = queue.filter((d) => autoCheckPendingDomains.has(d));
+                if (activeQueue.length === 0) return;
 
                 let cursor = 0;
-                const workerCount = Math.min(3, queue.length);
+                const workerCount = Math.min(3, activeQueue.length);
                 const workers = Array.from({ length: workerCount }, async () => {
-                    while (cursor < queue.length) {
+                    while (cursor < activeQueue.length) {
                         if (genId !== autoCheckGenerationId) return;
-                        const nextDomain = queue[cursor++];
+                        const nextDomain = activeQueue[cursor++];
+                        if (!autoCheckPendingDomains.has(nextDomain)) continue;
                         await checkSingleDomainAvailability(nextDomain, false);
                     }
                 });
@@ -4331,9 +4485,15 @@
         }
 
         function renderAvailabilityCellHtml(domain, globalIdx, t) {
-            const entry = domainAvailabilityCache.get(domain);
             const isOverLengthLimit = domain.length > MAX_CHECK_DOMAIN_LENGTH;
-            const isAutoRow = globalIdx >= 0 && globalIdx < AUTO_CHECK_LIMIT;
+            if (isOverLengthLimit) {
+                const overLimitLabel = escapeHtmlText(t.availOverLimit || '>30 chars');
+                const overLimitTitle = escapeHtmlAttr(t.availOverLimitTitle || 'Availability check is limited to domains up to 30 characters');
+                return `<span title="${overLimitTitle}" class="inline-flex items-center px-2 py-1 text-[11px] font-medium rounded-md bg-slate-100 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border border-slate-200/80 dark:border-slate-700/70 whitespace-nowrap select-none">${overLimitLabel}</span>`;
+            }
+
+            const entry = domainAvailabilityCache.get(domain);
+            const isAutoPending = autoCheckPendingDomains.has(domain);
             const safeDomainAttr = escapeHtmlAttr(domain);
 
             const checkLabel = escapeHtmlText(t.availCheckBtn || 'Check');
@@ -4355,28 +4515,263 @@
                     return `<span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span>`;
                 }
                 if (entry.status === 'no-ns') {
-                    if (!isOverLengthLimit) {
-                        return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="No NS record (RDAP unavailable for this TLD)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${noNsLabel}</button>`;
-                    }
-                    return `<span title="No NS record" class="inline-flex items-center px-2 py-1 text-[11px] font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">${noNsLabel}</span>`;
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="No NS record (RDAP unavailable for this TLD)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${noNsLabel}</button>`;
                 }
                 if (entry.status === 'error') {
-                    if (!isOverLengthLimit) {
-                        return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${retryLabel}</button>`;
-                    }
-                    return `<span class="text-slate-400 dark:text-slate-500 text-[11px]">—</span>`;
+                    return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${retryLabel}</button>`;
                 }
             }
 
-            if (isAutoRow) {
+            if (isAutoPending) {
                 return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
             }
 
-            if (!isOverLengthLimit) {
-                return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), false)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
+            return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), false)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
+        }
+
+        function getBatchTargetDomains() {
+            if (selectedDomains.size > 0) {
+                return lastGeneratedDomains.filter((d) => selectedDomains.has(d));
+            }
+            return lastGeneratedDomains.slice();
+        }
+
+        function syncBatchSelectionUi() {
+            const t = dict[currentLang] || dict.en;
+            const selectAllEl = document.getElementById('selectAllVisibleCheckbox');
+            const statusEl = document.getElementById('domainSelectionStatus');
+            const clearBtn = document.getElementById('uiBatchClearSelBtn');
+            const removeBtn = document.getElementById('uiBatchRemoveBtn');
+            const copyBtn = document.getElementById('uiBatchCopyBtn');
+            const copyMdBtn = document.getElementById('uiBatchCopyMdBtn');
+            const downloadBtn = document.getElementById('uiBatchDownloadBtn');
+            const batchDnsBtn = document.getElementById('batchDnsBtn');
+
+            const visibleDomains = Array.isArray(lastVisibleAnalysisDomains) ? lastVisibleAnalysisDomains : [];
+            let visibleSelectedCount = 0;
+            for (let i = 0; i < visibleDomains.length; i++) {
+                if (selectedDomains.has(visibleDomains[i])) visibleSelectedCount++;
             }
 
-            return `<span class="text-slate-300 dark:text-slate-600 select-none">—</span>`;
+            if (selectAllEl) {
+                selectAllEl.disabled = visibleDomains.length === 0;
+                selectAllEl.checked = visibleDomains.length > 0 && visibleSelectedCount === visibleDomains.length;
+                selectAllEl.indeterminate = visibleSelectedCount > 0 && visibleSelectedCount < visibleDomains.length;
+            }
+
+            const totalActive = lastGeneratedDomains.length;
+            const selCount = selectedDomains.size;
+            if (statusEl) {
+                if (selCount > 0) {
+                    statusEl.textContent = (t.batchSelectedTpl || '{selected} selected').replace(/\{selected\}/g, String(selCount));
+                } else {
+                    statusEl.textContent = (t.batchAllFallbackTpl || '0 selected · actions apply to all ({total})').replace(/\{total\}/g, String(totalActive));
+                }
+            }
+
+            if (clearBtn) {
+                if (selCount > 0) {
+                    clearBtn.classList.remove('hidden');
+                } else {
+                    clearBtn.classList.add('hidden');
+                }
+            }
+
+            if (removeBtn) removeBtn.disabled = selCount === 0;
+            if (copyBtn) copyBtn.disabled = totalActive === 0;
+            if (copyMdBtn) copyMdBtn.disabled = totalActive === 0;
+            if (downloadBtn) downloadBtn.disabled = totalActive === 0;
+
+            if (batchDnsBtn) {
+                const targets = getBatchTargetDomains();
+                batchDnsBtn.setAttribute(
+                    'href',
+                    targets.length > 0
+                        ? `https://dnsrobot.net/domain-age-checker?domains=${targets.join('%2C')}`
+                        : 'https://dnsrobot.net/domain-age-checker'
+                );
+            }
+        }
+
+        function toggleDomainSelection(domain, checked) {
+            if (!domain) return;
+            if (checked) {
+                selectedDomains.add(domain);
+            } else {
+                selectedDomains.delete(domain);
+            }
+            syncBatchSelectionUi();
+        }
+
+        function toggleSelectAllVisible(checked) {
+            const visibleDomains = Array.isArray(lastVisibleAnalysisDomains) ? lastVisibleAnalysisDomains : [];
+            for (let i = 0; i < visibleDomains.length; i++) {
+                const domain = visibleDomains[i];
+                if (checked) {
+                    selectedDomains.add(domain);
+                } else {
+                    selectedDomains.delete(domain);
+                }
+            }
+            const listEl = document.getElementById('domainAnalysisList');
+            if (listEl) {
+                const checkboxes = listEl.querySelectorAll('input[type="checkbox"][data-select-domain]');
+                for (let i = 0; i < checkboxes.length; i++) {
+                    const domain = checkboxes[i].getAttribute('data-select-domain');
+                    checkboxes[i].checked = selectedDomains.has(domain);
+                }
+            }
+            syncBatchSelectionUi();
+        }
+
+        function clearDomainSelection() {
+            selectedDomains.clear();
+            const listEl = document.getElementById('domainAnalysisList');
+            if (listEl) {
+                const checkboxes = listEl.querySelectorAll('input[type="checkbox"][data-select-domain]');
+                for (let i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = false;
+                }
+            }
+            syncBatchSelectionUi();
+        }
+
+        function removeSelectedDomains() {
+            if (selectedDomains.size === 0) return;
+            const t = dict[currentLang] || dict.en;
+            const beforeCount = lastGeneratedDomains.length;
+            const removedDomains = [];
+            const remaining = lastGeneratedDomains.filter((d) => {
+                if (selectedDomains.has(d)) {
+                    removedDomains.push(d);
+                    return false;
+                }
+                return true;
+            });
+            const removedCount = beforeCount - remaining.length;
+            selectedDomains.clear();
+            if (removedCount === 0) {
+                syncBatchSelectionUi();
+                return;
+            }
+
+            removedDomains.forEach((d) => autoCheckPendingDomains.delete(d));
+            if (autoCheckDebounceTimer) {
+                clearTimeout(autoCheckDebounceTimer);
+                autoCheckDebounceTimer = null;
+            }
+            autoCheckGenerationId++;
+            autoCheckPendingDomains.clear();
+
+            lastGeneratedDomains = remaining;
+            lastGeneratedCount = remaining.length;
+            lastGeneratedTotalRaw = Math.max(remaining.length, lastGeneratedTotalRaw - removedCount);
+
+            const outputBox = document.getElementById('outputBox');
+            if (outputBox) outputBox.value = remaining.join('\n');
+            const statsBar = document.getElementById('statsBar');
+            if (statsBar) statsBar.innerText = `${t.totalLabel}${remaining.length}`;
+
+            const truncEl = document.getElementById('truncationNotice');
+            if (truncEl) {
+                if (remaining.length > 0 && lastGeneratedTotalRaw > remaining.length) {
+                    const tpl = t.truncNoticeTpl || 'Showing top {shown} shortest domains out of {total} generated.';
+                    truncEl.textContent = tpl
+                        .replace(/\{shown\}/g, String(remaining.length))
+                        .replace(/\{total\}/g, String(lastGeneratedTotalRaw));
+                    truncEl.classList.remove('hidden');
+                } else {
+                    truncEl.classList.add('hidden');
+                    truncEl.textContent = '';
+                }
+            }
+
+            const dnsBtn = document.getElementById('uiDnsBtn');
+            if (dnsBtn) {
+                dnsBtn.setAttribute(
+                    'href',
+                    remaining.length > 0
+                        ? `https://dnsrobot.net/domain-age-checker?domains=${remaining.join('%2C')}`
+                        : 'https://dnsrobot.net/domain-age-checker'
+                );
+            }
+
+            const kw = document.getElementById('keywordInput')?.value.trim() || 'business';
+            const kw2 = document.getElementById('keyword2Input')?.value.trim() || '';
+            const kw3 = document.getElementById('keyword3Input')?.value.trim() || '';
+            const formula = document.getElementById('formulaInput')?.value.trim() || '';
+            const exts = (document.getElementById('extInput')?.value || '').split(',').map(e => e.trim()).filter(Boolean);
+            updateBottomAiNarrative(t, kw, kw2, kw3, formula, exts, remaining);
+            updateShareUI();
+            renderDomainAnalysisList(false);
+            showActionToast((t.toastBatchRemovedTpl || 'Removed {count} domain(s) from the list.').replace(/\{count\}/g, String(removedCount)));
+        }
+
+        async function copyBatchDomains(format) {
+            const t = dict[currentLang] || dict.en;
+            const targets = getBatchTargetDomains();
+            if (targets.length === 0) {
+                showActionToast(t.toastNoDomains || 'Generate at least one domain first.');
+                return;
+            }
+            const text = format === 'markdown'
+                ? targets.map((d) => `- ${d}`).join('\n')
+                : targets.join('\n');
+            await copyTextWithFallback(text);
+            const tpl = format === 'markdown'
+                ? (t.toastBatchCopiedMdTpl || 'Copied {count} domain(s) as Markdown.')
+                : (t.toastBatchCopiedTpl || 'Copied {count} domain(s) to clipboard.');
+            showActionToast(tpl.replace(/\{count\}/g, String(targets.length)));
+        }
+
+        function downloadBatchDomainsTxt() {
+            const t = dict[currentLang] || dict.en;
+            const targets = getBatchTargetDomains();
+            if (targets.length === 0) {
+                showActionToast(t.toastNoDomains || 'Generate at least one domain first.');
+                return;
+            }
+            const blob = new Blob([targets.join('\n')], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = selectedDomains.size > 0 ? 'selected-domains.txt' : 'domain-permutasi.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function prepareBatchDnsLink(event) {
+            const t = dict[currentLang] || dict.en;
+            const targets = getBatchTargetDomains();
+            if (targets.length === 0) {
+                if (event) event.preventDefault();
+                showActionToast(t.toastNoDomains || 'Generate at least one domain first.');
+                return false;
+            }
+            const batchDnsBtn = document.getElementById('batchDnsBtn');
+            if (batchDnsBtn) {
+                batchDnsBtn.setAttribute('href', `https://dnsrobot.net/domain-age-checker?domains=${targets.join('%2C')}`);
+            }
+            return true;
+        }
+
+        async function copySingleDomain(domain, btnEl) {
+            if (!domain) return;
+            const t = dict[currentLang] || dict.en;
+            await copyTextWithFallback(domain);
+            showActionToast((t.toastSingleCopiedTpl || 'Copied: {domain}').replace(/\{domain\}/g, domain));
+            if (btnEl) {
+                const prevHtml = btnEl.getAttribute('data-orig-svg') || btnEl.innerHTML;
+                if (!btnEl.getAttribute('data-orig-svg')) {
+                    btnEl.setAttribute('data-orig-svg', prevHtml);
+                }
+                btnEl.innerHTML = '<svg aria-hidden="true" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                clearTimeout(btnEl._copyResetTimer);
+                btnEl._copyResetTimer = setTimeout(() => {
+                    const orig = btnEl.getAttribute('data-orig-svg');
+                    if (orig) btnEl.innerHTML = orig;
+                }, 1400);
+            }
         }
 
         function loadMoreAnalysisRows() {
@@ -4394,28 +4789,38 @@
 
             const t = dict[currentLang] || dict.en;
             const query = filterEl ? filterEl.value.trim().toLowerCase() : '';
-            const filtered = query
-                ? lastGeneratedDomains.filter(d => d.toLowerCase().includes(query))
-                : lastGeneratedDomains;
+            const statusFilter = getAnalysisFilterStatus();
+            const filtered = lastGeneratedDomains.filter((d) => {
+                if (query && !d.toLowerCase().includes(query)) return false;
+                return matchesAvailabilityFilter(d, statusFilter);
+            });
+            lastFilteredAnalysisDomains = filtered;
 
             if (lastGeneratedDomains.length === 0) {
-                listEl.innerHTML = `<tr><td colspan="5" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
+                lastVisibleAnalysisDomains = [];
+                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = '';
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
+                syncBatchSelectionUi();
                 return;
             }
 
             if (filtered.length === 0) {
-                listEl.innerHTML = `<tr><td colspan="5" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
+                lastVisibleAnalysisDomains = [];
+                listEl.innerHTML = `<tr><td colspan="7" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = (t.analysisShowingTpl || 'Showing {shown} of {total} domains').replace(/\{shown\}/g, '0').replace(/\{total\}/g, String(lastGeneratedDomains.length));
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
+                syncBatchSelectionUi();
                 return;
             }
 
             const visible = filtered.slice(0, analysisRenderLimit);
+            lastVisibleAnalysisDomains = visible;
             const blTitle = escapeHtmlAttr(t.blTitle || 'Ahrefs Backlink Checker');
             const wmTitle = escapeHtmlAttr(t.wmTitle || 'Wayback Machine Archive');
             const ggTitle = escapeHtmlAttr(t.ggTitle || 'Google Index (site:)');
+            const copyTitle = escapeHtmlAttr(t.copyDomainTitle || 'Copy domain');
+            const selectAriaPrefix = t.selectDomainAria || 'Select domain';
 
             const domainToGlobalIndex = new Map();
             lastGeneratedDomains.forEach((d, i) => domainToGlobalIndex.set(d, i));
@@ -4429,14 +4834,26 @@
                 const safeDomainAttr = escapeHtmlAttr(domain);
                 const globalIdx = domainToGlobalIndex.has(domain) ? domainToGlobalIndex.get(domain) : idx;
                 const availCellHtml = renderAvailabilityCellHtml(domain, globalIdx, t);
+                const isSelected = selectedDomains.has(domain);
 
                 return `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
-                        <td class="py-2.5 px-3 text-[12px] md:text-[13px] font-mono tabular-nums text-slate-400 dark:text-slate-500 whitespace-nowrap leading-[1.45]">${idx + 1}</td>
-                        <td class="py-2.5 px-3 font-mono text-[13px] md:text-[14px] font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap leading-[1.45] md:leading-[1.5]">${safeDomain}</td>
-                        <td class="py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
-                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-3 text-right whitespace-nowrap">${availCellHtml}</td>
-                        <td class="py-2 px-3 text-right whitespace-nowrap">
+                        <td class="py-2.5 px-2 sm:px-3 text-center whitespace-nowrap">
+                            <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-slate-300 dark:border-slate-600 text-blue-600 focus:ring-blue-600 cursor-pointer align-middle">
+                        </td>
+                        <td class="hidden lg:table-cell py-2.5 px-2.5 text-[12px] md:text-[13px] font-mono tabular-nums text-slate-400 dark:text-slate-500 whitespace-nowrap leading-[1.45]">${idx + 1}</td>
+                        <td class="py-2.5 px-2 sm:px-3 font-mono text-[13px] md:text-[14px] font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap leading-[1.45] md:leading-[1.5]">
+                            <div class="inline-flex items-center gap-1.5 sm:gap-2">
+                                <span>${safeDomain}</span>
+                                <button type="button" data-copy-domain="${safeDomainAttr}" onclick="copySingleDomain(this.getAttribute('data-copy-domain'), this)" title="${copyTitle}" aria-label="${copyTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-300 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                                    <svg aria-hidden="true" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="hidden lg:table-cell py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">${availCellHtml}</td>
+                        <td class="lg:hidden py-2.5 px-2 sm:px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">
                             <div class="inline-flex items-center justify-end gap-2">
                                 <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors">BL</a>
                                 <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors">WM</a>
@@ -4459,6 +4876,7 @@
                     moreWrapEl.classList.add('hidden');
                 }
             }
+            syncBatchSelectionUi();
         }
 
         function updateBottomAiNarrative(t, kw, kw2, kw3, formula, extensions, results) {
