@@ -453,12 +453,13 @@
 
                     <!-- Responsive Horizontal-Scroll Table -->
                     <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-lg max-h-96 overflow-y-auto">
-                        <table class="w-full min-w-[440px] text-left border-collapse">
+                        <table class="w-full min-w-[540px] text-left border-collapse">
                             <thead class="sticky top-0 z-10 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 text-[11px] uppercase tracking-wider font-semibold text-slate-600 dark:text-slate-300">
                                 <tr>
                                     <th scope="col" id="uiThNum" class="py-3 px-3 w-12 tabular-nums">#</th>
                                     <th scope="col" id="uiThDomain" class="py-3 px-3">Domain Name</th>
                                     <th scope="col" id="uiThChars" class="py-3 px-3 w-16 text-right tabular-nums">Chars</th>
+                                    <th scope="col" id="uiThAvail" class="py-3 px-3 w-28 text-right">Availability</th>
                                     <th scope="col" id="uiThInspect" class="py-3 px-3 w-40 text-right">Inspect</th>
                                 </tr>
                             </thead>
@@ -2494,7 +2495,8 @@
                 navGen: 'Generator', navResults: 'Results', navGuide: 'Guide', navFaq: 'FAQ',
                 advOptionsLabel: 'Add / Customize',
                 editOptionsShortcut: 'Edit Keywords & Pattern',
-                thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thInspect: 'Inspect',
+                thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thAvail: 'Availability', thInspect: 'Inspect',
+                availCheckBtn: 'Check', availChecking: 'Checking...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Retry',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archive', ggTitle: 'Google Index (site:)',
                 truncNoticeTpl: 'Showing top {shown} shortest domains out of {total} generated to protect browser & script performance.',
                 toastCopied: 'Domain list copied to clipboard.',
@@ -2519,7 +2521,8 @@
                 navGen: 'Generator', navResults: 'Hasil', navGuide: 'Panduan', navFaq: 'FAQ',
                 advOptionsLabel: 'Tambah / Sesuaikan',
                 editOptionsShortcut: 'Ubah Kata Kunci & Pola',
-                thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thInspect: 'Cek',
+                thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thAvail: 'Status', thInspect: 'Cek',
+                availCheckBtn: 'Check', availChecking: 'Mengecek...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Ulangi',
                 blTitle: 'Cek Backlink Ahrefs', wmTitle: 'Arsip Wayback Machine', ggTitle: 'Indeks Google (site:)',
                 truncNoticeTpl: 'Menampilkan {shown} domain terpendek teratas dari total {total} hasil untuk menjaga kecepatan aplikasi.',
                 toastCopied: 'Daftar domain berhasil disalin ke clipboard.',
@@ -2544,7 +2547,8 @@
                 navGen: 'Generador', navResults: 'Resultados', navGuide: 'Guía', navFaq: 'FAQ',
                 advOptionsLabel: 'Añadir / Personalizar',
                 editOptionsShortcut: 'Editar Palabras y Patrón',
-                thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thInspect: 'Inspección',
+                thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thAvail: 'Estado', thInspect: 'Inspección',
+                availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponible', availTaken: 'Ocupado', availNoNs: 'Sin NS', availRetry: 'Reintentar',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Mostrando los {shown} dominios más cortos de {total} generados para mantener el rendimiento.',
                 toastCopied: 'Lista de dominios copiada al portapapeles.',
@@ -2569,7 +2573,8 @@
                 navGen: 'Gerador', navResults: 'Resultados', navGuide: 'Guia', navFaq: 'FAQ',
                 advOptionsLabel: 'Adicionar / Personalizar',
                 editOptionsShortcut: 'Editar Palavras e Padrão',
-                thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thInspect: 'Analisar',
+                thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thAvail: 'Status', thInspect: 'Analisar',
+                availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponível', availTaken: 'Registrado', availNoNs: 'Sem NS', availRetry: 'Tentar',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Arquivo Wayback Machine', ggTitle: 'Índice Google (site:)',
                 truncNoticeTpl: 'Exibindo os {shown} domínios mais curtos de {total} gerados para preservar o desempenho.',
                 toastCopied: 'Lista de domínios copiada para a área de transferência.',
@@ -2594,7 +2599,8 @@
                 navGen: 'Générateur', navResults: 'Résultats', navGuide: 'Guide', navFaq: 'FAQ',
                 advOptionsLabel: 'Ajouter / Personnaliser',
                 editOptionsShortcut: 'Modifier Mots & Modèles',
-                thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thInspect: 'Analyser',
+                thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thAvail: 'Statut', thInspect: 'Analyser',
+                availCheckBtn: 'Check', availChecking: 'Vérification...', availAvailable: 'Disponible', availTaken: 'Pris', availNoNs: 'Sans NS', availRetry: 'Réessayer',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Archives Wayback Machine', ggTitle: 'Index Google (site:)',
                 truncNoticeTpl: 'Affichage des {shown} domaines les plus courts sur {total} générés pour optimiser la réactivité.',
                 toastCopied: 'Liste des domaines copiée dans le presse-papiers.',
@@ -2619,7 +2625,8 @@
                 navGen: 'Generator', navResults: 'Ergebnisse', navGuide: 'Leitfaden', navFaq: 'FAQ',
                 advOptionsLabel: 'Hinzufügen / Anpassen',
                 editOptionsShortcut: 'Keywords & Muster ändern',
-                thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thInspect: 'Prüfen',
+                thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thAvail: 'Status', thInspect: 'Prüfen',
+                availCheckBtn: 'Check', availChecking: 'Prüfe...', availAvailable: 'Frei', availTaken: 'Belegt', availNoNs: 'Kein NS', availRetry: 'Erneut',
                 blTitle: 'Ahrefs Backlink Checker', wmTitle: 'Wayback Machine Archiv', ggTitle: 'Google-Index (site:)',
                 truncNoticeTpl: 'Es werden die {shown} kürzesten Domains von insgesamt {total} Ergebnissen angezeigt.',
                 toastCopied: 'Domainliste in die Zwischenablage kopiert.',
@@ -2644,7 +2651,8 @@
                 navGen: 'Генератор', navResults: 'Результаты', navGuide: 'Руководство', navFaq: 'FAQ',
                 advOptionsLabel: 'Добавить / Настроить',
                 editOptionsShortcut: 'Изменить слова и шаблон',
-                thNum: '#', thDomain: 'Домен', thChars: 'Длина', thInspect: 'Проверка',
+                thNum: '#', thDomain: 'Домен', thChars: 'Длина', thAvail: 'Статус', thInspect: 'Проверка',
+                availCheckBtn: 'Check', availChecking: 'Проверка...', availAvailable: 'Свободен', availTaken: 'Занят', availNoNs: 'Нет NS', availRetry: 'Повтор',
                 blTitle: 'Проверка обратных ссылок Ahrefs', wmTitle: 'Архив Wayback Machine', ggTitle: 'Индекс Google (site:)',
                 truncNoticeTpl: 'Показаны {shown} самых коротких доменов из {total} сгенерированных для высокой скорости работы.',
                 toastCopied: 'Список доменов скопирован в буфер обмена.',
@@ -2669,7 +2677,8 @@
                 navGen: 'ジェネレータ', navResults: '結果一覧', navGuide: 'ガイド', navFaq: 'FAQ',
                 advOptionsLabel: '追加 / カスタマイズ',
                 editOptionsShortcut: 'キーワード・パターンを変更',
-                thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thInspect: '調査',
+                thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thAvail: '空き状況', thInspect: '調査',
+                availCheckBtn: 'Check', availChecking: '確認中...', availAvailable: '取得可能', availTaken: '登録済', availNoNs: 'NSなし', availRetry: '再試行',
                 blTitle: 'Ahrefs バックリンク確認', wmTitle: 'Wayback Machine 履歴', ggTitle: 'Google インデックス (site:)',
                 truncNoticeTpl: 'パフォーマンス維持のため、生成された {total} 件のうち文字数が短い上位 {shown} 件を表示しています。',
                 toastCopied: 'ドメインリストをクリップボードにコピーしました。',
@@ -3524,6 +3533,7 @@
             setElText('uiThNum', t.thNum);
             setElText('uiThDomain', t.thDomain);
             setElText('uiThChars', t.thChars);
+            setElText('uiThAvail', t.thAvail);
             setElText('uiThInspect', t.thInspect);
             setElText('uiFaqTitle', t.faqTitle);
             setElText('uiFaqSub', t.faqSub);
@@ -4072,8 +4082,12 @@
                 );
             }
 
+            const isImmediateAutoCheck = !hasDoneInitialAutoCheck || Boolean(options && options.scrollToResults);
+            hasDoneInitialAutoCheck = true;
+
             renderDomainAnalysisList(true);
-            updateBottomAiNarrative(t, rawKeyword || 'domain', rawKeyword2, rawKeyword3, formula, extensions, results);
+            scheduleAutoAvailabilityChecks(results, isImmediateAutoCheck);
+            updateBottomAiNarrative(t, rawKeyword || 'business', rawKeyword2, rawKeyword3, formula, extensions, results);
             updateShareUI();
 
             if (options && options.scrollToResults) {
@@ -4088,6 +4102,280 @@
                     });
                 }
             }
+        }
+
+        const AUTO_CHECK_LIMIT = 5;
+        const MAX_CHECK_DOMAIN_LENGTH = 14;
+        const domainAvailabilityCache = new Map();
+        const availabilityInFlight = new Map();
+        let autoCheckDebounceTimer = null;
+        let autoCheckGenerationId = 0;
+        let hasDoneInitialAutoCheck = false;
+        let ianaRdapBootstrapPromise = null;
+
+        const KNOWN_RDAP_SERVERS = {
+            com: 'https://rdap.verisign.com/com/v1/',
+            net: 'https://rdap.verisign.com/net/v1/',
+            org: 'https://rdap.publicinterestregistry.org/rdap/',
+            io: 'https://rdap.identitydigital.services/rdap/',
+            ai: 'https://rdap.identitydigital.services/rdap/',
+            info: 'https://rdap.identitydigital.services/rdap/',
+            pro: 'https://rdap.identitydigital.services/rdap/',
+            app: 'https://pubapi.registry.google/rdap/',
+            dev: 'https://pubapi.registry.google/rdap/',
+            id: 'https://rdap.pandi.id/rdap/',
+            biz: 'https://rdap.nic.biz/',
+            tv: 'https://rdap.nic.tv/',
+            cc: 'https://tld-rdap.verisign.com/cc/v1/',
+            xyz: 'https://rdap.centralnic.com/xyz/',
+            shop: 'https://rdap.gmoregistry.net/rdap/',
+            tech: 'https://rdap.radix.host/rdap/',
+            store: 'https://rdap.radix.host/rdap/',
+            online: 'https://rdap.radix.host/rdap/',
+            site: 'https://rdap.radix.host/rdap/',
+            cloud: 'https://rdap.registry.cloud/rdap/',
+            ca: 'https://rdap.ca.fury.ca/rdap/',
+            au: 'https://rdap.cctld.au/rdap/',
+            fr: 'https://rdap.nic.fr/',
+            in: 'https://rdap.nixiregistry.in/rdap/',
+            uk: 'https://rdap.nominet.uk/uk/',
+            br: 'https://rdap.registro.br/',
+            nl: 'https://rdap.sidn.nl/'
+        };
+
+        async function loadIanaRdapMap() {
+            if (!ianaRdapBootstrapPromise) {
+                ianaRdapBootstrapPromise = (async () => {
+                    const map = Object.assign({}, KNOWN_RDAP_SERVERS);
+                    try {
+                        const cached = sessionStorage.getItem('ianaRdapTldMapV1');
+                        if (cached) {
+                            Object.assign(map, JSON.parse(cached));
+                            return map;
+                        }
+                    } catch (e) {}
+
+                    try {
+                        const controller = new AbortController();
+                        const timer = setTimeout(() => controller.abort(), 5000);
+                        const res = await fetch('https://data.iana.org/rdap/dns.json', { signal: controller.signal });
+                        clearTimeout(timer);
+                        if (res.ok) {
+                            const data = await res.json();
+                            const services = Array.isArray(data && data.services) ? data.services : [];
+                            const extracted = {};
+                            services.forEach((entry) => {
+                                const tlds = Array.isArray(entry[0]) ? entry[0] : [];
+                                const urls = Array.isArray(entry[1]) ? entry[1] : [];
+                                const httpsUrl = urls.find(u => typeof u === 'string' && u.startsWith('https://')) || urls[0];
+                                if (!httpsUrl) return;
+                                const normalizedUrl = httpsUrl.endsWith('/') ? httpsUrl : `${httpsUrl}/`;
+                                tlds.forEach((tld) => {
+                                    const key = String(tld || '').toLowerCase();
+                                    if (key && !map[key]) {
+                                        map[key] = normalizedUrl;
+                                        extracted[key] = normalizedUrl;
+                                    }
+                                });
+                            });
+                            try {
+                                sessionStorage.setItem('ianaRdapTldMapV1', JSON.stringify(extracted));
+                            } catch (e) {}
+                        }
+                    } catch (e) {}
+                    return map;
+                })();
+            }
+            return ianaRdapBootstrapPromise;
+        }
+
+        async function getRdapBaseUrlForDomain(domain) {
+            const parts = String(domain || '').toLowerCase().split('.');
+            const topTld = parts[parts.length - 1] || '';
+            if (KNOWN_RDAP_SERVERS[topTld]) return KNOWN_RDAP_SERVERS[topTld];
+            const map = await loadIanaRdapMap();
+            return map[topTld] || '';
+        }
+
+        async function fetchWithTimeout(url, options, timeoutMs) {
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+            try {
+                return await fetch(url, Object.assign({}, options || {}, { signal: controller.signal }));
+            } finally {
+                clearTimeout(timer);
+            }
+        }
+
+        async function checkNsViaDoh(domain) {
+            const encoded = encodeURIComponent(domain);
+            const endpoints = [
+                {
+                    url: `https://cloudflare-dns.com/dns-query?name=${encoded}&type=NS`,
+                    headers: { 'Accept': 'application/dns-json' }
+                },
+                {
+                    url: `https://dns.google/resolve?name=${encoded}&type=NS`,
+                    headers: { 'Accept': 'application/json' }
+                }
+            ];
+
+            for (let i = 0; i < endpoints.length; i++) {
+                try {
+                    const res = await fetchWithTimeout(endpoints[i].url, { headers: endpoints[i].headers }, 4000);
+                    if (!res.ok) continue;
+                    const data = await res.json();
+                    const hasNsAnswer = data && data.Status === 0 && Array.isArray(data.Answer) && data.Answer.some(r => r && r.type === 2);
+                    return { ok: true, hasNs: hasNsAnswer };
+                } catch (e) {}
+            }
+            return { ok: false, hasNs: false };
+        }
+
+        async function checkRdapAvailability(domain) {
+            const rdapBase = await getRdapBaseUrlForDomain(domain);
+            if (!rdapBase) {
+                return { status: 'no-ns', method: 'NS' };
+            }
+            try {
+                const res = await fetchWithTimeout(
+                    `${rdapBase}domain/${encodeURIComponent(domain)}`,
+                    { headers: { 'Accept': 'application/rdap+json, application/json' } },
+                    5500
+                );
+                if (res.status === 200) return { status: 'taken', method: 'RDAP' };
+                if (res.status === 404) return { status: 'available', method: 'RDAP' };
+                return { status: 'error', method: 'RDAP' };
+            } catch (e) {
+                return { status: 'no-ns', method: 'NS' };
+            }
+        }
+
+        function updateDomainAvailabilityCell(domain) {
+            const listEl = document.getElementById('domainAnalysisList');
+            if (!listEl) return;
+            const cells = listEl.querySelectorAll('[data-avail-domain]');
+            const t = dict[currentLang] || dict.en;
+            const globalIdx = lastGeneratedDomains.indexOf(domain);
+            for (let i = 0; i < cells.length; i++) {
+                if (cells[i].getAttribute('data-avail-domain') === domain) {
+                    cells[i].innerHTML = renderAvailabilityCellHtml(domain, globalIdx, t);
+                }
+            }
+        }
+
+        async function checkSingleDomainAvailability(domain, forceRecheck) {
+            if (!domain) return;
+            if (!forceRecheck) {
+                const existing = domainAvailabilityCache.get(domain);
+                if (existing && (existing.status === 'available' || existing.status === 'taken' || existing.status === 'checking')) {
+                    return;
+                }
+            }
+            if (availabilityInFlight.has(domain)) {
+                return availabilityInFlight.get(domain);
+            }
+
+            const task = (async () => {
+                domainAvailabilityCache.set(domain, { status: 'checking', method: '' });
+                updateDomainAvailabilityCell(domain);
+
+                const nsResult = await checkNsViaDoh(domain);
+                if (nsResult.ok && nsResult.hasNs) {
+                    domainAvailabilityCache.set(domain, { status: 'taken', method: 'NS' });
+                    updateDomainAvailabilityCell(domain);
+                    return;
+                }
+
+                const rdapResult = await checkRdapAvailability(domain);
+                domainAvailabilityCache.set(domain, rdapResult);
+                updateDomainAvailabilityCell(domain);
+            })().finally(() => {
+                availabilityInFlight.delete(domain);
+            });
+
+            availabilityInFlight.set(domain, task);
+            return task;
+        }
+
+        function scheduleAutoAvailabilityChecks(domains, immediate) {
+            if (autoCheckDebounceTimer) {
+                clearTimeout(autoCheckDebounceTimer);
+                autoCheckDebounceTimer = null;
+            }
+            const genId = ++autoCheckGenerationId;
+            const targets = (Array.isArray(domains) ? domains : []).slice(0, AUTO_CHECK_LIMIT);
+            if (targets.length === 0) return;
+
+            const delay = immediate ? 30 : 420;
+            autoCheckDebounceTimer = setTimeout(async () => {
+                if (genId !== autoCheckGenerationId) return;
+                const queue = targets.filter((d) => {
+                    const cached = domainAvailabilityCache.get(d);
+                    return !cached || cached.status === 'error';
+                });
+                if (queue.length === 0) return;
+
+                let cursor = 0;
+                const workerCount = Math.min(3, queue.length);
+                const workers = Array.from({ length: workerCount }, async () => {
+                    while (cursor < queue.length) {
+                        if (genId !== autoCheckGenerationId) return;
+                        const nextDomain = queue[cursor++];
+                        await checkSingleDomainAvailability(nextDomain, false);
+                    }
+                });
+                await Promise.all(workers);
+            }, delay);
+        }
+
+        function renderAvailabilityCellHtml(domain, globalIdx, t) {
+            const entry = domainAvailabilityCache.get(domain);
+            const isOverLengthLimit = domain.length > MAX_CHECK_DOMAIN_LENGTH;
+            const isAutoRow = globalIdx >= 0 && globalIdx < AUTO_CHECK_LIMIT;
+            const safeDomainAttr = escapeHtmlAttr(domain);
+
+            const checkLabel = escapeHtmlText(t.availCheckBtn || 'Check');
+            const checkingLabel = escapeHtmlText(t.availChecking || 'Checking...');
+            const availableLabel = escapeHtmlText(t.availAvailable || 'Available');
+            const takenLabel = escapeHtmlText(t.availTaken || 'Taken');
+            const noNsLabel = escapeHtmlText(t.availNoNs || 'No NS');
+            const retryLabel = escapeHtmlText(t.availRetry || 'Retry');
+
+            if (entry) {
+                if (entry.status === 'checking') {
+                    return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
+                }
+                if (entry.status === 'available') {
+                    return `<span title="NS empty · RDAP 404" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/70 whitespace-nowrap">${availableLabel}</span>`;
+                }
+                if (entry.status === 'taken') {
+                    const methodNote = entry.method === 'NS' ? 'NS Record found' : 'RDAP 200';
+                    return `<span title="${escapeHtmlAttr(methodNote)}" class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-semibold rounded-md bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/70 whitespace-nowrap">${takenLabel}</span>`;
+                }
+                if (entry.status === 'no-ns') {
+                    if (!isOverLengthLimit) {
+                        return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" title="No NS record (RDAP unavailable for this TLD)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${noNsLabel}</button>`;
+                    }
+                    return `<span title="No NS record" class="inline-flex items-center px-2 py-1 text-[11px] font-medium rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 whitespace-nowrap">${noNsLabel}</span>`;
+                }
+                if (entry.status === 'error') {
+                    if (!isOverLengthLimit) {
+                        return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), true)" class="inline-flex items-center justify-center min-h-[28px] px-2 py-0.5 text-[11px] font-medium rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors whitespace-nowrap">${retryLabel}</button>`;
+                    }
+                    return `<span class="text-slate-400 dark:text-slate-500 text-[11px]">—</span>`;
+                }
+            }
+
+            if (isAutoRow) {
+                return `<span class="inline-flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/70 whitespace-nowrap"><span aria-hidden="true" class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>${checkingLabel}</span>`;
+            }
+
+            if (!isOverLengthLimit) {
+                return `<button type="button" data-check-domain="${safeDomainAttr}" onclick="checkSingleDomainAvailability(this.getAttribute('data-check-domain'), false)" aria-label="${escapeHtmlAttr((t.availCheckBtn || 'Check') + ': ' + domain)}" class="inline-flex items-center justify-center min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-semibold rounded-md border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 hover:bg-blue-600 hover:text-white hover:border-blue-600 dark:hover:bg-blue-600 dark:hover:text-white transition-colors whitespace-nowrap">${checkLabel}</button>`;
+            }
+
+            return `<span class="text-slate-300 dark:text-slate-600 select-none">—</span>`;
         }
 
         function loadMoreAnalysisRows() {
@@ -4110,14 +4398,14 @@
                 : lastGeneratedDomains;
 
             if (lastGeneratedDomains.length === 0) {
-                listEl.innerHTML = `<tr><td colspan="4" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
+                listEl.innerHTML = `<tr><td colspan="5" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisEmpty || 'No domains generated yet.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = '';
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
                 return;
             }
 
             if (filtered.length === 0) {
-                listEl.innerHTML = `<tr><td colspan="4" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
+                listEl.innerHTML = `<tr><td colspan="5" class="p-6 text-[13px] md:text-[14px] text-slate-500 dark:text-slate-400 text-center">${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</td></tr>`;
                 if (metaEl) metaEl.textContent = (t.analysisShowingTpl || 'Showing {shown} of {total} domains').replace(/\{shown\}/g, '0').replace(/\{total\}/g, String(lastGeneratedDomains.length));
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
                 return;
@@ -4128,6 +4416,9 @@
             const wmTitle = escapeHtmlAttr(t.wmTitle || 'Wayback Machine Archive');
             const ggTitle = escapeHtmlAttr(t.ggTitle || 'Google Index (site:)');
 
+            const domainToGlobalIndex = new Map();
+            lastGeneratedDomains.forEach((d, i) => domainToGlobalIndex.set(d, i));
+
             listEl.innerHTML = visible.map((domain, idx) => {
                 const encodedDomain = encodeURIComponent(domain);
                 const ahrefsHref = `https://ahrefs.com/backlink-checker/?input=${encodedDomain}&mode=subdomains`;
@@ -4135,12 +4426,15 @@
                 const googleHref = `https://www.google.com/search?q=site:${encodedDomain}`;
                 const safeDomain = escapeHtmlText(domain);
                 const safeDomainAttr = escapeHtmlAttr(domain);
+                const globalIdx = domainToGlobalIndex.has(domain) ? domainToGlobalIndex.get(domain) : idx;
+                const availCellHtml = renderAvailabilityCellHtml(domain, globalIdx, t);
 
                 return `
                     <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
                         <td class="py-2.5 px-3 text-[12px] md:text-[13px] font-mono tabular-nums text-slate-400 dark:text-slate-500 whitespace-nowrap leading-[1.45]">${idx + 1}</td>
                         <td class="py-2.5 px-3 font-mono text-[13px] md:text-[14px] font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap leading-[1.45] md:leading-[1.5]">${safeDomain}</td>
                         <td class="py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-slate-500 dark:text-slate-400 whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-3 text-right whitespace-nowrap">${availCellHtml}</td>
                         <td class="py-2 px-3 text-right whitespace-nowrap">
                             <div class="inline-flex items-center justify-end gap-2">
                                 <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-orange-400 hover:text-orange-700 dark:hover:text-orange-300 transition-colors">BL</a>
