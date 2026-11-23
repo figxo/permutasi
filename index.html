@@ -221,6 +221,53 @@
             color: var(--text-heading);
             border: 1px solid var(--border-neutral);
         }
+
+        @media (max-width: 375px) {
+            #domainAnalysisPanel table th,
+            #domainAnalysisPanel table td:not([colspan]) {
+                padding-left: 0.25rem;
+                padding-right: 0.25rem;
+                width: auto;
+                text-align: left !important;
+            }
+            #domainAnalysisPanel table th {
+                font-size: 10px;
+                letter-spacing: 0.02em;
+            }
+            #domainAnalysisPanel table td:not([colspan]) {
+                font-size: 11px;
+            }
+            #domainAnalysisList td[data-avail-domain] span,
+            #domainAnalysisList td[data-avail-domain] button {
+                font-size: 10px;
+            }
+            #domainAnalysisList td[data-avail-domain] > span,
+            #domainAnalysisList td[data-avail-domain] > button,
+            #domainAnalysisList td[data-avail-domain] > span > span {
+                padding-left: 0.375rem;
+                padding-right: 0.375rem;
+            }
+            #domainAnalysisList td[data-avail-domain] button[data-recheck-domain] {
+                width: 1.25rem;
+                height: 1.25rem;
+                padding: 0;
+            }
+            #domainAnalysisList td > div.inline-flex {
+                justify-content: flex-start !important;
+                gap: 0.25rem;
+            }
+            #domainAnalysisList td button[data-copy-domain] {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+            #domainAnalysisList td a {
+                min-width: 1.625rem;
+                min-height: 1.75rem;
+                padding-left: 0.3rem;
+                padding-right: 0.3rem;
+                font-size: 10px;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased overflow-x-clip transition-colors duration-150">
@@ -338,7 +385,7 @@
                             Your Business Name
                         </h2>
                     </div>
-                    <button type="button" id="uiResetFormBtn" onclick="resetToHome(event)" title="Reset all form inputs, filters, and results to default and return to top" class="ui-reset-all-btn inline-flex items-center justify-center gap-1.5 min-h-[40px] px-3.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/60 hover:border-rose-300 dark:hover:border-rose-700 text-slate-700 dark:text-slate-200 hover:text-rose-700 dark:hover:text-rose-300 text-[13px] font-semibold shadow-sm transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
+                    <button type="button" id="uiResetFormBtn" onclick="resetToHome(event)" title="Reset all form inputs, filters, and results to default and return to top" class="ui-reset-all-btn hidden sm:inline-flex items-center justify-center gap-1.5 min-h-[40px] px-3.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-rose-50 dark:hover:bg-rose-950/60 hover:border-rose-300 dark:hover:border-rose-700 text-slate-700 dark:text-slate-200 hover:text-rose-700 dark:hover:text-rose-300 text-[13px] font-semibold shadow-sm transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                         <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
                         <span id="uiResetFormLabel" class="ui-reset-all-label">Start Over</span>
                     </button>
@@ -360,7 +407,7 @@
                     <!-- Primary Touch-Friendly Action Button (Mutually Exclusive with Bottom Pattern Button) -->
                     <div id="genBtnBasicWrap" class="pt-1">
                         <div class="flex justify-center">
-                            <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#131354] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#131354] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#131354] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
+                            <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true })" id="uiGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#131354] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#131354] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#131354] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
                                 Generate Domain Names
                             </button>
                         </div>
@@ -465,7 +512,7 @@
                             <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
                             <div id="genBtnPatternWrap" class="hidden pt-3 border-t border-white/25">
                                 <div class="flex justify-center">
-                                    <button type="button" onclick="generateDomains({ scrollToResults: true })" id="uiAdvGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#c83e0c] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#c83e0c] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#f05422] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#131354]">
+                                    <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true })" id="uiAdvGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#c83e0c] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#c83e0c] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#f05422] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#131354]">
                                         Generate Domain Names
                                     </button>
                                 </div>
@@ -551,26 +598,9 @@
 
         <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
         <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] p-4 sm:p-6 md:p-7 flex flex-col gap-4 md:gap-5 min-w-0">
-            <div class="bg-[#ECF2F2] text-[#292929] border border-[#C9D8D8] rounded-xl p-4 sm:p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-sm">
-                <div class="flex flex-col gap-1.5 min-w-0">
-                    <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#292929] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
-                    <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#292929]/90 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto shrink-0">
-                    <div class="w-full sm:w-48 shrink-0">
-                        <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
-                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686] cursor-pointer">
-                            <option id="uiStatusOptAll" value="all">Select Status: All</option>
-                            <option id="uiStatusOptAvailable" value="available">Available</option>
-                            <option id="uiStatusOptTaken" value="taken">Taken</option>
-                            <option id="uiStatusOptCheck" value="check">Check</option>
-                        </select>
-                    </div>
-                    <div class="w-full sm:w-60 md:w-64 shrink-0">
-                        <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686]" placeholder="Filter domains (e.g. .com, -0)...">
-                    </div>
-                </div>
+            <div class="bg-[#ECF2F2] text-[#292929] border border-[#C9D8D8] rounded-xl p-4 sm:p-5 flex flex-col gap-1.5 shadow-sm">
+                <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#292929] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
+                <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#292929]/90 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2.5">
@@ -582,14 +612,27 @@
             </div>
 
             <!-- Batch Selection Action Bar -->
-            <div id="domainBatchActionBar" class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 p-3 sm:p-4 rounded-xl bg-[#ECF2F2] border border-[#C9D8D8]">
+            <div id="domainBatchActionBar" class="flex flex-col gap-3 p-3 sm:p-4 rounded-xl bg-[#ECF2F2] border border-[#C9D8D8]">
                 <div class="flex flex-wrap items-center gap-2.5 min-w-0">
                     <span id="domainSelectionStatus" class="text-[12px] md:text-[13px] font-semibold text-[#292929] tabular-nums">0 selected</span>
                     <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors">
                         Clear
                     </button>
                 </div>
-                <div class="flex flex-wrap items-center gap-3">
+                <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full">
+                    <div class="w-full sm:w-44 shrink-0">
+                        <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
+                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686] cursor-pointer">
+                            <option id="uiStatusOptAll" value="all">Select Status: All</option>
+                            <option id="uiStatusOptAvailable" value="available">Available</option>
+                            <option id="uiStatusOptTaken" value="taken">Taken</option>
+                            <option id="uiStatusOptCheck" value="check">Check</option>
+                        </select>
+                    </div>
+                    <div class="w-full sm:w-52 md:w-56 shrink-0">
+                        <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
+                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686]" placeholder="Filter domains (e.g. .com, -0)...">
+                    </div>
                     <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Remove Selected
                     </button>
@@ -613,13 +656,13 @@
                 <table class="w-full lg:min-w-[640px] text-left border-collapse">
                     <thead class="sticky top-0 z-10 bg-[#f05422] border-b border-[#d64416] text-[11px] uppercase tracking-wider font-bold text-[#FFFFFF]">
                         <tr>
+                            <th scope="col" id="uiThAvail" class="py-3 px-2 sm:px-3 w-24 sm:w-32 text-left">Availability</th>
                             <th scope="col" class="py-3 px-2 sm:px-3 w-9 sm:w-10 text-center">
                                 <input type="checkbox" id="selectAllVisibleCheckbox" onchange="toggleSelectAllVisible(this.checked)" aria-label="Select all visible domains" class="w-4 h-4 rounded border-white/90 bg-white text-[#f05422] focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f05422] cursor-pointer align-middle">
                             </th>
                             <th scope="col" id="uiThNum" class="hidden lg:table-cell py-3 px-2.5 w-11 tabular-nums">#</th>
                             <th scope="col" id="uiThDomain" class="py-3 px-2 sm:px-3">Domain Name</th>
                             <th scope="col" id="uiThChars" class="hidden lg:table-cell py-3 px-3 w-16 text-right tabular-nums ui-th-chars">Chars</th>
-                            <th scope="col" id="uiThAvail" class="py-3 px-2 sm:px-3 w-24 sm:w-32 text-right">Availability</th>
                             <th scope="col" class="lg:hidden py-3 px-2 sm:px-3 w-14 text-right tabular-nums ui-th-chars">Chars</th>
                             <th scope="col" id="uiThInspect" class="py-3 px-2 sm:px-3 w-36 sm:w-40 text-right">Inspect</th>
                         </tr>
@@ -4229,6 +4272,10 @@
         }
 
         function generateDomains(options) {
+            if (options && options.resetStatusFilter) {
+                const statusFilterEl = document.getElementById('analysisStatusFilter');
+                if (statusFilterEl) statusFilterEl.value = 'all';
+            }
             const rawKeyword = document.getElementById('keywordInput').value.trim().toLowerCase();
             const rawKeyword2 = document.getElementById('keyword2Input').value.trim().toLowerCase();
             const rawKeyword3 = document.getElementById('keyword3Input').value.trim().toLowerCase();
@@ -5433,6 +5480,7 @@
 
                 return `
                     <tr class="${rowBgClass} hover:bg-[#f4cec2] transition-colors">
+                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-2 sm:px-3 text-left whitespace-nowrap">${availCellHtml}</td>
                         <td class="py-2.5 px-2 sm:px-3 text-center whitespace-nowrap">
                             <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-[#f05422]/55 bg-[#FFFFFF] text-[#f05422] focus:ring-[#f05422] cursor-pointer align-middle">
                         </td>
@@ -5446,7 +5494,6 @@
                             </div>
                         </td>
                         <td class="hidden lg:table-cell py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
-                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">${availCellHtml}</td>
                         <td class="lg:hidden py-2.5 px-2 sm:px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
                         <td class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">
                             <div class="inline-flex items-center justify-end gap-2">
