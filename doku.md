@@ -209,7 +209,7 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 ### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
 - **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
-- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `emd_pmd_score`, `overall_heuristic_score`, `scored_at`) bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 5 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, dan `migrations/0003_add_emd_pmd_score.sql`.
+- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT` (dibiarkan `NULL` untuk tahap tagging berikutnya), `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `emd_pmd_score`, `overall_heuristic_score`, `scored_at`) bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 6 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_sld`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`), serta otomatis melakukan *backfill* kolom `sld` pada baris lama yang masih kosong (`NULL`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, dan `migrations/0004_add_sld_and_tags.sql`.
 - **Formula Penilaian Otomatis (7 Aspek, Total Bobot = `1.00`) & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, memisahkan SLD secara akurat untuk ekstensi multi-bagian (`.web.id`, `.my.id`, `.co.id`, `.co.uk`, dll.), serta menghitung skor `0–100` yang identik antara klien dan Worker:
   - `pronunciation_comfort_score` (**`0.22`**) — kelancaran pelafalan (*radio test*), penalti gugus/hiatus, akhiran janggal (`/[jq]$/` `-20`, `[^aeiou][vwzx]$` `-10` non-kamus, `-ik/-uk/-ok` `-6` non-Indonesia, serta `-iy/-iw/-uc/-uf`), dan tabrakan 2 konsonan berat (`bk`, `tp`, `qj`, `xz`, dll. `-20`) pada kata rekaan.
   - `brandability_score` (**`0.20`**) — daya ingat, panjang SLD ideal, dan kekhasan merek (bonus merek ciptaan dibatasi bila pelafalan lemah).
@@ -233,9 +233,10 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 #### Skema Tabel & Perintah SQL Cloudflare D1 (`available_domains`)
 ```sql
--- 1. Skema penuh tabel available_domains (17 kolom)
+-- 1. Skema penuh tabel available_domains (19 kolom)
 CREATE TABLE IF NOT EXISTS available_domains (
   domain TEXT PRIMARY KEY,
+  sld TEXT,
   extension TEXT NOT NULL,
   char_length INTEGER NOT NULL,
   lang TEXT NOT NULL DEFAULT 'en',
@@ -251,10 +252,12 @@ CREATE TABLE IF NOT EXISTS available_domains (
   emd_pmd_score INTEGER,
   emd_pmd_match_type TEXT,
   overall_heuristic_score INTEGER,
-  scored_at INTEGER
+  scored_at INTEGER,
+  tags TEXT
 );
 
--- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor (migrations/0001–0003)
+-- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor / sld / tags (migrations/0001–0004)
+ALTER TABLE available_domains ADD COLUMN sld TEXT;
 ALTER TABLE available_domains ADD COLUMN pronunciation_comfort_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN brandability_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN structure_length_score INTEGER;
@@ -265,9 +268,13 @@ ALTER TABLE available_domains ADD COLUMN emd_pmd_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN emd_pmd_match_type TEXT;
 ALTER TABLE available_domains ADD COLUMN overall_heuristic_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN scored_at INTEGER;
+ALTER TABLE available_domains ADD COLUMN tags TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_checked_at
 ON available_domains (checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_sld
+ON available_domains (sld, extension, checked_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_extension
 ON available_domains (extension, checked_at DESC);
@@ -280,6 +287,14 @@ ON available_domains (lang, checked_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
 ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC);
+
+-- Backfill aman sld untuk baris lama yang masih NULL (termasuk .my.id, .web.id)
+UPDATE available_domains
+SET sld = substr(domain, 1, length(domain) - length(extension))
+WHERE (sld IS NULL OR trim(sld) = '')
+  AND extension LIKE '.%'
+  AND length(domain) > length(extension)
+  AND lower(substr(domain, length(domain) - length(extension) + 1)) = lower(extension);
 
 -- 3. Opsional: padatkan baris lama yang masih memakai label panjang menjadi kode 2 huruf
 UPDATE available_domains
@@ -308,4 +323,86 @@ npm run lint
 npm run build
 ```
 
+### E. Penjelasan Rumus & Perhitungan Skor Akhir (`overall_heuristic_score`)
+
+Skor akhir disimpan di kolom `overall_heuristic_score` (skala integer `0–100`) dan dihitung secara deterministik dari **7 kolom sub-skor** melalui fungsi `computeOverallHeuristicScore` di `functions/api/log-available-domain.js` (dan identik di sisi klien pada `index.html`).
+
+#### 1. Pengelompokan 17 Kolom pada Tabel `available_domains`
+- **Identitas & Metadata Pengecekan** *(tidak ikut bobot skor, kecuali `domain`, `extension`, `lang` sebagai input evaluator)*:
+  - `domain`, `extension`, `char_length`, `lang`
+  - `check_method` (`NS` / `RDAP`), `check_source` (`auto` / `manual`), `checked_at` (epoch ms), `scored_at` (epoch ms)
+- **7 Kolom Sub-Skor** *(input langsung ke `overall_heuristic_score`, masing-masing bernilai `0–100`, total bobot = `1.00`)*:
+  - `pronunciation_comfort_score` (`P`) — bobot **`0.22`**
+  - `brandability_score` (`B`) — bobot **`0.20`**
+  - `structure_length_score` (`S`) — bobot **`0.13`**
+  - `extension_lang_fit_score` (`E`) — bobot **`0.12`**
+  - `character_cleanliness_score` (`C`) — bobot **`0.10`**
+  - `niche_clarity_score` (`N`) — bobot **`0.11`**
+  - `emd_pmd_score` (`M`) — bobot **`0.12`**
+- **Kolom Kategori Pendukung & Output Akhir**:
+  - `emd_pmd_match_type` — label hemat 2 huruf (`nk`, `np`, `up`, `be`, `nc`, `nn`, `os`, `of`, `ol`) sebagai penjelas kategori `emd_pmd_score` (tidak masuk rumus bobot).
+  - `overall_heuristic_score` — skor akhir hasil penjumlahan terbobot dikurangi penalti penjaga (*safeguard*).
+
+#### 2. Rumus Exact `overall_heuristic_score`
+
+1. **Langkah A — Rata-rata Terbobot (`total bobot = 1.00`)**:
+   ```text
+   rawOverall =
+     (P * 0.22) +   // pronunciation_comfort_score
+     (B * 0.20) +   // brandability_score
+     (S * 0.13) +   // structure_length_score
+     (E * 0.12) +   // extension_lang_fit_score
+     (C * 0.10) +   // character_cleanliness_score
+     (N * 0.11) +   // niche_clarity_score
+     (M * 0.12)     // emd_pmd_score
+   ```
+
+2. **Langkah B — Dua Penalti Sinergis Tambahan (*Safeguard*)**:
+   - **Penalti nama canggung & tanpa makna jelas**:
+     Jika `pronunciation_comfort_score < 72` **dan** `niche_clarity_score < 60`:
+     ```text
+     rawOverall -= (72 - P) * 0.45 + (60 - N) * 0.35
+     ```
+     *(Mencegah domain bersih tanpa tanda hubung/angka atau berekstensi `.com` mendapat skor akhir tinggi jika sulit diucapkan dan tidak bermakna.)*
+   - **Penalti risiko *over-optimization* EMD/PMD**:
+     Jika `emd_pmd_score < 50`:
+     ```text
+     rawOverall -= (50 - M) * 0.45
+     ```
+     *(Menekan skor akhir domain yang mengalami keyword stuffing, dipaksakan dengan `-`/angka, atau terlalu panjang mengejar keyword.)*
+
+3. **Langkah C — Pembulatan & Batas Rentang (`clampScore`)**:
+   ```text
+   overall_heuristic_score = Math.max(0, Math.min(100, Math.round(rawOverall)))
+   ```
+
+> **Catatan Server-Side**: Pada endpoint `POST /api/log-available-domain`, Worker selalu menghitung ulang `overall_heuristic_score` melalui `computeOverallHeuristicScore(...)` dari 7 skor yang sudah di-*clamp* (`0–100`) sebelum menyimpannya ke D1, sehingga skor akhir tidak bisa dimanipulasi sepihak dari payload.
+
+#### 3. Ringkasan Perhitungan Tiap Sub-Skor
+- **`pronunciation_comfort_score`**: Dipisahkan dulu nama inti (SLD) dari `extension` (termasuk TLD multi-bagian seperti `.web.id`, `.co.id`, `.co.uk`). Menilai rasio vokal, deret konsonan/vokal, hiatus/diftong canggung (`oi`, `eu`, `ouj`, `iy/uy/yy`), akhiran terputus (`/[jq]$/` `-20`, `[^aeiou][vwzx]$` non-kamus `-10`, `[iu]w$` `-44`, `-[iuo]k$` non-Indonesia `-6`, dll.), huruf berat (`q/x/z`, `k` non-Indonesia), serta tabrakan 2 konsonan berat (`bk`, `tp`, `qj`, `xz`, dll. `-20`). Bonus transisi mulus (`+10`/`+5`) hanya diberikan bila tidak ada penalti fonetik maupun tabrakan konsonan.
+- **`brandability_score`**: Menilai panjang huruf SLD ideal (puncak 4–7 huruf), variasi huruf unik, daya ingat merek ciptaan/kamus, serta potongan bertahap bila `pronunciation_comfort_score < 76` (*radio test*).
+- **`structure_length_score`**: Fokus pada keringkasan panjang SLD (puncak 2–4 huruf, lalu 5–7 huruf) dengan penyesuaian moderat untuk penggunaan tanda hubung atau angka.
+- **`extension_lang_fit_score`**: Peringkat popularitas `extension` berdasarkan bahasa UI `lang` (mis. untuk `en`: `.com > .edu > .gov > .net > .org > .co > .online > .io > .ai > .app/.dev > .biz > .me > lainnya`; untuk `id`: `.id > .com > .ac.id > .co.id > .net.id > .or.id > .web.id > .my.id > .biz.id > lainnya`).
+- **`character_cleanliness_score`**: Mulai dari `100`, dipotong proporsional bila ada angka, tanda hubung (`-`), atau pengulangan karakter identik `3x+` berurutan.
+- **`niche_clarity_score`**: Mengutamakan kecocokan utuh terhadap kamus akar kata multi-bahasa (`90–94`), lalu kecocokan batas sub-kata minimal 4 huruf (`73–78`), dan menahan kata rekaan non-kamus pada skor rendah/moderat (`38–58`).
+- **`emd_pmd_score` (dan `emd_pmd_match_type`)**:
+  - Tanpa keyword acuan → netral `75` (`nk`).
+  - PMD ringkas, alami, dan pelafalan baik (`pronunciation_comfort_score >= 72`) → `85–95` (`np`).
+  - PMD dengan pelafalan canggung (`pronunciation_comfort_score < 72`) → `38–54` (`up`).
+  - EMD ringkas & bersih → `74–80` (`be`).
+  - Non-match → `70` (`nc`) atau `58` (`nn`).
+  - *Keyword stuffing*, dipaksakan dengan `-`/angka, atau terlalu panjang mengejar keyword → penalti `15–45` (`os`, `of`, `ol`).
+
+#### 4. Contoh Hitungan Nyata
+1. **`cloudly.com`** (`lang = 'en'`, target keyword `["cloud"]`):
+   - **Sub-skor**: `pron = 88`, `brand = 100`, `structure = 94`, `ext = 98`, `cleanliness = 100`, `niche = 73`, `emd = 94` (`np`)
+   - **Terbobot**: `88(0.22) + 100(0.20) + 94(0.13) + 98(0.12) + 100(0.10) + 73(0.11) + 94(0.12) = 19.36 + 20.00 + 12.22 + 11.76 + 10.00 + 8.03 + 11.28 = 92.65`
+   - **Penalti tambahan**: tidak ada (`pron >= 72`, `emd >= 50`)
+   - **`overall_heuristic_score`** = `round(92.65)` = **`93`**
+
+2. **`simoj.io`** (`lang = 'en'`, tanpa target keyword):
+   - **Sub-skor**: `pron = 62`, `brand = 76`, `structure = 94`, `ext = 76`, `cleanliness = 100`, `niche = 38`, `emd = 75` (`nk`)
+   - **Terbobot**: `62(0.22) + 76(0.20) + 94(0.13) + 76(0.12) + 100(0.10) + 38(0.11) + 75(0.12) = 13.64 + 15.20 + 12.22 + 9.12 + 10.00 + 4.18 + 9.00 = 73.36`
+   - **Penalti sinergis** (`pron < 72 && niche < 60`): `(72 - 62) * 0.45 + (60 - 38) * 0.35 = 4.50 + 7.70 = 12.20`
+   - **`overall_heuristic_score`** = `round(73.36 - 12.20)` = `round(61.16)` = **`61`**
 
