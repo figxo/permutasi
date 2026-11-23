@@ -57,15 +57,15 @@ const REGIONAL_CCTLD_EXTENSIONS = new Set([
 ]);
 
 const GLOBAL_SECONDARY_TLD_BASE = {
-  '.shop': 72, '.store': 72, '.tech': 72, '.cloud': 72,
-  '.site': 70, '.xyz': 70, '.info': 69
+  '.shop': 64, '.store': 64, '.tech': 64, '.cloud': 64,
+  '.site': 62, '.xyz': 62, '.info': 61
 };
 
 const LANG_TLD_FIT_TIERS = {
   en: {
     '.com': 98, '.edu': 94, '.gov': 93, '.net': 91, '.org': 88,
-    '.co': 86, '.online': 84, '.io': 82, '.ai': 81, '.app': 80, '.dev': 80, '.biz': 78, '.me': 76,
-    '.us': 74, '.uk': 74, '.co.uk': 74, '.ca': 74, '.au': 74, '.co.nz': 74, '.nz': 74
+    '.co': 82, '.online': 79, '.io': 76, '.ai': 75, '.app': 74, '.dev': 74, '.biz': 70, '.me': 68,
+    '.us': 66, '.uk': 66, '.co.uk': 66, '.ca': 66, '.au': 66, '.co.nz': 66, '.nz': 66
   },
   id: {
     '.id': 98, '.com': 95, '.ac.id': 92, '.co.id': 90, '.net.id': 87, '.or.id': 85, '.web.id': 83, '.my.id': 81, '.biz.id': 79,
@@ -105,12 +105,12 @@ function computeExtensionLangFitScore(extLower, uiLang) {
     return tierMap[extLower];
   }
   if (Object.prototype.hasOwnProperty.call(GLOBAL_SECONDARY_TLD_BASE, extLower)) {
-    return uiLang === 'en' ? GLOBAL_SECONDARY_TLD_BASE[extLower] : GLOBAL_SECONDARY_TLD_BASE[extLower] - 6;
+    return uiLang === 'en' ? GLOBAL_SECONDARY_TLD_BASE[extLower] : GLOBAL_SECONDARY_TLD_BASE[extLower] - 2;
   }
   if (REGIONAL_CCTLD_EXTENSIONS.has(extLower) || /\.[a-z]{2}$/.test(extLower)) {
-    return uiLang === 'en' ? 58 : 56;
+    return uiLang === 'en' ? 54 : 52;
   }
-  return uiLang === 'en' ? 65 : 61;
+  return uiLang === 'en' ? 60 : 58;
 }
 
 const SCORE_COLUMNS = [
@@ -280,7 +280,29 @@ function countNonOverlappingOccurrences(haystack, needle) {
   return count;
 }
 
-function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
+const EMD_PMD_MATCH_CODE_MAP = {
+  neutral_no_kw: 'nk',
+  natural_pmd: 'np',
+  unnatural_pmd: 'up',
+  balanced_emd: 'be',
+  non_match_clean: 'nc',
+  non_match_noisy: 'nn',
+  over_optimized_stuffing: 'os',
+  over_optimized_forced: 'of',
+  over_optimized_long: 'ol'
+};
+const VALID_EMD_PMD_CODES = new Set(Object.values(EMD_PMD_MATCH_CODE_MAP));
+
+function normalizeEmdPmdMatchType(rawType, fallback = 'nk') {
+  const clean = String(rawType || '').trim().toLowerCase();
+  if (VALID_EMD_PMD_CODES.has(clean)) return clean;
+  if (Object.prototype.hasOwnProperty.call(EMD_PMD_MATCH_CODE_MAP, clean)) {
+    return EMD_PMD_MATCH_CODE_MAP[clean];
+  }
+  return fallback;
+}
+
+function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords, pronunciationComfort = 75) {
   const keywords = normalizeTargetKeywords(rawTargetKeywords);
   const sldLen = sld.length;
   const hyphenCount = (sld.match(/-/g) || []).length;
@@ -288,7 +310,7 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
   const dashTokens = sld.split('-').filter(Boolean);
 
   if (keywords.length === 0) {
-    return { score: 75, matchType: 'neutral_no_kw' };
+    return { score: 75, matchType: 'nk' };
   }
 
   let matchedKwCount = 0;
@@ -336,9 +358,9 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
 
   if (matchedKwCount === 0) {
     if (duplicateTokenStuffing || hyphenCount >= 2 || sldLen >= 17) {
-      return { score: 58, matchType: 'non_match_noisy' };
+      return { score: 58, matchType: 'nn' };
     }
-    return { score: 70, matchType: 'non_match_clean' };
+    return { score: 70, matchType: 'nc' };
   }
 
   const coverageRatio = Math.min(1, combinedMatchedAlpha / Math.max(1, cleanAlnum.length));
@@ -349,7 +371,7 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
   // Over-optimization penalties (15-45) for stuffing, forced phrasing, digits, hyphens, or overlong keyword chasing
   if (maxKwOccurrences >= 2 || duplicateTokenStuffing) {
     const penaltyScore = clampScore(34 - (maxKwOccurrences - 2) * 10 - hyphenCount * 4 - (sldLen > 14 ? 6 : 0), 26);
-    return { score: Math.max(15, Math.min(42, penaltyScore)), matchType: 'over_optimized_stuffing' };
+    return { score: Math.max(15, Math.min(42, penaltyScore)), matchType: 'os' };
   }
 
   if (totalOccurrences >= 3) {
@@ -357,7 +379,7 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
       (hyphenCount >= 1 || sldLen >= 13 ? 30 : 42) - Math.max(0, sldLen - 12) * 2 - hyphenCount * 5,
       30
     );
-    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_stuffing' };
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'os' };
   }
 
   if (hyphenCount >= 1) {
@@ -365,21 +387,28 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
       44 - (hyphenCount - 1) * 12 - Math.max(0, sldLen - 10) * 2 - spamModifierHits * 6 - digitsCount * 4,
       34
     );
-    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_forced' };
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'of' };
   }
 
   if (digitsCount > 0) {
     const penaltyScore = clampScore(42 - digitsCount * 2 - Math.max(0, sldLen - 10) * 2 - spamModifierHits * 5, 36);
-    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_forced' };
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'of' };
   }
 
   if (sldLen >= 15 || (spamModifierHits >= 1 && sldLen >= 11)) {
     const penaltyScore = clampScore(42 - Math.max(0, sldLen - 14) * 3 - spamModifierHits * 5, 32);
-    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_long' };
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'ol' };
   }
 
-  // Natural & concise PMD (85-95): embeds 1-2 target keywords naturally without stuffing or forced hyphens
+  // Natural & concise PMD (85-95): embeds 1-2 target keywords naturally without stuffing, forced hyphens, or awkward phonetics
   if (!isExactMatch && sldLen <= 12 && matchedKwCount <= 2) {
+    if (pronunciationComfort < 72) {
+      const awkwardPmdScore = clampScore(Math.min(54, pronunciationComfort + 4), 48);
+      return {
+        score: Math.max(38, awkwardPmdScore),
+        matchType: 'up'
+      };
+    }
     let pmdScore = 90;
     if (sldLen <= 9) pmdScore += 4;
     else if (sldLen <= 11) pmdScore += 2;
@@ -388,20 +417,20 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
     if (spamModifierHits >= 1) pmdScore -= 5;
     return {
       score: Math.max(85, Math.min(95, clampScore(pmdScore, 90))),
-      matchType: 'natural_pmd'
+      matchType: 'np'
     };
   }
 
   // Clean concise EMD (no hyphens/digits/repetition, <= 12 chars)
   if (isExactMatch && sldLen <= 12) {
     const emdScore = sldLen <= 8 ? 80 : 74;
-    return { score: emdScore, matchType: 'balanced_emd' };
+    return { score: emdScore, matchType: 'be' };
   }
 
   // Remaining moderately long compounds (13-14 chars)
   return {
     score: clampScore(45 - Math.max(0, sldLen - 12) * 3, 39),
-    matchType: 'over_optimized_long'
+    matchType: 'ol'
   };
 }
 
@@ -557,14 +586,16 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
       awkwardPhoneticPenalty += 8;
     }
 
-    // Abrupt / tongue-stopping word endings & awkward permutation codas (e.g., -iw, -uc, -uf)
+    // Abrupt / tongue-stopping word endings & awkward permutation codas (e.g., -oj, -iq, -iw, -uc, -uf, -ov)
     if (/[jq]$/.test(alphaOnly)) {
-      awkwardPhoneticPenalty += 22;
+      awkwardPhoneticPenalty += isIdContext ? 30 : 46;
     } else if (!isKnownStem) {
       if (/[iu]w$/.test(alphaOnly)) {
         awkwardPhoneticPenalty += 44;
-      } else if (/[vzx]$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 14;
+      } else if (/v$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 34;
+      } else if (/[zx]$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 22;
       } else if (/w$/.test(alphaOnly) && !/[aeo]w$/.test(alphaOnly)) {
         awkwardPhoneticPenalty += 14;
       } else if (/[aeou]c$/.test(alphaOnly)) {
@@ -754,7 +785,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
   nicheClarity = clampScore(nicheClarity, 38);
 
   // 7. EMD / PMD Over-Optimization Risk Score (0-100)
-  const emdPmdResult = computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords);
+  const emdPmdResult = computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords, pronunciationComfort);
   const emdPmdScore = clampScore(emdPmdResult.score, 75);
 
   // 8. Overall Heuristic Score (0-100): weighted composite (weights = 1.00) + penalties for weak phonetics / over-optimization
@@ -966,9 +997,10 @@ export async function onRequestPost(context) {
   const characterCleanlinessScore = clampScore(clientScores.character_cleanliness_score, computedScores.character_cleanliness_score);
   const nicheClarityScore = clampScore(clientScores.niche_clarity_score, computedScores.niche_clarity_score);
   const emdPmdScore = clampScore(clientScores.emd_pmd_score, computedScores.emd_pmd_score);
-  const emdPmdMatchType = typeof clientScores.emd_pmd_match_type === 'string' && clientScores.emd_pmd_match_type.trim()
-    ? clientScores.emd_pmd_match_type.trim().slice(0, 40)
-    : computedScores.emd_pmd_match_type;
+  const emdPmdMatchType = normalizeEmdPmdMatchType(
+    clientScores.emd_pmd_match_type,
+    computedScores.emd_pmd_match_type
+  );
   const overallHeuristicScore = computeOverallHeuristicScore(
     pronunciationComfortScore,
     brandabilityScore,
