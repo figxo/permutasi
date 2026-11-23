@@ -39,8 +39,7 @@ async function ensureAvailableDomainsSchema(db) {
           lang TEXT NOT NULL DEFAULT 'en',
           check_method TEXT NOT NULL,
           check_source TEXT NOT NULL,
-          checked_at INTEGER NOT NULL,
-          checked_at_iso TEXT NOT NULL
+          checked_at INTEGER NOT NULL
         )
       `).run();
 
@@ -51,6 +50,35 @@ async function ensureAvailableDomainsSchema(db) {
         const hasLang = cols.some((col) => col && col.name === 'lang');
         if (!hasLang) {
           await db.prepare("ALTER TABLE available_domains ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'").run();
+        }
+        const hasCheckedAtIso = cols.some((col) => col && col.name === 'checked_at_iso');
+        if (hasCheckedAtIso) {
+          try {
+            await db.prepare('ALTER TABLE available_domains DROP COLUMN checked_at_iso').run();
+          } catch {
+            await db.batch([
+              db.prepare(`
+                CREATE TABLE IF NOT EXISTS available_domains_migrated (
+                  domain TEXT PRIMARY KEY,
+                  extension TEXT NOT NULL,
+                  char_length INTEGER NOT NULL,
+                  lang TEXT NOT NULL DEFAULT 'en',
+                  check_method TEXT NOT NULL,
+                  check_source TEXT NOT NULL,
+                  checked_at INTEGER NOT NULL
+                )
+              `),
+              db.prepare(`
+                INSERT INTO available_domains_migrated (
+                  domain, extension, char_length, lang, check_method, check_source, checked_at
+                )
+                SELECT domain, extension, char_length, lang, check_method, check_source, checked_at
+                FROM available_domains
+              `),
+              db.prepare('DROP TABLE available_domains'),
+              db.prepare('ALTER TABLE available_domains_migrated RENAME TO available_domains')
+            ]);
+          }
         }
       }
 
@@ -147,19 +175,17 @@ export async function onRequestPost(context) {
         lang,
         check_method,
         check_source,
-        checked_at,
-        checked_at_iso
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+        checked_at
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
       ON CONFLICT(domain) DO UPDATE SET
         extension = excluded.extension,
         char_length = excluded.char_length,
         lang = excluded.lang,
         check_method = excluded.check_method,
         check_source = excluded.check_source,
-        checked_at = excluded.checked_at,
-        checked_at_iso = excluded.checked_at_iso
+        checked_at = excluded.checked_at
     `)
-      .bind(domain, extension, charLength, lang, checkMethod, checkSource, checkedAt, checkedAtIso)
+      .bind(domain, extension, charLength, lang, checkMethod, checkSource, checkedAt)
       .run();
 
     return jsonResponse({
