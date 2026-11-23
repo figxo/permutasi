@@ -2,6 +2,43 @@ const MAX_LOGGED_DOMAIN_LENGTH = 25;
 const DOMAIN_HOSTNAME_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/;
 const SUPPORTED_LANGS = new Set(['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja']);
 
+const MULTI_PART_EXTENSIONS = [
+  '.web.id', '.my.id', '.co.id', '.biz.id', '.or.id', '.ac.id', '.sch.id', '.net.id',
+  '.com.br', '.net.br', '.org.br',
+  '.co.jp', '.ne.jp', '.or.jp', '.ac.jp',
+  '.co.uk', '.org.uk', '.me.uk',
+  '.com.au', '.net.au', '.org.au',
+  '.co.nz', '.com.es', '.org.es', '.com.mx', '.com.sg', '.com.my'
+];
+
+const NICHE_UTILITY_STEMS = [
+  'agency', 'ai', 'api', 'app', 'arsip', 'base', 'bayar', 'belajar', 'beli', 'bisnis',
+  'biz', 'bot', 'brand', 'business', 'buy', 'calc', 'card', 'cari', 'cart', 'cash',
+  'catat', 'cek', 'cloud', 'club', 'code', 'coin', 'core', 'cost', 'credit', 'dagang',
+  'dana', 'data', 'deal', 'desk', 'dev', 'digital', 'doc', 'docs', 'domain', 'easy',
+  'edu', 'fast', 'file', 'fin', 'finance', 'fit', 'fix', 'flow', 'form', 'fund', 'get',
+  'go', 'guide', 'health', 'help', 'hitung', 'home', 'host', 'hub', 'ilmu', 'info',
+  'insure', 'invest', 'jaminan', 'jasa', 'job', 'jobs', 'jual', 'karya', 'kerja',
+  'kirim', 'kit', 'lab', 'labs', 'law', 'lead', 'learn', 'link', 'list', 'loan', 'log',
+  'loja', 'mail', 'map', 'market', 'markt', 'mart', 'med', 'media', 'meta', 'modal',
+  'money', 'name', 'nama', 'nego', 'net', 'news', 'niaga', 'note', 'notes', 'ops',
+  'order', 'page', 'pay', 'plan', 'plus', 'pod', 'portal', 'pos', 'preis', 'price',
+  'pro', 'rent', 'rumah', 'safe', 'sale', 'scan', 'score', 'search', 'sehat', 'seo',
+  'service', 'sewa', 'shop', 'site', 'smart', 'soft', 'startup', 'stat', 'store',
+  'studio', 'surat', 'sync', 'tax', 'tech', 'tienda', 'toko', 'tool', 'tools', 'track',
+  'trade', 'trust', 'usaha', 'vault', 'verify', 'web', 'wiki', 'work', 'works', 'zone'
+];
+
+const SCORE_COLUMNS = [
+  'brandability_score',
+  'structure_length_score',
+  'extension_lang_fit_score',
+  'character_cleanliness_score',
+  'niche_clarity_score',
+  'overall_heuristic_score',
+  'scored_at'
+];
+
 let schemaReadyPromise = null;
 
 function jsonResponse(payload, status = 200) {
@@ -24,8 +61,234 @@ function normalizeLang(rawLang) {
 }
 
 function extractExtension(domain) {
+  const matchedMulti = MULTI_PART_EXTENSIONS.find((ext) => domain.endsWith(ext) && domain.length > ext.length);
+  if (matchedMulti) return matchedMulti;
   const dotIdx = domain.indexOf('.');
   return dotIdx > 0 ? domain.slice(dotIdx) : '';
+}
+
+function clampScore(value, fallback) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return fallback;
+  return Math.max(0, Math.min(100, Math.round(num)));
+}
+
+function splitDomainSldAndExt(rawDomain, explicitExt) {
+  const domain = normalizeDomain(rawDomain);
+  const matchedMulti = MULTI_PART_EXTENSIONS.find((ext) => domain.endsWith(ext) && domain.length > ext.length);
+  if (matchedMulti) {
+    return {
+      sld: domain.slice(0, domain.length - matchedMulti.length),
+      ext: matchedMulti
+    };
+  }
+  if (explicitExt && domain.endsWith(explicitExt) && domain.length > explicitExt.length) {
+    return {
+      sld: domain.slice(0, domain.length - explicitExt.length),
+      ext: explicitExt
+    };
+  }
+  const lastDot = domain.lastIndexOf('.');
+  if (lastDot > 0) {
+    return {
+      sld: domain.slice(0, lastDot),
+      ext: domain.slice(lastDot)
+    };
+  }
+  return { sld: domain, ext: explicitExt || '' };
+}
+
+function computeDomainScores(rawDomain, explicitExt, rawLang) {
+  const { sld, ext } = splitDomainSldAndExt(rawDomain, explicitExt);
+  const lang = normalizeLang(rawLang);
+  const sldLen = sld.length;
+  const alphaOnly = sld.replace(/[^a-z]/g, '');
+  const digitsCount = (sld.match(/[0-9]/g) || []).length;
+  const hyphenCount = (sld.match(/-/g) || []).length;
+  const isVowelChar = (ch) => ch === 'a' || ch === 'e' || ch === 'i' || ch === 'o' || ch === 'u';
+
+  // 1. Brandability Score (0-100)
+  let brandability = 60;
+  if (sldLen === 1) {
+    brandability = 55;
+  } else if (alphaOnly.length >= 2) {
+    let vowelCount = 0;
+    let yCount = 0;
+    let maxConsRun = 0;
+    let maxVowelRun = 0;
+    let curConsRun = 0;
+    let curVowelRun = 0;
+    let transitions = 0;
+    let prevIsVowel = null;
+
+    for (let i = 0; i < alphaOnly.length; i++) {
+      const ch = alphaOnly[i];
+      const v = isVowelChar(ch);
+      if (v) {
+        vowelCount++;
+        curVowelRun++;
+        curConsRun = 0;
+        if (curVowelRun > maxVowelRun) maxVowelRun = curVowelRun;
+      } else {
+        if (ch === 'y') yCount++;
+        curConsRun++;
+        curVowelRun = 0;
+        if (curConsRun > maxConsRun) maxConsRun = curConsRun;
+      }
+      const effectiveV = v || (ch === 'y' && i > 0);
+      if (prevIsVowel !== null && effectiveV !== prevIsVowel) {
+        transitions++;
+      }
+      prevIsVowel = effectiveV;
+    }
+
+    const effectiveVowels = vowelCount + yCount * 0.5;
+    const vRatio = effectiveVowels / alphaOnly.length;
+    if (vRatio >= 0.25 && vRatio <= 0.58) {
+      brandability += 18;
+    } else if ((vRatio >= 0.15 && vRatio < 0.25) || (vRatio > 0.58 && vRatio <= 0.72)) {
+      brandability += 8;
+    } else if (vowelCount === 0 && yCount === 0) {
+      brandability -= alphaOnly.length <= 3 ? 10 : 26;
+    } else {
+      brandability -= 10;
+    }
+
+    if (maxConsRun <= 2) {
+      brandability += 10;
+    } else if (maxConsRun === 3) {
+      brandability -= 6;
+    } else {
+      brandability -= 18;
+    }
+
+    if (maxVowelRun >= 3) brandability -= 10;
+
+    const transitionRatio = transitions / Math.max(1, alphaOnly.length - 1);
+    if (transitionRatio >= 0.55) brandability += 10;
+    else if (transitionRatio >= 0.35) brandability += 4;
+
+    const qxzCount = (alphaOnly.match(/[qxz]/g) || []).length;
+    const kCount = (alphaOnly.match(/k/g) || []).length;
+    brandability -= Math.min(14, qxzCount * 4);
+    brandability -= Math.min(6, kCount * 2);
+
+    if (sldLen >= 3 && sldLen <= 8 && digitsCount === 0 && hyphenCount === 0) {
+      brandability += 8;
+    }
+  } else {
+    brandability = 38;
+  }
+  if (digitsCount > 0) brandability -= Math.min(22, 12 + digitsCount * 3);
+  if (hyphenCount > 0) brandability -= Math.min(20, 10 + (hyphenCount - 1) * 6);
+  brandability = clampScore(brandability, 50);
+
+  // 2. Structure & Length Score (0-100)
+  let structure = 50;
+  if (sldLen === 1) structure = 90;
+  else if (sldLen >= 2 && sldLen <= 4) structure = 96;
+  else if (sldLen >= 5 && sldLen <= 7) structure = 90;
+  else if (sldLen >= 8 && sldLen <= 10) structure = 82;
+  else if (sldLen >= 11 && sldLen <= 13) structure = 68;
+  else if (sldLen >= 14 && sldLen <= 17) structure = 52;
+  else structure = Math.max(20, 48 - (sldLen - 17) * 3);
+
+  const dashParts = sld.split('-').filter(Boolean);
+  if (digitsCount === 0 && hyphenCount === 0) {
+    structure += 4;
+  } else {
+    if (hyphenCount === 1 && dashParts.length === 2 && dashParts.every((p) => p.length >= 2)) {
+      structure -= 6;
+    } else if (hyphenCount > 0) {
+      structure -= Math.min(24, hyphenCount * 12);
+    }
+    if (digitsCount > 0) structure -= Math.min(18, 8 + digitsCount * 3);
+  }
+  structure = clampScore(structure, 50);
+
+  // 3. Extension & Language Fit Score (0-100)
+  const extLower = ext.toLowerCase();
+  let extFit = 68;
+  if (extLower === '.com') extFit = 96;
+  else if (extLower === '.ai') extFit = 90;
+  else if (extLower === '.io') extFit = 88;
+  else if (extLower === '.app' || extLower === '.dev') extFit = 86;
+  else if (extLower === '.net') extFit = 86;
+  else if (extLower === '.org' || extLower === '.co') extFit = 84;
+  else if (extLower === '.id') extFit = lang === 'id' ? 94 : 74;
+  else if (extLower === '.co.id' || extLower === '.biz.id') extFit = lang === 'id' ? 90 : 70;
+  else if (extLower === '.web.id' || extLower === '.my.id') extFit = lang === 'id' ? 86 : 68;
+  else if (extLower === '.es' || extLower === '.com.es' || extLower === '.mx') extFit = lang === 'es' ? 90 : 70;
+  else if (extLower === '.pt' || extLower === '.com.br' || extLower === '.br') extFit = lang === 'pt' ? 90 : 70;
+  else if (extLower === '.fr') extFit = lang === 'fr' ? 90 : 70;
+  else if (extLower === '.de') extFit = lang === 'de' ? 90 : 70;
+  else if (extLower === '.ru') extFit = lang === 'ru' ? 90 : 70;
+  else if (extLower === '.jp' || extLower === '.co.jp') extFit = lang === 'ja' ? 90 : 70;
+  else if (extLower === '.uk' || extLower === '.co.uk' || extLower === '.us' || extLower === '.ca' || extLower === '.au') {
+    extFit = lang === 'en' ? 88 : 74;
+  } else if (extLower === '.shop' || extLower === '.store' || extLower === '.tech' || extLower === '.cloud') {
+    extFit = 78;
+  } else if (extLower === '.xyz' || extLower === '.online' || extLower === '.site' || extLower === '.me') {
+    extFit = 76;
+  } else if (extLower === '.biz' || extLower === '.info') {
+    extFit = 68;
+  }
+  extFit = clampScore(extFit, 68);
+
+  // 4. Character Cleanliness Score (0-100)
+  let cleanliness = 100;
+  if (digitsCount > 0) cleanliness -= 18 + Math.min(24, (digitsCount - 1) * 5);
+  if (hyphenCount > 0) cleanliness -= 16 + Math.min(24, (hyphenCount - 1) * 12);
+  if (/(.)\1{2,}/.test(sld)) cleanliness -= 14;
+  if (/(kk|qq|xx|zz)/.test(sld)) cleanliness -= 6;
+  cleanliness = clampScore(cleanliness, 70);
+
+  // 5. Niche Clarity Score (0-100)
+  let nicheClarity = 54;
+  const tokens = sld.split('-').filter(Boolean);
+  let exactStemHits = 0;
+  let containedStemHits = 0;
+  for (let i = 0; i < NICHE_UTILITY_STEMS.length; i++) {
+    const stem = NICHE_UTILITY_STEMS[i];
+    if (sld === stem || tokens.includes(stem)) {
+      exactStemHits++;
+    } else if (stem.length >= 3 && sld.includes(stem)) {
+      containedStemHits++;
+    }
+  }
+  if (exactStemHits >= 2 || (exactStemHits >= 1 && containedStemHits >= 1) || containedStemHits >= 2) {
+    nicheClarity = 92;
+  } else if (exactStemHits === 1) {
+    nicheClarity = 90;
+  } else if (containedStemHits === 1) {
+    nicheClarity = 80;
+  } else if (digitsCount === 0 && hyphenCount === 0 && sldLen >= 3 && sldLen <= 6 && brandability >= 75) {
+    nicheClarity = 66;
+  } else if (digitsCount === 0 && hyphenCount === 0 && sldLen <= 2) {
+    nicheClarity = 58;
+  } else if (digitsCount > 0 || hyphenCount > 0) {
+    nicheClarity = 44;
+  }
+  nicheClarity = clampScore(nicheClarity, 54);
+
+  // 6. Overall Heuristic Score (0-100)
+  const overall = clampScore(
+    brandability * 0.28 +
+    structure * 0.22 +
+    extFit * 0.18 +
+    cleanliness * 0.18 +
+    nicheClarity * 0.14,
+    50
+  );
+
+  return {
+    brandability_score: brandability,
+    structure_length_score: structure,
+    extension_lang_fit_score: extFit,
+    character_cleanliness_score: cleanliness,
+    niche_clarity_score: nicheClarity,
+    overall_heuristic_score: overall
+  };
 }
 
 async function ensureAvailableDomainsSchema(db) {
@@ -39,7 +302,14 @@ async function ensureAvailableDomainsSchema(db) {
           lang TEXT NOT NULL DEFAULT 'en',
           check_method TEXT NOT NULL,
           check_source TEXT NOT NULL,
-          checked_at INTEGER NOT NULL
+          checked_at INTEGER NOT NULL,
+          brandability_score INTEGER,
+          structure_length_score INTEGER,
+          extension_lang_fit_score INTEGER,
+          character_cleanliness_score INTEGER,
+          niche_clarity_score INTEGER,
+          overall_heuristic_score INTEGER,
+          scored_at INTEGER
         )
       `).run();
 
@@ -47,12 +317,12 @@ async function ensureAvailableDomainsSchema(db) {
       if (typeof tableInfoStmt.all === 'function') {
         const info = await tableInfoStmt.all();
         const cols = Array.isArray(info && info.results) ? info.results : [];
-        const hasLang = cols.some((col) => col && col.name === 'lang');
-        if (!hasLang) {
+        const colNames = new Set(cols.map((col) => col && col.name).filter(Boolean));
+
+        if (!colNames.has('lang')) {
           await db.prepare("ALTER TABLE available_domains ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'").run();
         }
-        const hasCheckedAtIso = cols.some((col) => col && col.name === 'checked_at_iso');
-        if (hasCheckedAtIso) {
+        if (colNames.has('checked_at_iso')) {
           try {
             await db.prepare('ALTER TABLE available_domains DROP COLUMN checked_at_iso').run();
           } catch {
@@ -65,7 +335,14 @@ async function ensureAvailableDomainsSchema(db) {
                   lang TEXT NOT NULL DEFAULT 'en',
                   check_method TEXT NOT NULL,
                   check_source TEXT NOT NULL,
-                  checked_at INTEGER NOT NULL
+                  checked_at INTEGER NOT NULL,
+                  brandability_score INTEGER,
+                  structure_length_score INTEGER,
+                  extension_lang_fit_score INTEGER,
+                  character_cleanliness_score INTEGER,
+                  niche_clarity_score INTEGER,
+                  overall_heuristic_score INTEGER,
+                  scored_at INTEGER
                 )
               `),
               db.prepare(`
@@ -78,6 +355,14 @@ async function ensureAvailableDomainsSchema(db) {
               db.prepare('DROP TABLE available_domains'),
               db.prepare('ALTER TABLE available_domains_migrated RENAME TO available_domains')
             ]);
+            colNames.clear();
+            ['domain', 'extension', 'char_length', 'lang', 'check_method', 'check_source', 'checked_at', ...SCORE_COLUMNS]
+              .forEach((name) => colNames.add(name));
+          }
+        }
+        for (const scoreCol of SCORE_COLUMNS) {
+          if (!colNames.has(scoreCol)) {
+            await db.prepare(`ALTER TABLE available_domains ADD COLUMN ${scoreCol} INTEGER`).run();
           }
         }
       }
@@ -164,6 +449,23 @@ export async function onRequestPost(context) {
     : Date.now();
   const checkedAtIso = new Date(checkedAt).toISOString();
 
+  const computedScores = computeDomainScores(domain, extension, lang);
+  const clientScores = (body.scores && typeof body.scores === 'object') ? body.scores : {};
+  const brandabilityScore = clampScore(clientScores.brandability_score, computedScores.brandability_score);
+  const structureLengthScore = clampScore(clientScores.structure_length_score, computedScores.structure_length_score);
+  const extensionLangFitScore = clampScore(clientScores.extension_lang_fit_score, computedScores.extension_lang_fit_score);
+  const characterCleanlinessScore = clampScore(clientScores.character_cleanliness_score, computedScores.character_cleanliness_score);
+  const nicheClarityScore = clampScore(clientScores.niche_clarity_score, computedScores.niche_clarity_score);
+  const overallHeuristicScore = clampScore(
+    brandabilityScore * 0.28 +
+    structureLengthScore * 0.22 +
+    extensionLangFitScore * 0.18 +
+    characterCleanlinessScore * 0.18 +
+    nicheClarityScore * 0.14,
+    computedScores.overall_heuristic_score
+  );
+  const scoredAt = Date.now();
+
   try {
     await ensureAvailableDomainsSchema(env.DB);
 
@@ -175,17 +477,46 @@ export async function onRequestPost(context) {
         lang,
         check_method,
         check_source,
-        checked_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+        checked_at,
+        brandability_score,
+        structure_length_score,
+        extension_lang_fit_score,
+        character_cleanliness_score,
+        niche_clarity_score,
+        overall_heuristic_score,
+        scored_at
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
       ON CONFLICT(domain) DO UPDATE SET
         extension = excluded.extension,
         char_length = excluded.char_length,
         lang = excluded.lang,
         check_method = excluded.check_method,
         check_source = excluded.check_source,
-        checked_at = excluded.checked_at
+        checked_at = excluded.checked_at,
+        brandability_score = excluded.brandability_score,
+        structure_length_score = excluded.structure_length_score,
+        extension_lang_fit_score = excluded.extension_lang_fit_score,
+        character_cleanliness_score = excluded.character_cleanliness_score,
+        niche_clarity_score = excluded.niche_clarity_score,
+        overall_heuristic_score = excluded.overall_heuristic_score,
+        scored_at = excluded.scored_at
     `)
-      .bind(domain, extension, charLength, lang, checkMethod, checkSource, checkedAt)
+      .bind(
+        domain,
+        extension,
+        charLength,
+        lang,
+        checkMethod,
+        checkSource,
+        checkedAt,
+        brandabilityScore,
+        structureLengthScore,
+        extensionLangFitScore,
+        characterCleanlinessScore,
+        nicheClarityScore,
+        overallHeuristicScore,
+        scoredAt
+      )
       .run();
 
     return jsonResponse({
@@ -198,7 +529,16 @@ export async function onRequestPost(context) {
       checkMethod,
       checkSource,
       checkedAt,
-      checkedAtIso
+      checkedAtIso,
+      scoredAt,
+      scores: {
+        brandability_score: brandabilityScore,
+        structure_length_score: structureLengthScore,
+        extension_lang_fit_score: extensionLangFitScore,
+        character_cleanliness_score: characterCleanlinessScore,
+        niche_clarity_score: nicheClarityScore,
+        overall_heuristic_score: overallHeuristicScore
+      }
     });
   } catch (err) {
     return jsonResponse(
