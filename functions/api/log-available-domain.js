@@ -120,9 +120,16 @@ const SCORE_COLUMNS = [
   'extension_lang_fit_score',
   'character_cleanliness_score',
   'niche_clarity_score',
+  'emd_pmd_score',
   'overall_heuristic_score',
   'scored_at'
 ];
+
+const COMMERCIAL_SPAM_MODIFIERS = new Set([
+  'best', 'cheap', 'cheapest', 'free', 'top', 'super', 'mega', 'ultra',
+  'discount', 'deals', 'deal', 'review', 'reviews', 'promo', 'murah',
+  'terbaik', 'gratis', 'diskon', 'promo24', '247', '365', 'online', 'official'
+]);
 
 let schemaReadyPromise = null;
 
@@ -230,7 +237,207 @@ function analyzeSldStemsAndLang(sld) {
   };
 }
 
-function computeDomainScores(rawDomain, explicitExt, rawLang) {
+function normalizeTargetKeywords(rawTargetKeywords) {
+  let rawList = [];
+  if (Array.isArray(rawTargetKeywords)) {
+    rawList = rawTargetKeywords;
+  } else if (rawTargetKeywords && typeof rawTargetKeywords === 'object') {
+    if (Array.isArray(rawTargetKeywords.keywords)) {
+      rawList = rawTargetKeywords.keywords;
+    } else {
+      rawList = [rawTargetKeywords.kw, rawTargetKeywords.kw2, rawTargetKeywords.kw3];
+    }
+  } else if (typeof rawTargetKeywords === 'string') {
+    rawList = rawTargetKeywords.split(/[\s,;+|/]+/);
+  }
+
+  const seen = new Set();
+  const normalized = [];
+  for (let i = 0; i < rawList.length; i++) {
+    const parts = String(rawList[i] || '').toLowerCase().split(/[\s,;+|/]+/);
+    for (let j = 0; j < parts.length; j++) {
+      const token = parts[j].replace(/[^a-z0-9]/g, '');
+      if (token.length >= 2 && !seen.has(token)) {
+        seen.add(token);
+        normalized.push(token);
+        if (normalized.length >= 6) return normalized;
+      }
+    }
+  }
+  return normalized;
+}
+
+function countNonOverlappingOccurrences(haystack, needle) {
+  if (!haystack || !needle) return 0;
+  let count = 0;
+  let idx = 0;
+  while (true) {
+    const found = haystack.indexOf(needle, idx);
+    if (found === -1) break;
+    count++;
+    idx = found + needle.length;
+  }
+  return count;
+}
+
+function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords) {
+  const keywords = normalizeTargetKeywords(rawTargetKeywords);
+  const sldLen = sld.length;
+  const hyphenCount = (sld.match(/-/g) || []).length;
+  const digitsCount = (sld.match(/[0-9]/g) || []).length;
+  const dashTokens = sld.split('-').filter(Boolean);
+
+  if (keywords.length === 0) {
+    return { score: 75, matchType: 'neutral_no_kw' };
+  }
+
+  let matchedKwCount = 0;
+  let totalOccurrences = 0;
+  let maxKwOccurrences = 0;
+  let uniqueMatchedChars = 0;
+  let combinedMatchedAlpha = 0;
+  const cleanAlnum = sld.replace(/[^a-z0-9]/g, '');
+
+  for (let i = 0; i < keywords.length; i++) {
+    const kw = keywords[i];
+    const targetText = /[0-9]/.test(kw) ? cleanAlnum : alphaOnly;
+    const occ = countNonOverlappingOccurrences(targetText, kw);
+    if (occ > 0) {
+      matchedKwCount++;
+      totalOccurrences += occ;
+      if (occ > maxKwOccurrences) maxKwOccurrences = occ;
+      uniqueMatchedChars += kw.length;
+      combinedMatchedAlpha += kw.length * occ;
+    }
+  }
+
+  // Check duplicate dash tokens beyond explicit keywords (e.g., buy-shop-shop)
+  let duplicateTokenStuffing = false;
+  if (dashTokens.length >= 2) {
+    const tokenCounts = Object.create(null);
+    for (let i = 0; i < dashTokens.length; i++) {
+      const tok = dashTokens[i].replace(/[^a-z0-9]/g, '');
+      if (tok.length >= 2) {
+        tokenCounts[tok] = (tokenCounts[tok] || 0) + 1;
+        if (tokenCounts[tok] >= 2) duplicateTokenStuffing = true;
+      }
+    }
+  }
+
+  let spamModifierHits = 0;
+  for (const mod of COMMERCIAL_SPAM_MODIFIERS) {
+    if (
+      dashTokens.includes(mod) ||
+      (cleanAlnum.length >= mod.length + 3 && (cleanAlnum.startsWith(mod) || cleanAlnum.endsWith(mod)))
+    ) {
+      spamModifierHits++;
+    }
+  }
+
+  if (matchedKwCount === 0) {
+    if (duplicateTokenStuffing || hyphenCount >= 2 || sldLen >= 17) {
+      return { score: 58, matchType: 'non_match_noisy' };
+    }
+    return { score: 70, matchType: 'non_match_clean' };
+  }
+
+  const coverageRatio = Math.min(1, combinedMatchedAlpha / Math.max(1, cleanAlnum.length));
+  const isExactMatch =
+    coverageRatio >= 0.92 ||
+    (matchedKwCount === keywords.length && cleanAlnum.length <= uniqueMatchedChars + 1);
+
+  // Over-optimization penalties (15-45) for stuffing, forced phrasing, digits, hyphens, or overlong keyword chasing
+  if (maxKwOccurrences >= 2 || duplicateTokenStuffing) {
+    const penaltyScore = clampScore(34 - (maxKwOccurrences - 2) * 10 - hyphenCount * 4 - (sldLen > 14 ? 6 : 0), 26);
+    return { score: Math.max(15, Math.min(42, penaltyScore)), matchType: 'over_optimized_stuffing' };
+  }
+
+  if (totalOccurrences >= 3) {
+    const penaltyScore = clampScore(
+      (hyphenCount >= 1 || sldLen >= 13 ? 30 : 42) - Math.max(0, sldLen - 12) * 2 - hyphenCount * 5,
+      30
+    );
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_stuffing' };
+  }
+
+  if (hyphenCount >= 1) {
+    const penaltyScore = clampScore(
+      44 - (hyphenCount - 1) * 12 - Math.max(0, sldLen - 10) * 2 - spamModifierHits * 6 - digitsCount * 4,
+      34
+    );
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_forced' };
+  }
+
+  if (digitsCount > 0) {
+    const penaltyScore = clampScore(42 - digitsCount * 2 - Math.max(0, sldLen - 10) * 2 - spamModifierHits * 5, 36);
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_forced' };
+  }
+
+  if (sldLen >= 15 || (spamModifierHits >= 1 && sldLen >= 11)) {
+    const penaltyScore = clampScore(42 - Math.max(0, sldLen - 14) * 3 - spamModifierHits * 5, 32);
+    return { score: Math.max(15, Math.min(45, penaltyScore)), matchType: 'over_optimized_long' };
+  }
+
+  // Natural & concise PMD (85-95): embeds 1-2 target keywords naturally without stuffing or forced hyphens
+  if (!isExactMatch && sldLen <= 12 && matchedKwCount <= 2) {
+    let pmdScore = 90;
+    if (sldLen <= 9) pmdScore += 4;
+    else if (sldLen <= 11) pmdScore += 2;
+    else pmdScore -= 3;
+    if (matchedKwCount === 2 && sldLen >= 11) pmdScore -= 3;
+    if (spamModifierHits >= 1) pmdScore -= 5;
+    return {
+      score: Math.max(85, Math.min(95, clampScore(pmdScore, 90))),
+      matchType: 'natural_pmd'
+    };
+  }
+
+  // Clean concise EMD (no hyphens/digits/repetition, <= 12 chars)
+  if (isExactMatch && sldLen <= 12) {
+    const emdScore = sldLen <= 8 ? 80 : 74;
+    return { score: emdScore, matchType: 'balanced_emd' };
+  }
+
+  // Remaining moderately long compounds (13-14 chars)
+  return {
+    score: clampScore(45 - Math.max(0, sldLen - 12) * 3, 39),
+    matchType: 'over_optimized_long'
+  };
+}
+
+function computeOverallHeuristicScore(
+  pronunciationComfort,
+  brandability,
+  structure,
+  extFit,
+  cleanliness,
+  nicheClarity,
+  emdPmdScore = 75,
+  fallback = 50
+) {
+  let rawOverall =
+    pronunciationComfort * 0.22 +
+    brandability * 0.20 +
+    structure * 0.13 +
+    extFit * 0.12 +
+    cleanliness * 0.10 +
+    nicheClarity * 0.11 +
+    emdPmdScore * 0.12;
+
+  // Prevent clean formatting, short length, or .com alone from inflating meaningless & awkward permutations
+  if (pronunciationComfort < 72 && nicheClarity < 60) {
+    rawOverall -= (72 - pronunciationComfort) * 0.45 + (60 - nicheClarity) * 0.35;
+  }
+
+  // Press down keyword-stuffed, forced, or overlong over-optimized EMDs/PMDs
+  if (emdPmdScore < 50) {
+    rawOverall -= (50 - emdPmdScore) * 0.45;
+  }
+
+  return clampScore(rawOverall, fallback);
+}
+
+function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords) {
   const { sld, ext } = splitDomainSldAndExt(rawDomain, explicitExt);
   const uiLang = normalizeLang(rawLang);
   const sldLen = sld.length;
@@ -246,7 +453,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
   const isKnownStem = stemAnalysis.exactStemHits >= 1;
 
   // 1. Pronunciation Comfort Score (0-100): dedicated "radio test" smoothness, vowel-consonant flow & phonetic spelling clarity
-  let pronunciationComfort = 60;
+  let pronunciationComfort = 58;
   if (alphaOnly.length === 0) {
     pronunciationComfort = 28;
   } else if (alphaOnly.length === 1) {
@@ -264,11 +471,16 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     for (let i = 0; i < alphaOnly.length; i++) {
       const ch = alphaOnly[i];
       const v = isVowelChar(ch);
+      const isSyllabicY = ch === 'y' && i > 0 && !isVowelChar(alphaOnly[i - 1]);
       if (v) {
         vowelCount++;
         curVowelRun++;
         curConsRun = 0;
         if (curVowelRun > maxVowelRun) maxVowelRun = curVowelRun;
+      } else if (isSyllabicY) {
+        yCount++;
+        curConsRun = 0;
+        curVowelRun = 0;
       } else {
         if (ch === 'y') yCount++;
         curConsRun++;
@@ -285,9 +497,9 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     const effectiveVowels = vowelCount + yCount * 0.5;
     const vRatio = effectiveVowels / alphaOnly.length;
     if (vRatio >= 0.30 && vRatio <= 0.56) {
-      pronunciationComfort += maxVowelRun >= 2 ? 14 : 18;
+      pronunciationComfort += maxVowelRun >= 2 ? 14 : 16;
     } else if ((vRatio >= 0.20 && vRatio < 0.30) || (vRatio > 0.56 && vRatio <= 0.68)) {
-      pronunciationComfort += 9;
+      pronunciationComfort += 8;
     } else if (vowelCount === 0 && yCount === 0) {
       pronunciationComfort -= alphaOnly.length <= 3 ? 12 : 30;
     } else {
@@ -295,7 +507,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     }
 
     if (maxConsRun <= 2) {
-      pronunciationComfort += maxVowelRun >= 2 ? 8 : 10;
+      pronunciationComfort += maxVowelRun >= 2 ? 8 : 8;
     } else if (maxConsRun === 3) {
       pronunciationComfort -= 8;
     } else {
@@ -309,9 +521,9 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     const transitionRatio = transitions / Math.max(1, alphaOnly.length - 1);
     if (maxVowelRun === 1) {
       if (transitionRatio >= 0.62) {
-        pronunciationComfort += 12;
+        pronunciationComfort += 10;
       } else if (transitionRatio >= 0.42) {
-        pronunciationComfort += 6;
+        pronunciationComfort += 5;
       } else if (transitionRatio < 0.28) {
         pronunciationComfort -= 8;
       }
@@ -319,32 +531,66 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
       pronunciationComfort -= 6;
     }
 
+    let awkwardPhoneticPenalty = 0;
+    const hasStemContext = isKnownStem || stemAnalysis.containedStemHits >= 1;
+
     // Vowel hiatus & unnatural diphthong checks (e.g., souj -> ouj, soik -> oi + k)
-    if (!isKnownStem) {
+    if (!hasStemContext) {
       if (/(aa|ii|uu)/.test(alphaOnly)) {
-        pronunciationComfort -= 14;
+        awkwardPhoneticPenalty += 14;
       }
       if (/(oi|oy|eu|iu|uo|oe|ao|eo|ae|ui)/.test(alphaOnly)) {
-        pronunciationComfort -= 12;
+        awkwardPhoneticPenalty += 12;
       } else if (maxVowelRun === 2) {
-        pronunciationComfort -= 4;
+        awkwardPhoneticPenalty += 4;
       }
       if (/[aeiou]{2}[jkqptbdgcvwxz](?:$|[bcdfghjklmnpqrstvwxyz])/.test(alphaOnly)) {
-        pronunciationComfort -= 16;
+        awkwardPhoneticPenalty += 16;
+      }
+      // Awkward vowel+y glides & non-standard y sequences (e.g., -iy, -uy, -yy)
+      if (/(?:iy|uy|yy)/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 42;
+      } else if (/[aeo]y$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 8;
       }
     } else if (/(aa|ii|uu)/.test(alphaOnly)) {
-      pronunciationComfort -= 8;
+      awkwardPhoneticPenalty += 8;
     }
 
-    // Abrupt / tongue-stopping word endings & awkward orthography
+    // Abrupt / tongue-stopping word endings & awkward permutation codas (e.g., -iw, -uc, -uf)
     if (/[jq]$/.test(alphaOnly)) {
-      pronunciationComfort -= 20;
-    } else if (!isKnownStem && /[vwzx]$/.test(alphaOnly)) {
-      pronunciationComfort -= 10;
+      awkwardPhoneticPenalty += 22;
+    } else if (!isKnownStem) {
+      if (/[iu]w$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 44;
+      } else if (/[vzx]$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 14;
+      } else if (/w$/.test(alphaOnly) && !/[aeo]w$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 14;
+      } else if (/[aeou]c$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 40;
+      } else if (/ic$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 10;
+      } else if (/[aeiou]f$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 38;
+      } else if (/[aeiou][bg]$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 32;
+      } else if (/[aeiou]p$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 26;
+      } else if (!isIdContext && /[aeiou]h$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 32;
+      }
     }
-    if (!isIdContext && !isKnownStem && /[iuo]k$/.test(alphaOnly)) {
-      pronunciationComfort -= 6;
+
+    if (!isIdContext && !isKnownStem) {
+      if (/[iuo]k$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 14;
+      } else if (/k$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+        awkwardPhoneticPenalty += 8;
+      }
     }
+
+    pronunciationComfort -= awkwardPhoneticPenalty;
 
     // Heavy/ambiguous phonetic letters
     const qxzCount = (alphaOnly.match(/[qxz]/g) || []).length;
@@ -368,10 +614,16 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     }
 
     if (isKnownStem && maxConsRun <= 2 && qxzCount === 0) {
-      pronunciationComfort += 6;
+      pronunciationComfort += 10;
+    } else if (stemAnalysis.containedStemHits >= 1 && maxConsRun <= 2 && qxzCount === 0 && awkwardPhoneticPenalty === 0) {
+      pronunciationComfort += 8;
     } else if (
-      /^(?:[^aeiou][aeiou]){2,}[^aeiou]?$/.test(alphaOnly) ||
-      (isIdContext && /(ng|ny)/.test(alphaOnly) && maxConsRun <= 3)
+      awkwardPhoneticPenalty === 0 &&
+      qxzCount === 0 &&
+      (
+        /[aeiou]$|(?:ly|ry|ny|ty|sy)$/.test(alphaOnly) ||
+        (isIdContext && /(ng|ny)/.test(alphaOnly) && maxConsRun <= 3)
+      )
     ) {
       pronunciationComfort += 4;
     }
@@ -398,7 +650,11 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     }
 
     if (stemAnalysis.exactStemHits === 0 && stemAnalysis.containedStemHits <= 1 && alphaOnly.length >= 4 && alphaOnly.length <= 8) {
-      brandability += 10;
+      if (pronunciationComfort >= 78) {
+        brandability += 10;
+      } else if (pronunciationComfort >= 66) {
+        brandability += 4;
+      }
     } else if (stemAnalysis.exactStemHits >= 1 && alphaOnly.length <= 10) {
       brandability += 8;
     } else if (stemAnalysis.exactStemHits === 1) {
@@ -413,7 +669,12 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
       brandability -= 8;
     }
 
-    if (alphaOnly.length >= 4 && alphaOnly.length <= 9 && /[aeioyrlmn]$/.test(alphaOnly)) {
+    if (
+      alphaOnly.length >= 4 &&
+      alphaOnly.length <= 9 &&
+      pronunciationComfort >= 65 &&
+      /[aeiorlmn]$|[^aeiouy]y$/.test(alphaOnly)
+    ) {
       brandability += 5;
     }
 
@@ -425,11 +686,13 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
 
     // Radio-test usability safeguard: names that fail spontaneous pronunciation lose brand punch
     if (pronunciationComfort < 45) {
-      brandability -= 14;
+      brandability -= 24;
     } else if (pronunciationComfort < 58) {
+      brandability -= 18;
+    } else if (pronunciationComfort < 68) {
       brandability -= 10;
-    } else if (pronunciationComfort < 66) {
-      brandability -= 5;
+    } else if (pronunciationComfort < 76) {
+      brandability -= 4;
     }
   }
   brandability = clampScore(brandability, 50);
@@ -469,8 +732,8 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
   if (/(.)\1{2,}/.test(sld)) cleanliness -= 14;
   cleanliness = clampScore(cleanliness, 70);
 
-  // 6. Niche Clarity Score (0-100): exact token priority, strict compound boundary, fair pure-brand baseline
-  let nicheClarity = 64;
+  // 6. Niche Clarity Score (0-100): exact token priority, strict compound boundary, modest/low baseline when no real word meaning
+  let nicheClarity = 38;
   if (stemAnalysis.exactStemHits >= 2) {
     nicheClarity = 94;
   } else if (stemAnalysis.exactStemHits === 1 && stemAnalysis.containedStemHits >= 1) {
@@ -481,23 +744,28 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     nicheClarity = 78;
   } else if (stemAnalysis.containedStemHits === 1) {
     nicheClarity = 73;
-  } else if (alphaOnly.length >= 3 && alphaOnly.length <= 9 && pronunciationComfort >= 68) {
-    nicheClarity = 72;
-  } else if (digitsCount === 0 && hyphenCount === 0) {
-    nicheClarity = 64;
-  } else {
+  } else if (alphaOnly.length >= 4 && alphaOnly.length <= 9 && digitsCount === 0 && hyphenCount === 0 && pronunciationComfort >= 80) {
     nicheClarity = 58;
+  } else if (alphaOnly.length >= 3 && alphaOnly.length <= 10 && digitsCount === 0 && hyphenCount === 0 && pronunciationComfort >= 66) {
+    nicheClarity = 48;
+  } else {
+    nicheClarity = 38;
   }
-  nicheClarity = clampScore(nicheClarity, 58);
+  nicheClarity = clampScore(nicheClarity, 38);
 
-  // 7. Overall Heuristic Score (0-100): weighted composite of all 6 separated aspects
-  const overall = clampScore(
-    pronunciationComfort * 0.22 +
-    brandability * 0.20 +
-    structure * 0.17 +
-    extFit * 0.15 +
-    cleanliness * 0.14 +
-    nicheClarity * 0.12,
+  // 7. EMD / PMD Over-Optimization Risk Score (0-100)
+  const emdPmdResult = computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords);
+  const emdPmdScore = clampScore(emdPmdResult.score, 75);
+
+  // 8. Overall Heuristic Score (0-100): weighted composite (weights = 1.00) + penalties for weak phonetics / over-optimization
+  const overall = computeOverallHeuristicScore(
+    pronunciationComfort,
+    brandability,
+    structure,
+    extFit,
+    cleanliness,
+    nicheClarity,
+    emdPmdScore,
     50
   );
 
@@ -508,6 +776,8 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     extension_lang_fit_score: extFit,
     character_cleanliness_score: cleanliness,
     niche_clarity_score: nicheClarity,
+    emd_pmd_score: emdPmdScore,
+    emd_pmd_match_type: emdPmdResult.matchType,
     overall_heuristic_score: overall
   };
 }
@@ -530,6 +800,8 @@ async function ensureAvailableDomainsSchema(db) {
           extension_lang_fit_score INTEGER,
           character_cleanliness_score INTEGER,
           niche_clarity_score INTEGER,
+          emd_pmd_score INTEGER,
+          emd_pmd_match_type TEXT,
           overall_heuristic_score INTEGER,
           scored_at INTEGER
         )
@@ -564,6 +836,8 @@ async function ensureAvailableDomainsSchema(db) {
                   extension_lang_fit_score INTEGER,
                   character_cleanliness_score INTEGER,
                   niche_clarity_score INTEGER,
+                  emd_pmd_score INTEGER,
+                  emd_pmd_match_type TEXT,
                   overall_heuristic_score INTEGER,
                   scored_at INTEGER
                 )
@@ -579,7 +853,7 @@ async function ensureAvailableDomainsSchema(db) {
               db.prepare('ALTER TABLE available_domains_migrated RENAME TO available_domains')
             ]);
             colNames.clear();
-            ['domain', 'extension', 'char_length', 'lang', 'check_method', 'check_source', 'checked_at', ...SCORE_COLUMNS]
+            ['domain', 'extension', 'char_length', 'lang', 'check_method', 'check_source', 'checked_at', 'emd_pmd_match_type', ...SCORE_COLUMNS]
               .forEach((name) => colNames.add(name));
           }
         }
@@ -587,6 +861,9 @@ async function ensureAvailableDomainsSchema(db) {
           if (!colNames.has(scoreCol)) {
             await db.prepare(`ALTER TABLE available_domains ADD COLUMN ${scoreCol} INTEGER`).run();
           }
+        }
+        if (!colNames.has('emd_pmd_match_type')) {
+          await db.prepare('ALTER TABLE available_domains ADD COLUMN emd_pmd_match_type TEXT').run();
         }
       }
 
@@ -606,6 +883,10 @@ async function ensureAvailableDomainsSchema(db) {
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_lang
           ON available_domains (lang, checked_at DESC)
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
+          ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC)
         `)
       ]);
     })().catch((err) => {
@@ -672,7 +953,8 @@ export async function onRequestPost(context) {
     : Date.now();
   const checkedAtIso = new Date(checkedAt).toISOString();
 
-  const computedScores = computeDomainScores(domain, extension, lang);
+  const rawKeywords = body.keywords || body.targetKeywords || [body.kw, body.kw2, body.kw3];
+  const computedScores = computeDomainScores(domain, extension, lang, rawKeywords);
   const clientScores = (body.scores && typeof body.scores === 'object') ? body.scores : {};
   const pronunciationComfortScore = clampScore(
     clientScores.pronunciation_comfort_score,
@@ -683,13 +965,18 @@ export async function onRequestPost(context) {
   const extensionLangFitScore = clampScore(clientScores.extension_lang_fit_score, computedScores.extension_lang_fit_score);
   const characterCleanlinessScore = clampScore(clientScores.character_cleanliness_score, computedScores.character_cleanliness_score);
   const nicheClarityScore = clampScore(clientScores.niche_clarity_score, computedScores.niche_clarity_score);
-  const overallHeuristicScore = clampScore(
-    pronunciationComfortScore * 0.22 +
-    brandabilityScore * 0.20 +
-    structureLengthScore * 0.17 +
-    extensionLangFitScore * 0.15 +
-    characterCleanlinessScore * 0.14 +
-    nicheClarityScore * 0.12,
+  const emdPmdScore = clampScore(clientScores.emd_pmd_score, computedScores.emd_pmd_score);
+  const emdPmdMatchType = typeof clientScores.emd_pmd_match_type === 'string' && clientScores.emd_pmd_match_type.trim()
+    ? clientScores.emd_pmd_match_type.trim().slice(0, 40)
+    : computedScores.emd_pmd_match_type;
+  const overallHeuristicScore = computeOverallHeuristicScore(
+    pronunciationComfortScore,
+    brandabilityScore,
+    structureLengthScore,
+    extensionLangFitScore,
+    characterCleanlinessScore,
+    nicheClarityScore,
+    emdPmdScore,
     computedScores.overall_heuristic_score
   );
   const scoredAt = Date.now();
@@ -712,9 +999,11 @@ export async function onRequestPost(context) {
         extension_lang_fit_score,
         character_cleanliness_score,
         niche_clarity_score,
+        emd_pmd_score,
+        emd_pmd_match_type,
         overall_heuristic_score,
         scored_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17)
       ON CONFLICT(domain) DO UPDATE SET
         extension = excluded.extension,
         char_length = excluded.char_length,
@@ -728,6 +1017,8 @@ export async function onRequestPost(context) {
         extension_lang_fit_score = excluded.extension_lang_fit_score,
         character_cleanliness_score = excluded.character_cleanliness_score,
         niche_clarity_score = excluded.niche_clarity_score,
+        emd_pmd_score = excluded.emd_pmd_score,
+        emd_pmd_match_type = excluded.emd_pmd_match_type,
         overall_heuristic_score = excluded.overall_heuristic_score,
         scored_at = excluded.scored_at
     `)
@@ -745,6 +1036,8 @@ export async function onRequestPost(context) {
         extensionLangFitScore,
         characterCleanlinessScore,
         nicheClarityScore,
+        emdPmdScore,
+        emdPmdMatchType,
         overallHeuristicScore,
         scoredAt
       )
@@ -769,6 +1062,8 @@ export async function onRequestPost(context) {
         extension_lang_fit_score: extensionLangFitScore,
         character_cleanliness_score: characterCleanlinessScore,
         niche_clarity_score: nicheClarityScore,
+        emd_pmd_score: emdPmdScore,
+        emd_pmd_match_type: emdPmdMatchType,
         overall_heuristic_score: overallHeuristicScore
       }
     });
