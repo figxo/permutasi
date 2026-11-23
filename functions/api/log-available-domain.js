@@ -548,17 +548,6 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
     }
 
     const transitionRatio = transitions / Math.max(1, alphaOnly.length - 1);
-    if (maxVowelRun === 1) {
-      if (transitionRatio >= 0.62) {
-        pronunciationComfort += 10;
-      } else if (transitionRatio >= 0.42) {
-        pronunciationComfort += 5;
-      } else if (transitionRatio < 0.28) {
-        pronunciationComfort -= 8;
-      }
-    } else if (transitionRatio < 0.32) {
-      pronunciationComfort -= 6;
-    }
 
     let awkwardPhoneticPenalty = 0;
     const hasStemContext = isKnownStem || stemAnalysis.containedStemHits >= 1;
@@ -586,18 +575,14 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
       awkwardPhoneticPenalty += 8;
     }
 
-    // Abrupt / tongue-stopping word endings & awkward permutation codas (e.g., -oj, -iq, -iw, -uc, -uf, -ov)
+    // Abrupt / tongue-stopping word endings & awkward permutation codas
     if (/[jq]$/.test(alphaOnly)) {
-      awkwardPhoneticPenalty += isIdContext ? 30 : 46;
+      awkwardPhoneticPenalty += 20;
     } else if (!isKnownStem) {
       if (/[iu]w$/.test(alphaOnly)) {
         awkwardPhoneticPenalty += 44;
-      } else if (/v$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 34;
-      } else if (/[zx]$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 22;
-      } else if (/w$/.test(alphaOnly) && !/[aeo]w$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 14;
+      } else if (/[^aeiou][vwzx]$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 10;
       } else if (/[aeou]c$/.test(alphaOnly)) {
         awkwardPhoneticPenalty += 40;
       } else if (/ic$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
@@ -613,12 +598,8 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
       }
     }
 
-    if (!isIdContext && !isKnownStem) {
-      if (/[iuo]k$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 14;
-      } else if (/k$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 8;
-      }
+    if (!isIdContext && !isKnownStem && /[iuo]k$/.test(alphaOnly)) {
+      awkwardPhoneticPenalty += 6;
     }
 
     pronunciationComfort -= awkwardPhoneticPenalty;
@@ -635,13 +616,29 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
       pronunciationComfort -= 6;
     }
 
-    // Jarring consonant collisions in coined non-dictionary words
-    if (
+    // Jarring 2-consonant collisions in coined non-dictionary words (e.g., bk, tp, qj, xz)
+    const hasJarringCluster =
       !isKnownStem &&
       stemAnalysis.containedStemHits === 0 &&
-      /(?:[jqxz][bcdfghjklmnpqrstvwxyz]|[bcdfghjklmnpqrstvwxyz][jqx]|(?:bk|bp|bt|bv|bz|cb|cd|cf|cg|cm|cn|cp|cv|cz|db|dc|df|dg|dk|dm|dn|dp|dv|dz|fb|fc|fd|fg|fk|fm|fp|fv|fz|gb|gc|gd|gf|gk|gm|gp|gv|gz|hb|hc|hd|hf|hg|hm|hn|hp|hv|hz|kb|kc|kd|kf|kg|km|kp|kv|kz|pb|pc|pd|pf|pg|pk|pv|pz|tb|tc|td|tf|tg|tk|tv|tz|vb|vc|vd|vf|vg|vh|vk|vl|vm|vn|vp|vr|vs|vt|vw|vz))/.test(alphaOnly)
-    ) {
-      pronunciationComfort -= 10;
+      /(?:[jqxz][bcdfghjklmnpqrstvwxyz]|[bcdfghjklmnpqrstvwxyz][jqx]|(?:bk|bp|bt|bv|bz|cb|cd|cf|cg|cm|cn|cp|cv|cz|db|dc|df|dg|dk|dm|dn|dp|dv|dz|fb|fc|fd|fg|fk|fm|fp|fv|fz|gb|gc|gd|gf|gk|gm|gp|gv|gz|hb|hc|hd|hf|hg|hm|hn|hp|hv|hz|kb|kc|kd|kf|kg|km|kp|kv|kz|pb|pc|pd|pf|pg|pk|pv|pz|tb|tc|td|tf|tg|tk|tp|tv|tz|vb|vc|vd|vf|vg|vh|vk|vl|vm|vn|vp|vr|vs|vt|vw|vz))/.test(alphaOnly);
+    if (hasJarringCluster) {
+      pronunciationComfort -= 20;
+    }
+
+    if (maxVowelRun === 1) {
+      if (awkwardPhoneticPenalty === 0 && !hasJarringCluster) {
+        if (transitionRatio >= 0.62) {
+          pronunciationComfort += 10;
+        } else if (transitionRatio >= 0.42) {
+          pronunciationComfort += 5;
+        } else if (transitionRatio < 0.28) {
+          pronunciationComfort -= 8;
+        }
+      } else if (transitionRatio < 0.28) {
+        pronunciationComfort -= 8;
+      }
+    } else if (transitionRatio < 0.32) {
+      pronunciationComfort -= 6;
     }
 
     if (isKnownStem && maxConsRun <= 2 && qxzCount === 0) {
@@ -650,6 +647,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
       pronunciationComfort += 8;
     } else if (
       awkwardPhoneticPenalty === 0 &&
+      !hasJarringCluster &&
       qxzCount === 0 &&
       (
         /[aeiou]$|(?:ly|ry|ny|ty|sy)$/.test(alphaOnly) ||
