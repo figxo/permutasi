@@ -209,10 +209,97 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 ### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
 - **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
-- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `lang TEXT NOT NULL DEFAULT 'en'` serta 8 kolom skor (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `overall_heuristic_score`, `scored_at`) bertipe `INTEGER` bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 4 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql` dan `migrations/0002_add_pronunciation_comfort_score.sql`.
-- **Kolom, Penilaian Otomatis & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, lalu menghitung dan memvalidasi 6 aspek skor terpisah (`0–100`) + `overall_heuristic_score` (memisahkan SLD secara akurat untuk ekstensi multi-bagian seperti `.web.id`/`.my.id`) dan melakukan upsert (`ON CONFLICT(domain) DO UPDATE`) untuk `domain` (`PRIMARY KEY`), `extension`, `char_length`, `lang`, `check_method` (`RDAP` / `NS`), `check_source` (`auto` / `manual`), `checked_at` (epoch ms), serta `pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `overall_heuristic_score`, dan `scored_at`.
+- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `emd_pmd_score`, `overall_heuristic_score`, `scored_at`) bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 5 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, dan `migrations/0003_add_emd_pmd_score.sql`.
+- **Formula Penilaian Otomatis (7 Aspek, Total Bobot = `1.00`) & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, memisahkan SLD secara akurat untuk ekstensi multi-bagian (`.web.id`, `.my.id`, `.co.id`, `.co.uk`, dll.), serta menghitung skor `0–100` yang identik antara klien dan Worker:
+  - `pronunciation_comfort_score` (**`0.22`**) — kelancaran pelafalan (*radio test*), penalti gugus/hiatus & akhiran janggal (`-iy`, `-iw`, `-uc`, `-uf`, `-oj`, `-v`) di luar kata kamus.
+  - `brandability_score` (**`0.20`**) — daya ingat, panjang SLD ideal, dan kekhasan merek (bonus merek ciptaan dibatasi bila pelafalan lemah).
+  - `structure_length_score` (**`0.13`**) — keringkasan panjang SLD & struktur token.
+  - `extension_lang_fit_score` (**`0.12`**) — peringkat popularitas TLD sesuai bahasa UI aktif (mis. untuk `en`: `.com > .edu > .gov > .net > .org > .co > .online > .io > .ai > .app/.dev > .biz > .me`; untuk `id`: `.id > .com > .ac.id > .co.id > .net.id > .or.id > .web.id > .my.id > .biz.id`).
+  - `character_cleanliness_score` (**`0.10`**) — kebersihan dari angka, tanda hubung (`-`), dan pengulangan huruf `3x+`.
+  - `niche_clarity_score` (**`0.11`**) — kejelasan topik/kamus kata (permutasi acak tanpa akar kata bermakna ditahan di skor rendah/moderat `38–58`).
+  - `emd_pmd_score` (**`0.12`**) — evaluasi risiko *over-optimization* EMD/PMD terhadap kata kunci target (`kw`, `kw2`, `kw3`): netral `75` bila tanpa keyword, tinggi `85–95` untuk PMD alami & ringkas yang mudah dilafalkan, serta penalti tegas `15–45` untuk keyword stuffing, tanda hubung/angka dipaksakan, atau domain terlalu panjang mengejar keyword.
+  - **Penjaga Skor Gabungan**: Penalti sinergis diterapkan bila `pronunciation_comfort_score < 72 && niche_clarity_score < 60`, serta penalti tambahan `(50 - emd_pmd_score) * 0.45` bila `emd_pmd_score < 50`.
+- **Kode Hemat Byte 2 Huruf (`emd_pmd_match_type`)**:
+  - `nk` = `neutral_no_kw` (tanpa kata kunci target)
+  - `np` = `natural_pmd` (PMD alami & ringkas)
+  - `up` = `unnatural_pmd` (PMD kaku / sulit dilafalkan)
+  - `be` = `balanced_emd` (EMD ringkas & bersih)
+  - `nc` = `non_match_clean` (non-match bersih)
+  - `nn` = `non_match_noisy` (non-match berisik / panjang)
+  - `os` = `over_optimized_stuffing` (pengulangan / tumpukan keyword)
+  - `of` = `over_optimized_forced` (tanda hubung / angka dipaksakan)
+  - `ol` = `over_optimized_long` (terlalu panjang mengejar keyword)
+  - Endpoint `onRequestPost` otomatis menormalisasi string lama (mis. `"natural_pmd"` → `"np"`) via `normalizeEmdPmdMatchType` sebelum upsert ke D1.
+
+#### Skema Tabel & Perintah SQL Cloudflare D1 (`available_domains`)
+```sql
+-- 1. Skema penuh tabel available_domains (17 kolom)
+CREATE TABLE IF NOT EXISTS available_domains (
+  domain TEXT PRIMARY KEY,
+  extension TEXT NOT NULL,
+  char_length INTEGER NOT NULL,
+  lang TEXT NOT NULL DEFAULT 'en',
+  check_method TEXT NOT NULL,
+  check_source TEXT NOT NULL,
+  checked_at INTEGER NOT NULL,
+  pronunciation_comfort_score INTEGER,
+  brandability_score INTEGER,
+  structure_length_score INTEGER,
+  extension_lang_fit_score INTEGER,
+  character_cleanliness_score INTEGER,
+  niche_clarity_score INTEGER,
+  emd_pmd_score INTEGER,
+  emd_pmd_match_type TEXT,
+  overall_heuristic_score INTEGER,
+  scored_at INTEGER
+);
+
+-- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor (migrations/0001–0003)
+ALTER TABLE available_domains ADD COLUMN pronunciation_comfort_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN brandability_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN structure_length_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN extension_lang_fit_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN character_cleanliness_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN niche_clarity_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN emd_pmd_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN emd_pmd_match_type TEXT;
+ALTER TABLE available_domains ADD COLUMN overall_heuristic_score INTEGER;
+ALTER TABLE available_domains ADD COLUMN scored_at INTEGER;
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_checked_at
+ON available_domains (checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_extension
+ON available_domains (extension, checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_char_length
+ON available_domains (char_length, checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_lang
+ON available_domains (lang, checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
+ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC);
+
+-- 3. Opsional: padatkan baris lama yang masih memakai label panjang menjadi kode 2 huruf
+UPDATE available_domains
+SET emd_pmd_match_type = CASE emd_pmd_match_type
+  WHEN 'neutral_no_kw' THEN 'nk'
+  WHEN 'natural_pmd' THEN 'np'
+  WHEN 'unnatural_pmd' THEN 'up'
+  WHEN 'balanced_emd' THEN 'be'
+  WHEN 'non_match_clean' THEN 'nc'
+  WHEN 'non_match_noisy' THEN 'nn'
+  WHEN 'over_optimized_stuffing' THEN 'os'
+  WHEN 'over_optimized_forced' THEN 'of'
+  WHEN 'over_optimized_long' THEN 'ol'
+  ELSE emd_pmd_match_type
+END
+WHERE length(emd_pmd_match_type) > 2;
+```
+
 - **Konfigurasi `wrangler.toml`**: Menyediakan binding `[[d1_databases]]` dengan `binding = "DB"` dan `pages_build_output_dir = "dist"` (serta `database_id` D1 Anda). Pastikan binding `DB` juga terhubung di **Cloudflare Pages -> Settings -> Functions -> D1 database bindings** bila deploy lewat GitHub.
-- **Trigger & Tampilan Skor Sisi Klien**: Setiap pengecekan jaringan (`auto` maupun klik manual tombol `Check` / re-check) yang menghasilkan `available` otomatis menampilkan kolom `Score` (`XX/100` beserta rincian 6 sub-skor termasuk `Pronunciation` di tooltip) khusus baris `available` pada tabel analisis, dan untuk domain `<= 25` karakter mengirim `POST` non-blocking (`keepalive: true`) beserta skornya ke `/api/log-available-domain`. Error jaringan diabaikan diam-diam agar UI tetap responsif.
+- **Trigger & Tampilan Skor Sisi Klien**: Setiap pengecekan jaringan (`auto` maupun klik manual tombol `Check` / re-check) yang menghasilkan `available` otomatis menampilkan kolom `Score` (`XX/100` beserta rincian 7 sub-skor termasuk `Pronunciation` dan `EMD / PMD` di tooltip dalam 8 bahasa) khusus baris `available` pada tabel analisis, dan untuk domain `<= 25` karakter mengirim `POST` non-blocking (`keepalive: true`) beserta `keywords` (`kw`, `kw2`, `kw3`) dan `scores` ke `/api/log-available-domain`. Error jaringan diabaikan diam-diam agar UI tetap responsif.
 
 ### D. Verifikasi Sebelum Commit / Deploy
 Jalankan kedua perintah berikut untuk memastikan sintaks JS dan build statis bersih:
@@ -220,4 +307,5 @@ Jalankan kedua perintah berikut untuk memastikan sintaks JS dan build statis ber
 npm run lint
 npm run build
 ```
+
 
