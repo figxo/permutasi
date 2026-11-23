@@ -851,6 +851,130 @@ async function backfillMissingSld(db) {
   }
 }
 
+const MISSING_SCORES_CONDITION = `
+  brandability_score IS NULL
+  OR structure_length_score IS NULL
+  OR extension_lang_fit_score IS NULL
+  OR character_cleanliness_score IS NULL
+  OR niche_clarity_score IS NULL
+  OR overall_heuristic_score IS NULL
+  OR scored_at IS NULL
+  OR pronunciation_comfort_score IS NULL
+  OR emd_pmd_score IS NULL
+  OR emd_pmd_match_type IS NULL
+`;
+
+async function backfillMissingScores(db, options = {}) {
+  const limit = Math.max(1, Math.min(250, Math.floor(Number(options.limit) || 100)));
+  const dryRun = Boolean(options.dryRun);
+
+  const selectStmt = db.prepare(`
+    SELECT domain, extension, lang
+    FROM available_domains
+    WHERE ${MISSING_SCORES_CONDITION}
+    ORDER BY checked_at DESC
+    LIMIT ?1
+  `);
+
+  if (typeof selectStmt.bind !== 'function') {
+    return { processed: 0, remaining: 0, done: true, dryRun, sample: [] };
+  }
+
+  const boundSelect = selectStmt.bind(limit);
+  if (typeof boundSelect.all !== 'function') {
+    return { processed: 0, remaining: 0, done: true, dryRun, sample: [] };
+  }
+
+  const res = await boundSelect.all();
+  const rows = Array.isArray(res && res.results) ? res.results : [];
+  const updates = [];
+  const sample = [];
+  const scoredAt = Date.now();
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const normalized = normalizeDomain(row && row.domain);
+    if (!normalized) continue;
+
+    const { sld, ext: parsedExt } = splitDomainSldAndExt(normalized, row && row.extension);
+    const resolvedExt = parsedExt || extractExtension(normalized);
+    const resolvedLang = normalizeLang(row && row.lang);
+    const scores = computeDomainScores(normalized, resolvedExt, resolvedLang, []);
+
+    if (sample.length < 5) {
+      sample.push({
+        domain: normalized,
+        sld: sld || null,
+        extension: resolvedExt,
+        lang: resolvedLang,
+        overall_heuristic_score: scores.overall_heuristic_score,
+        emd_pmd_score: scores.emd_pmd_score,
+        emd_pmd_match_type: scores.emd_pmd_match_type
+      });
+    }
+
+    updates.push(
+      db.prepare(`
+        UPDATE available_domains
+        SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
+            extension = ?2,
+            pronunciation_comfort_score = ?3,
+            brandability_score = ?4,
+            structure_length_score = ?5,
+            extension_lang_fit_score = ?6,
+            character_cleanliness_score = ?7,
+            niche_clarity_score = ?8,
+            emd_pmd_score = ?9,
+            emd_pmd_match_type = ?10,
+            overall_heuristic_score = ?11,
+            scored_at = ?12
+        WHERE domain = ?13
+      `).bind(
+        sld || null,
+        resolvedExt,
+        scores.pronunciation_comfort_score,
+        scores.brandability_score,
+        scores.structure_length_score,
+        scores.extension_lang_fit_score,
+        scores.character_cleanliness_score,
+        scores.niche_clarity_score,
+        scores.emd_pmd_score,
+        scores.emd_pmd_match_type,
+        scores.overall_heuristic_score,
+        scoredAt,
+        normalized
+      )
+    );
+  }
+
+  if (!dryRun && updates.length > 0 && typeof db.batch === 'function') {
+    const BATCH_CHUNK_SIZE = 50;
+    for (let i = 0; i < updates.length; i += BATCH_CHUNK_SIZE) {
+      await db.batch(updates.slice(i, i + BATCH_CHUNK_SIZE));
+    }
+  }
+
+  let remaining = 0;
+  const countStmt = db.prepare(`
+    SELECT COUNT(*) AS remaining
+    FROM available_domains
+    WHERE ${MISSING_SCORES_CONDITION}
+  `);
+  if (typeof countStmt.all === 'function') {
+    const countRes = await countStmt.all();
+    const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
+    remaining = Number(firstRow && firstRow.remaining) || 0;
+  }
+
+  return {
+    processed: updates.length,
+    remaining,
+    done: remaining === 0,
+    dryRun,
+    sample
+  };
+}
+
 async function ensureAvailableDomainsSchema(db) {
   if (!schemaReadyPromise) {
     schemaReadyPromise = (async () => {
@@ -974,6 +1098,7 @@ async function ensureAvailableDomainsSchema(db) {
       ]);
 
       await backfillMissingSld(db);
+      await backfillMissingScores(db, { limit: 100 });
     })().catch((err) => {
       schemaReadyPromise = null;
       throw err;
@@ -1001,6 +1126,28 @@ export async function onRequestPost(context) {
 
   if (!body || typeof body !== 'object') {
     return jsonResponse({ ok: false, logged: false, error: 'Request payload must be a JSON object.' }, 400);
+  }
+
+  const reqUrl = new URL(request.url);
+  const action = String(body.action || reqUrl.searchParams.get('action') || '').trim().toLowerCase();
+  if (action === 'backfill-scores') {
+    try {
+      await ensureAvailableDomainsSchema(env.DB);
+      const result = await backfillMissingScores(env.DB, {
+        limit: body.limit ?? reqUrl.searchParams.get('limit') ?? 200,
+        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true'
+      });
+      return jsonResponse({
+        ok: true,
+        action: 'backfill-scores',
+        ...result
+      });
+    } catch {
+      return jsonResponse(
+        { ok: false, action: 'backfill-scores', error: 'Failed to backfill missing domain scores.' },
+        500
+      );
+    }
   }
 
   const domain = normalizeDomain(body.domain);
