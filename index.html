@@ -495,7 +495,7 @@
                                     Clear Pattern
                                 </button>
                             </div>
-                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); syncActivePresetUi(); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#131354] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[any] + [vowel] + [consonant]</textarea>
+                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" onclick="recordFormulaSelection(this)" onkeyup="recordFormulaSelection(this)" onselect="recordFormulaSelection(this)" oninput="setActiveGenerateSlot('pattern'); recordFormulaSelection(this); syncActivePresetUi(); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#131354] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[any] + [vowel] + [consonant]</textarea>
 
                             <div class="flex flex-wrap gap-2 items-center">
                                 <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-[#FFFFFF] font-semibold mr-1 leading-[1.4]">Click to insert:</span>
@@ -512,43 +512,75 @@
                             <!-- Pronounceable Pattern Presets -->
                             <div id="pronouncePresetsSection" class="pt-3.5 border-t border-white/15 flex flex-col gap-3">
                                 <div class="flex flex-wrap items-center justify-between gap-2.5">
-                                    <div class="flex flex-wrap items-center gap-2 min-w-0">
-                                        <span id="uiPresetsLabel" class="text-[11px] uppercase tracking-wider text-white font-semibold leading-[1.4]">Pronounceable Presets:</span>
-                                        <span id="presetAppliedBadge" role="status" aria-live="polite" class="hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-400/20 border border-emerald-300/40 text-[11px] font-semibold text-emerald-100 whitespace-nowrap">✓ Preset applied</span>
+                                    <div class="flex flex-col gap-0.5 min-w-0">
+                                        <div class="flex flex-wrap items-center gap-2 min-w-0">
+                                            <span id="uiPresetsLabel" class="text-[11px] uppercase tracking-wider text-white font-semibold leading-[1.4]">Pronounceable Presets:</span>
+                                            <span id="presetAppliedBadge" role="status" aria-live="polite" class="hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-400/25 border border-emerald-300/50 text-[11px] font-semibold text-emerald-100 whitespace-nowrap">✓ Preset applied</span>
+                                        </div>
+                                        <p id="uiPresetsHelper" class="text-[12px] text-white/80 leading-[1.4]">Click any card to insert at cursor · Live examples use your keyword</p>
                                     </div>
-                                    <label for="softConsonantsCheckbox" id="uiSoftConsTooltip" title="Exclude heavy letters (q, x, z) from [consonant] for smoother startup-style domain names" class="inline-flex items-center gap-2 min-h-[34px] px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 text-[12px] font-medium text-white cursor-pointer select-none transition-colors">
+                                    <label for="softConsonantsCheckbox" id="uiSoftConsTooltip" title="Exclude heavy letters (k, q, x, z) from [consonant] for smoother startup-style domain names" class="inline-flex items-center gap-2 min-h-[34px] px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/25 text-[12px] font-medium text-white cursor-pointer select-none transition-colors">
                                         <input type="checkbox" id="softConsonantsCheckbox" checked onchange="setActiveGenerateSlot('pattern'); generateDomains()" class="h-3.5 w-3.5 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
-                                        <span id="uiSoftConsLabel">Soft Consonants (no q, x, z)</span>
+                                        <span id="uiSoftConsLabel">Soft Consonants (no k, q, x, z)</span>
                                     </label>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                                    <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                                    <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-emerald-700/55 hover:bg-emerald-600/70 border border-emerald-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
                                         <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetAnyCvTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">Any Keyword + CV</span>
-                                            <span id="uiPresetRecBadge" class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-400/20 text-emerald-200 border border-emerald-300/35">Recommended</span>
+                                            <span id="uiPresetAnyCvTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Keyword + Ending</span>
+                                            <span id="uiPresetAnyCvSample" class="font-mono text-[12px] font-bold text-emerald-200 whitespace-nowrap shrink-0">→ bizra</span>
                                         </span>
-                                        <span id="uiPresetAnyCvSub" class="text-[11px] text-white/80 leading-[1.35]">Syllable Extension · [any] + [consonant] + [vowel]</span>
+                                        <span id="uiPresetAnyCvSub" class="text-[11.5px] text-white/90 leading-[1.35]">Smooth startup suffix</span>
+                                        <span class="flex items-center justify-between gap-2 w-full pt-0.5 text-[11px] font-mono leading-[1.3]">
+                                            <span class="truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
+                                            <span id="uiPresetRecBadge" class="shrink-0 font-sans text-[10px] font-bold uppercase tracking-wide text-emerald-200 whitespace-nowrap">★ Recommended</span>
+                                        </span>
                                     </button>
-                                    <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span id="uiPresetCvCvTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CV-CV</span>
-                                        <span id="uiPresetCvCvSub" class="text-[11px] text-white/80 leading-[1.35]">Short Brandable · [consonant] + [vowel] + [consonant] + [vowel]</span>
+
+                                    <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-cyan-700/55 hover:bg-cyan-600/70 border border-cyan-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvCvTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">4-Letter Brandable</span>
+                                            <span id="uiPresetCvCvSample" class="font-mono text-[12px] font-bold text-cyan-200 whitespace-nowrap shrink-0">→ mira</span>
+                                        </span>
+                                        <span id="uiPresetCvCvSub" class="text-[11.5px] text-white/90 leading-[1.35]">Short coined name, easy to recall</span>
+                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
                                     </button>
-                                    <button type="button" data-preset-id="cv-any" onclick="applyPatternPreset('cv-any')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span id="uiPresetCvAnyTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CV + Any Keyword</span>
-                                        <span id="uiPresetCvAnySub" class="text-[11px] text-white/80 leading-[1.35]">Syllable Prefix · [consonant] + [vowel] + [any]</span>
+
+                                    <button type="button" data-preset-id="cv-any" onclick="applyPatternPreset('cv-any')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-violet-700/55 hover:bg-violet-600/70 border border-violet-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvAnyTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Prefix + Keyword</span>
+                                            <span id="uiPresetCvAnySample" class="font-mono text-[12px] font-bold text-violet-200 whitespace-nowrap shrink-0">→ rabiz</span>
+                                        </span>
+                                        <span id="uiPresetCvAnySub" class="text-[11.5px] text-white/90 leading-[1.35]">Catchy 2-letter opener</span>
+                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-indigo-200 font-semibold">[any]</span></span>
                                     </button>
-                                    <button type="button" data-preset-id="cvc-v" onclick="applyPatternPreset('cvc-v')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span id="uiPresetCvcVTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CVC-V</span>
-                                        <span id="uiPresetCvcVSub" class="text-[11px] text-white/80 leading-[1.35]">Flowing Rhythm · [consonant] + [vowel] + [consonant] + [dash] + [vowel]</span>
+
+                                    <button type="button" data-preset-id="cvc-v" onclick="applyPatternPreset('cvc-v')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-amber-700/55 hover:bg-amber-600/70 border border-amber-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvcVTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Punchy Rhythm</span>
+                                            <span id="uiPresetCvcVSample" class="font-mono text-[12px] font-bold text-amber-200 whitespace-nowrap shrink-0">→ bar-a</span>
+                                        </span>
+                                        <span id="uiPresetCvcVSub" class="text-[11.5px] text-white/90 leading-[1.35]">Crisp flow with optional dash</span>
+                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-slate-200 font-semibold">[dash]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
                                     </button>
-                                    <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span id="uiPresetAnyVcTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">Any Keyword + V + C</span>
-                                        <span id="uiPresetAnyVcSub" class="text-[11px] text-white/80 leading-[1.35]">Crisp Ending · [any] + [vowel] + [consonant]</span>
+
+                                    <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-rose-700/55 hover:bg-rose-600/70 border border-rose-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyVcTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Keyword + Crisp End</span>
+                                            <span id="uiPresetAnyVcSample" class="font-mono text-[12px] font-bold text-rose-200 whitespace-nowrap shrink-0">→ bizal</span>
+                                        </span>
+                                        <span id="uiPresetAnyVcSub" class="text-[11.5px] text-white/90 leading-[1.35]">Modern vowel-consonant finish</span>
+                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span></span>
                                     </button>
-                                    <button type="button" data-preset-id="natural-3" onclick="applyPatternPreset('natural-3')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span id="uiPresetNatural3Title" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">3-Way Natural Blend</span>
-                                        <span id="uiPresetNatural3Sub" class="text-[11px] text-white/80 leading-[1.35]">Vowel Bridge · [any] + [vowel] + [secondary]</span>
+
+                                    <button type="button" data-preset-id="natural-3" onclick="applyPatternPreset('natural-3')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-sky-700/55 hover:bg-sky-600/70 border border-sky-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetNatural3Title" class="text-[13px] font-bold text-white leading-[1.3] truncate">2-Word Vowel Bridge</span>
+                                            <span id="uiPresetNatural3Sample" class="font-mono text-[12px] font-bold text-sky-200 whitespace-nowrap shrink-0">→ bizapro</span>
+                                        </span>
+                                        <span id="uiPresetNatural3Sub" class="text-[11.5px] text-white/90 leading-[1.35]">Smooth link between 2 keywords</span>
+                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-emerald-200 font-semibold">[sec]</span></span>
                                     </button>
                                 </div>
 
@@ -1281,7 +1313,7 @@
     <script>
         const vowels = ['a', 'i', 'u', 'e', 'o'];
         const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
-        const softConsonants = consonants.filter(c => c !== 'q' && c !== 'x' && c !== 'z');
+        const softConsonants = consonants.filter(c => c !== 'k' && c !== 'q' && c !== 'x' && c !== 'z');
         const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         const dashes = ['-', ''];
 
@@ -3113,211 +3145,219 @@
         const pronounceablePresetsI18n = {
             en: {
                 presetsLabel: 'Pronounceable Presets:',
-                presetRecBadge: 'Recommended',
-                presetAppliedMsg: '✓ Preset applied',
-                softConsLabel: 'Soft Consonants (no q, x, z)',
-                softConsTitle: 'Exclude heavy letters (q, x, z) from [consonant] for smoother startup-style domain names',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Syllable Extension · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Short Brandable · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Syllable Prefix · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Flowing Rhythm · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Crisp Ending · [any] + [vowel] + [consonant]',
-                presetNatural3Title: '3-Way Natural Blend',
-                presetNatural3Sub: 'Vowel Bridge · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Click any card to insert at cursor · Live examples use your keyword',
+                presetRecBadge: '★ Recommended',
+                presetAppliedMsg: '✓ Preset added',
+                softConsLabel: 'Soft Consonants (no k, q, x, z)',
+                softConsTitle: 'Exclude heavy letters (k, q, x, z) from [consonant] for smoother startup-style domain names',
+                presetAnyCvTitle: 'Keyword + Ending',
+                presetAnyCvSub: 'Smooth startup suffix',
+                presetCvCvTitle: '4-Letter Brandable',
+                presetCvCvSub: 'Short coined name, easy to recall',
+                presetCvAnyTitle: 'Prefix + Keyword',
+                presetCvAnySub: 'Catchy 2-letter opener',
+                presetCvcVTitle: 'Punchy Rhythm',
+                presetCvcVSub: 'Crisp flow with optional dash',
+                presetAnyVcTitle: 'Keyword + Crisp End',
+                presetAnyVcSub: 'Modern vowel-consonant finish',
+                presetNatural3Title: '2-Word Vowel Bridge',
+                presetNatural3Sub: 'Smooth link between 2 keywords',
                 pronounceTipsTitle: 'Pronunciation Micro-Tips',
                 tipRuleTitle: 'Basic Rule',
                 tipRuleDesc: 'Alternating [consonant] and [vowel] creates open syllables that are easy to read and remember.',
                 tipBridgeTitle: 'Vowel Bridge',
                 tipBridgeDesc: 'Insert [vowel] between two keywords or consonants so the tongue never stumbles when spoken.',
                 tipClusterTitle: 'Avoid Heavy Clusters',
-                tipClusterDesc: 'Limit letters like q, x, or stacked consonants when targeting global brandable names.'
+                tipClusterDesc: 'Limit letters like k, q, x, z or stacked consonants when targeting global brandable names.'
             },
             id: {
                 presetsLabel: 'Preset Pola Mudah Dilafalkan:',
-                presetRecBadge: 'Rekomendasi',
-                presetAppliedMsg: '✓ Preset diterapkan',
-                softConsLabel: 'Soft Consonants (tanpa q, x, z)',
-                softConsTitle: 'Kecualikan huruf berat (q, x, z) dari [consonant] agar hasil terasa natural ala merek startup',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Ekstensi Suku Kata · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Brandable Pendek · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Awalan Suku Kata · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Ritme Mengalir · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Penutup Tegas · [any] + [vowel] + [consonant]',
-                presetNatural3Title: '3-Kombinasi Natural',
-                presetNatural3Sub: 'Jembatan Vokal · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Klik kartu mana saja untuk menyisipkan di posisi kursor · Contoh memakai keyword Anda',
+                presetRecBadge: '★ Rekomendasi',
+                presetAppliedMsg: '✓ Preset ditambahkan',
+                softConsLabel: 'Soft Consonants (tanpa k, q, x, z)',
+                softConsTitle: 'Kecualikan huruf berat (k, q, x, z) dari [consonant] agar hasil terasa natural ala merek startup',
+                presetAnyCvTitle: 'Keyword + Akhiran',
+                presetAnyCvSub: 'Akhiran startup paling natural',
+                presetCvCvTitle: '4 Huruf Brandable',
+                presetCvCvSub: 'Nama pendek unik tanpa keyword',
+                presetCvAnyTitle: 'Awalan + Keyword',
+                presetCvAnySub: 'Suku kata pembuka yang catchy',
+                presetCvcVTitle: 'Ritme Berjeda',
+                presetCvcVSub: 'Alunan tegas dengan/tanpa tanda -',
+                presetAnyVcTitle: 'Keyword + Penutup',
+                presetAnyVcSub: 'Penutup modern & terdengar tegas',
+                presetNatural3Title: 'Jembatan 2 Kata',
+                presetNatural3Sub: 'Gabung 2 keyword lebih halus',
                 pronounceTipsTitle: 'Panduan Singkat Pelafalan',
                 tipRuleTitle: 'Aturan Dasar',
                 tipRuleDesc: 'Selang-seling [consonant] dan [vowel] menciptakan suku kata terbuka yang mudah dibaca dan diingat.',
                 tipBridgeTitle: 'Vokal Penghubung',
                 tipBridgeDesc: 'Sisipkan [vowel] di antara dua keyword atau konsonan agar lidah tidak "tersandung" saat diucapkan.',
                 tipClusterTitle: 'Hindari Gugus Berat',
-                tipClusterDesc: 'Batasi penggunaan huruf seperti q, x, atau tumpukan konsonan berurutan untuk merek global.'
+                tipClusterDesc: 'Batasi huruf seperti k, q, x, z atau tumpukan konsonan berurutan untuk merek global.'
             },
             es: {
                 presetsLabel: 'Patrones Pronunciables:',
-                presetRecBadge: 'Recomendado',
-                presetAppliedMsg: '✓ Patrón aplicado',
-                softConsLabel: 'Consonantes Suaves (sin q, x, z)',
-                softConsTitle: 'Excluye letras pesadas (q, x, z) de [consonant] para lograr nombres más fluidos',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Extensión Silábica · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Marca Corta · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Prefijo Silábico · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Ritmo Fluido · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Cierre Firme · [any] + [vowel] + [consonant]',
-                presetNatural3Title: 'Mezcla Natural de 3',
-                presetNatural3Sub: 'Puente Vocálico · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Haz clic para insertar en el cursor · Ejemplos en vivo con tu palabra clave',
+                presetRecBadge: '★ Recomendado',
+                presetAppliedMsg: '✓ Patrón añadido',
+                softConsLabel: 'Consonantes Suaves (sin k, q, x, z)',
+                softConsTitle: 'Excluye letras pesadas (k, q, x, z) de [consonant] para lograr nombres más fluidos',
+                presetAnyCvTitle: 'Keyword + Cierre',
+                presetAnyCvSub: 'Sufijo fluido estilo startup',
+                presetCvCvTitle: 'Marca de 4 Letras',
+                presetCvCvSub: 'Nombre corto y fácil de recordar',
+                presetCvAnyTitle: 'Prefijo + Keyword',
+                presetCvAnySub: 'Inicio breve y pegadizo',
+                presetCvcVTitle: 'Ritmo Marcado',
+                presetCvcVSub: 'Flujo ágil con o sin guion',
+                presetAnyVcTitle: 'Keyword + Final Firme',
+                presetAnyVcSub: 'Cierre moderno vocal-consonante',
+                presetNatural3Title: 'Puente de 2 Palabras',
+                presetNatural3Sub: 'Une 2 keywords con suavidad',
                 pronounceTipsTitle: 'Micro-Guía de Pronunciación',
                 tipRuleTitle: 'Regla Básica',
                 tipRuleDesc: 'Alternar [consonant] y [vowel] crea sílabas abiertas fáciles de leer y recordar.',
                 tipBridgeTitle: 'Vocal Puente',
                 tipBridgeDesc: 'Inserta [vowel] entre dos palabras clave o consonantes para evitar tropiezos al pronunciar.',
                 tipClusterTitle: 'Evita Grupos Pesados',
-                tipClusterDesc: 'Limita letras como q, x o consonantes seguidas si buscas una marca global.'
+                tipClusterDesc: 'Limita letras como k, q, x, z o consonantes seguidas si buscas una marca global.'
             },
             pt: {
                 presetsLabel: 'Padrões Pronunciáveis:',
-                presetRecBadge: 'Recomendado',
-                presetAppliedMsg: '✓ Padrão aplicado',
-                softConsLabel: 'Consoantes Suaves (sem q, x, z)',
-                softConsTitle: 'Exclui letras pesadas (q, x, z) de [consonant] para nomes mais naturais',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Extensão Silábica · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Marca Curta · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Prefixo Silábico · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Ritmo Fluido · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Final Firme · [any] + [vowel] + [consonant]',
-                presetNatural3Title: 'Combinação Natural',
-                presetNatural3Sub: 'Ponte Vocálica · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Clique para inserir no cursor · Exemplos ao vivo com sua palavra-chave',
+                presetRecBadge: '★ Recomendado',
+                presetAppliedMsg: '✓ Padrão adicionado',
+                softConsLabel: 'Consoantes Suaves (sem k, q, x, z)',
+                softConsTitle: 'Exclui letras pesadas (k, q, x, z) de [consonant] para nomes mais naturais',
+                presetAnyCvTitle: 'Keyword + Sufixo',
+                presetAnyCvSub: 'Final natural estilo startup',
+                presetCvCvTitle: 'Marca de 4 Letras',
+                presetCvCvSub: 'Nome curto, único e memorável',
+                presetCvAnyTitle: 'Prefixo + Keyword',
+                presetCvAnySub: 'Abertura curta e cativante',
+                presetCvcVTitle: 'Ritmo Marcado',
+                presetCvcVSub: 'Sonoridade ágil com ou sem hífen',
+                presetAnyVcTitle: 'Keyword + Final Firme',
+                presetAnyVcSub: 'Encerramento moderno e direto',
+                presetNatural3Title: 'Ponte de 2 Palavras',
+                presetNatural3Sub: 'Liga 2 keywords com fluidez',
                 pronounceTipsTitle: 'Micro-Dicas de Pronúncia',
                 tipRuleTitle: 'Regra Básica',
                 tipRuleDesc: 'Alternar [consonant] e [vowel] cria sílabas abertas fáceis de ler e memorizar.',
                 tipBridgeTitle: 'Vogal de Ligação',
                 tipBridgeDesc: 'Insira [vowel] entre duas palavras-chave ou consoantes para suavizar a pronúncia.',
                 tipClusterTitle: 'Evite Encontros Pesados',
-                tipClusterDesc: 'Limite letras como q, x ou consoantes seguidas para marcas globais.'
+                tipClusterDesc: 'Limite letras como k, q, x, z ou consoantes seguidas para marcas globais.'
             },
             fr: {
                 presetsLabel: 'Modèles Prononçables :',
-                presetRecBadge: 'Recommandé',
-                presetAppliedMsg: '✓ Modèle appliqué',
-                softConsLabel: 'Consonnes Douces (sans q, x, z)',
-                softConsTitle: 'Exclut les lettres lourdes (q, x, z) de [consonant] pour des noms plus fluides',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Extension Syllabique · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Marque Courte · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Préfixe Syllabique · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Rythme Fluide · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Terminaison Nette · [any] + [vowel] + [consonant]',
-                presetNatural3Title: 'Fusion Naturelle à 3',
-                presetNatural3Sub: 'Voyelle de Liaison · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Cliquez pour insérer au curseur · Exemples en direct avec votre mot-clé',
+                presetRecBadge: '★ Recommandé',
+                presetAppliedMsg: '✓ Modèle ajouté',
+                softConsLabel: 'Consonnes Douces (sans k, q, x, z)',
+                softConsTitle: 'Exclut les lettres lourdes (k, q, x, z) de [consonant] pour des noms plus fluides',
+                presetAnyCvTitle: 'Mot-clé + Finale',
+                presetAnyCvSub: 'Terminaison fluide type startup',
+                presetCvCvTitle: 'Marque 4 Lettres',
+                presetCvCvSub: 'Nom court et facile à retenir',
+                presetCvAnyTitle: 'Préfixe + Mot-clé',
+                presetCvAnySub: 'Ouverture courte et accrocheuse',
+                presetCvcVTitle: 'Rythme Cadencé',
+                presetCvcVSub: 'Sonorité vive avec/sans tiret',
+                presetAnyVcTitle: 'Mot-clé + Fin Nette',
+                presetAnyVcSub: 'Finale moderne voyelle-consonne',
+                presetNatural3Title: 'Lien à 2 Mots',
+                presetNatural3Sub: 'Relie 2 mots-clés en douceur',
                 pronounceTipsTitle: 'Micro-Conseils de Prononciation',
                 tipRuleTitle: 'Règle de Base',
                 tipRuleDesc: 'Alterner [consonant] et [vowel] crée des syllabes ouvertes faciles à lire et retenir.',
                 tipBridgeTitle: 'Voyelle de Liaison',
                 tipBridgeDesc: 'Insérez [vowel] entre deux mots-clés ou consonnes pour une prononciation fluide.',
                 tipClusterTitle: 'Évitez les Groupes Lourds',
-                tipClusterDesc: 'Limitez les lettres comme q, x ou les suites de consonnes pour une marque mondiale.'
+                tipClusterDesc: 'Limitez les lettres comme k, q, x, z ou les suites de consonnes pour une marque mondiale.'
             },
             de: {
                 presetsLabel: 'Aussprechbare Vorlagen:',
-                presetRecBadge: 'Empfohlen',
-                presetAppliedMsg: '✓ Vorlage angewendet',
-                softConsLabel: 'Weiche Konsonanten (ohne q, x, z)',
-                softConsTitle: 'Schließt harte Buchstaben (q, x, z) aus [consonant] für natürlichere Namen aus',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Silben-Erweiterung · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Kurz & Markenstark · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Silben-Präfix · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Fließender Rhythmus · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Klare Endung · [any] + [vowel] + [consonant]',
-                presetNatural3Title: '3-fach Natürlicher Mix',
-                presetNatural3Sub: 'Vokalbrücke · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Klicken zum Einfügen am Cursor · Live-Beispiele mit Ihrem Keyword',
+                presetRecBadge: '★ Empfohlen',
+                presetAppliedMsg: '✓ Vorlage eingefügt',
+                softConsLabel: 'Weiche Konsonanten (ohne k, q, x, z)',
+                softConsTitle: 'Schließt harte Buchstaben (k, q, x, z) aus [consonant] für natürlichere Namen aus',
+                presetAnyCvTitle: 'Keyword + Endung',
+                presetAnyCvSub: 'Flüssige Startup-Endung',
+                presetCvCvTitle: '4-Buchstaben-Marke',
+                presetCvCvSub: 'Kurz, einprägsam, ohne Keyword',
+                presetCvAnyTitle: 'Präfix + Keyword',
+                presetCvAnySub: 'Eingängiger 2-Zeichen-Start',
+                presetCvcVTitle: 'Betonter Rhythmus',
+                presetCvcVSub: 'Klarer Klang mit/ohne Bindestrich',
+                presetAnyVcTitle: 'Keyword + Klare Endung',
+                presetAnyVcSub: 'Moderner Vokal-Konsonant-Schluss',
+                presetNatural3Title: '2-Wort-Vokalbrücke',
+                presetNatural3Sub: 'Verbindet 2 Keywords geschmeidig',
                 pronounceTipsTitle: 'Aussprache-Kurztipps',
                 tipRuleTitle: 'Grundregel',
                 tipRuleDesc: 'Der Wechsel von [consonant] und [vowel] erzeugt offene, leicht merkbare Silben.',
                 tipBridgeTitle: 'Verbindungsvokal',
                 tipBridgeDesc: 'Fügen Sie [vowel] zwischen zwei Keywords oder Konsonanten für flüssige Aussprache ein.',
                 tipClusterTitle: 'Schwere Cluster meiden',
-                tipClusterDesc: 'Begrenzen Sie Buchstaben wie q, x oder Konsonantenhäufungen für globale Marken.'
+                tipClusterDesc: 'Begrenzen Sie Buchstaben wie k, q, x, z oder Konsonantenhäufungen für globale Marken.'
             },
             ru: {
                 presetsLabel: 'Благозвучные шаблоны:',
-                presetRecBadge: 'Рекомендуем',
-                presetAppliedMsg: '✓ Шаблон применен',
-                softConsLabel: 'Мягкие согласные (без q, x, z)',
-                softConsTitle: 'Исключает редкие буквы (q, x, z) из [consonant] для более плавного звучания',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: 'Слоговое окончание · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: 'Короткий бренд · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: 'Слоговой префикс · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'Плавный ритм · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: 'Четкий финал · [any] + [vowel] + [consonant]',
-                presetNatural3Title: 'Естественное 3-сочетание',
-                presetNatural3Sub: 'Гласная связка · [any] + [vowel] + [secondary]',
+                presetsHelper: 'Нажмите, чтобы вставить в позицию курсора · Примеры с вашим словом',
+                presetRecBadge: '★ Рекомендуем',
+                presetAppliedMsg: '✓ Шаблон добавлен',
+                softConsLabel: 'Мягкие согласные (без k, q, x, z)',
+                softConsTitle: 'Исключает резкие и редкие буквы (k, q, x, z) из [consonant] для более плавного звучания',
+                presetAnyCvTitle: 'Слово + Окончание',
+                presetAnyCvSub: 'Плавный стартап-суффикс',
+                presetCvCvTitle: 'Короткий бренд (4 б.)',
+                presetCvCvSub: 'Лаконичное и запоминающееся имя',
+                presetCvAnyTitle: 'Префикс + Слово',
+                presetCvAnySub: 'Звучное короткое начало',
+                presetCvcVTitle: 'Ритм с паузой',
+                presetCvcVSub: 'Четкий ритм с дефисом или без',
+                presetAnyVcTitle: 'Слово + Четкий финал',
+                presetAnyVcSub: 'Современное окончание',
+                presetNatural3Title: 'Связка 2 слов',
+                presetNatural3Sub: 'Мягкий переход между словами',
                 pronounceTipsTitle: 'Краткие советы по звучанию',
                 tipRuleTitle: 'Базовое правило',
                 tipRuleDesc: 'Чередование [consonant] и [vowel] создает открытые слоги, которые легко читать и запоминать.',
                 tipBridgeTitle: 'Соединительная гласная',
                 tipBridgeDesc: 'Вставляйте [vowel] между словами или согласными, чтобы имя звучало плавно.',
                 tipClusterTitle: 'Избегайте сложных сочетаний',
-                tipClusterDesc: 'Ограничьте буквы q, x и скопления согласных для международных брендов.'
+                tipClusterDesc: 'Ограничьте буквы k, q, x, z и скопления согласных для международных брендов.'
             },
             ja: {
                 presetsLabel: '発音しやすいプリセット:',
-                presetRecBadge: 'おすすめ',
-                presetAppliedMsg: '✓ 適用しました',
-                softConsLabel: 'ソフト子音 (q, x, z 除外)',
-                softConsTitle: '[consonant] から q, x, z を除外して自然なブランド名を生成します',
-                presetAnyCvTitle: 'Any Keyword + CV',
-                presetAnyCvSub: '音節拡張 · [any] + [consonant] + [vowel]',
-                presetCvCvTitle: 'CV-CV',
-                presetCvCvSub: '短いブランド名 · [consonant] + [vowel] + [consonant] + [vowel]',
-                presetCvAnyTitle: 'CV + Any Keyword',
-                presetCvAnySub: '音節プレフィックス · [consonant] + [vowel] + [any]',
-                presetCvcVTitle: 'CVC-V',
-                presetCvcVSub: 'なめらかなリズム · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
-                presetAnyVcTitle: 'Any Keyword + V + C',
-                presetAnyVcSub: '明快な語尾 · [any] + [vowel] + [consonant]',
-                presetNatural3Title: '3語ナチュラル結合',
-                presetNatural3Sub: '母音ブリッジ · [any] + [vowel] + [secondary]',
+                presetsHelper: 'クリックでカーソル位置に挿入 · あなたのキーワードで例を表示',
+                presetRecBadge: '★ おすすめ',
+                presetAppliedMsg: '✓ 挿入しました',
+                softConsLabel: 'ソフト子音 (k, q, x, z 除外)',
+                softConsTitle: '[consonant] から k, q, x, z を除外して自然なブランド名を生成します',
+                presetAnyCvTitle: '語 + 語尾アレンジ',
+                presetAnyCvSub: '自然なスタートアップ風語尾',
+                presetCvCvTitle: '4文字ブランド名',
+                presetCvCvSub: '短くて覚えやすい造語スタイル',
+                presetCvAnyTitle: '接頭語 + キーワード',
+                presetCvAnySub: '耳に残る2文字のオープニング',
+                presetCvcVTitle: 'メリハリのあるリズム',
+                presetCvcVSub: 'ハイフン有無でリズム感を演出',
+                presetAnyVcTitle: '語 + シャープな結び',
+                presetAnyVcSub: 'モダンで歯切れの良い語尾',
+                presetNatural3Title: '2語を母音でつなぐ',
+                presetNatural3Sub: '2つのキーワードを滑らかに結合',
                 pronounceTipsTitle: '発音しやすいネーミングのヒント',
                 tipRuleTitle: '基本ルール',
                 tipRuleDesc: '[consonant] と [vowel] を交互に並べると、読みやすく覚えやすい開音節になります。',
                 tipBridgeTitle: 'つなぎの母音',
                 tipBridgeDesc: '2つのキーワードや子音の間に [vowel] を挟むと、滑らかに発音できます。',
                 tipClusterTitle: '重い子音連続を避ける',
-                tipClusterDesc: 'グローバルブランドを目指す場合は q, x や子音の連続を控えめにしましょう。'
+                tipClusterDesc: 'グローバルブランドを目指す場合は k, q, x, z や子音の連続を控えめにしましょう。'
             }
         };
         Object.keys(pronounceablePresetsI18n).forEach(function(langKey) {
@@ -4094,6 +4134,7 @@
             document.getElementById('uiClearBtn').innerText = t.clearBtn;
             document.getElementById('uiClickToAdd').innerText = t.clickToAdd;
             document.getElementById('formulaInput').value = t.defaultFormula;
+            resetFormulaCursorTracking();
             document.getElementById('btnKw1').innerText = t.btnKw1Text;
             document.getElementById('btnKw2').innerText = t.btnKw2Text;
             document.getElementById('btnKw3').innerText = t.btnKw3Text;
@@ -4102,6 +4143,7 @@
             document.getElementById('btnCons').innerText = t.btnConsText;
             const presetLabelMap = {
                 uiPresetsLabel: t.presetsLabel,
+                uiPresetsHelper: t.presetsHelper,
                 uiPresetRecBadge: t.presetRecBadge,
                 uiSoftConsLabel: t.softConsLabel,
                 uiPresetAnyCvTitle: t.presetAnyCvTitle,
@@ -4598,6 +4640,7 @@
             const keyword2 = sanitizeKeywordToken(rawKeyword2);
             const keyword3 = sanitizeKeywordToken(rawKeyword3);
             const activeKeywords = [keyword, keyword2, keyword3].filter(Boolean);
+            updatePresetLiveExamples(keyword, keyword2);
 
             const extensions = document.getElementById('extInput').value.split(',').map(e => e.trim().toLowerCase()).filter(e => e);
             const formula = document.getElementById('formulaInput').value.trim();
@@ -6031,6 +6074,7 @@
             if (permNoDashEl) permNoDashEl.checked = true;
             const softConsEl = document.getElementById('softConsonantsCheckbox');
             if (softConsEl) softConsEl.checked = true;
+            resetFormulaCursorTracking();
             syncActivePresetUi();
 
             setActiveGenerateSlot('basic');
@@ -6136,6 +6180,90 @@
             'natural-3': '[any] + [vowel] + [secondary]'
         };
         let presetBadgeTimer = null;
+        let formulaHasCursorPlacement = false;
+        let formulaSelectionStart = null;
+        let formulaSelectionEnd = null;
+
+        function recordFormulaSelection(el) {
+            if (!el) return;
+            formulaHasCursorPlacement = true;
+            if (typeof el.selectionStart === 'number' && typeof el.selectionEnd === 'number') {
+                formulaSelectionStart = el.selectionStart;
+                formulaSelectionEnd = el.selectionEnd;
+            }
+        }
+
+        function resetFormulaCursorTracking() {
+            formulaHasCursorPlacement = false;
+            formulaSelectionStart = null;
+            formulaSelectionEnd = null;
+        }
+
+        function insertFormulaSnippetAtCursor(input, snippet) {
+            const val = input.value || '';
+            let start = val.length;
+            let end = val.length;
+
+            if (formulaHasCursorPlacement) {
+                const rawStart = typeof input.selectionStart === 'number' ? input.selectionStart : formulaSelectionStart;
+                const rawEnd = typeof input.selectionEnd === 'number' ? input.selectionEnd : formulaSelectionEnd;
+                if (typeof rawStart === 'number') {
+                    start = Math.max(0, Math.min(val.length, rawStart));
+                    end = typeof rawEnd === 'number'
+                        ? Math.max(start, Math.min(val.length, rawEnd))
+                        : start;
+                }
+            }
+
+            const before = val.slice(0, start);
+            const after = val.slice(end);
+            const beforeTrimEnd = before.replace(/\s+$/, '');
+            const afterTrimStart = after.replace(/^\s+/, '');
+
+            let prefix = '';
+            if (beforeTrimEnd.length > 0) {
+                prefix = beforeTrimEnd.endsWith('+') ? (beforeTrimEnd + ' ') : (beforeTrimEnd + ' + ');
+            }
+
+            let suffix = '';
+            if (afterTrimStart.length > 0) {
+                suffix = afterTrimStart.startsWith('+') ? (' ' + afterTrimStart) : (' + ' + afterTrimStart);
+            }
+
+            input.value = prefix + snippet + suffix;
+            const nextCaret = prefix.length + snippet.length;
+            formulaHasCursorPlacement = true;
+            formulaSelectionStart = nextCaret;
+            formulaSelectionEnd = nextCaret;
+
+            if (typeof input.focus === 'function') {
+                try {
+                    input.focus({ preventScroll: true });
+                } catch {
+                    input.focus();
+                }
+            }
+            if (typeof input.setSelectionRange === 'function') {
+                input.setSelectionRange(nextCaret, nextCaret);
+            }
+        }
+
+        function updatePresetLiveExamples(kw, kw2) {
+            const base = (kw || 'biz').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8) || 'biz';
+            const sec = (kw2 || 'pro').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 6) || 'pro';
+            const sampleMap = {
+                uiPresetAnyCvSample: '→ ' + base + 'ra',
+                uiPresetCvCvSample: '→ mira',
+                uiPresetCvAnySample: '→ ra' + base,
+                uiPresetCvcVSample: '→ bar-a',
+                uiPresetAnyVcSample: '→ ' + base + 'al',
+                uiPresetNatural3Sample: '→ ' + base + 'a' + sec
+            };
+            Object.entries(sampleMap).forEach(([elId, val]) => {
+                const el = document.getElementById(elId);
+                if (el) el.innerText = val;
+            });
+        }
 
         function syncActivePresetUi(explicitPresetId) {
             const formulaEl = document.getElementById('formulaInput');
@@ -6146,13 +6274,12 @@
                 const targetFormula = PATTERN_PRESETS[pid] || '';
                 const isActive = explicitPresetId ? pid === explicitPresetId : (Boolean(currentFormula) && currentFormula === targetFormula);
                 btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-                btn.classList.toggle('bg-white/25', isActive);
-                btn.classList.toggle('border-amber-300', isActive);
                 btn.classList.toggle('ring-2', isActive);
-                btn.classList.toggle('ring-amber-300/80', isActive);
-                btn.classList.toggle('shadow-md', isActive);
-                btn.classList.toggle('bg-white/10', !isActive);
-                btn.classList.toggle('border-white/20', !isActive);
+                btn.classList.toggle('ring-white', isActive);
+                btn.classList.toggle('ring-offset-1', isActive);
+                btn.classList.toggle('ring-offset-[#131354]', isActive);
+                btn.classList.toggle('shadow-lg', isActive);
+                btn.classList.toggle('brightness-110', isActive);
             });
         }
 
@@ -6161,7 +6288,7 @@
             const input = document.getElementById('formulaInput');
             if (!formula || !input) return;
             setActiveGenerateSlot('pattern');
-            input.value = formula;
+            insertFormulaSnippetAtCursor(input, formula);
             syncActivePresetUi(presetId);
 
             const badge = document.getElementById('presetAppliedBadge');
@@ -6187,6 +6314,9 @@
             } else {
                 input.value = token;
             }
+            formulaHasCursorPlacement = true;
+            formulaSelectionStart = input.value.length;
+            formulaSelectionEnd = input.value.length;
             syncActivePresetUi();
             generateDomains();
         }
@@ -6250,6 +6380,7 @@
         function clearFormula() {
             setActiveGenerateSlot('pattern');
             document.getElementById('formulaInput').value = '';
+            resetFormulaCursorTracking();
             syncActivePresetUi();
             generateDomains();
         }
