@@ -811,12 +811,53 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
   };
 }
 
+async function backfillMissingSld(db) {
+  await db.prepare(`
+    UPDATE available_domains
+    SET sld = substr(domain, 1, length(domain) - length(extension))
+    WHERE (sld IS NULL OR trim(sld) = '')
+      AND extension LIKE '.%'
+      AND length(domain) > length(extension)
+      AND lower(substr(domain, length(domain) - length(extension) + 1)) = lower(extension)
+  `).run();
+
+  const remainingStmt = db.prepare(`
+    SELECT domain, extension
+    FROM available_domains
+    WHERE sld IS NULL OR trim(sld) = ''
+    LIMIT 500
+  `);
+  if (typeof remainingStmt.all === 'function') {
+    const remaining = await remainingStmt.all();
+    const rows = Array.isArray(remaining && remaining.results) ? remaining.results : [];
+    if (rows.length > 0 && typeof db.batch === 'function') {
+      const updates = [];
+      for (let i = 0; i < rows.length; i++) {
+        const row = rows[i];
+        const normalized = normalizeDomain(row && row.domain);
+        if (!normalized) continue;
+        const { sld, ext } = splitDomainSldAndExt(normalized, row && row.extension);
+        if (sld) {
+          updates.push(
+            db.prepare('UPDATE available_domains SET sld = ?1, extension = ?2 WHERE domain = ?3')
+              .bind(sld, ext || extractExtension(normalized), normalized)
+          );
+        }
+      }
+      if (updates.length > 0) {
+        await db.batch(updates);
+      }
+    }
+  }
+}
+
 async function ensureAvailableDomainsSchema(db) {
   if (!schemaReadyPromise) {
     schemaReadyPromise = (async () => {
       await db.prepare(`
         CREATE TABLE IF NOT EXISTS available_domains (
           domain TEXT PRIMARY KEY,
+          sld TEXT,
           extension TEXT NOT NULL,
           char_length INTEGER NOT NULL,
           lang TEXT NOT NULL DEFAULT 'en',
@@ -832,7 +873,8 @@ async function ensureAvailableDomainsSchema(db) {
           emd_pmd_score INTEGER,
           emd_pmd_match_type TEXT,
           overall_heuristic_score INTEGER,
-          scored_at INTEGER
+          scored_at INTEGER,
+          tags TEXT
         )
       `).run();
 
@@ -842,6 +884,9 @@ async function ensureAvailableDomainsSchema(db) {
         const cols = Array.isArray(info && info.results) ? info.results : [];
         const colNames = new Set(cols.map((col) => col && col.name).filter(Boolean));
 
+        if (!colNames.has('sld')) {
+          await db.prepare('ALTER TABLE available_domains ADD COLUMN sld TEXT').run();
+        }
         if (!colNames.has('lang')) {
           await db.prepare("ALTER TABLE available_domains ADD COLUMN lang TEXT NOT NULL DEFAULT 'en'").run();
         }
@@ -853,6 +898,7 @@ async function ensureAvailableDomainsSchema(db) {
               db.prepare(`
                 CREATE TABLE IF NOT EXISTS available_domains_migrated (
                   domain TEXT PRIMARY KEY,
+                  sld TEXT,
                   extension TEXT NOT NULL,
                   char_length INTEGER NOT NULL,
                   lang TEXT NOT NULL DEFAULT 'en',
@@ -868,7 +914,8 @@ async function ensureAvailableDomainsSchema(db) {
                   emd_pmd_score INTEGER,
                   emd_pmd_match_type TEXT,
                   overall_heuristic_score INTEGER,
-                  scored_at INTEGER
+                  scored_at INTEGER,
+                  tags TEXT
                 )
               `),
               db.prepare(`
@@ -882,7 +929,7 @@ async function ensureAvailableDomainsSchema(db) {
               db.prepare('ALTER TABLE available_domains_migrated RENAME TO available_domains')
             ]);
             colNames.clear();
-            ['domain', 'extension', 'char_length', 'lang', 'check_method', 'check_source', 'checked_at', 'emd_pmd_match_type', ...SCORE_COLUMNS]
+            ['domain', 'sld', 'extension', 'char_length', 'lang', 'check_method', 'check_source', 'checked_at', 'emd_pmd_match_type', 'tags', ...SCORE_COLUMNS]
               .forEach((name) => colNames.add(name));
           }
         }
@@ -894,12 +941,19 @@ async function ensureAvailableDomainsSchema(db) {
         if (!colNames.has('emd_pmd_match_type')) {
           await db.prepare('ALTER TABLE available_domains ADD COLUMN emd_pmd_match_type TEXT').run();
         }
+        if (!colNames.has('tags')) {
+          await db.prepare('ALTER TABLE available_domains ADD COLUMN tags TEXT').run();
+        }
       }
 
       await db.batch([
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_checked_at
           ON available_domains (checked_at DESC)
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_sld
+          ON available_domains (sld, extension, checked_at DESC)
         `),
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_extension
@@ -918,6 +972,8 @@ async function ensureAvailableDomainsSchema(db) {
           ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC)
         `)
       ]);
+
+      await backfillMissingSld(db);
     })().catch((err) => {
       schemaReadyPromise = null;
       throw err;
@@ -964,9 +1020,10 @@ export async function onRequestPost(context) {
     );
   }
 
-  const extension = extractExtension(domain);
-  if (!extension) {
-    return jsonResponse({ ok: false, logged: false, error: 'Domain must include a valid extension.' }, 400);
+  const { sld, ext: parsedExtension } = splitDomainSldAndExt(domain);
+  const extension = parsedExtension || extractExtension(domain);
+  if (!sld || !extension) {
+    return jsonResponse({ ok: false, logged: false, error: 'Domain must include a valid SLD and extension.' }, 400);
   }
 
   const charLength = domain.length;
@@ -1017,6 +1074,7 @@ export async function onRequestPost(context) {
     await env.DB.prepare(`
       INSERT INTO available_domains (
         domain,
+        sld,
         extension,
         char_length,
         lang,
@@ -1033,8 +1091,9 @@ export async function onRequestPost(context) {
         emd_pmd_match_type,
         overall_heuristic_score,
         scored_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17)
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18)
       ON CONFLICT(domain) DO UPDATE SET
+        sld = excluded.sld,
         extension = excluded.extension,
         char_length = excluded.char_length,
         lang = excluded.lang,
@@ -1054,6 +1113,7 @@ export async function onRequestPost(context) {
     `)
       .bind(
         domain,
+        sld,
         extension,
         charLength,
         lang,
@@ -1077,6 +1137,7 @@ export async function onRequestPost(context) {
       ok: true,
       logged: true,
       domain,
+      sld,
       extension,
       charLength,
       lang,

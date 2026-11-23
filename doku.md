@@ -209,7 +209,7 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 ### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
 - **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
-- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `emd_pmd_score`, `overall_heuristic_score`, `scored_at`) bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 5 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, dan `migrations/0003_add_emd_pmd_score.sql`.
+- **Auto-Bootstrap & Auto-Migrasi Schema**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT` (dibiarkan `NULL` untuk tahap tagging berikutnya), `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer (`pronunciation_comfort_score`, `brandability_score`, `structure_length_score`, `extension_lang_fit_score`, `character_cleanliness_score`, `niche_clarity_score`, `emd_pmd_score`, `overall_heuristic_score`, `scored_at`) bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, lalu membuat 6 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_sld`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`), serta otomatis melakukan *backfill* kolom `sld` pada baris lama yang masih kosong (`NULL`). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, dan `migrations/0004_add_sld_and_tags.sql`.
 - **Formula Penilaian Otomatis (7 Aspek, Total Bobot = `1.00`) & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, memisahkan SLD secara akurat untuk ekstensi multi-bagian (`.web.id`, `.my.id`, `.co.id`, `.co.uk`, dll.), serta menghitung skor `0–100` yang identik antara klien dan Worker:
   - `pronunciation_comfort_score` (**`0.22`**) — kelancaran pelafalan (*radio test*), penalti gugus/hiatus, akhiran janggal (`/[jq]$/` `-20`, `[^aeiou][vwzx]$` `-10` non-kamus, `-ik/-uk/-ok` `-6` non-Indonesia, serta `-iy/-iw/-uc/-uf`), dan tabrakan 2 konsonan berat (`bk`, `tp`, `qj`, `xz`, dll. `-20`) pada kata rekaan.
   - `brandability_score` (**`0.20`**) — daya ingat, panjang SLD ideal, dan kekhasan merek (bonus merek ciptaan dibatasi bila pelafalan lemah).
@@ -233,9 +233,10 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 #### Skema Tabel & Perintah SQL Cloudflare D1 (`available_domains`)
 ```sql
--- 1. Skema penuh tabel available_domains (17 kolom)
+-- 1. Skema penuh tabel available_domains (19 kolom)
 CREATE TABLE IF NOT EXISTS available_domains (
   domain TEXT PRIMARY KEY,
+  sld TEXT,
   extension TEXT NOT NULL,
   char_length INTEGER NOT NULL,
   lang TEXT NOT NULL DEFAULT 'en',
@@ -251,10 +252,12 @@ CREATE TABLE IF NOT EXISTS available_domains (
   emd_pmd_score INTEGER,
   emd_pmd_match_type TEXT,
   overall_heuristic_score INTEGER,
-  scored_at INTEGER
+  scored_at INTEGER,
+  tags TEXT
 );
 
--- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor (migrations/0001–0003)
+-- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor / sld / tags (migrations/0001–0004)
+ALTER TABLE available_domains ADD COLUMN sld TEXT;
 ALTER TABLE available_domains ADD COLUMN pronunciation_comfort_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN brandability_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN structure_length_score INTEGER;
@@ -265,9 +268,13 @@ ALTER TABLE available_domains ADD COLUMN emd_pmd_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN emd_pmd_match_type TEXT;
 ALTER TABLE available_domains ADD COLUMN overall_heuristic_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN scored_at INTEGER;
+ALTER TABLE available_domains ADD COLUMN tags TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_checked_at
 ON available_domains (checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_sld
+ON available_domains (sld, extension, checked_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_extension
 ON available_domains (extension, checked_at DESC);
@@ -280,6 +287,14 @@ ON available_domains (lang, checked_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
 ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC);
+
+-- Backfill aman sld untuk baris lama yang masih NULL (termasuk .my.id, .web.id)
+UPDATE available_domains
+SET sld = substr(domain, 1, length(domain) - length(extension))
+WHERE (sld IS NULL OR trim(sld) = '')
+  AND extension LIKE '.%'
+  AND length(domain) > length(extension)
+  AND lower(substr(domain, length(domain) - length(extension) + 1)) = lower(extension);
 
 -- 3. Opsional: padatkan baris lama yang masih memakai label panjang menjadi kode 2 huruf
 UPDATE available_domains
