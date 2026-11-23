@@ -3,12 +3,12 @@ const DOMAIN_HOSTNAME_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?
 const SUPPORTED_LANGS = new Set(['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja']);
 
 const MULTI_PART_EXTENSIONS = [
-  '.web.id', '.my.id', '.co.id', '.biz.id', '.or.id', '.ac.id', '.sch.id', '.net.id',
-  '.com.br', '.net.br', '.org.br',
-  '.co.jp', '.ne.jp', '.or.jp', '.ac.jp',
-  '.co.uk', '.org.uk', '.me.uk',
-  '.com.au', '.net.au', '.org.au',
-  '.co.nz', '.com.es', '.org.es', '.com.mx', '.com.sg', '.com.my'
+  '.web.id', '.my.id', '.co.id', '.biz.id', '.or.id', '.ac.id', '.sch.id', '.net.id', '.go.id',
+  '.com.br', '.net.br', '.org.br', '.edu.br',
+  '.co.jp', '.ne.jp', '.or.jp', '.ac.jp', '.go.jp',
+  '.co.uk', '.org.uk', '.me.uk', '.ac.uk', '.gov.uk',
+  '.com.au', '.net.au', '.org.au', '.edu.au',
+  '.co.nz', '.com.es', '.org.es', '.edu.es', '.com.mx', '.org.mx', '.com.ar', '.com.co', '.com.sg', '.com.my'
 ];
 
 const ID_NICHE_STEMS = [
@@ -46,31 +46,75 @@ const ALL_NICHE_STEMS_BY_LANG = [
   ...EXTRA_LANG_NICHE_STEMS
 ];
 
-const CCTLD_FIT_SPECS = {
-  '.id': { base: 84, targetLang: 'id', alignBonus: 10 },
-  '.co.id': { base: 80, targetLang: 'id', alignBonus: 10 },
-  '.biz.id': { base: 80, targetLang: 'id', alignBonus: 10 },
-  '.web.id': { base: 78, targetLang: 'id', alignBonus: 10 },
-  '.my.id': { base: 78, targetLang: 'id', alignBonus: 10 },
-  '.uk': { base: 82, targetLang: 'en', alignBonus: 6 },
-  '.co.uk': { base: 82, targetLang: 'en', alignBonus: 6 },
-  '.us': { base: 82, targetLang: 'en', alignBonus: 6 },
-  '.ca': { base: 82, targetLang: 'en', alignBonus: 6 },
-  '.au': { base: 82, targetLang: 'en', alignBonus: 6 },
-  '.es': { base: 80, targetLang: 'es', alignBonus: 10 },
-  '.com.es': { base: 80, targetLang: 'es', alignBonus: 10 },
-  '.mx': { base: 80, targetLang: 'es', alignBonus: 10 },
-  '.pt': { base: 80, targetLang: 'pt', alignBonus: 10 },
-  '.com.br': { base: 80, targetLang: 'pt', alignBonus: 10 },
-  '.br': { base: 80, targetLang: 'pt', alignBonus: 10 },
-  '.fr': { base: 80, targetLang: 'fr', alignBonus: 10 },
-  '.de': { base: 80, targetLang: 'de', alignBonus: 10 },
-  '.ru': { base: 80, targetLang: 'ru', alignBonus: 10 },
-  '.jp': { base: 80, targetLang: 'ja', alignBonus: 10 },
-  '.co.jp': { base: 80, targetLang: 'ja', alignBonus: 10 }
+const REGIONAL_CCTLD_EXTENSIONS = new Set([
+  '.id', '.ac.id', '.co.id', '.net.id', '.or.id', '.web.id', '.my.id', '.biz.id', '.sch.id', '.go.id',
+  '.us', '.uk', '.co.uk', '.org.uk', '.me.uk', '.ac.uk', '.gov.uk', '.ca', '.au', '.com.au', '.net.au', '.org.au', '.edu.au', '.nz', '.co.nz',
+  '.es', '.com.es', '.org.es', '.edu.es', '.mx', '.com.mx', '.org.mx', '.ar', '.com.ar', '.com.co',
+  '.pt', '.br', '.com.br', '.org.br', '.net.br', '.edu.br',
+  '.fr', '.be', '.ch', '.de', '.at', '.ru', '.su',
+  '.jp', '.co.jp', '.ac.jp', '.go.jp', '.ne.jp', '.or.jp',
+  '.sg', '.com.sg', '.my', '.com.my'
+]);
+
+const GLOBAL_SECONDARY_TLD_BASE = {
+  '.shop': 72, '.store': 72, '.tech': 72, '.cloud': 72,
+  '.site': 70, '.xyz': 70, '.info': 69
 };
 
+const LANG_TLD_FIT_TIERS = {
+  en: {
+    '.com': 98, '.edu': 94, '.gov': 93, '.net': 91, '.org': 88,
+    '.co': 86, '.online': 84, '.io': 82, '.ai': 81, '.app': 80, '.dev': 80, '.biz': 78, '.me': 76,
+    '.us': 74, '.uk': 74, '.co.uk': 74, '.ca': 74, '.au': 74, '.co.nz': 74, '.nz': 74
+  },
+  id: {
+    '.id': 98, '.com': 95, '.ac.id': 92, '.co.id': 90, '.net.id': 87, '.or.id': 85, '.web.id': 83, '.my.id': 81, '.biz.id': 79,
+    '.sch.id': 77, '.go.id': 77, '.net': 76, '.edu': 75, '.org': 74, '.io': 73, '.ai': 72, '.co': 71,
+    '.app': 70, '.dev': 70, '.online': 69, '.biz': 67, '.me': 66
+  },
+  es: {
+    '.com': 97, '.es': 95, '.com.mx': 92, '.mx': 91, '.com.ar': 89, '.ar': 88, '.co': 87, '.com.co': 86, '.com.es': 85,
+    '.net': 84, '.edu.es': 83, '.edu': 83, '.org.es': 82, '.org': 81,
+    '.online': 78, '.io': 77, '.ai': 75, '.app': 75, '.dev': 75, '.biz': 73, '.me': 72
+  },
+  pt: {
+    '.com': 97, '.com.br': 95, '.pt': 93, '.br': 90, '.edu.br': 88, '.edu': 88, '.org.br': 86, '.net.br': 85,
+    '.net': 84, '.org': 82, '.co': 80, '.online': 78, '.io': 77, '.ai': 75, '.app': 75, '.dev': 75, '.biz': 73, '.me': 72
+  },
+  fr: {
+    '.fr': 97, '.com': 95, '.be': 91, '.ch': 89, '.ca': 87,
+    '.net': 85, '.edu': 84, '.org': 83, '.co': 81, '.online': 79, '.io': 78, '.ai': 76, '.app': 76, '.dev': 76, '.biz': 73, '.me': 72
+  },
+  de: {
+    '.de': 98, '.com': 95, '.at': 91, '.ch': 90,
+    '.net': 86, '.edu': 85, '.org': 84, '.co': 81, '.online': 79, '.io': 78, '.ai': 76, '.app': 76, '.dev': 76, '.biz': 73, '.me': 72
+  },
+  ru: {
+    '.ru': 97, '.com': 94, '.su': 89,
+    '.net': 86, '.edu': 84, '.org': 83, '.co': 80, '.online': 78, '.io': 77, '.ai': 75, '.app': 75, '.dev': 75, '.biz': 73, '.me': 72
+  },
+  ja: {
+    '.jp': 97, '.co.jp': 95, '.com': 93, '.ac.jp': 90, '.edu': 90, '.go.jp': 89, '.ne.jp': 88, '.or.jp': 86,
+    '.net': 84, '.org': 82, '.co': 80, '.online': 78, '.io': 77, '.ai': 75, '.app': 75, '.dev': 75, '.biz': 73, '.me': 72
+  }
+};
+
+function computeExtensionLangFitScore(extLower, uiLang) {
+  const tierMap = LANG_TLD_FIT_TIERS[uiLang] || LANG_TLD_FIT_TIERS.en;
+  if (Object.prototype.hasOwnProperty.call(tierMap, extLower)) {
+    return tierMap[extLower];
+  }
+  if (Object.prototype.hasOwnProperty.call(GLOBAL_SECONDARY_TLD_BASE, extLower)) {
+    return uiLang === 'en' ? GLOBAL_SECONDARY_TLD_BASE[extLower] : GLOBAL_SECONDARY_TLD_BASE[extLower] - 6;
+  }
+  if (REGIONAL_CCTLD_EXTENSIONS.has(extLower) || /\.[a-z]{2}$/.test(extLower)) {
+    return uiLang === 'en' ? 58 : 56;
+  }
+  return uiLang === 'en' ? 65 : 61;
+}
+
 const SCORE_COLUMNS = [
+  'pronunciation_comfort_score',
   'brandability_score',
   'structure_length_score',
   'extension_lang_fit_score',
@@ -194,13 +238,19 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
   const digitsCount = (sld.match(/[0-9]/g) || []).length;
   const hyphenCount = (sld.match(/-/g) || []).length;
   const isVowelChar = (ch) => ch === 'a' || ch === 'e' || ch === 'i' || ch === 'o' || ch === 'u';
+  const stemAnalysis = analyzeSldStemsAndLang(sld);
+  const extLower = ext.toLowerCase();
+  const isIdContext = stemAnalysis.detectedLang === 'id' ||
+    ['.id', '.co.id', '.biz.id', '.web.id', '.my.id'].includes(extLower);
 
-  // 1. Brandability Score (0-100): phonetic pronouncability & rhythm on alphaOnly (no digit/hyphen double penalty)
-  let brandability = 60;
+  const isKnownStem = stemAnalysis.exactStemHits >= 1;
+
+  // 1. Pronunciation Comfort Score (0-100): dedicated "radio test" smoothness, vowel-consonant flow & phonetic spelling clarity
+  let pronunciationComfort = 60;
   if (alphaOnly.length === 0) {
-    brandability = 35;
+    pronunciationComfort = 28;
   } else if (alphaOnly.length === 1) {
-    brandability = 55;
+    pronunciationComfort = 54;
   } else {
     let vowelCount = 0;
     let yCount = 0;
@@ -234,42 +284,157 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
 
     const effectiveVowels = vowelCount + yCount * 0.5;
     const vRatio = effectiveVowels / alphaOnly.length;
-    if (vRatio >= 0.25 && vRatio <= 0.58) {
-      brandability += 18;
-    } else if ((vRatio >= 0.15 && vRatio < 0.25) || (vRatio > 0.58 && vRatio <= 0.72)) {
-      brandability += 8;
+    if (vRatio >= 0.30 && vRatio <= 0.56) {
+      pronunciationComfort += maxVowelRun >= 2 ? 14 : 18;
+    } else if ((vRatio >= 0.20 && vRatio < 0.30) || (vRatio > 0.56 && vRatio <= 0.68)) {
+      pronunciationComfort += 9;
     } else if (vowelCount === 0 && yCount === 0) {
-      brandability -= alphaOnly.length <= 3 ? 10 : 26;
+      pronunciationComfort -= alphaOnly.length <= 3 ? 12 : 30;
     } else {
-      brandability -= 10;
+      pronunciationComfort -= 10;
     }
 
     if (maxConsRun <= 2) {
-      brandability += 10;
+      pronunciationComfort += maxVowelRun >= 2 ? 8 : 10;
     } else if (maxConsRun === 3) {
-      brandability -= 6;
+      pronunciationComfort -= 8;
     } else {
-      brandability -= 18;
+      pronunciationComfort -= 22;
     }
 
-    if (maxVowelRun >= 3) brandability -= 10;
+    if (maxVowelRun >= 3) {
+      pronunciationComfort -= 18;
+    }
 
     const transitionRatio = transitions / Math.max(1, alphaOnly.length - 1);
-    if (transitionRatio >= 0.55) brandability += 10;
-    else if (transitionRatio >= 0.35) brandability += 4;
+    if (maxVowelRun === 1) {
+      if (transitionRatio >= 0.62) {
+        pronunciationComfort += 12;
+      } else if (transitionRatio >= 0.42) {
+        pronunciationComfort += 6;
+      } else if (transitionRatio < 0.28) {
+        pronunciationComfort -= 8;
+      }
+    } else if (transitionRatio < 0.32) {
+      pronunciationComfort -= 6;
+    }
 
+    // Vowel hiatus & unnatural diphthong checks (e.g., souj -> ouj, soik -> oi + k)
+    if (!isKnownStem) {
+      if (/(aa|ii|uu)/.test(alphaOnly)) {
+        pronunciationComfort -= 14;
+      }
+      if (/(oi|oy|eu|iu|uo|oe|ao|eo|ae|ui)/.test(alphaOnly)) {
+        pronunciationComfort -= 12;
+      } else if (maxVowelRun === 2) {
+        pronunciationComfort -= 4;
+      }
+      if (/[aeiou]{2}[jkqptbdgcvwxz](?:$|[bcdfghjklmnpqrstvwxyz])/.test(alphaOnly)) {
+        pronunciationComfort -= 16;
+      }
+    } else if (/(aa|ii|uu)/.test(alphaOnly)) {
+      pronunciationComfort -= 8;
+    }
+
+    // Abrupt / tongue-stopping word endings & awkward orthography
+    if (/[jq]$/.test(alphaOnly)) {
+      pronunciationComfort -= 20;
+    } else if (!isKnownStem && /[vwzx]$/.test(alphaOnly)) {
+      pronunciationComfort -= 10;
+    }
+    if (!isIdContext && !isKnownStem && /[iuo]k$/.test(alphaOnly)) {
+      pronunciationComfort -= 6;
+    }
+
+    // Heavy/ambiguous phonetic letters
     const qxzCount = (alphaOnly.match(/[qxz]/g) || []).length;
     const kCount = (alphaOnly.match(/k/g) || []).length;
-    brandability -= Math.min(14, qxzCount * 4);
-    brandability -= Math.min(6, kCount * 2);
+    pronunciationComfort -= Math.min(15, qxzCount * 5);
+    if (!isIdContext && kCount > 0) {
+      pronunciationComfort -= Math.min(6, kCount * 2);
+    }
 
-    if (alphaOnly.length >= 3 && alphaOnly.length <= 8) {
+    if (/(kk|qq|xx|zz)/.test(alphaOnly)) {
+      pronunciationComfort -= 6;
+    }
+
+    // Jarring consonant collisions in coined non-dictionary words
+    if (
+      !isKnownStem &&
+      stemAnalysis.containedStemHits === 0 &&
+      /(?:[jqxz][bcdfghjklmnpqrstvwxyz]|[bcdfghjklmnpqrstvwxyz][jqx]|(?:bk|bp|bt|bv|bz|cb|cd|cf|cg|cm|cn|cp|cv|cz|db|dc|df|dg|dk|dm|dn|dp|dv|dz|fb|fc|fd|fg|fk|fm|fp|fv|fz|gb|gc|gd|gf|gk|gm|gp|gv|gz|hb|hc|hd|hf|hg|hm|hn|hp|hv|hz|kb|kc|kd|kf|kg|km|kp|kv|kz|pb|pc|pd|pf|pg|pk|pv|pz|tb|tc|td|tf|tg|tk|tv|tz|vb|vc|vd|vf|vg|vh|vk|vl|vm|vn|vp|vr|vs|vt|vw|vz))/.test(alphaOnly)
+    ) {
+      pronunciationComfort -= 10;
+    }
+
+    if (isKnownStem && maxConsRun <= 2 && qxzCount === 0) {
+      pronunciationComfort += 6;
+    } else if (
+      /^(?:[^aeiou][aeiou]){2,}[^aeiou]?$/.test(alphaOnly) ||
+      (isIdContext && /(ng|ny)/.test(alphaOnly) && maxConsRun <= 3)
+    ) {
+      pronunciationComfort += 4;
+    }
+  }
+  pronunciationComfort = clampScore(pronunciationComfort, 50);
+
+  // 2. Brandability Score (0-100): memorability, identity distinctiveness & commercial brand punchiness
+  let brandability = 62;
+  if (alphaOnly.length === 0) {
+    brandability = 40;
+  } else if (alphaOnly.length === 1) {
+    brandability = 64;
+  } else {
+    if (alphaOnly.length >= 4 && alphaOnly.length <= 7) {
+      brandability += 14;
+    } else if (alphaOnly.length === 3 || alphaOnly.length === 8) {
+      brandability += 10;
+    } else if (alphaOnly.length === 2) {
       brandability += 8;
+    } else if (alphaOnly.length >= 9 && alphaOnly.length <= 11) {
+      brandability += 3;
+    } else if (alphaOnly.length >= 13) {
+      brandability -= Math.min(14, (alphaOnly.length - 12) * 3);
+    }
+
+    if (stemAnalysis.exactStemHits === 0 && stemAnalysis.containedStemHits <= 1 && alphaOnly.length >= 4 && alphaOnly.length <= 8) {
+      brandability += 10;
+    } else if (stemAnalysis.exactStemHits >= 1 && alphaOnly.length <= 10) {
+      brandability += 8;
+    } else if (stemAnalysis.exactStemHits === 1) {
+      brandability += 4;
+    }
+
+    const uniqueLetters = new Set(alphaOnly.split('')).size;
+    const varietyRatio = uniqueLetters / alphaOnly.length;
+    if (alphaOnly.length >= 4 && varietyRatio >= 0.55) {
+      brandability += 4;
+    } else if (alphaOnly.length >= 4 && varietyRatio < 0.35) {
+      brandability -= 8;
+    }
+
+    if (alphaOnly.length >= 4 && alphaOnly.length <= 9 && /[aeioyrlmn]$/.test(alphaOnly)) {
+      brandability += 5;
+    }
+
+    if (digitsCount === 0 && hyphenCount === 0) {
+      brandability += 6;
+    } else {
+      brandability -= 4;
+    }
+
+    // Radio-test usability safeguard: names that fail spontaneous pronunciation lose brand punch
+    if (pronunciationComfort < 45) {
+      brandability -= 14;
+    } else if (pronunciationComfort < 58) {
+      brandability -= 10;
+    } else if (pronunciationComfort < 66) {
+      brandability -= 5;
     }
   }
   brandability = clampScore(brandability, 50);
 
-  // 2. Structure & Length Score (0-100): focused on SLD length & moderate word-split structure
+  // 3. Structure & Length Score (0-100): focused on SLD length & moderate word-split structure
   let structure = 50;
   if (sldLen === 1) structure = 90;
   else if (sldLen >= 2 && sldLen <= 4) structure = 96;
@@ -294,46 +459,17 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
   }
   structure = clampScore(structure, 50);
 
-  // Analyze SLD stems & language once for both Extension/Lang Fit & Niche Clarity
-  const stemAnalysis = analyzeSldStemsAndLang(sld);
+  // 4. Extension & Language Fit Score (0-100): consistent market-ranked TLD popularity per selected language
+  const extFit = clampScore(computeExtensionLangFitScore(extLower, uiLang), 65);
 
-  // 3. Extension & Language Fit Score (0-100): .com universal top + SLD-first ccTLD alignment
-  const extLower = ext.toLowerCase();
-  let extFit = 68;
-  if (extLower === '.com') extFit = 96;
-  else if (extLower === '.ai') extFit = 90;
-  else if (extLower === '.io') extFit = 88;
-  else if (extLower === '.app' || extLower === '.dev') extFit = 86;
-  else if (extLower === '.net') extFit = 86;
-  else if (extLower === '.org' || extLower === '.co') extFit = 84;
-  else if (CCTLD_FIT_SPECS[extLower]) {
-    const spec = CCTLD_FIT_SPECS[extLower];
-    if (stemAnalysis.detectedLang === spec.targetLang) {
-      extFit = spec.base + spec.alignBonus;
-    } else if (stemAnalysis.detectedLang !== null && stemAnalysis.detectedLang !== spec.targetLang) {
-      extFit = spec.base - 4;
-    } else {
-      // Pure brandable/neutral SLD: gentle UI language fallback without harsh swing
-      extFit = uiLang === spec.targetLang ? spec.base + 4 : spec.base;
-    }
-  } else if (extLower === '.shop' || extLower === '.store' || extLower === '.tech' || extLower === '.cloud') {
-    extFit = 78;
-  } else if (extLower === '.xyz' || extLower === '.online' || extLower === '.site' || extLower === '.me') {
-    extFit = 76;
-  } else if (extLower === '.biz' || extLower === '.info') {
-    extFit = 68;
-  }
-  extFit = clampScore(extFit, 68);
-
-  // 4. Character Cleanliness Score (0-100): primary home for digit/hyphen/repetition penalties
+  // 5. Character Cleanliness Score (0-100): purely digits, hyphens & excessive identical char repetition
   let cleanliness = 100;
   if (digitsCount > 0) cleanliness -= 18 + Math.min(24, (digitsCount - 1) * 5);
   if (hyphenCount > 0) cleanliness -= 16 + Math.min(24, (hyphenCount - 1) * 12);
   if (/(.)\1{2,}/.test(sld)) cleanliness -= 14;
-  if (/(kk|qq|xx|zz)/.test(sld)) cleanliness -= 6;
   cleanliness = clampScore(cleanliness, 70);
 
-  // 5. Niche Clarity Score (0-100): exact token priority, strict compound boundary, fair pure-brand baseline
+  // 6. Niche Clarity Score (0-100): exact token priority, strict compound boundary, fair pure-brand baseline
   let nicheClarity = 64;
   if (stemAnalysis.exactStemHits >= 2) {
     nicheClarity = 94;
@@ -345,7 +481,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
     nicheClarity = 78;
   } else if (stemAnalysis.containedStemHits === 1) {
     nicheClarity = 73;
-  } else if (alphaOnly.length >= 3 && alphaOnly.length <= 9 && brandability >= 72) {
+  } else if (alphaOnly.length >= 3 && alphaOnly.length <= 9 && pronunciationComfort >= 68) {
     nicheClarity = 72;
   } else if (digitsCount === 0 && hyphenCount === 0) {
     nicheClarity = 64;
@@ -354,17 +490,19 @@ function computeDomainScores(rawDomain, explicitExt, rawLang) {
   }
   nicheClarity = clampScore(nicheClarity, 58);
 
-  // 6. Overall Heuristic Score (0-100)
+  // 7. Overall Heuristic Score (0-100): weighted composite of all 6 separated aspects
   const overall = clampScore(
-    brandability * 0.28 +
-    structure * 0.22 +
-    extFit * 0.18 +
-    cleanliness * 0.18 +
-    nicheClarity * 0.14,
+    pronunciationComfort * 0.22 +
+    brandability * 0.20 +
+    structure * 0.17 +
+    extFit * 0.15 +
+    cleanliness * 0.14 +
+    nicheClarity * 0.12,
     50
   );
 
   return {
+    pronunciation_comfort_score: pronunciationComfort,
     brandability_score: brandability,
     structure_length_score: structure,
     extension_lang_fit_score: extFit,
@@ -386,6 +524,7 @@ async function ensureAvailableDomainsSchema(db) {
           check_method TEXT NOT NULL,
           check_source TEXT NOT NULL,
           checked_at INTEGER NOT NULL,
+          pronunciation_comfort_score INTEGER,
           brandability_score INTEGER,
           structure_length_score INTEGER,
           extension_lang_fit_score INTEGER,
@@ -419,6 +558,7 @@ async function ensureAvailableDomainsSchema(db) {
                   check_method TEXT NOT NULL,
                   check_source TEXT NOT NULL,
                   checked_at INTEGER NOT NULL,
+                  pronunciation_comfort_score INTEGER,
                   brandability_score INTEGER,
                   structure_length_score INTEGER,
                   extension_lang_fit_score INTEGER,
@@ -534,17 +674,22 @@ export async function onRequestPost(context) {
 
   const computedScores = computeDomainScores(domain, extension, lang);
   const clientScores = (body.scores && typeof body.scores === 'object') ? body.scores : {};
+  const pronunciationComfortScore = clampScore(
+    clientScores.pronunciation_comfort_score,
+    computedScores.pronunciation_comfort_score
+  );
   const brandabilityScore = clampScore(clientScores.brandability_score, computedScores.brandability_score);
   const structureLengthScore = clampScore(clientScores.structure_length_score, computedScores.structure_length_score);
   const extensionLangFitScore = clampScore(clientScores.extension_lang_fit_score, computedScores.extension_lang_fit_score);
   const characterCleanlinessScore = clampScore(clientScores.character_cleanliness_score, computedScores.character_cleanliness_score);
   const nicheClarityScore = clampScore(clientScores.niche_clarity_score, computedScores.niche_clarity_score);
   const overallHeuristicScore = clampScore(
-    brandabilityScore * 0.28 +
-    structureLengthScore * 0.22 +
-    extensionLangFitScore * 0.18 +
-    characterCleanlinessScore * 0.18 +
-    nicheClarityScore * 0.14,
+    pronunciationComfortScore * 0.22 +
+    brandabilityScore * 0.20 +
+    structureLengthScore * 0.17 +
+    extensionLangFitScore * 0.15 +
+    characterCleanlinessScore * 0.14 +
+    nicheClarityScore * 0.12,
     computedScores.overall_heuristic_score
   );
   const scoredAt = Date.now();
@@ -561,6 +706,7 @@ export async function onRequestPost(context) {
         check_method,
         check_source,
         checked_at,
+        pronunciation_comfort_score,
         brandability_score,
         structure_length_score,
         extension_lang_fit_score,
@@ -568,7 +714,7 @@ export async function onRequestPost(context) {
         niche_clarity_score,
         overall_heuristic_score,
         scored_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)
       ON CONFLICT(domain) DO UPDATE SET
         extension = excluded.extension,
         char_length = excluded.char_length,
@@ -576,6 +722,7 @@ export async function onRequestPost(context) {
         check_method = excluded.check_method,
         check_source = excluded.check_source,
         checked_at = excluded.checked_at,
+        pronunciation_comfort_score = excluded.pronunciation_comfort_score,
         brandability_score = excluded.brandability_score,
         structure_length_score = excluded.structure_length_score,
         extension_lang_fit_score = excluded.extension_lang_fit_score,
@@ -592,6 +739,7 @@ export async function onRequestPost(context) {
         checkMethod,
         checkSource,
         checkedAt,
+        pronunciationComfortScore,
         brandabilityScore,
         structureLengthScore,
         extensionLangFitScore,
@@ -615,6 +763,7 @@ export async function onRequestPost(context) {
       checkedAtIso,
       scoredAt,
       scores: {
+        pronunciation_comfort_score: pronunciationComfortScore,
         brandability_score: brandabilityScore,
         structure_length_score: structureLengthScore,
         extension_lang_fit_score: extensionLangFitScore,
