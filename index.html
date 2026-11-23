@@ -227,7 +227,6 @@
             #domainAnalysisPanel table td:not([colspan]) {
                 padding-left: 0.25rem;
                 padding-right: 0.25rem;
-                width: auto;
                 text-align: left !important;
             }
             #domainAnalysisPanel table th {
@@ -496,17 +495,87 @@
                                     Clear Pattern
                                 </button>
                             </div>
-                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#131354] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[primary] + [dash] + [number]</textarea>
+                            <textarea id="formulaInput" rows="2" onfocus="setActiveGenerateSlot('pattern')" oninput="setActiveGenerateSlot('pattern'); syncActivePresetUi(); generateDomains()" class="w-full min-w-0 max-w-full px-3 sm:px-4 py-2.5 bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#131354] font-mono text-[14px] leading-[1.5] resize-y break-words" placeholder="e.g. [primary] + [number]">[any] + [vowel] + [consonant]</textarea>
 
                             <div class="flex flex-wrap gap-2 items-center">
                                 <span id="uiClickToAdd" class="text-[11px] uppercase tracking-wider text-[#FFFFFF] font-semibold mr-1 leading-[1.4]">Click to insert:</span>
                                 <button type="button" onclick="addPlaceholderToken('primary')" id="btnKw1" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 text-[12px] font-mono font-semibold rounded-md border border-blue-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [primary]</button>
                                 <button type="button" onclick="addPlaceholderToken('secondary')" id="btnKw2" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-[12px] font-mono font-semibold rounded-md border border-emerald-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [secondary]</button>
                                 <button type="button" onclick="addPlaceholderToken('tertiary')" id="btnKw3" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-violet-50 hover:bg-violet-100 text-violet-800 text-[12px] font-mono font-semibold rounded-md border border-violet-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [tertiary]</button>
+                                <button type="button" onclick="addPlaceholderToken('any')" id="btnKwAny" title="Use all filled keywords (primary, secondary, tertiary) one by one" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-800 text-[12px] font-mono font-semibold rounded-md border border-indigo-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [any]</button>
                                 <button type="button" onclick="addPlaceholder('[dash]')" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 text-[12px] font-mono font-semibold rounded-md border border-slate-300 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [dash]</button>
                                 <button type="button" onclick="addPlaceholderToken('number')" id="btnNum" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 text-[12px] font-mono font-semibold rounded-md border border-amber-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [number]</button>
                                 <button type="button" onclick="addPlaceholderToken('vowel')" id="btnVowel" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 text-[12px] font-mono font-semibold rounded-md border border-rose-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [vowel]</button>
                                 <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 text-[12px] font-mono font-semibold rounded-md border border-cyan-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [consonant]</button>
+                            </div>
+
+                            <!-- Pronounceable Pattern Presets -->
+                            <div id="pronouncePresetsSection" class="pt-3.5 border-t border-white/15 flex flex-col gap-3">
+                                <div class="flex flex-wrap items-center justify-between gap-2.5">
+                                    <div class="flex flex-wrap items-center gap-2 min-w-0">
+                                        <span id="uiPresetsLabel" class="text-[11px] uppercase tracking-wider text-white font-semibold leading-[1.4]">Pronounceable Presets:</span>
+                                        <span id="presetAppliedBadge" role="status" aria-live="polite" class="hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-400/20 border border-emerald-300/40 text-[11px] font-semibold text-emerald-100 whitespace-nowrap">✓ Preset applied</span>
+                                    </div>
+                                    <label for="softConsonantsCheckbox" id="uiSoftConsTooltip" title="Exclude heavy letters (q, x, z) from [consonant] for smoother startup-style domain names" class="inline-flex items-center gap-2 min-h-[34px] px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 text-[12px] font-medium text-white cursor-pointer select-none transition-colors">
+                                        <input type="checkbox" id="softConsonantsCheckbox" checked onchange="setActiveGenerateSlot('pattern'); generateDomains()" class="h-3.5 w-3.5 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
+                                        <span id="uiSoftConsLabel">Soft Consonants (no q, x, z)</span>
+                                    </label>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                                    <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyCvTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">Any Keyword + CV</span>
+                                            <span id="uiPresetRecBadge" class="shrink-0 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide bg-emerald-400/20 text-emerald-200 border border-emerald-300/35">Recommended</span>
+                                        </span>
+                                        <span id="uiPresetAnyCvSub" class="text-[11px] text-white/80 leading-[1.35]">Syllable Extension · [any] + [consonant] + [vowel]</span>
+                                    </button>
+                                    <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiPresetCvCvTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CV-CV</span>
+                                        <span id="uiPresetCvCvSub" class="text-[11px] text-white/80 leading-[1.35]">Short Brandable · [consonant] + [vowel] + [consonant] + [vowel]</span>
+                                    </button>
+                                    <button type="button" data-preset-id="cv-any" onclick="applyPatternPreset('cv-any')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiPresetCvAnyTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CV + Any Keyword</span>
+                                        <span id="uiPresetCvAnySub" class="text-[11px] text-white/80 leading-[1.35]">Syllable Prefix · [consonant] + [vowel] + [any]</span>
+                                    </button>
+                                    <button type="button" data-preset-id="cvc-v" onclick="applyPatternPreset('cvc-v')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiPresetCvcVTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">CVC-V</span>
+                                        <span id="uiPresetCvcVSub" class="text-[11px] text-white/80 leading-[1.35]">Flowing Rhythm · [consonant] + [vowel] + [consonant] + [dash] + [vowel]</span>
+                                    </button>
+                                    <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiPresetAnyVcTitle" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">Any Keyword + V + C</span>
+                                        <span id="uiPresetAnyVcSub" class="text-[11px] text-white/80 leading-[1.35]">Crisp Ending · [any] + [vowel] + [consonant]</span>
+                                    </button>
+                                    <button type="button" data-preset-id="natural-3" onclick="applyPatternPreset('natural-3')" class="preset-pattern-btn min-h-[44px] text-left px-3 py-2 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/20 transition-all flex flex-col justify-center gap-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiPresetNatural3Title" class="text-[12px] sm:text-[13px] font-semibold text-white leading-[1.35]">3-Way Natural Blend</span>
+                                        <span id="uiPresetNatural3Sub" class="text-[11px] text-white/80 leading-[1.35]">Vowel Bridge · [any] + [vowel] + [secondary]</span>
+                                    </button>
+                                </div>
+
+                                <!-- Pronunciation Micro-Tips -->
+                                <details id="pronounceTipsDetails" class="group rounded-lg bg-white/[0.07] border border-white/15 text-white">
+                                    <summary class="flex items-center justify-between gap-2 px-3 py-2.5 min-h-[40px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden text-[12px] sm:text-[13px] font-semibold text-white/95 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg">
+                                        <span class="inline-flex items-center gap-2 min-w-0">
+                                            <svg aria-hidden="true" class="w-4 h-4 text-amber-300 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                                            <span id="uiPronounceTipsTitle">Pronunciation Micro-Tips</span>
+                                        </span>
+                                        <svg aria-hidden="true" class="w-4 h-4 text-white/80 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </summary>
+                                    <div class="px-3 pb-3 pt-2 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-[12px] leading-[1.5] text-white/90">
+                                        <div class="rounded-md bg-white/[0.06] border border-white/10 p-2.5">
+                                            <p id="uiTipRuleTitle" class="font-semibold text-white mb-0.5">Basic Rule</p>
+                                            <p id="uiTipRuleDesc" class="text-white/85">Alternating [consonant] and [vowel] creates open syllables that are easy to read and remember.</p>
+                                        </div>
+                                        <div class="rounded-md bg-white/[0.06] border border-white/10 p-2.5">
+                                            <p id="uiTipBridgeTitle" class="font-semibold text-white mb-0.5">Vowel Bridge</p>
+                                            <p id="uiTipBridgeDesc" class="text-white/85">Insert [vowel] between two keywords or consonants so the tongue never stumbles when spoken.</p>
+                                        </div>
+                                        <div class="rounded-md bg-white/[0.06] border border-white/10 p-2.5">
+                                            <p id="uiTipClusterTitle" class="font-semibold text-white mb-0.5">Avoid Heavy Clusters</p>
+                                            <p id="uiTipClusterDesc" class="text-white/85">Limit letters like q, x, or stacked consonants when targeting global brandable names.</p>
+                                        </div>
+                                    </div>
+                                </details>
                             </div>
 
                             <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
@@ -653,18 +722,18 @@
 
             <!-- Responsive Horizontal-Scroll Table (Orange Theme) -->
             <div class="overflow-x-auto border border-[#f05422]/40 rounded-xl max-h-[28rem] overflow-y-auto bg-[#FFFFFF] shadow-sm">
-                <table class="w-full lg:min-w-[640px] text-left border-collapse">
+                <table class="w-full text-left border-collapse">
                     <thead class="sticky top-0 z-10 bg-[#f05422] border-b border-[#d64416] text-[11px] uppercase tracking-wider font-bold text-[#FFFFFF]">
                         <tr>
-                            <th scope="col" id="uiThAvail" class="py-3 px-2 sm:px-3 w-24 sm:w-32 text-left">Availability</th>
-                            <th scope="col" class="py-3 px-2 sm:px-3 w-9 sm:w-10 text-center">
+                            <th scope="col" id="uiThAvail" class="py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left">Availability</th>
+                            <th scope="col" class="py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left">
                                 <input type="checkbox" id="selectAllVisibleCheckbox" onchange="toggleSelectAllVisible(this.checked)" aria-label="Select all visible domains" class="w-4 h-4 rounded border-white/90 bg-white text-[#f05422] focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#f05422] cursor-pointer align-middle">
                             </th>
-                            <th scope="col" id="uiThNum" class="hidden lg:table-cell py-3 px-2.5 w-11 tabular-nums">#</th>
-                            <th scope="col" id="uiThDomain" class="py-3 px-2 sm:px-3">Domain Name</th>
-                            <th scope="col" id="uiThChars" class="hidden lg:table-cell py-3 px-3 w-16 text-right tabular-nums ui-th-chars">Chars</th>
-                            <th scope="col" class="lg:hidden py-3 px-2 sm:px-3 w-14 text-right tabular-nums ui-th-chars">Chars</th>
-                            <th scope="col" id="uiThInspect" class="py-3 px-2 sm:px-3 w-36 sm:w-40 text-right">Inspect</th>
+                            <th scope="col" id="uiThNum" class="hidden lg:table-cell py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left tabular-nums">#</th>
+                            <th scope="col" id="uiThDomain" class="py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left">Domain Name</th>
+                            <th scope="col" id="uiThChars" class="hidden lg:table-cell py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left tabular-nums ui-th-chars">Chars</th>
+                            <th scope="col" class="lg:hidden py-2.5 px-1.5 sm:px-2 w-px whitespace-nowrap text-left tabular-nums ui-th-chars">Chars</th>
+                            <th scope="col" id="uiThInspect" class="py-2.5 px-1.5 sm:px-2 whitespace-nowrap text-left">Inspect</th>
                         </tr>
                     </thead>
                     <tbody id="domainAnalysisList" class="divide-y divide-[#f05422]/20 bg-[#FFFFFF] text-[13px] md:text-[14px] text-[#292929] leading-[1.45] md:leading-[1.5]"></tbody>
@@ -1131,7 +1200,7 @@
                     <span aria-hidden="true" class="edu-badge-positive inline-flex items-center px-2.5 py-0.5 rounded-md border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider shrink-0">RFC 1035</span>
                 </div>
                 <div class="edu-card-neutral rounded-xl p-4 sm:p-5 flex-1">
-                    <p id="aiBottomNarrativeCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">The domain permutation list for "business" uses numeric digit variations and hyphen (dash) variations based on the "[primary] + [dash] + [number]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
+                    <p id="aiBottomNarrativeCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">The domain permutation list for "business" uses vowel variations and consonant variations based on the "[any] + [vowel] + [consonant]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
                 </div>
             </div>
         </section>
@@ -1212,6 +1281,7 @@
     <script>
         const vowels = ['a', 'i', 'u', 'e', 'o'];
         const consonants = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
+        const softConsonants = consonants.filter(c => c !== 'q' && c !== 'x' && c !== 'z');
         const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         const dashes = ['-', ''];
 
@@ -1283,7 +1353,7 @@
                 clearBtn: '🗑️ Hapus Pola',
                 clickToAdd: 'Klik untuk tambah:',
                 formulaHint: 'Placeholder: [primary], [secondary], [tertiary], [vokal], [konsonan], [angka], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [angka]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -1474,7 +1544,7 @@
                 clearBtn: '🗑️ Clear Pattern',
                 clickToAdd: 'Click to insert:',
                 formulaHint: 'Placeholders: [primary], [secondary], [tertiary], [vowel], [consonant], [number], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [number]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -1665,7 +1735,7 @@
                 clearBtn: '🗑️ Borrar Patrón',
                 clickToAdd: 'Hacer clic para insertar:',
                 formulaHint: 'Marcadores: [primary], [secondary], [tertiary], [vocal], [consonante], [número], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [número]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -1856,7 +1926,7 @@
                 clearBtn: '🗑️ Limpar Padrão',
                 clickToAdd: 'Clique para inserir:',
                 formulaHint: 'Marcadores: [primary], [secondary], [tertiary], [vogal], [consoante], [número], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [número]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -2047,7 +2117,7 @@
                 clearBtn: '🗑️ Effacer le Motif',
                 clickToAdd: 'Cliquer pour insérer :',
                 formulaHint: 'Marqueurs : [primary], [secondary], [tertiary], [voyelle], [consonne], [nombre], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [nombre]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -2238,7 +2308,7 @@
                 clearBtn: '🗑️ Muster löschen',
                 clickToAdd: 'Zum Einfügen klicken:',
                 formulaHint: 'Platzhalter: [primary], [secondary], [tertiary], [vokal], [konsonant], [nummer], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [nummer]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -2429,7 +2499,7 @@
                 clearBtn: '🗑️ Очистить шаблон',
                 clickToAdd: 'Нажмите для вставки:',
                 formulaHint: 'Плейсхолдеры: [primary], [secondary], [tertiary], [гласная], [согласная], [цифра], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [цифра]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -2620,7 +2690,7 @@
                 clearBtn: '🗑️ パターンをクリア',
                 clickToAdd: 'クリックして挿入:',
                 formulaHint: 'プレースホルダー: [primary], [secondary], [tertiary], [母音], [子音], [数字], [dash] (RFC 1035 Sanitized).',
-                defaultFormula: '[primary] + [dash] + [数字]',
+                defaultFormula: '[any] + [vowel] + [consonant]',
                 btnKw1Text: '+ [primary]',
                 btnKw2Text: '+ [secondary]',
                 btnKw3Text: '+ [tertiary]',
@@ -3038,6 +3108,220 @@
         };
         Object.keys(uiExtraDict).forEach(function(langKey) {
             if (dict[langKey]) Object.assign(dict[langKey], uiExtraDict[langKey]);
+        });
+
+        const pronounceablePresetsI18n = {
+            en: {
+                presetsLabel: 'Pronounceable Presets:',
+                presetRecBadge: 'Recommended',
+                presetAppliedMsg: '✓ Preset applied',
+                softConsLabel: 'Soft Consonants (no q, x, z)',
+                softConsTitle: 'Exclude heavy letters (q, x, z) from [consonant] for smoother startup-style domain names',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Syllable Extension · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Short Brandable · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Syllable Prefix · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Flowing Rhythm · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Crisp Ending · [any] + [vowel] + [consonant]',
+                presetNatural3Title: '3-Way Natural Blend',
+                presetNatural3Sub: 'Vowel Bridge · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Pronunciation Micro-Tips',
+                tipRuleTitle: 'Basic Rule',
+                tipRuleDesc: 'Alternating [consonant] and [vowel] creates open syllables that are easy to read and remember.',
+                tipBridgeTitle: 'Vowel Bridge',
+                tipBridgeDesc: 'Insert [vowel] between two keywords or consonants so the tongue never stumbles when spoken.',
+                tipClusterTitle: 'Avoid Heavy Clusters',
+                tipClusterDesc: 'Limit letters like q, x, or stacked consonants when targeting global brandable names.'
+            },
+            id: {
+                presetsLabel: 'Preset Pola Mudah Dilafalkan:',
+                presetRecBadge: 'Rekomendasi',
+                presetAppliedMsg: '✓ Preset diterapkan',
+                softConsLabel: 'Soft Consonants (tanpa q, x, z)',
+                softConsTitle: 'Kecualikan huruf berat (q, x, z) dari [consonant] agar hasil terasa natural ala merek startup',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Ekstensi Suku Kata · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Brandable Pendek · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Awalan Suku Kata · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Ritme Mengalir · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Penutup Tegas · [any] + [vowel] + [consonant]',
+                presetNatural3Title: '3-Kombinasi Natural',
+                presetNatural3Sub: 'Jembatan Vokal · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Panduan Singkat Pelafalan',
+                tipRuleTitle: 'Aturan Dasar',
+                tipRuleDesc: 'Selang-seling [consonant] dan [vowel] menciptakan suku kata terbuka yang mudah dibaca dan diingat.',
+                tipBridgeTitle: 'Vokal Penghubung',
+                tipBridgeDesc: 'Sisipkan [vowel] di antara dua keyword atau konsonan agar lidah tidak "tersandung" saat diucapkan.',
+                tipClusterTitle: 'Hindari Gugus Berat',
+                tipClusterDesc: 'Batasi penggunaan huruf seperti q, x, atau tumpukan konsonan berurutan untuk merek global.'
+            },
+            es: {
+                presetsLabel: 'Patrones Pronunciables:',
+                presetRecBadge: 'Recomendado',
+                presetAppliedMsg: '✓ Patrón aplicado',
+                softConsLabel: 'Consonantes Suaves (sin q, x, z)',
+                softConsTitle: 'Excluye letras pesadas (q, x, z) de [consonant] para lograr nombres más fluidos',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Extensión Silábica · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Marca Corta · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Prefijo Silábico · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Ritmo Fluido · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Cierre Firme · [any] + [vowel] + [consonant]',
+                presetNatural3Title: 'Mezcla Natural de 3',
+                presetNatural3Sub: 'Puente Vocálico · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Micro-Guía de Pronunciación',
+                tipRuleTitle: 'Regla Básica',
+                tipRuleDesc: 'Alternar [consonant] y [vowel] crea sílabas abiertas fáciles de leer y recordar.',
+                tipBridgeTitle: 'Vocal Puente',
+                tipBridgeDesc: 'Inserta [vowel] entre dos palabras clave o consonantes para evitar tropiezos al pronunciar.',
+                tipClusterTitle: 'Evita Grupos Pesados',
+                tipClusterDesc: 'Limita letras como q, x o consonantes seguidas si buscas una marca global.'
+            },
+            pt: {
+                presetsLabel: 'Padrões Pronunciáveis:',
+                presetRecBadge: 'Recomendado',
+                presetAppliedMsg: '✓ Padrão aplicado',
+                softConsLabel: 'Consoantes Suaves (sem q, x, z)',
+                softConsTitle: 'Exclui letras pesadas (q, x, z) de [consonant] para nomes mais naturais',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Extensão Silábica · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Marca Curta · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Prefixo Silábico · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Ritmo Fluido · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Final Firme · [any] + [vowel] + [consonant]',
+                presetNatural3Title: 'Combinação Natural',
+                presetNatural3Sub: 'Ponte Vocálica · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Micro-Dicas de Pronúncia',
+                tipRuleTitle: 'Regra Básica',
+                tipRuleDesc: 'Alternar [consonant] e [vowel] cria sílabas abertas fáceis de ler e memorizar.',
+                tipBridgeTitle: 'Vogal de Ligação',
+                tipBridgeDesc: 'Insira [vowel] entre duas palavras-chave ou consoantes para suavizar a pronúncia.',
+                tipClusterTitle: 'Evite Encontros Pesados',
+                tipClusterDesc: 'Limite letras como q, x ou consoantes seguidas para marcas globais.'
+            },
+            fr: {
+                presetsLabel: 'Modèles Prononçables :',
+                presetRecBadge: 'Recommandé',
+                presetAppliedMsg: '✓ Modèle appliqué',
+                softConsLabel: 'Consonnes Douces (sans q, x, z)',
+                softConsTitle: 'Exclut les lettres lourdes (q, x, z) de [consonant] pour des noms plus fluides',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Extension Syllabique · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Marque Courte · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Préfixe Syllabique · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Rythme Fluide · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Terminaison Nette · [any] + [vowel] + [consonant]',
+                presetNatural3Title: 'Fusion Naturelle à 3',
+                presetNatural3Sub: 'Voyelle de Liaison · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Micro-Conseils de Prononciation',
+                tipRuleTitle: 'Règle de Base',
+                tipRuleDesc: 'Alterner [consonant] et [vowel] crée des syllabes ouvertes faciles à lire et retenir.',
+                tipBridgeTitle: 'Voyelle de Liaison',
+                tipBridgeDesc: 'Insérez [vowel] entre deux mots-clés ou consonnes pour une prononciation fluide.',
+                tipClusterTitle: 'Évitez les Groupes Lourds',
+                tipClusterDesc: 'Limitez les lettres comme q, x ou les suites de consonnes pour une marque mondiale.'
+            },
+            de: {
+                presetsLabel: 'Aussprechbare Vorlagen:',
+                presetRecBadge: 'Empfohlen',
+                presetAppliedMsg: '✓ Vorlage angewendet',
+                softConsLabel: 'Weiche Konsonanten (ohne q, x, z)',
+                softConsTitle: 'Schließt harte Buchstaben (q, x, z) aus [consonant] für natürlichere Namen aus',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Silben-Erweiterung · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Kurz & Markenstark · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Silben-Präfix · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Fließender Rhythmus · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Klare Endung · [any] + [vowel] + [consonant]',
+                presetNatural3Title: '3-fach Natürlicher Mix',
+                presetNatural3Sub: 'Vokalbrücke · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Aussprache-Kurztipps',
+                tipRuleTitle: 'Grundregel',
+                tipRuleDesc: 'Der Wechsel von [consonant] und [vowel] erzeugt offene, leicht merkbare Silben.',
+                tipBridgeTitle: 'Verbindungsvokal',
+                tipBridgeDesc: 'Fügen Sie [vowel] zwischen zwei Keywords oder Konsonanten für flüssige Aussprache ein.',
+                tipClusterTitle: 'Schwere Cluster meiden',
+                tipClusterDesc: 'Begrenzen Sie Buchstaben wie q, x oder Konsonantenhäufungen für globale Marken.'
+            },
+            ru: {
+                presetsLabel: 'Благозвучные шаблоны:',
+                presetRecBadge: 'Рекомендуем',
+                presetAppliedMsg: '✓ Шаблон применен',
+                softConsLabel: 'Мягкие согласные (без q, x, z)',
+                softConsTitle: 'Исключает редкие буквы (q, x, z) из [consonant] для более плавного звучания',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: 'Слоговое окончание · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: 'Короткий бренд · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: 'Слоговой префикс · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'Плавный ритм · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: 'Четкий финал · [any] + [vowel] + [consonant]',
+                presetNatural3Title: 'Естественное 3-сочетание',
+                presetNatural3Sub: 'Гласная связка · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: 'Краткие советы по звучанию',
+                tipRuleTitle: 'Базовое правило',
+                tipRuleDesc: 'Чередование [consonant] и [vowel] создает открытые слоги, которые легко читать и запоминать.',
+                tipBridgeTitle: 'Соединительная гласная',
+                tipBridgeDesc: 'Вставляйте [vowel] между словами или согласными, чтобы имя звучало плавно.',
+                tipClusterTitle: 'Избегайте сложных сочетаний',
+                tipClusterDesc: 'Ограничьте буквы q, x и скопления согласных для международных брендов.'
+            },
+            ja: {
+                presetsLabel: '発音しやすいプリセット:',
+                presetRecBadge: 'おすすめ',
+                presetAppliedMsg: '✓ 適用しました',
+                softConsLabel: 'ソフト子音 (q, x, z 除外)',
+                softConsTitle: '[consonant] から q, x, z を除外して自然なブランド名を生成します',
+                presetAnyCvTitle: 'Any Keyword + CV',
+                presetAnyCvSub: '音節拡張 · [any] + [consonant] + [vowel]',
+                presetCvCvTitle: 'CV-CV',
+                presetCvCvSub: '短いブランド名 · [consonant] + [vowel] + [consonant] + [vowel]',
+                presetCvAnyTitle: 'CV + Any Keyword',
+                presetCvAnySub: '音節プレフィックス · [consonant] + [vowel] + [any]',
+                presetCvcVTitle: 'CVC-V',
+                presetCvcVSub: 'なめらかなリズム · [consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+                presetAnyVcTitle: 'Any Keyword + V + C',
+                presetAnyVcSub: '明快な語尾 · [any] + [vowel] + [consonant]',
+                presetNatural3Title: '3語ナチュラル結合',
+                presetNatural3Sub: '母音ブリッジ · [any] + [vowel] + [secondary]',
+                pronounceTipsTitle: '発音しやすいネーミングのヒント',
+                tipRuleTitle: '基本ルール',
+                tipRuleDesc: '[consonant] と [vowel] を交互に並べると、読みやすく覚えやすい開音節になります。',
+                tipBridgeTitle: 'つなぎの母音',
+                tipBridgeDesc: '2つのキーワードや子音の間に [vowel] を挟むと、滑らかに発音できます。',
+                tipClusterTitle: '重い子音連続を避ける',
+                tipClusterDesc: 'グローバルブランドを目指す場合は q, x や子音の連続を控えめにしましょう。'
+            }
+        };
+        Object.keys(pronounceablePresetsI18n).forEach(function(langKey) {
+            if (dict[langKey]) Object.assign(dict[langKey], pronounceablePresetsI18n[langKey]);
         });
 
         let currentLang = 'en';
@@ -3816,6 +4100,37 @@
             document.getElementById('btnNum').innerText = t.btnNumText;
             document.getElementById('btnVowel').innerText = t.btnVowelText;
             document.getElementById('btnCons').innerText = t.btnConsText;
+            const presetLabelMap = {
+                uiPresetsLabel: t.presetsLabel,
+                uiPresetRecBadge: t.presetRecBadge,
+                uiSoftConsLabel: t.softConsLabel,
+                uiPresetAnyCvTitle: t.presetAnyCvTitle,
+                uiPresetAnyCvSub: t.presetAnyCvSub,
+                uiPresetCvCvTitle: t.presetCvCvTitle,
+                uiPresetCvCvSub: t.presetCvCvSub,
+                uiPresetCvAnyTitle: t.presetCvAnyTitle,
+                uiPresetCvAnySub: t.presetCvAnySub,
+                uiPresetCvcVTitle: t.presetCvcVTitle,
+                uiPresetCvcVSub: t.presetCvcVSub,
+                uiPresetAnyVcTitle: t.presetAnyVcTitle,
+                uiPresetAnyVcSub: t.presetAnyVcSub,
+                uiPresetNatural3Title: t.presetNatural3Title,
+                uiPresetNatural3Sub: t.presetNatural3Sub,
+                uiPronounceTipsTitle: t.pronounceTipsTitle,
+                uiTipRuleTitle: t.tipRuleTitle,
+                uiTipRuleDesc: t.tipRuleDesc,
+                uiTipBridgeTitle: t.tipBridgeTitle,
+                uiTipBridgeDesc: t.tipBridgeDesc,
+                uiTipClusterTitle: t.tipClusterTitle,
+                uiTipClusterDesc: t.tipClusterDesc
+            };
+            Object.entries(presetLabelMap).forEach(([elId, textVal]) => {
+                const el = document.getElementById(elId);
+                if (el && textVal) el.innerText = textVal;
+            });
+            const softConsTooltipEl = document.getElementById('uiSoftConsTooltip');
+            if (softConsTooltipEl && t.softConsTitle) softConsTooltipEl.setAttribute('title', t.softConsTitle);
+            syncActivePresetUi();
             document.getElementById('uiGenBtn').innerText = t.genBtn;
             const advGenBtnEl = document.getElementById('uiAdvGenBtn');
             if (advGenBtnEl && t.genBtn) advGenBtnEl.innerText = t.genBtn;
@@ -4310,6 +4625,9 @@
                 includeNoDash: permNoDashEl ? permNoDashEl.checked : true
             };
 
+            const softConsEl = document.getElementById('softConsonantsCheckbox');
+            const activeConsonants = (softConsEl && softConsEl.checked) ? softConsonants : consonants;
+            const anyKeywords = [...new Set(activeKeywords)];
             const placeholderMap = {
                 '[primary]': [keyword],
                 '[keyword]': [keyword],
@@ -4335,6 +4653,7 @@
                 '[schlüsselwort3]': [keyword3],
                 '[ключевое_слово3]': [keyword3],
                 '[キーワード3]': [keyword3],
+                '[any]': anyKeywords.length > 0 ? anyKeywords : [''],
                 '[vokal]': vowels,
                 '[vowel]': vowels,
                 '[vocal]': vowels,
@@ -4342,14 +4661,14 @@
                 '[voyelle]': vowels,
                 '[гласная]': vowels,
                 '[母音]': vowels,
-                '[konsonan]': consonants,
-                '[consonant]': consonants,
-                '[consonante]': consonants,
-                '[consoante]': consonants,
-                '[consonne]': consonants,
-                '[konsonant]': consonants,
-                '[согласная]': consonants,
-                '[子音]': consonants,
+                '[konsonan]': activeConsonants,
+                '[consonant]': activeConsonants,
+                '[consonante]': activeConsonants,
+                '[consoante]': activeConsonants,
+                '[consonne]': activeConsonants,
+                '[konsonant]': activeConsonants,
+                '[согласная]': activeConsonants,
+                '[子音]': activeConsonants,
                 '[angka]': numbers,
                 '[number]': numbers,
                 '[número]': numbers,
@@ -5480,26 +5799,26 @@
 
                 return `
                     <tr class="${rowBgClass} hover:bg-[#f4cec2] transition-colors">
-                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-2 sm:px-3 text-left whitespace-nowrap">${availCellHtml}</td>
-                        <td class="py-2.5 px-2 sm:px-3 text-center whitespace-nowrap">
+                        <td data-avail-domain="${safeDomainAttr}" class="py-2 px-1.5 sm:px-2 w-px text-left whitespace-nowrap">${availCellHtml}</td>
+                        <td class="py-2 px-1.5 sm:px-2 w-px text-left whitespace-nowrap">
                             <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-[#f05422]/55 bg-[#FFFFFF] text-[#f05422] focus:ring-[#f05422] cursor-pointer align-middle">
                         </td>
-                        <td class="hidden lg:table-cell py-2.5 px-2.5 text-[12px] md:text-[13px] font-mono tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${idx + 1}</td>
-                        <td class="py-2.5 px-2 sm:px-3 font-mono text-[13px] md:text-[14px] font-semibold text-[#292929] whitespace-nowrap leading-[1.45] md:leading-[1.5]">
-                            <div class="inline-flex items-center gap-1.5 sm:gap-2">
+                        <td class="hidden lg:table-cell py-2 px-1.5 sm:px-2 w-px text-left text-[12px] md:text-[13px] font-mono tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${idx + 1}</td>
+                        <td class="py-2 px-1.5 sm:px-2 w-px text-left font-mono text-[12px] sm:text-[13px] md:text-[14px] font-semibold text-[#292929] whitespace-nowrap leading-[1.45] md:leading-[1.5]">
+                            <div class="inline-flex items-center justify-start gap-1 sm:gap-1.5">
                                 <span>${safeDomain}</span>
-                                <button type="button" data-copy-domain="${safeDomainAttr}" onclick="copySingleDomain(this.getAttribute('data-copy-domain'), this)" title="${copyTitle}" aria-label="${copyTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]">
+                                <button type="button" data-copy-domain="${safeDomainAttr}" onclick="copySingleDomain(this.getAttribute('data-copy-domain'), this)" title="${copyTitle}" aria-label="${copyTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#3F3042] hover:border-[#f05422] hover:text-[#f05422] transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f05422]">
                                     <svg aria-hidden="true" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 </button>
                             </div>
                         </td>
-                        <td class="hidden lg:table-cell py-2.5 px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
-                        <td class="lg:hidden py-2.5 px-2 sm:px-3 text-right font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
-                        <td class="py-2 px-2 sm:px-3 text-right whitespace-nowrap">
-                            <div class="inline-flex items-center justify-end gap-2">
-                                <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#f05422] hover:text-[#f05422] transition-colors">BL</a>
-                                <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#578686] hover:text-[#578686] transition-colors">WM</a>
-                                <a href="${escapeHtmlAttr(googleHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${ggTitle}" aria-label="${ggTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[32px] min-w-[36px] px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#0C723F] hover:text-[#0C723F] transition-colors">GG</a>
+                        <td class="hidden lg:table-cell py-2 px-1.5 sm:px-2 w-px text-left font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td class="lg:hidden py-2 px-1.5 sm:px-2 w-px text-left font-mono text-[12px] md:text-[13px] tabular-nums text-[#3F3042] whitespace-nowrap leading-[1.45]">${domain.length}</td>
+                        <td class="py-2 px-1.5 sm:px-2 text-left whitespace-nowrap">
+                            <div class="inline-flex items-center justify-start gap-1 sm:gap-1.5">
+                                <a href="${escapeHtmlAttr(ahrefsHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${blTitle}" aria-label="${blTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[30px] sm:min-h-[32px] min-w-[30px] sm:min-w-[34px] px-1.5 sm:px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#f05422] hover:text-[#f05422] transition-colors">BL</a>
+                                <a href="${escapeHtmlAttr(waybackHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${wmTitle}" aria-label="${wmTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[30px] sm:min-h-[32px] min-w-[30px] sm:min-w-[34px] px-1.5 sm:px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#578686] hover:text-[#578686] transition-colors">WM</a>
+                                <a href="${escapeHtmlAttr(googleHref)}" target="_blank" rel="nofollow noopener noreferrer" title="${ggTitle}" aria-label="${ggTitle}: ${safeDomainAttr}" class="inline-flex items-center justify-center min-h-[30px] sm:min-h-[32px] min-w-[30px] sm:min-w-[34px] px-1.5 sm:px-2 py-1 text-[11px] md:text-[12px] font-mono font-semibold rounded-md border border-[#f05422]/30 bg-[#FFFFFF] text-[#292929] hover:border-[#0C723F] hover:text-[#0C723F] transition-colors">GG</a>
                             </div>
                         </td>
                     </tr>
@@ -5534,10 +5853,10 @@
             const fullWordPermEl = document.getElementById('fullWordPermCheckbox');
             const fullWordPermEnabled = fullWordPermEl ? fullWordPermEl.checked : true;
 
-            if ((fullWordPermEnabled || /\[(secondary|keyword2|palabra_clave2|palavra_chave2|mot_cle2|schlüsselwort2|ключевое_слово2|キーワード2)\]/i.test(f)) && kw2 && nf.kw2) {
+            if ((fullWordPermEnabled || /\[(secondary|any|keyword2|palabra_clave2|palavra_chave2|mot_cle2|schlüsselwort2|ключевое_слово2|キーワード2)\]/i.test(f)) && kw2 && nf.kw2) {
                 activeParts.push(nf.kw2.replace(/\{kw2\}/g, kw2));
             }
-            if ((fullWordPermEnabled || /\[(tertiary|keyword3|palabra_clave3|palavra_chave3|mot_cle3|schlüsselwort3|ключевое_слово3|キーワード3)\]/i.test(f)) && kw3 && nf.kw3) {
+            if ((fullWordPermEnabled || /\[(tertiary|any|keyword3|palabra_clave3|palavra_chave3|mot_cle3|schlüsselwort3|ключевое_слово3|キーワード3)\]/i.test(f)) && kw3 && nf.kw3) {
                 activeParts.push(nf.kw3.replace(/\{kw3\}/g, kw3));
             }
             if (/\[(vokal|vowel|vocal|vogal|voyelle|гласная|母音)\]/i.test(f) && nf.vowel) {
@@ -5695,7 +6014,7 @@
             if (kw2) kw2.value = '';
             if (kw3) kw3.value = '';
             if (extEl) extEl.value = t.defaultExts || '.com, .net, .io, .org';
-            if (formulaEl) formulaEl.value = t.defaultFormula || '[primary] + [dash] + [number]';
+            if (formulaEl) formulaEl.value = t.defaultFormula || '[any] + [vowel] + [consonant]';
 
             const fullWordPermEl = document.getElementById('fullWordPermCheckbox');
             const perm1El = document.getElementById('wordPerm1Checkbox');
@@ -5710,6 +6029,9 @@
             if (perm3El) perm3El.checked = false;
             if (permDashEl) permDashEl.checked = false;
             if (permNoDashEl) permNoDashEl.checked = true;
+            const softConsEl = document.getElementById('softConsonantsCheckbox');
+            if (softConsEl) softConsEl.checked = true;
+            syncActivePresetUi();
 
             setActiveGenerateSlot('basic');
 
@@ -5805,6 +6127,57 @@
             if (patternWrap) patternWrap.classList.toggle('hidden', !isPattern);
         }
 
+        const PATTERN_PRESETS = {
+            'any-cv': '[any] + [consonant] + [vowel]',
+            'cv-cv': '[consonant] + [vowel] + [consonant] + [vowel]',
+            'cv-any': '[consonant] + [vowel] + [any]',
+            'cvc-v': '[consonant] + [vowel] + [consonant] + [dash] + [vowel]',
+            'any-vc': '[any] + [vowel] + [consonant]',
+            'natural-3': '[any] + [vowel] + [secondary]'
+        };
+        let presetBadgeTimer = null;
+
+        function syncActivePresetUi(explicitPresetId) {
+            const formulaEl = document.getElementById('formulaInput');
+            const currentFormula = formulaEl ? formulaEl.value.trim() : '';
+            const buttons = document.querySelectorAll('.preset-pattern-btn[data-preset-id]');
+            buttons.forEach((btn) => {
+                const pid = btn.getAttribute('data-preset-id');
+                const targetFormula = PATTERN_PRESETS[pid] || '';
+                const isActive = explicitPresetId ? pid === explicitPresetId : (Boolean(currentFormula) && currentFormula === targetFormula);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                btn.classList.toggle('bg-white/25', isActive);
+                btn.classList.toggle('border-amber-300', isActive);
+                btn.classList.toggle('ring-2', isActive);
+                btn.classList.toggle('ring-amber-300/80', isActive);
+                btn.classList.toggle('shadow-md', isActive);
+                btn.classList.toggle('bg-white/10', !isActive);
+                btn.classList.toggle('border-white/20', !isActive);
+            });
+        }
+
+        function applyPatternPreset(presetId) {
+            const formula = PATTERN_PRESETS[presetId];
+            const input = document.getElementById('formulaInput');
+            if (!formula || !input) return;
+            setActiveGenerateSlot('pattern');
+            input.value = formula;
+            syncActivePresetUi(presetId);
+
+            const badge = document.getElementById('presetAppliedBadge');
+            if (badge) {
+                const t = dict[currentLang] || dict.en;
+                badge.textContent = t.presetAppliedMsg || '✓ Preset applied';
+                badge.classList.remove('hidden');
+                if (presetBadgeTimer) clearTimeout(presetBadgeTimer);
+                presetBadgeTimer = setTimeout(() => {
+                    badge.classList.add('hidden');
+                }, 1800);
+            }
+
+            generateDomains();
+        }
+
         function addPlaceholder(token) {
             setActiveGenerateSlot('pattern');
             const input = document.getElementById('formulaInput');
@@ -5814,6 +6187,7 @@
             } else {
                 input.value = token;
             }
+            syncActivePresetUi();
             generateDomains();
         }
 
@@ -5829,6 +6203,10 @@
             }
             if (type === 'tertiary' || type === 'keyword3') {
                 addPlaceholder('[tertiary]');
+                return;
+            }
+            if (type === 'any') {
+                addPlaceholder('[any]');
                 return;
             }
 
@@ -5872,6 +6250,7 @@
         function clearFormula() {
             setActiveGenerateSlot('pattern');
             document.getElementById('formulaInput').value = '';
+            syncActivePresetUi();
             generateDomains();
         }
 
