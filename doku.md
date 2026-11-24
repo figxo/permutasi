@@ -209,7 +209,7 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 ### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
 - **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
-- **Auto-Bootstrap, Auto-Migrasi Schema & Auto/Manual Backfill (Skor + Auto-Tagging 8 Bahasa)**: Pada request pertama, handler otomatis menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT`, `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer skor bila belum ada dan menghapus kolom lama `checked_at_iso` bila masih ada, membuat 6 indeks via `db.batch` (`idx_available_domains_checked_at`, `idx_available_domains_sld`, `idx_available_domains_extension`, `idx_available_domains_char_length`, `idx_available_domains_lang`, `idx_available_domains_emd_pmd`), serta otomatis melakukan *backfill* `sld`, hingga `100` baris skor `NULL` (`backfillMissingScores`), dan hingga `100` baris `tags` yang masih kosong (`backfillMissingTags` mode `null-only` memakai `lib/domain-tagger.js`). Saat domain baru disimpan via `POST`, kolom `tags` diisi otomatis secara idempoten (`COALESCE(NULLIF(trim(available_domains.tags), ''), excluded.tags)`) tanpa menimpa tag yang sudah ada. Untuk tabel besar, tersedia helper manual `POST /api/log-available-domain` dengan `{ "action": "backfill-scores", "limit": 200 }` dan `{ "action": "backfill-tags", "mode": "null-only" | "retag-brandable" | "force", "limit": 200, "dryRun": true }`. File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, dan `migrations/0004_add_sld_and_tags.sql`.
+- **Auto-Bootstrap Ringan, Auto-Migrasi Schema & Manual Backfill Terukur (SLD + Skor + Auto-Tagging 8 Bahasa)**: Pada request pertama, `ensureAvailableDomainsSchema` hanya menjalankan bootstrap DDL ringan tanpa memicu pemindaian backfill penuh di cold start: menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT`, `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer skor bila belum ada (dan menghapus kolom lama `checked_at_iso` bila masih ada), lalu membuat 6 indeks standar serta 3 *partial index* via `db.batch` (`idx_available_domains_missing_sld`, `idx_available_domains_missing_tags`, dan `idx_available_domains_brandable_tags`). Saat domain baru disimpan via `POST`, kolom `tags` (`?19`) diisi otomatis secara idempoten (`COALESCE(NULLIF(trim(available_domains.tags), ''), excluded.tags)`) tanpa menimpa tag yang sudah ada. Untuk mengisi data lama secara terukur dalam batch 50 baris per `db.batch`, tersedia helper manual `POST /api/log-available-domain` dengan `{ "action": "backfill-sld" }`, `{ "action": "backfill-scores", "limit": 200 }`, dan `{ "action": "backfill-tags", "mode": "null-only" | "retag-brandable" | "repair-invalid" | "force", "limit": 200, "offset": 0, "dryRun": true, "skipCount": false }` (di mana `repair-invalid` memperbaiki baris `tags` non-JSON / bukan JSON array / array kosong, dan `retag-brandable` memanfaatkan partial index `idx_available_domains_brandable_tags` dengan kursor `nextOffset` serta melewatkan baris yang tidak berubah). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, `migrations/0004_add_sld_and_tags.sql`, dan `migrations/0005_add_tag_partial_indexes.sql`.
 - **Formula Penilaian Otomatis (7 Aspek, Total Bobot = `1.00`) & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, memisahkan SLD secara akurat untuk ekstensi multi-bagian (`.web.id`, `.my.id`, `.co.id`, `.co.uk`, dll.), serta menghitung skor `0–100` yang identik antara klien dan Worker:
   - `pronunciation_comfort_score` (**`0.22`**) — kelancaran pelafalan (*radio test*), penalti gugus/hiatus, akhiran janggal (`/[jq]$/` `-20`, `[^aeiou][vwzx]$` `-10` non-kamus, `-ik/-uk/-ok` `-6` non-Indonesia, serta `-iy/-iw/-uc/-uf`), dan tabrakan 2 konsonan berat (`bk`, `tp`, `qj`, `xz`, dll. `-20`) pada kata rekaan.
   - `brandability_score` (**`0.20`**) — daya ingat, panjang SLD ideal, dan kekhasan merek (bonus merek ciptaan dibatasi bila pelafalan lemah).
@@ -256,7 +256,7 @@ CREATE TABLE IF NOT EXISTS available_domains (
   tags TEXT
 );
 
--- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor / sld / tags (migrations/0001–0004)
+-- 2. Migrasi bertahap jika tabel lama belum memiliki kolom skor / sld / tags (migrations/0001–0005)
 ALTER TABLE available_domains ADD COLUMN sld TEXT;
 ALTER TABLE available_domains ADD COLUMN pronunciation_comfort_score INTEGER;
 ALTER TABLE available_domains ADD COLUMN brandability_score INTEGER;
@@ -287,6 +287,18 @@ ON available_domains (lang, checked_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
 ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_missing_sld
+ON available_domains (checked_at DESC)
+WHERE sld IS NULL OR trim(sld) = '';
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_missing_tags
+ON available_domains (checked_at DESC)
+WHERE tags IS NULL OR trim(tags) = '';
+
+CREATE INDEX IF NOT EXISTS idx_available_domains_brandable_tags
+ON available_domains (checked_at DESC)
+WHERE tags LIKE '%"brandable"%';
 
 -- Backfill aman sld untuk baris lama yang masih NULL (termasuk .my.id, .web.id)
 UPDATE available_domains

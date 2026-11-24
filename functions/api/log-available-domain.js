@@ -813,44 +813,85 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
   };
 }
 
-async function backfillMissingSld(db) {
-  await db.prepare(`
-    UPDATE available_domains
-    SET sld = substr(domain, 1, length(domain) - length(extension))
-    WHERE (sld IS NULL OR trim(sld) = '')
-      AND extension LIKE '.%'
-      AND length(domain) > length(extension)
-      AND lower(substr(domain, length(domain) - length(extension) + 1)) = lower(extension)
-  `).run();
+async function backfillMissingSld(db, options = {}) {
+  const limit = Math.max(1, Math.min(250, Math.floor(Number(options.limit) || 200)));
+  const dryRun = Boolean(options.dryRun);
+  const skipCount = Boolean(options.skipCount);
 
-  const remainingStmt = db.prepare(`
+  const selectStmt = db.prepare(`
     SELECT domain, extension
     FROM available_domains
     WHERE sld IS NULL OR trim(sld) = ''
-    LIMIT 500
+    ORDER BY checked_at DESC
+    LIMIT ?1
   `);
-  if (typeof remainingStmt.all === 'function') {
-    const remaining = await remainingStmt.all();
-    const rows = Array.isArray(remaining && remaining.results) ? remaining.results : [];
-    if (rows.length > 0 && typeof db.batch === 'function') {
-      const updates = [];
-      for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const normalized = normalizeDomain(row && row.domain);
-        if (!normalized) continue;
-        const { sld, ext } = splitDomainSldAndExt(normalized, row && row.extension);
-        if (sld) {
-          updates.push(
-            db.prepare('UPDATE available_domains SET sld = ?1, extension = ?2 WHERE domain = ?3')
-              .bind(sld, ext || extractExtension(normalized), normalized)
-          );
-        }
-      }
-      if (updates.length > 0) {
-        await db.batch(updates);
-      }
+
+  if (typeof selectStmt.bind !== 'function') {
+    return { processed: 0, remaining: skipCount ? null : 0, done: true, dryRun, sample: [] };
+  }
+
+  const boundSelect = selectStmt.bind(limit);
+  if (typeof boundSelect.all !== 'function') {
+    return { processed: 0, remaining: skipCount ? null : 0, done: true, dryRun, sample: [] };
+  }
+
+  const res = await boundSelect.all();
+  const rows = Array.isArray(res && res.results) ? res.results : [];
+  const updates = [];
+  const sample = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const normalized = normalizeDomain(row && row.domain);
+    if (!normalized) continue;
+    const { sld, ext } = splitDomainSldAndExt(normalized, row && row.extension);
+    if (!sld) continue;
+
+    const resolvedExt = ext || extractExtension(normalized);
+    if (sample.length < 5) {
+      sample.push({ domain: normalized, sld, extension: resolvedExt });
+    }
+
+    updates.push(
+      db.prepare(`
+        UPDATE available_domains
+        SET sld = ?1,
+            extension = ?2
+        WHERE domain = ?3
+          AND (sld IS NULL OR trim(sld) = '')
+      `).bind(sld, resolvedExt, normalized)
+    );
+  }
+
+  if (!dryRun && updates.length > 0 && typeof db.batch === 'function') {
+    const BATCH_CHUNK_SIZE = 50;
+    for (let i = 0; i < updates.length; i += BATCH_CHUNK_SIZE) {
+      await db.batch(updates.slice(i, i + BATCH_CHUNK_SIZE));
     }
   }
+
+  let remaining = null;
+  if (!skipCount) {
+    remaining = 0;
+    const countStmt = db.prepare(`
+      SELECT COUNT(*) AS remaining
+      FROM available_domains
+      WHERE sld IS NULL OR trim(sld) = ''
+    `);
+    if (typeof countStmt.all === 'function') {
+      const countRes = await countStmt.all();
+      const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
+      remaining = Number(firstRow && firstRow.remaining) || 0;
+    }
+  }
+
+  return {
+    processed: updates.length,
+    remaining,
+    done: remaining === null ? rows.length < limit : remaining === 0,
+    dryRun,
+    sample
+  };
 }
 
 const MISSING_SCORES_CONDITION = `
@@ -869,6 +910,7 @@ const MISSING_SCORES_CONDITION = `
 async function backfillMissingScores(db, options = {}) {
   const limit = Math.max(1, Math.min(250, Math.floor(Number(options.limit) || 100)));
   const dryRun = Boolean(options.dryRun);
+  const skipCount = Boolean(options.skipCount);
 
   const selectStmt = db.prepare(`
     SELECT domain, extension, lang
@@ -879,12 +921,12 @@ async function backfillMissingScores(db, options = {}) {
   `);
 
   if (typeof selectStmt.bind !== 'function') {
-    return { processed: 0, remaining: 0, done: true, dryRun, sample: [] };
+    return { processed: 0, remaining: skipCount ? null : 0, done: true, dryRun, sample: [] };
   }
 
   const boundSelect = selectStmt.bind(limit);
   if (typeof boundSelect.all !== 'function') {
-    return { processed: 0, remaining: 0, done: true, dryRun, sample: [] };
+    return { processed: 0, remaining: skipCount ? null : 0, done: true, dryRun, sample: [] };
   }
 
   const res = await boundSelect.all();
@@ -956,43 +998,59 @@ async function backfillMissingScores(db, options = {}) {
     }
   }
 
-  let remaining = 0;
-  const countStmt = db.prepare(`
-    SELECT COUNT(*) AS remaining
-    FROM available_domains
-    WHERE ${MISSING_SCORES_CONDITION}
-  `);
-  if (typeof countStmt.all === 'function') {
-    const countRes = await countStmt.all();
-    const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
-    remaining = Number(firstRow && firstRow.remaining) || 0;
+  let remaining = null;
+  if (!skipCount) {
+    remaining = 0;
+    const countStmt = db.prepare(`
+      SELECT COUNT(*) AS remaining
+      FROM available_domains
+      WHERE ${MISSING_SCORES_CONDITION}
+    `);
+    if (typeof countStmt.all === 'function') {
+      const countRes = await countStmt.all();
+      const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
+      remaining = Number(firstRow && firstRow.remaining) || 0;
+    }
   }
 
   return {
     processed: updates.length,
     remaining,
-    done: remaining === 0,
+    done: remaining === null ? rows.length < limit : remaining === 0,
     dryRun,
     sample
   };
 }
 
+const INVALID_TAGS_CONDITION = `
+  tags IS NOT NULL
+  AND (
+    json_valid(tags) = 0
+    OR json_type(tags) != 'array'
+    OR json_array_length(tags) = 0
+  )
+`;
+
 async function backfillMissingTags(db, options = {}) {
-  const mode = ['null-only', 'retag-brandable', 'force'].includes(options.mode)
+  const mode = ['null-only', 'retag-brandable', 'repair-invalid', 'force'].includes(options.mode)
     ? options.mode
     : 'null-only';
   const limit = Math.max(1, Math.min(250, Math.floor(Number(options.limit) || 100)));
-  const offset = mode === 'force' ? Math.max(0, Math.floor(Number(options.offset) || 0)) : 0;
+  const usesCursorOffset = mode === 'force' || mode === 'retag-brandable';
+  const offset = usesCursorOffset ? Math.max(0, Math.floor(Number(options.offset) || 0)) : 0;
   const dryRun = Boolean(options.dryRun);
+  const skipCount = Boolean(options.skipCount);
 
   const whereClause = mode === 'force'
     ? '1 = 1'
     : mode === 'retag-brandable'
-      ? `(tags IS NULL OR trim(tags) = '' OR tags LIKE '%"brandable"%')`
-      : `(tags IS NULL OR trim(tags) = '')`;
+      ? `tags LIKE '%"brandable"%'`
+      : mode === 'repair-invalid'
+        ? INVALID_TAGS_CONDITION
+        : `(tags IS NULL OR trim(tags) = '')`;
 
   const selectStmt = db.prepare(`
-    SELECT domain, sld, extension, lang
+    SELECT domain, sld, extension, lang, tags
     FROM available_domains
     WHERE ${whereClause}
     ORDER BY checked_at DESC
@@ -1000,18 +1058,40 @@ async function backfillMissingTags(db, options = {}) {
   `);
 
   if (typeof selectStmt.bind !== 'function') {
-    return { mode, dryRun, processed: 0, nextOffset: offset, remaining: 0, done: true, sample: [] };
+    return {
+      mode,
+      dryRun,
+      scanned: 0,
+      processed: 0,
+      unchanged: 0,
+      nextOffset: offset,
+      remaining: skipCount ? null : 0,
+      done: true,
+      sample: []
+    };
   }
 
   const boundSelect = selectStmt.bind(limit, offset);
   if (typeof boundSelect.all !== 'function') {
-    return { mode, dryRun, processed: 0, nextOffset: offset, remaining: 0, done: true, sample: [] };
+    return {
+      mode,
+      dryRun,
+      scanned: 0,
+      processed: 0,
+      unchanged: 0,
+      nextOffset: offset,
+      remaining: skipCount ? null : 0,
+      done: true,
+      sample: []
+    };
   }
 
   const res = await boundSelect.all();
   const rows = Array.isArray(res && res.results) ? res.results : [];
   const updates = [];
   const sample = [];
+  let unchanged = 0;
+  let retainedBrandableCount = 0;
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
@@ -1019,7 +1099,8 @@ async function backfillMissingTags(db, options = {}) {
     if (!normalized) continue;
 
     const { sld: parsedSld, ext: parsedExt } = splitDomainSldAndExt(normalized, row && row.extension);
-    const resolvedSld = String(row && row.sld || '').trim().toLowerCase() || parsedSld;
+    const existingSld = String(row && row.sld || '').trim().toLowerCase();
+    const resolvedSld = existingSld || parsedSld;
     const resolvedExt = parsedExt || extractExtension(normalized);
     const resolvedLang = normalizeLang(row && row.lang);
 
@@ -1029,6 +1110,17 @@ async function backfillMissingTags(db, options = {}) {
       extension: resolvedExt,
       uiLang: resolvedLang
     });
+
+    if (tagResult.tags.includes('brandable')) {
+      retainedBrandableCount += 1;
+    }
+
+    const existingTags = typeof row.tags === 'string' ? row.tags : null;
+    const isUnchanged = existingTags === tagResult.tagsJson && existingSld === tagResult.sld;
+    if (isUnchanged && (mode === 'retag-brandable' || mode === 'force')) {
+      unchanged += 1;
+      continue;
+    }
 
     if (sample.length < 5) {
       sample.push({
@@ -1049,12 +1141,20 @@ async function backfillMissingTags(db, options = {}) {
         WHERE domain = ?3
           AND (tags IS NULL OR trim(tags) = '')
       `
-      : `
-        UPDATE available_domains
-        SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
-            tags = ?2
-        WHERE domain = ?3
-      `;
+      : mode === 'repair-invalid'
+        ? `
+          UPDATE available_domains
+          SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
+              tags = ?2
+          WHERE domain = ?3
+            AND ${INVALID_TAGS_CONDITION}
+        `
+        : `
+          UPDATE available_domains
+          SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
+              tags = ?2
+          WHERE domain = ?3
+        `;
 
     updates.push(
       db.prepare(updateSql).bind(
@@ -1072,30 +1172,48 @@ async function backfillMissingTags(db, options = {}) {
     }
   }
 
-  let totalMatching = 0;
-  const countStmt = db.prepare(`
-    SELECT COUNT(*) AS remaining
-    FROM available_domains
-    WHERE ${whereClause}
-  `);
-  if (typeof countStmt.all === 'function') {
-    const countRes = await countStmt.all();
-    const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
-    totalMatching = Number(firstRow && firstRow.remaining) || 0;
+  let totalMatching = null;
+  if (!skipCount) {
+    totalMatching = 0;
+    const countStmt = db.prepare(`
+      SELECT COUNT(*) AS remaining
+      FROM available_domains
+      WHERE ${whereClause}
+    `);
+    if (typeof countStmt.all === 'function') {
+      const countRes = await countStmt.all();
+      const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
+      totalMatching = Number(firstRow && firstRow.remaining) || 0;
+    }
   }
 
-  const nextOffset = mode === 'force' ? offset + updates.length : 0;
-  const remaining = mode === 'force'
-    ? Math.max(0, totalMatching - nextOffset)
-    : totalMatching;
+  let nextOffset = 0;
+  if (mode === 'force') {
+    nextOffset = offset + rows.length;
+  } else if (mode === 'retag-brandable') {
+    nextOffset = dryRun ? offset + rows.length : offset + retainedBrandableCount;
+  }
+
+  let remaining = null;
+  if (totalMatching !== null) {
+    remaining = usesCursorOffset
+      ? Math.max(0, totalMatching - nextOffset)
+      : totalMatching;
+  }
+
+  const done = remaining === null
+    ? rows.length < limit
+    : remaining === 0 || (usesCursorOffset && rows.length === 0);
 
   return {
     mode,
     dryRun,
+    scanned: rows.length,
     processed: updates.length,
+    unchanged,
     nextOffset,
     remaining,
-    done: remaining === 0,
+    done,
     sample
   };
 }
@@ -1219,12 +1337,23 @@ async function ensureAvailableDomainsSchema(db) {
         db.prepare(`
           CREATE INDEX IF NOT EXISTS idx_available_domains_emd_pmd
           ON available_domains (emd_pmd_score, emd_pmd_match_type, checked_at DESC)
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_missing_sld
+          ON available_domains (checked_at DESC)
+          WHERE sld IS NULL OR trim(sld) = ''
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_missing_tags
+          ON available_domains (checked_at DESC)
+          WHERE tags IS NULL OR trim(tags) = ''
+        `),
+        db.prepare(`
+          CREATE INDEX IF NOT EXISTS idx_available_domains_brandable_tags
+          ON available_domains (checked_at DESC)
+          WHERE tags LIKE '%"brandable"%'
         `)
       ]);
-
-      await backfillMissingSld(db);
-      await backfillMissingScores(db, { limit: 100 });
-      await backfillMissingTags(db, { limit: 100, mode: 'null-only' });
     })().catch((err) => {
       schemaReadyPromise = null;
       throw err;
@@ -1256,12 +1385,34 @@ export async function onRequestPost(context) {
 
   const reqUrl = new URL(request.url);
   const action = String(body.action || reqUrl.searchParams.get('action') || '').trim().toLowerCase();
+  if (action === 'backfill-sld') {
+    try {
+      await ensureAvailableDomainsSchema(env.DB);
+      const result = await backfillMissingSld(env.DB, {
+        limit: body.limit ?? reqUrl.searchParams.get('limit') ?? 200,
+        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true',
+        skipCount: body.skipCount === true || reqUrl.searchParams.get('skipCount') === 'true'
+      });
+      return jsonResponse({
+        ok: true,
+        action: 'backfill-sld',
+        ...result
+      });
+    } catch {
+      return jsonResponse(
+        { ok: false, action: 'backfill-sld', error: 'Failed to backfill missing domain SLD.' },
+        500
+      );
+    }
+  }
+
   if (action === 'backfill-scores') {
     try {
       await ensureAvailableDomainsSchema(env.DB);
       const result = await backfillMissingScores(env.DB, {
         limit: body.limit ?? reqUrl.searchParams.get('limit') ?? 200,
-        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true'
+        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true',
+        skipCount: body.skipCount === true || reqUrl.searchParams.get('skipCount') === 'true'
       });
       return jsonResponse({
         ok: true,
@@ -1283,7 +1434,8 @@ export async function onRequestPost(context) {
         mode: body.mode ?? reqUrl.searchParams.get('mode') ?? 'null-only',
         limit: body.limit ?? reqUrl.searchParams.get('limit') ?? 200,
         offset: body.offset ?? reqUrl.searchParams.get('offset') ?? 0,
-        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true'
+        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true',
+        skipCount: body.skipCount === true || reqUrl.searchParams.get('skipCount') === 'true'
       });
       return jsonResponse({
         ok: true,
