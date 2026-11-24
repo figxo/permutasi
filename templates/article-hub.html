@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="{{PAGE_LANG}}" class="scroll-smooth overflow-x-clip">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{META_TITLE}}</title>
+    <meta name="description" content="{{META_DESC}}">
+    <meta name="robots" content="{{ROBOTS_META}}">
+    <meta name="contact-email" content="{{CONTACT_EMAIL}}">
+    <!-- SITE_CONFIG:HEAD_START -->
+    <!-- Configure GA4, GSC, or AdSense IDs in site.config.json -->
+    <!-- SITE_CONFIG:HEAD_END -->
+    <link rel="canonical" href="{{CANONICAL_URL}}">
+    {{HREFLANG_LINKS}}
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="{{OG_LOCALE}}">
+    <meta property="og:site_name" content="{{OG_SITE_NAME}}">
+    <meta property="og:title" content="{{META_TITLE}}">
+    <meta property="og:description" content="{{META_DESC}}">
+    <meta property="og:url" content="{{CANONICAL_URL}}">
+
+    <script type="application/ld+json" id="schemaJsonLd">
+    {{JSON_LD}}
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        (function() {
+            try {
+                if (localStorage.getItem('preferredTheme') === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body data-page-type="article-hub" data-article-section="{{SECTION_KEY}}" data-page-lang="{{PAGE_LANG}}" class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased min-h-screen overflow-x-clip transition-colors duration-200 flex flex-col">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto h-14 md:h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4 min-w-0 overflow-x-clip">
+            <a href="{{HOME_HREF}}" id="brandHomeLink" aria-label="Domain Name — Home" title="Domain Name" class="inline-flex items-center gap-2 sm:gap-2.5 min-w-0 text-slate-900 dark:text-white font-bold tracking-tight text-[15px] sm:text-lg whitespace-nowrap shrink rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                <svg aria-hidden="true" class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M3.6 9h16.8M3.6 15h16.8"></path>
+                    <path d="M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path>
+                </svg>
+                <span class="truncate">Domain Name</span>
+            </a>
+
+            <nav aria-label="Primary Navigation" class="hidden md:flex items-center gap-5 text-sm font-medium text-slate-600 dark:text-slate-300">
+                {{HEADER_NAV_LINKS}}
+            </nav>
+
+            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <nav aria-label="Language Selector" class="flex items-center shrink-0">
+                    <label for="langSelect" class="sr-only">Language</label>
+                    <select id="langSelect" aria-label="Select Language" title="Select Language" onchange="switchEditorialLanguage(this)" class="min-h-[44px] sm:min-h-[40px] w-auto min-w-[3.25rem] bg-white dark:bg-slate-900 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 px-2 sm:px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer shrink-0">
+                        {{LANG_SELECT_OPTIONS}}
+                    </select>
+                </nav>
+                <button type="button" onclick="toggleTheme()" aria-label="Toggle color theme" title="Toggle Light / Dark Mode" class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] sm:min-h-[40px] sm:min-w-[40px] rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 shrink-0">
+                    <svg aria-hidden="true" class="hidden dark:block w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2m-7.07-15.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2m-15.07 7.07 1.41-1.41m11.32-11.32 1.41-1.41"></path></svg>
+                    <svg aria-hidden="true" class="block dark:hidden w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-12 flex flex-col gap-8">
+        <nav aria-label="Breadcrumb" class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-2">
+            <a href="{{HOME_HREF}}" class="hover:text-blue-600 dark:hover:text-blue-400">{{HOME_LABEL}}</a>
+            <span>/</span>
+            <span class="text-slate-900 dark:text-slate-200">{{SECTION_LABEL}}</span>
+        </nav>
+
+        <section class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 sm:p-8 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <p class="text-[11px] uppercase tracking-wider font-semibold text-blue-600 dark:text-blue-400">{{HUB_SUBTITLE}}</p>
+                <div class="flex flex-wrap gap-2">
+                    {{SECTION_TABS_HTML}}
+                </div>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">{{HUB_H1}}</h1>
+            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">{{HUB_INTRO}}</p>
+        </section>
+
+        {{HUB_CARDS_HTML}}
+    </main>
+
+    <!-- Interlinked Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                <div class="md:col-span-4 space-y-2">
+                    <a href="{{HOME_HREF}}" class="inline-flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">Domain Name</a>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">{{FOOTER_SLOGAN}}</p>
+                    <p class="text-[11px] font-mono text-slate-500">{{SITE_HOST}}</p>
+                </div>
+                <div class="md:col-span-5 space-y-2.5">
+                    <h3 class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{{FOOTER_EDITIONS_TITLE}}</h3>
+                    <nav aria-label="Multilingual Editions" class="flex flex-wrap gap-2">
+                        {{FOOTER_EDITIONS_LINKS}}
+                    </nav>
+                </div>
+                <div class="md:col-span-3 space-y-2">
+                    <h3 class="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{{FOOTER_LEGAL_TITLE}}</h3>
+                    <ul class="space-y-1.5 text-sm">
+                        {{FOOTER_LEGAL_LINKS}}
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+                <p>{{FOOTER_COPYRIGHT}}</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            var isDark = document.documentElement.classList.toggle('dark');
+            try { localStorage.setItem('preferredTheme', isDark ? 'dark' : 'light'); } catch (e) {}
+        }
+        function switchEditorialLanguage(selectEl) {
+            if (!selectEl || selectEl.selectedIndex < 0) return;
+            var opt = selectEl.options[selectEl.selectedIndex];
+            var targetHref = opt && opt.getAttribute('data-href');
+            if (targetHref) {
+                window.location.href = targetHref;
+            }
+        }
+    </script>
+</body>
+</html>
