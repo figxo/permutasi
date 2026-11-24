@@ -1,0 +1,253 @@
+{
+  "agency": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "auto": [
+    5.5,
+    [
+      "auto-mobility"
+    ]
+  ],
+  "box": [
+    3.8,
+    [
+      "tools",
+      "business"
+    ]
+  ],
+  "brand": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "bureau": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "business": [
+    7.5,
+    [
+      "business"
+    ]
+  ],
+  "buy": [
+    3.6,
+    [
+      "ecommerce"
+    ]
+  ],
+  "calc": [
+    5.5,
+    [
+      "calculator",
+      "tools"
+    ]
+  ],
+  "calcu": [
+    6,
+    [
+      "calculator",
+      "tools"
+    ]
+  ],
+  "cart": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "checker": [
+    6.5,
+    [
+      "tools"
+    ]
+  ],
+  "cloud": [
+    6,
+    [
+      "cloud-tech"
+    ]
+  ],
+  "corp": [
+    4.8,
+    [
+      "business"
+    ]
+  ],
+  "deal": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "deals": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "dom": [
+    3.6,
+    [
+      "domain-naming"
+    ]
+  ],
+  "domain": [
+    7,
+    [
+      "domain-naming"
+    ]
+  ],
+  "firm": [
+    4.8,
+    [
+      "business"
+    ]
+  ],
+  "free": [
+    5.5,
+    [
+      "free-offer"
+    ]
+  ],
+  "guide": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "helper": [
+    6.2,
+    [
+      "tools"
+    ]
+  ],
+  "host": [
+    5.2,
+    [
+      "domain-naming"
+    ]
+  ],
+  "hub": [
+    3.8,
+    [
+      "tools",
+      "business"
+    ]
+  ],
+  "kit": [
+    3.6,
+    [
+      "tools"
+    ]
+  ],
+  "maker": [
+    5.8,
+    [
+      "tools"
+    ]
+  ],
+  "market": [
+    6.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "name": [
+    5.5,
+    [
+      "domain-naming",
+      "naming"
+    ]
+  ],
+  "order": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "pay": [
+    3.6,
+    [
+      "ecommerce"
+    ]
+  ],
+  "pro": [
+    3.4,
+    [
+      "business"
+    ]
+  ],
+  "sale": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "scan": [
+    5.2,
+    [
+      "tools"
+    ]
+  ],
+  "shop": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "site": [
+    5.2,
+    [
+      "domain-naming"
+    ]
+  ],
+  "startup": [
+    7,
+    [
+      "business"
+    ]
+  ],
+  "store": [
+    6,
+    [
+      "ecommerce"
+    ]
+  ],
+  "tool": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "tools": [
+    6,
+    [
+      "tools"
+    ]
+  ],
+  "utils": [
+    5.8,
+    [
+      "tools"
+    ]
+  ],
+  "venture": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "web": [
+    3.8,
+    [
+      "domain-naming"
+    ]
+  ]
+}

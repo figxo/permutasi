@@ -10,12 +10,12 @@ Berdasarkan audit langsung terhadap seluruh file sumber (`package.json`, `site.c
 
 | Komponen | Status | Keterangan & Hasil Audit |
 | --- | --- | --- |
-| **Keamanan GitHub (`.gitignore`)** | Siap | `node_modules/`, `dist/`, `.env`, `.env.local`, `.env.*.local`, `*.log`, `.DS_Store` sudah dikecualikan agar tidak ikut ter-commit. |
-| **Kebersihan Kode Sumber** | Siap | `site.config.json` bebas dari token/ID sensitif (`measurementId`, `verificationToken`, `publisherId` kosong). Tidak ada `localhost` atau *hardcoded secret* di HTML/JS. |
-| **Build Statis (`npm run build`)** | Siap | Menjalankan `node scripts/build-static.mjs` tanpa bergantung pada `express` atau library native eksternal; menghasilkan **48 file HTML** (`en` di root, `id/es/pt/fr/de/ru/ja` di subdirektori), `robots.txt`, `sitemap.xml`, `_redirects`, `_headers`, `assets/`, dan `ads.txt` (jika `ADSENSE_CLIENT_ID` terisi). |
-| **Validasi Sintaks (`npm run lint`)** | Siap | Memverifikasi `server.js`, `scripts/site-builder.mjs`, `scripts/build-static.mjs`, dan `assets/trust-i18n.js` menggunakan `node --check`. |
+| **Keamanan GitHub (`.gitignore`)** | Siap | `node_modules/`, `dist/`, `.env`, `.env.local`, `.env.*.local`, `*.log`, `.DS_Store`, dan `.admin-auth.json` sudah dikecualikan agar tidak ikut ter-commit. |
+| **Kebersihan Kode Sumber** | Siap | `site.config.json` bebas dari token/ID sensitif (`measurementId`, `verificationToken`, `publisherId` kosong). Tidak ada `localhost` atau *hardcoded secret* di HTML/JS. `ADMIN_PASSWORD` dibaca eksklusif dari environment/secret. |
+| **Build Statis (`npm run build`)** | Siap | Menjalankan `node scripts/build-static.mjs` tanpa bergantung pada `express` atau library native eksternal; menghasilkan **48 file HTML** (`en` di root, `id/es/pt/fr/de/ru/ja` di subdirektori), `robots.txt`, `sitemap.xml`, `_redirects`, `_headers`, `assets/`, dan `ads.txt` (jika `ADSENSE_CLIENT_ID` terisi). `admin-lexicon.html` **tidak** ikut di-build ke `dist/`. |
+| **Validasi Sintaks (`npm run lint`)** | Siap | Memverifikasi `server.js`, `scripts/site-builder.mjs`, `scripts/build-static.mjs`, `assets/trust-i18n.js`, `lib/domain-tagger.js`, `lib/lexicon-store.js`, `lib/admin-auth.js`, `lib/lexicon/bundle.js`, dan `functions/api/log-available-domain.js` menggunakan `node --check`. |
 | **Cache Ketersediaan (`localStorage`)** | Siap | Hasil cek DoH/RDAP disimpan di `localStorage` (`domainAvailabilityCacheV1`) dengan kunci lowercase ternormalisasi, TTL (default 6 jam untuk `available`/`taken`, 5 menit untuk `check`), pruning otomatis, fallback aman `try...catch`, serta tombol re-check per baris. |
-| **Cloudflare Secrets / Env Vars** | Siap | `scripts/site-builder.mjs` membaca override dari `process.env` saat proses build Cloudflare berjalan (`SITE_URL`, `CONTACT_EMAIL`, `GA_MEASUREMENT_ID`, `GSC_VERIFICATION`, `ADSENSE_CLIENT_ID`, `ADSENSE_DIRECT_SELLER_ID`, `ADSENSE_ENABLE_AUTO_ADS`, `BING_VERIFICATION`, `YANDEX_VERIFICATION`, `AHREFS_SITE_VERIFICATION`). |
+| **Cloudflare Secrets / Env Vars** | Siap | `scripts/site-builder.mjs` membaca override dari `process.env` saat proses build Cloudflare berjalan (`SITE_URL`, `CONTACT_EMAIL`, `GA_MEASUREMENT_ID`, `GSC_VERIFICATION`, `ADSENSE_CLIENT_ID`, `ADSENSE_DIRECT_SELLER_ID`, `ADSENSE_ENABLE_AUTO_ADS`, `BING_VERIFICATION`, `YANDEX_VERIFICATION`, `AHREFS_SITE_VERIFICATION`). `ADMIN_PASSWORD` digunakan di server lokal `/admin-lexicon` dan di Worker D1 untuk aksi `backfill-*`. |
 | **Mode AdSense Non-Auto Ads** | Siap | `enableAutoAdsScript` bernilai `false` di `site.config.json` dan dapat dikontrol via `ADSENSE_ENABLE_AUTO_ADS=false`. Seluruh halaman memiliki penanda kotak putih putus-putus maksimal 2 slot (1 slot di `contact.html`). |
 | **Security & Cache Headers (`_headers`)** | Siap | Build otomatis menghasilkan `dist/_headers` (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, dan `Cache-Control`). |
 | **Redirect Bahasa Inggris (`_redirects`)** | Siap | Build otomatis menghasilkan `dist/_redirects` untuk mengarahkan `/en`, `/en/`, dan `/en/*` ke `/` dengan status `301`. |
@@ -104,6 +104,7 @@ Sebelum (atau tepat setelah) klik **Save and Deploy**, masuk ke project Cloudfla
 | `BING_VERIFICATION` | **Secret** | Token `msvalidate.01` (opsional) |
 | `YANDEX_VERIFICATION` | **Secret** | Token `yandex-verification` (opsional) |
 | `AHREFS_SITE_VERIFICATION` | **Secret** | Token `ahrefs-site-verification` (opsional) |
+| `ADMIN_PASSWORD` | **Secret** | Password admin untuk otorisasi endpoint D1 `action=backfill-*` di Cloudflare Pages Functions (dan Admin UI lokal `/admin-lexicon`) |
 
 > **Penting**: Setiap kali Anda menambah atau mengubah *Secret / Environment Variable* di Cloudflare Pages, Cloudflare **tidak otomatis** membangun ulang HTML lama. Buka tab **Deployments -> titik tiga pada deployment terbaru -> Retry deployment** agar `npm run build` berjalan ulang dengan nilai secret yang baru.
 
@@ -209,7 +210,7 @@ Bagian ini merangkum arsitektur antarmuka, optimasi mobile, serta mekanisme cach
 
 ### C. Logging Otomatis Domain Tersedia (≤ 25 Karakter) ke Cloudflare D1
 - **Cloudflare Pages Function**: `functions/api/log-available-domain.js` melayani endpoint `POST /api/log-available-domain` menggunakan binding D1 `env.DB`.
-- **Auto-Bootstrap Ringan, Auto-Migrasi Schema & Manual Backfill Terukur (SLD + Skor + Auto-Tagging 8 Bahasa)**: Pada request pertama, `ensureAvailableDomainsSchema` hanya menjalankan bootstrap DDL ringan tanpa memicu pemindaian backfill penuh di cold start: menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT`, `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer skor bila belum ada (dan menghapus kolom lama `checked_at_iso` bila masih ada), lalu membuat 6 indeks standar serta 3 *partial index* via `db.batch` (`idx_available_domains_missing_sld`, `idx_available_domains_missing_tags`, dan `idx_available_domains_brandable_tags`). Saat domain baru disimpan via `POST`, kolom `tags` (`?19`) diisi otomatis secara idempoten (`COALESCE(NULLIF(trim(available_domains.tags), ''), excluded.tags)`) tanpa menimpa tag yang sudah ada. Untuk mengisi data lama secara terukur dalam batch 50 baris per `db.batch`, tersedia helper manual `POST /api/log-available-domain` dengan `{ "action": "backfill-sld" }`, `{ "action": "backfill-scores", "limit": 200 }`, dan `{ "action": "backfill-tags", "mode": "null-only" | "retag-brandable" | "repair-invalid" | "force", "limit": 200, "offset": 0, "dryRun": true, "skipCount": false }` (di mana `repair-invalid` memperbaiki baris `tags` non-JSON / bukan JSON array / array kosong, dan `retag-brandable` memanfaatkan partial index `idx_available_domains_brandable_tags` dengan kursor `nextOffset` serta melewatkan baris yang tidak berubah). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, `migrations/0004_add_sld_and_tags.sql`, dan `migrations/0005_add_tag_partial_indexes.sql`.
+- **Auto-Bootstrap Ringan, Auto-Migrasi Schema & Manual Backfill Terukur (SLD + Skor + Auto-Tagging 8 Bahasa)**: Pada request pertama, `ensureAvailableDomainsSchema` hanya menjalankan bootstrap DDL ringan tanpa memicu pemindaian backfill penuh di cold start: menjalankan `CREATE TABLE IF NOT EXISTS available_domains`, mengecek `PRAGMA table_info(available_domains)` untuk menambah kolom `sld TEXT`, `tags TEXT`, `lang TEXT NOT NULL DEFAULT 'en'`, `emd_pmd_match_type TEXT`, serta 9 kolom integer skor bila belum ada (dan menghapus kolom lama `checked_at_iso` bila masih ada), lalu membuat 6 indeks standar serta 3 *partial index* via `db.batch` (`idx_available_domains_missing_sld`, `idx_available_domains_missing_tags`, dan `idx_available_domains_brandable_tags`). Saat domain baru disimpan via `POST`, kolom `tags` (`?19`) diisi otomatis secara idempoten (`COALESCE(NULLIF(trim(available_domains.tags), ''), excluded.tags)`) tanpa menimpa tag yang sudah ada. Untuk mengisi data lama secara terukur dalam batch 50 baris per `db.batch`, tersedia helper manual `POST /api/log-available-domain` dengan `{ "action": "backfill-sld" }`, `{ "action": "backfill-scores", "limit": 200 }`, dan `{ "action": "backfill-tags", "mode": "null-only" | "retag-brandable" | "repair-invalid" | "force", "limit": 200, "offset": 0, "dryRun": true, "skipCount": false }` (di mana `repair-invalid` memperbaiki baris `tags` non-JSON / bukan JSON array / array kosong, dan `retag-brandable` memanfaatkan partial index `idx_available_domains_brandable_tags` dengan kursor `nextOffset` serta melewatkan baris yang tidak berubah). **Otorisasi Admin**: Ketiga aksi `backfill-*` di produksi mewajibkan secret `ADMIN_PASSWORD` terpasang di Cloudflare dan dikirim lewat header `Authorization: Bearer <ADMIN_PASSWORD>` atau `X-Admin-Password` (pencatatan domain normal dari pengunjung tetap berjalan tanpa password). File migrasi SQL terpisah tersedia di `migrations/0001_add_domain_scores.sql`, `migrations/0002_add_pronunciation_comfort_score.sql`, `migrations/0003_add_emd_pmd_score.sql`, `migrations/0004_add_sld_and_tags.sql`, dan `migrations/0005_add_tag_partial_indexes.sql`.
 - **Formula Penilaian Otomatis (7 Aspek, Total Bobot = `1.00`) & Validasi Server-Side**: Hanya menerima payload `status === 'available'` dengan panjang `domain.length <= 25`, memisahkan SLD secara akurat untuk ekstensi multi-bagian (`.web.id`, `.my.id`, `.co.id`, `.co.uk`, dll.), serta menghitung skor `0–100` yang identik antara klien dan Worker:
   - `pronunciation_comfort_score` (**`0.22`**) — kelancaran pelafalan (*radio test*), penalti gugus/hiatus, akhiran janggal (`/[jq]$/` `-20`, `[^aeiou][vwzx]$` `-10` non-kamus, `-ik/-uk/-ok` `-6` non-Indonesia, serta `-iy/-iw/-uc/-uf`), dan tabrakan 2 konsonan berat (`bk`, `tp`, `qj`, `xz`, dll. `-20`) pada kata rekaan.
   - `brandability_score` (**`0.20`**) — daya ingat, panjang SLD ideal, dan kekhasan merek (bonus merek ciptaan dibatasi bila pelafalan lemah).
@@ -417,4 +418,108 @@ Skor akhir disimpan di kolom `overall_heuristic_score` (skala integer `0–100`)
    - **Terbobot**: `62(0.22) + 76(0.20) + 94(0.13) + 76(0.12) + 100(0.10) + 38(0.11) + 75(0.12) = 13.64 + 15.20 + 12.22 + 9.12 + 10.00 + 4.18 + 9.00 = 73.36`
    - **Penalti sinergis** (`pron < 72 && niche < 60`): `(72 - 62) * 0.45 + (60 - 38) * 0.35 = 4.50 + 7.70 = 12.20`
    - **`overall_heuristic_score`** = `round(73.36 - 12.20)` = `round(61.16)` = **`61`**
+
+---
+
+### F. Kamus Tagging per Bahasa (`lib/lexicon/*.json`), Admin UI Lokal (`/admin-lexicon`), & Panduan Menambah Entri (How-To)
+
+Kamus untuk segmentasi dan auto-tagging domain D1 (`lib/domain-tagger.js`) dipisah per bahasa agar rapi dirawat di GitHub, mudah di-edit lewat antarmuka admin lokal berpassword, dan tetap kompatibel 100% dengan Cloudflare Pages Functions.
+
+#### 1. Struktur File Kamus & Keamanan Repo GitHub
+| File / Direktori | Fungsi | Masuk GitHub? | Masuk `dist/` Publik? |
+| --- | --- | --- | --- |
+| `lib/lexicon/en.json`, `id.json`, `es.json`, `pt.json`, `fr.json`, `de.json`, `ru.json`, `ja.json` | Data kamus tagging per bahasa (format JSON terurut alfabetis) | Ya | Tidak |
+| `lib/lexicon/short-exact.json` | Token khusus tepat 2 huruf yang hanya cocok berdiri sendiri / dipisah `-` (mis. `ai`, `go`, `ui`, `ux`, `id`) | Ya | Tidak |
+| `lib/lexicon/bundle.js` | Modul ES hasil generasi otomatis dari seluruh `lib/lexicon/*.json` agar `lib/domain-tagger.js` bisa berjalan di Node.js ESM maupun Cloudflare Workers tanpa `fs` runtime | Ya | Tidak (dibundel otomatis ke Worker Function) |
+| `lib/lexicon-store.js` | Helper validasi entri, baca/tulis JSON aman (path confinement), dan generator `bundle.js` | Ya | Tidak |
+| `lib/admin-auth.js` | Verifikasi password admin (`ADMIN_PASSWORD` / hash `scrypt` lokal), token sesi HMAC-SHA256 Bearer, dan rate limiting | Ya | Tidak |
+| `admin-lexicon.html` | Antarmuka Admin UI lokal (`/admin-lexicon`) | Ya | **Tidak** (tidak masuk `STATIC_HTML_PAGES`) |
+| `.admin-auth.json` | Penyimpan hash `scrypt` ber-salt saat mode *First-Run Setup* lokal (jika `ADMIN_PASSWORD` env belum diset) | **Tidak** (`.gitignore`) | Tidak |
+
+#### 2. Mekanisme Password Admin (Tanpa Menyimpan Rahasia di GitHub)
+- **Prioritas 1 — Environment Variable `ADMIN_PASSWORD`**:
+  - Di lokal: set `ADMIN_PASSWORD=...` di `.env` (masuk `.gitignore`) atau environment container/Secrets.
+  - Di produksi Cloudflare Pages: tambahkan `ADMIN_PASSWORD` sebagai **Secret** di **Settings -> Environment variables** untuk melindungi endpoint `action=backfill-*` pada `POST /api/log-available-domain`.
+- **Prioritas 2 — First-Run Setup Lokal (`.admin-auth.json`)**:
+  - Jika `ADMIN_PASSWORD` belum diisi saat menjalankan preview lokal (`npm run dev`), membuka `/admin-lexicon` akan menampilkan form pembuatan password admin awal (minimal 8 karakter).
+  - Server menyimpannya sebagai hash `scrypt` ber-salt ke `.admin-auth.json` (bukan plaintext dan diabaikan oleh `.gitignore`), lalu mengunci form setup secara otomatis.
+- **Keamanan Sesi & Endpoint**:
+  - Token sesi (`Authorization: Bearer`) bertanda tangan HMAC-SHA256 hanya disimpan di memori JavaScript browser (bukan `localStorage`), dengan masa berlaku 12 jam dan rate limit 10 kali gagal login / 15 menit.
+  - Server Express lokal memblokir akses HTTP ke dotfiles (`.env`, `.admin-auth.json`) serta direktori `/lib`, `/functions`, `/migrations`, dan `/scripts`.
+
+#### 3. Di Mana `/admin-lexicon` Bisa Dibuka?
+Halaman `/admin-lexicon` dilayani oleh server Express (`server.js`), sehingga **tidak terkunci di Google AI Studio saja** dan dapat dibuka di lingkungan mana pun yang menjalankan `node server.js` (`npm run dev` / `npm start`):
+- **Komputer / Laptop Lokal**: Setelah `git clone` dan `npm install`, jalankan `npm run dev` lalu buka `http://localhost:3000/admin-lexicon`. Perubahan langsung tersimpan ke folder `lib/lexicon/` lokal agar siap di-`git commit` dan `git push`.
+- **Google AI Studio Preview (dan Server Node.js / Container Lain)**: Dapat diakses melalui `<URL_PREVIEW>/admin-lexicon`. Karena filesystem container bersifat sementara (*ephemeral*), perubahan kamus di preview tetap perlu di-commit/ekspor ke GitHub agar permanen. Jika Anda membagikan **Shared App URL** AI Studio (yang juga menjalankan `server.js`), pastikan `ADMIN_PASSWORD` sudah diatur di Secrets atau sudah di-claim terlebih dahulu.
+- **Cloudflare Pages Produksi (`dist/`) — Tidak Tersedia (404)**: Saat `npm run build` dijalankan untuk Cloudflare Pages, `admin-lexicon.html` **tidak ikut dibangun** ke folder `dist/` dan endpoint `/api/admin/*` tidak ada di `functions/`, sehingga halaman admin aman dan tidak terekspos di domain publik (`https://domainname.web.id/admin-lexicon`).
+
+
+- Gunakan SiBotak?
+
+
+#### 4. How-To: Menambah atau Mengubah Entri Dictionary via Admin UI (`/admin-lexicon`)
+1. **Jalankan server lokal** (`npm run dev`) dan buka `http://localhost:3000/admin-lexicon` (atau `<URL_PREVIEW>/admin-lexicon`).
+2. **Login** menggunakan `ADMIN_PASSWORD` (atau buat password awal bila muncul form *First-Run Admin Setup*).
+3. **Pilih tab bahasa** di bagian atas: `EN`, `ID`, `ES`, `PT`, `FR`, `DE`, `RU`, `JA`, atau `2-Char Exact` (`short-exact`).
+4. **Isi form `Add / Update Word`**:
+   - **Word**: huruf kecil ASCII `a-z` tanpa spasi/tanda hubung (`3–32` huruf untuk kata reguler, `2–12` huruf jika mencentang `suffixOnly`, atau tepat `2` huruf di tab `short-exact`). Untuk `ru`/`ja` gunakan transliterasi Latin/romaji; untuk aksen Eropa tulis tanpa diakritik (mis. `buero`, `preco`).
+   - **Weight (`0.1 – 20.0`)**: menentukan prioritas pemotongan kata pada algoritma *dynamic programming* (`SPLIT_PENALTY = 1.2`, penalti huruf tak dikenal `-1.6`).
+     - Token sangat pendek / umum (2–3 huruf): `2.2 – 5.2` (hindari bobot terlalu tinggi agar tidak salah memotong di tengah kata lain).
+     - Kata standar (4–6 huruf): `5.5 – 6.5`.
+     - Kata panjang/spesifik (7+ huruf): `6.5 – 8.5`.
+   - **Tags (`1 – 5` tag)**: format kebab-case huruf kecil/angka/`-` (bisa klik tombol quick-tag seperti `+business`, `+tools`, `+ecommerce`, `+ai-tech`, `+calculator`, dll.).
+   - **Opsi tambahan**:
+     - Centang **Suffix-only token** bila kata hanya boleh cocok di akhir kata (contoh: `ku`, `mu` pada bahasa Indonesia).
+     - Di tab **2-Char Exact (`short-exact`)**, centang bahasa yang berlaku (`langs`) untuk token 2 huruf.
+5. **Simpan**: Klik **Save Entry to JSON & Rebuild Bundle**. Server otomatis mengurutkan kunci secara alfabetis, menyimpan `lib/lexicon/<lang>.json`, dan memperbarui `lib/lexicon/bundle.js`.
+6. **Uji di Sandbox**: Gunakan panel **Live Tagger Test Sandbox** di kiri bawah halaman admin, masukkan contoh domain (mis. `fintechku.id` atau `calculadorapro.es`), lalu pastikan `Tokens`, `Coverage`, dan `Tags` sesuai harapan.
+
+#### 5. How-To: Edit Manual via File JSON (Opsional)
+Jika Anda mengedit file `lib/lexicon/<lang>.json` langsung di editor teks tanpa memakai Admin UI:
+- Format entri pada `lib/lexicon/<lang>.json` (`en.json`, `id.json`, dst.):
+  ```json
+  {
+    "fintech": [6.5, ["business", "tools"]],
+    "ku": [2.2, ["personal"], { "suffixOnly": true }]
+  }
+  ```
+- Format entri pada `lib/lexicon/short-exact.json`:
+  ```json
+  {
+    "ai": [4.5, ["ai-tech"], ["en"]]
+  }
+  ```
+- Setelah edit manual `.json`, **wajib sinkronkan `lib/lexicon/bundle.js`** sebelum commit (bisa dengan menyimpan/membuka dari `/admin-lexicon` atau menjalankan perintah berikut di terminal):
+  ```bash
+  node -e "import('./lib/lexicon-store.js').then(m => { const d = m.readAllLexicons(); m.writeBundleModule(d.shortExact, d.byLang); })"
+  ```
+- *(Catatan)*: Bila Anda menambah kategori tag baru yang sifatnya kata sifat/modifier (bukan topik utama), tambahkan nama tag tersebut ke `MODIFIER_TAGS` di `lib/domain-tagger.js`.
+
+#### 6. Sinkronisasi ke GitHub & Backfill D1 Produksi
+1. Verifikasi sintaks & build sebelum push:
+   ```bash
+   npm run lint
+   npm run build
+   ```
+2. Commit perubahan kamus (`lib/lexicon/*.json` dan `lib/lexicon/bundle.js`) ke GitHub lalu push — Cloudflare Pages otomatis melakukan deploy ulang Worker terbaru:
+   ```bash
+   git add lib/lexicon/
+   git commit -m "chore(lexicon): add new domain tagger dictionary entries"
+   git push origin main
+   ```
+3. *(Opsional)* Untuk memperbarui tag domain lama yang sudah tersimpan di D1 produksi agar mengikuti kamus terbaru, jalankan `backfill-tags` secara bertahap dengan header `Authorization: Bearer <ADMIN_PASSWORD>`:
+   ```bash
+   # Simulasi terlebih dahulu (dryRun=true) untuk domain yang sebelumnya jatuh ke 'brandable'
+   curl -X POST "https://domainname.web.id/api/log-available-domain" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <ADMIN_PASSWORD>" \
+     -d '{"action":"backfill-tags","mode":"retag-brandable","limit":200,"offset":0,"dryRun":true}'
+
+   # Eksekusi nyata (ubah dryRun menjadi false, ulangi dengan offset = nextOffset hingga done: true)
+   curl -X POST "https://domainname.web.id/api/log-available-domain" \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer <ADMIN_PASSWORD>" \
+     -d '{"action":"backfill-tags","mode":"retag-brandable","limit":200,"offset":0,"dryRun":false}'
+   ```
+
 

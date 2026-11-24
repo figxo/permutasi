@@ -11,6 +11,27 @@ import {
   buildRobotsTxt,
   buildSitemapXml
 } from './scripts/site-builder.mjs';
+import {
+  ALL_LEXICON_KEYS,
+  LEXICON_LANGS,
+  buildMergedLexicon,
+  readAllLexicons,
+  readLexiconFile,
+  validateLexiconEntry,
+  writeLexiconFile
+} from './lib/lexicon-store.js';
+import { generateDomainTags } from './lib/domain-tagger.js';
+import {
+  checkLoginRateLimit,
+  claimInitialAdminPassword,
+  clearFailedLogins,
+  getAdminAuthState,
+  issueSessionToken,
+  recordFailedLogin,
+  requireAdminAuth,
+  revokeSessionToken,
+  verifyAdminPassword
+} from './lib/admin-auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -106,7 +127,142 @@ app.post('/api/log-available-domain', express.json({ limit: '8kb' }), (req, res)
   });
 });
 
-app.use(express.static(path.join(__dirname), { index: false }));
+app.get(['/admin-lexicon', '/admin-lexicon.html'], (_req, res) => {
+  const adminPath = path.join(__dirname, 'admin-lexicon.html');
+  if (!fs.existsSync(adminPath)) {
+    return res.status(404).end();
+  }
+  res.setHeader('Cache-Control', 'no-store');
+  res.type('html').send(fs.readFileSync(adminPath, 'utf8'));
+});
+
+app.get('/api/admin/auth/status', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const state = getAdminAuthState();
+  res.json({ ok: true, ...state });
+});
+
+app.post('/api/admin/auth/setup', express.json({ limit: '4kb' }), (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const rate = checkLoginRateLimit(req.ip);
+  if (!rate.allowed) {
+    return res.status(429).json({ ok: false, error: `Too many attempts. Try again in ${rate.retryAfterSec}s.` });
+  }
+  const result = claimInitialAdminPassword(req.body?.password);
+  if (!result.ok) {
+    recordFailedLogin(req.ip);
+    return res.status(result.status).json({ ok: false, error: result.error });
+  }
+  clearFailedLogins(req.ip);
+  const session = issueSessionToken();
+  return res.json({ ok: true, ...session, mode: getAdminAuthState().mode });
+});
+
+app.post('/api/admin/auth/login', express.json({ limit: '4kb' }), (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const rate = checkLoginRateLimit(req.ip);
+  if (!rate.allowed) {
+    return res.status(429).json({ ok: false, error: `Too many failed login attempts. Try again in ${rate.retryAfterSec}s.` });
+  }
+  const state = getAdminAuthState();
+  if (state.needsSetup) {
+    return res.status(409).json({ ok: false, needsSetup: true, error: 'Admin password must be initialized first.' });
+  }
+  if (!verifyAdminPassword(req.body?.password)) {
+    recordFailedLogin(req.ip);
+    return res.status(401).json({ ok: false, error: 'Invalid admin password.' });
+  }
+  clearFailedLogins(req.ip);
+  const session = issueSessionToken();
+  return res.json({ ok: true, ...session, mode: state.mode });
+});
+
+app.post('/api/admin/auth/logout', requireAdminAuth, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  revokeSessionToken(req.adminToken);
+  return res.json({ ok: true });
+});
+
+app.get('/api/admin/lexicon', requireAdminAuth, (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const data = readAllLexicons();
+  return res.json({
+    ok: true,
+    langs: LEXICON_LANGS,
+    keys: ALL_LEXICON_KEYS,
+    shortExact: data.shortExact,
+    byLang: data.byLang
+  });
+});
+
+app.put('/api/admin/lexicon/:lang', requireAdminAuth, express.json({ limit: '16kb' }), (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const key = String(req.params.lang || '').trim().toLowerCase();
+  if (!ALL_LEXICON_KEYS.includes(key)) {
+    return res.status(400).json({ ok: false, error: 'Invalid lexicon language key.' });
+  }
+  try {
+    const { word, tuple } = validateLexiconEntry(key, req.body?.word, req.body);
+    const current = readLexiconFile(key);
+    const existed = Object.prototype.hasOwnProperty.call(current, word);
+    current[word] = tuple;
+    const saved = writeLexiconFile(key, current);
+    return res.json({
+      ok: true,
+      key,
+      word,
+      entry: tuple,
+      existed,
+      count: Object.keys(saved).length
+    });
+  } catch (err) {
+    return res.status(400).json({ ok: false, error: err?.message || 'Failed to save lexicon entry.' });
+  }
+});
+
+app.delete('/api/admin/lexicon/:lang/:word', requireAdminAuth, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const key = String(req.params.lang || '').trim().toLowerCase();
+  const word = String(req.params.word || '').trim().toLowerCase();
+  if (!ALL_LEXICON_KEYS.includes(key)) {
+    return res.status(400).json({ ok: false, error: 'Invalid lexicon language key.' });
+  }
+  const current = readLexiconFile(key);
+  if (!Object.prototype.hasOwnProperty.call(current, word)) {
+    return res.status(404).json({ ok: false, error: `Word "${word}" not found in ${key}.` });
+  }
+  delete current[word];
+  const saved = writeLexiconFile(key, current);
+  return res.json({
+    ok: true,
+    key,
+    word,
+    count: Object.keys(saved).length
+  });
+});
+
+app.post('/api/admin/lexicon/test', requireAdminAuth, express.json({ limit: '8kb' }), (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  const domain = String(req.body?.domain || '').trim().toLowerCase();
+  const uiLang = LEXICON_LANGS.includes(String(req.body?.uiLang || '').trim().toLowerCase())
+    ? String(req.body.uiLang).trim().toLowerCase()
+    : 'en';
+  if (!domain || domain.length > 100) {
+    return res.status(400).json({ ok: false, error: 'Provide a valid domain name (1-100 chars).' });
+  }
+  const { shortExact, byLang } = readAllLexicons();
+  const merged = buildMergedLexicon(shortExact, byLang);
+  const result = generateDomainTags({
+    domain,
+    uiLang,
+    shortExactMap: merged.SHORT_EXACT,
+    lexiconMap: merged.LEXICON_8LANG
+  });
+  return res.json({ ok: true, result });
+});
+
+app.use(['/lib', '/functions', '/migrations', '/scripts'], (_req, res) => res.status(404).end());
+app.use(express.static(path.join(__dirname), { index: false, dotfiles: 'deny' }));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running at http://0.0.0.0:${PORT}`);

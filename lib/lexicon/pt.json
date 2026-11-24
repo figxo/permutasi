@@ -1,0 +1,141 @@
+{
+  "agencia": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "auto": [
+    5.5,
+    [
+      "auto-mobility"
+    ]
+  ],
+  "casa": [
+    5.5,
+    [
+      "real-estate"
+    ]
+  ],
+  "comercio": [
+    7,
+    [
+      "business",
+      "ecommerce"
+    ]
+  ],
+  "compra": [
+    6,
+    [
+      "ecommerce"
+    ]
+  ],
+  "dominio": [
+    7,
+    [
+      "domain-naming"
+    ]
+  ],
+  "empresa": [
+    7,
+    [
+      "business"
+    ]
+  ],
+  "ferramenta": [
+    8,
+    [
+      "tools"
+    ]
+  ],
+  "firma": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "gratis": [
+    6.5,
+    [
+      "free-offer"
+    ]
+  ],
+  "guia": [
+    5.2,
+    [
+      "tools"
+    ]
+  ],
+  "loja": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "marca": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "mercado": [
+    6.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "negocio": [
+    7,
+    [
+      "business"
+    ]
+  ],
+  "negocios": [
+    7.5,
+    [
+      "business"
+    ]
+  ],
+  "nome": [
+    5.5,
+    [
+      "naming"
+    ]
+  ],
+  "painel": [
+    6,
+    [
+      "tools"
+    ]
+  ],
+  "preco": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "pro": [
+    3.4,
+    [
+      "business"
+    ]
+  ],
+  "util": [
+    5.2,
+    [
+      "tools"
+    ]
+  ],
+  "venda": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "web": [
+    3.8,
+    [
+      "domain-naming"
+    ]
+  ]
+}

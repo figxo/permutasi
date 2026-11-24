@@ -1362,6 +1362,33 @@ async function ensureAvailableDomainsSchema(db) {
   return schemaReadyPromise;
 }
 
+async function verifyBackfillAdminAuth(request, env) {
+  const configured = String((env && env.ADMIN_PASSWORD) || '');
+  if (!configured) {
+    return { ok: false, status: 503, error: 'ADMIN_PASSWORD secret is not configured for backfill actions.' };
+  }
+  const authHeader = String(request.headers.get('Authorization') || '');
+  const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  const altHeader = String(request.headers.get('X-Admin-Password') || '').trim();
+  const provided = bearerToken || altHeader;
+  if (!provided) {
+    return { ok: false, status: 401, error: 'Admin password required (Authorization: Bearer <ADMIN_PASSWORD>).' };
+  }
+  const enc = new TextEncoder();
+  const [aBuf, bBuf] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(provided)),
+    crypto.subtle.digest('SHA-256', enc.encode(configured))
+  ]);
+  const a = new Uint8Array(aBuf);
+  const b = new Uint8Array(bBuf);
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  if (diff !== 0) {
+    return { ok: false, status: 401, error: 'Invalid admin password.' };
+  }
+  return { ok: true };
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
@@ -1385,6 +1412,13 @@ export async function onRequestPost(context) {
 
   const reqUrl = new URL(request.url);
   const action = String(body.action || reqUrl.searchParams.get('action') || '').trim().toLowerCase();
+  if (action === 'backfill-sld' || action === 'backfill-scores' || action === 'backfill-tags') {
+    const authCheck = await verifyBackfillAdminAuth(request, env);
+    if (!authCheck.ok) {
+      return jsonResponse({ ok: false, action, error: authCheck.error }, authCheck.status);
+    }
+  }
+
   if (action === 'backfill-sld') {
     try {
       await ensureAvailableDomainsSchema(env.DB);

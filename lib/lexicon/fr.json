@@ -1,0 +1,128 @@
+{
+  "achat": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "affaires": [
+    7,
+    [
+      "business"
+    ]
+  ],
+  "agence": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "auto": [
+    5.5,
+    [
+      "auto-mobility"
+    ]
+  ],
+  "boutique": [
+    7.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "bureau": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "domaine": [
+    7,
+    [
+      "domain-naming"
+    ]
+  ],
+  "entreprise": [
+    7.5,
+    [
+      "business"
+    ]
+  ],
+  "guide": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "idee": [
+    5.5,
+    [
+      "ideas"
+    ]
+  ],
+  "maison": [
+    6.5,
+    [
+      "real-estate"
+    ]
+  ],
+  "marche": [
+    6,
+    [
+      "ecommerce"
+    ]
+  ],
+  "marque": [
+    6.2,
+    [
+      "domain-naming"
+    ]
+  ],
+  "nom": [
+    3.6,
+    [
+      "naming"
+    ]
+  ],
+  "outil": [
+    6,
+    [
+      "tools"
+    ]
+  ],
+  "outils": [
+    6.5,
+    [
+      "tools"
+    ]
+  ],
+  "prix": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "pro": [
+    3.4,
+    [
+      "business"
+    ]
+  ],
+  "site": [
+    5.2,
+    [
+      "domain-naming"
+    ]
+  ],
+  "vente": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "web": [
+    3.8,
+    [
+      "domain-naming"
+    ]
+  ]
+}
