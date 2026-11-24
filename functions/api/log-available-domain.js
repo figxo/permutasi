@@ -1,3 +1,5 @@
+import { generateDomainTags } from '../../lib/domain-tagger.js';
+
 const MAX_LOGGED_DOMAIN_LENGTH = 25;
 const DOMAIN_HOSTNAME_RE = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+$/;
 const SUPPORTED_LANGS = new Set(['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja']);
@@ -975,6 +977,129 @@ async function backfillMissingScores(db, options = {}) {
   };
 }
 
+async function backfillMissingTags(db, options = {}) {
+  const mode = ['null-only', 'retag-brandable', 'force'].includes(options.mode)
+    ? options.mode
+    : 'null-only';
+  const limit = Math.max(1, Math.min(250, Math.floor(Number(options.limit) || 100)));
+  const offset = mode === 'force' ? Math.max(0, Math.floor(Number(options.offset) || 0)) : 0;
+  const dryRun = Boolean(options.dryRun);
+
+  const whereClause = mode === 'force'
+    ? '1 = 1'
+    : mode === 'retag-brandable'
+      ? `(tags IS NULL OR trim(tags) = '' OR tags LIKE '%"brandable"%')`
+      : `(tags IS NULL OR trim(tags) = '')`;
+
+  const selectStmt = db.prepare(`
+    SELECT domain, sld, extension, lang
+    FROM available_domains
+    WHERE ${whereClause}
+    ORDER BY checked_at DESC
+    LIMIT ?1 OFFSET ?2
+  `);
+
+  if (typeof selectStmt.bind !== 'function') {
+    return { mode, dryRun, processed: 0, nextOffset: offset, remaining: 0, done: true, sample: [] };
+  }
+
+  const boundSelect = selectStmt.bind(limit, offset);
+  if (typeof boundSelect.all !== 'function') {
+    return { mode, dryRun, processed: 0, nextOffset: offset, remaining: 0, done: true, sample: [] };
+  }
+
+  const res = await boundSelect.all();
+  const rows = Array.isArray(res && res.results) ? res.results : [];
+  const updates = [];
+  const sample = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const normalized = normalizeDomain(row && row.domain);
+    if (!normalized) continue;
+
+    const { sld: parsedSld, ext: parsedExt } = splitDomainSldAndExt(normalized, row && row.extension);
+    const resolvedSld = String(row && row.sld || '').trim().toLowerCase() || parsedSld;
+    const resolvedExt = parsedExt || extractExtension(normalized);
+    const resolvedLang = normalizeLang(row && row.lang);
+
+    const tagResult = generateDomainTags({
+      domain: normalized,
+      sld: resolvedSld,
+      extension: resolvedExt,
+      uiLang: resolvedLang
+    });
+
+    if (sample.length < 5) {
+      sample.push({
+        domain: normalized,
+        sld: tagResult.sld,
+        extension: tagResult.extension,
+        tokens: tagResult.tokens,
+        coverage: tagResult.coverage,
+        tags: tagResult.tags
+      });
+    }
+
+    const updateSql = mode === 'null-only'
+      ? `
+        UPDATE available_domains
+        SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
+            tags = ?2
+        WHERE domain = ?3
+          AND (tags IS NULL OR trim(tags) = '')
+      `
+      : `
+        UPDATE available_domains
+        SET sld = COALESCE(NULLIF(trim(sld), ''), ?1),
+            tags = ?2
+        WHERE domain = ?3
+      `;
+
+    updates.push(
+      db.prepare(updateSql).bind(
+        tagResult.sld || null,
+        tagResult.tagsJson,
+        normalized
+      )
+    );
+  }
+
+  if (!dryRun && updates.length > 0 && typeof db.batch === 'function') {
+    const BATCH_CHUNK_SIZE = 50;
+    for (let i = 0; i < updates.length; i += BATCH_CHUNK_SIZE) {
+      await db.batch(updates.slice(i, i + BATCH_CHUNK_SIZE));
+    }
+  }
+
+  let totalMatching = 0;
+  const countStmt = db.prepare(`
+    SELECT COUNT(*) AS remaining
+    FROM available_domains
+    WHERE ${whereClause}
+  `);
+  if (typeof countStmt.all === 'function') {
+    const countRes = await countStmt.all();
+    const firstRow = Array.isArray(countRes && countRes.results) ? countRes.results[0] : null;
+    totalMatching = Number(firstRow && firstRow.remaining) || 0;
+  }
+
+  const nextOffset = mode === 'force' ? offset + updates.length : 0;
+  const remaining = mode === 'force'
+    ? Math.max(0, totalMatching - nextOffset)
+    : totalMatching;
+
+  return {
+    mode,
+    dryRun,
+    processed: updates.length,
+    nextOffset,
+    remaining,
+    done: remaining === 0,
+    sample
+  };
+}
+
 async function ensureAvailableDomainsSchema(db) {
   if (!schemaReadyPromise) {
     schemaReadyPromise = (async () => {
@@ -1099,6 +1224,7 @@ async function ensureAvailableDomainsSchema(db) {
 
       await backfillMissingSld(db);
       await backfillMissingScores(db, { limit: 100 });
+      await backfillMissingTags(db, { limit: 100, mode: 'null-only' });
     })().catch((err) => {
       schemaReadyPromise = null;
       throw err;
@@ -1145,6 +1271,28 @@ export async function onRequestPost(context) {
     } catch {
       return jsonResponse(
         { ok: false, action: 'backfill-scores', error: 'Failed to backfill missing domain scores.' },
+        500
+      );
+    }
+  }
+
+  if (action === 'backfill-tags') {
+    try {
+      await ensureAvailableDomainsSchema(env.DB);
+      const result = await backfillMissingTags(env.DB, {
+        mode: body.mode ?? reqUrl.searchParams.get('mode') ?? 'null-only',
+        limit: body.limit ?? reqUrl.searchParams.get('limit') ?? 200,
+        offset: body.offset ?? reqUrl.searchParams.get('offset') ?? 0,
+        dryRun: body.dryRun === true || reqUrl.searchParams.get('dryRun') === 'true'
+      });
+      return jsonResponse({
+        ok: true,
+        action: 'backfill-tags',
+        ...result
+      });
+    } catch {
+      return jsonResponse(
+        { ok: false, action: 'backfill-tags', error: 'Failed to backfill domain tags.' },
         500
       );
     }
@@ -1214,6 +1362,12 @@ export async function onRequestPost(context) {
     computedScores.overall_heuristic_score
   );
   const scoredAt = Date.now();
+  const tagResult = generateDomainTags({
+    domain,
+    sld,
+    extension,
+    uiLang: lang
+  });
 
   try {
     await ensureAvailableDomainsSchema(env.DB);
@@ -1237,8 +1391,9 @@ export async function onRequestPost(context) {
         emd_pmd_score,
         emd_pmd_match_type,
         overall_heuristic_score,
-        scored_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18)
+        scored_at,
+        tags
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19)
       ON CONFLICT(domain) DO UPDATE SET
         sld = excluded.sld,
         extension = excluded.extension,
@@ -1256,7 +1411,8 @@ export async function onRequestPost(context) {
         emd_pmd_score = excluded.emd_pmd_score,
         emd_pmd_match_type = excluded.emd_pmd_match_type,
         overall_heuristic_score = excluded.overall_heuristic_score,
-        scored_at = excluded.scored_at
+        scored_at = excluded.scored_at,
+        tags = COALESCE(NULLIF(trim(available_domains.tags), ''), excluded.tags)
     `)
       .bind(
         domain,
@@ -1276,7 +1432,8 @@ export async function onRequestPost(context) {
         emdPmdScore,
         emdPmdMatchType,
         overallHeuristicScore,
-        scoredAt
+        scoredAt,
+        tagResult.tagsJson
       )
       .run();
 
@@ -1293,6 +1450,7 @@ export async function onRequestPost(context) {
       checkedAt,
       checkedAtIso,
       scoredAt,
+      tags: tagResult.tags,
       scores: {
         pronunciation_comfort_score: pronunciationComfortScore,
         brandability_score: brandabilityScore,
