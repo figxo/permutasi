@@ -1,0 +1,125 @@
+{
+  "auto": [
+    5.5,
+    [
+      "auto-mobility"
+    ]
+  ],
+  "betrieb": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "buero": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "firma": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "gratis": [
+    6.5,
+    [
+      "free-offer"
+    ]
+  ],
+  "handel": [
+    6,
+    [
+      "business",
+      "ecommerce"
+    ]
+  ],
+  "hilfe": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "idee": [
+    5.5,
+    [
+      "ideas"
+    ]
+  ],
+  "kauf": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "laden": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "marke": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "markt": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "name": [
+    5.5,
+    [
+      "domain-naming",
+      "naming"
+    ]
+  ],
+  "preis": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "rechner": [
+    6.8,
+    [
+      "calculator",
+      "tools"
+    ]
+  ],
+  "seite": [
+    5.5,
+    [
+      "domain-naming"
+    ]
+  ],
+  "shop": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "verkauf": [
+    6.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "web": [
+    3.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "werkzeug": [
+    7.5,
+    [
+      "tools"
+    ]
+  ]
+}

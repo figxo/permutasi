@@ -1,0 +1,235 @@
+{
+  "alat": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "anak": [
+    5.5,
+    [
+      "parenting-baby",
+      "people-family"
+    ]
+  ],
+  "bangsa": [
+    6.5,
+    [
+      "civic-nation"
+    ]
+  ],
+  "bayar": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "bayi": [
+    6,
+    [
+      "parenting-baby"
+    ]
+  ],
+  "beli": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "bisnis": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "catat": [
+    5.5,
+    [
+      "tools"
+    ]
+  ],
+  "cek": [
+    3.6,
+    [
+      "tools"
+    ]
+  ],
+  "dagang": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "firma": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "gratis": [
+    6.5,
+    [
+      "free-offer"
+    ]
+  ],
+  "harga": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "hitung": [
+    6.2,
+    [
+      "calculator",
+      "tools"
+    ]
+  ],
+  "ide": [
+    3.6,
+    [
+      "naming",
+      "ideas"
+    ]
+  ],
+  "jual": [
+    5.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "kabupaten": [
+    8.5,
+    [
+      "geo-local"
+    ]
+  ],
+  "kantor": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "karya": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "kota": [
+    5.5,
+    [
+      "geo-local"
+    ]
+  ],
+  "ku": [
+    2.2,
+    [
+      "personal"
+    ],
+    {
+      "suffixOnly": true
+    }
+  ],
+  "lapak": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "merek": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "mitra": [
+    5.5,
+    [
+      "business"
+    ]
+  ],
+  "mu": [
+    2.2,
+    [
+      "personal"
+    ],
+    {
+      "suffixOnly": true
+    }
+  ],
+  "murah": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "nama": [
+    5.5,
+    [
+      "naming"
+    ]
+  ],
+  "niaga": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "orangtua": [
+    8.5,
+    [
+      "people-family",
+      "parenting-baby"
+    ]
+  ],
+  "ortu": [
+    5.5,
+    [
+      "people-family",
+      "parenting-baby"
+    ]
+  ],
+  "panduan": [
+    6.5,
+    [
+      "tools"
+    ]
+  ],
+  "provinsi": [
+    8,
+    [
+      "geo-local"
+    ]
+  ],
+  "situs": [
+    5.5,
+    [
+      "domain-naming"
+    ]
+  ],
+  "toko": [
+    5.5,
+    [
+      "ecommerce"
+    ]
+  ],
+  "usaha": [
+    6,
+    [
+      "business"
+    ]
+  ],
+  "warung": [
+    6.2,
+    [
+      "ecommerce"
+    ]
+  ],
+  "web": [
+    3.8,
+    [
+      "domain-naming"
+    ]
+  ]
+}

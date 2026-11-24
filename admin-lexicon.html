@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Lexicon Tagger Admin — Local Repo Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                if (localStorage.getItem('preferredTheme') === 'dark') {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased">
+    <header class="sticky top-0 z-30 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-slate-950/90 backdrop-blur">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <a href="/" class="text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline whitespace-nowrap">&larr; Generator</a>
+                <span class="text-slate-300 dark:text-slate-700">/</span>
+                <h1 class="text-sm sm:text-base font-bold truncate">Tagger Lexicon Admin</h1>
+                <span class="hidden sm:inline-block px-2 py-0.5 text-[11px] font-mono rounded bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">Local Git Workflow</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button id="themeToggleBtn" type="button" class="px-2.5 py-1.5 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    Theme
+                </button>
+                <button id="logoutBtn" type="button" class="hidden px-3 py-1.5 text-xs font-semibold rounded-lg border border-rose-200 dark:border-rose-900/70 bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-colors">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <!-- Auth Card -->
+        <section id="authSection" class="max-w-md mx-auto mt-8 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+            <div id="authLoading" class="text-sm text-slate-500 dark:text-slate-400">Checking admin authentication state...</div>
+
+            <form id="setupForm" class="hidden space-y-4">
+                <div>
+                    <h2 class="text-lg font-bold">First-Run Admin Setup</h2>
+                    <p class="mt-1 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        <code class="font-mono">ADMIN_PASSWORD</code> is not set in the server environment yet. Set an initial admin password (min. 8 characters). Its salted hash is stored only in gitignored <code class="font-mono">.admin-auth.json</code>; for production/sharing, configure <code class="font-mono">ADMIN_PASSWORD</code> in Secrets or <code class="font-mono">.env</code>.
+                    </p>
+                </div>
+                <div>
+                    <label for="setupPassword" class="block text-xs font-semibold mb-1.5">New Admin Password</label>
+                    <input id="setupPassword" type="password" minlength="8" maxlength="128" required autocomplete="new-password"
+                        class="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="setupPasswordConfirm" class="block text-xs font-semibold mb-1.5">Confirm Password</label>
+                    <input id="setupPasswordConfirm" type="password" minlength="8" maxlength="128" required autocomplete="new-password"
+                        class="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <p id="setupError" class="hidden text-xs font-medium text-rose-600 dark:text-rose-400"></p>
+                <button type="submit" class="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors">
+                    Initialize Admin Password &amp; Enter
+                </button>
+            </form>
+
+            <form id="loginForm" class="hidden space-y-4">
+                <div>
+                    <h2 class="text-lg font-bold">Admin Sign In</h2>
+                    <p id="loginSubtitle" class="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                        Enter your admin password to edit <code class="font-mono">lib/lexicon/*.json</code>.
+                    </p>
+                </div>
+                <div>
+                    <label for="loginPassword" class="block text-xs font-semibold mb-1.5">Admin Password</label>
+                    <input id="loginPassword" type="password" required autocomplete="current-password"
+                        class="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <p id="loginError" class="hidden text-xs font-medium text-rose-600 dark:text-rose-400"></p>
+                <button type="submit" class="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors">
+                    Unlock Lexicon Editor
+                </button>
+            </form>
+        </section>
+
+        <!-- Editor Dashboard -->
+        <section id="editorSection" class="hidden space-y-6">
+            <div class="rounded-xl border border-blue-200 dark:border-blue-900/70 bg-blue-50/70 dark:bg-blue-950/30 p-4 text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <span class="font-semibold text-blue-900 dark:text-blue-200">GitHub Sync Workflow:</span>
+                    Every save updates <code id="activeFileBadge" class="font-mono px-1.5 py-0.5 rounded bg-white/80 dark:bg-slate-900 border border-blue-200 dark:border-blue-800">lib/lexicon/en.json</code> and rebuilds <code class="font-mono px-1.5 py-0.5 rounded bg-white/80 dark:bg-slate-900 border border-blue-200 dark:border-blue-800">lib/lexicon/bundle.js</code>. Commit &amp; push to GitHub when ready to deploy to Cloudflare Pages.
+                </div>
+                <div id="totalEntriesBadge" class="font-mono text-xs font-semibold px-2.5 py-1 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shrink-0">
+                    0 entries
+                </div>
+            </div>
+
+            <!-- Language Tabs -->
+            <div id="langTabs" class="flex flex-wrap gap-2"></div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left Column: Add / Edit Form + Live Sandbox -->
+                <div class="lg:col-span-5 space-y-6">
+                    <form id="entryForm" class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 space-y-4 shadow-sm">
+                        <div class="flex items-center justify-between gap-2">
+                            <h2 id="formHeading" class="text-base font-bold">Add / Update Word</h2>
+                            <button id="resetFormBtn" type="button" class="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white underline">Clear</button>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="col-span-2">
+                                <label for="wordInput" class="block text-xs font-semibold mb-1">Word (ASCII a-z)</label>
+                                <input id="wordInput" type="text" required placeholder="e.g. fintech"
+                                    class="w-full px-3 py-2 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label for="weightInput" class="block text-xs font-semibold mb-1">Weight (0.1–20)</label>
+                                <input id="weightInput" type="number" step="0.1" min="0.1" max="20" value="6.0" required
+                                    class="w-full px-3 py-2 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="tagsInput" class="block text-xs font-semibold mb-1">Tags (comma-separated, 1–5)</label>
+                            <input id="tagsInput" type="text" required placeholder="e.g. business, tools"
+                                class="w-full px-3 py-2 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <div id="quickTags" class="mt-2 flex flex-wrap gap-1.5"></div>
+                        </div>
+
+                        <div id="suffixOptionWrap" class="flex items-center gap-2">
+                            <input id="suffixOnlyInput" type="checkbox" class="rounded border-slate-300 dark:border-slate-700">
+                            <label for="suffixOnlyInput" class="text-xs text-slate-700 dark:text-slate-300">
+                                Suffix-only token (matches only at end of word, e.g. <code class="font-mono">ku</code>, <code class="font-mono">mu</code>)
+                            </label>
+                        </div>
+
+                        <div id="shortLangsWrap" class="hidden space-y-1.5">
+                            <span class="block text-xs font-semibold">Languages for 2-char token</span>
+                            <div id="shortLangsCheckboxes" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <p id="entryStatus" class="hidden text-xs font-medium"></p>
+
+                        <button type="submit" class="w-full py-2.5 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition-colors">
+                            Save Entry to JSON &amp; Rebuild Bundle
+                        </button>
+                    </form>
+
+                    <!-- Live Tagger Tester -->
+                    <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 space-y-3 shadow-sm">
+                        <h3 class="text-sm font-bold">Live Tagger Test Sandbox</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Test segmentation &amp; tags against the latest saved <code class="font-mono">lib/lexicon/*.json</code>.</p>
+                        <form id="testForm" class="flex gap-2">
+                            <input id="testDomainInput" type="text" placeholder="e.g. tokobayiku.id" required
+                                class="flex-1 min-w-0 px-3 py-2 text-sm font-mono rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select id="testLangSelect" class="px-2.5 py-2 text-xs font-mono rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950">
+                                <option value="en">en</option>
+                                <option value="id">id</option>
+                                <option value="es">es</option>
+                                <option value="pt">pt</option>
+                                <option value="fr">fr</option>
+                                <option value="de">de</option>
+                                <option value="ru">ru</option>
+                                <option value="ja">ja</option>
+                            </select>
+                            <button type="submit" class="px-3.5 py-2 rounded-lg bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold hover:opacity-90">
+                                Test
+                            </button>
+                        </form>
+                        <div id="testResultBox" class="hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs space-y-2">
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-slate-500">Tokens:</span>
+                                <span id="testTokensOut" class="font-mono font-semibold text-slate-800 dark:text-slate-200"></span>
+                            </div>
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-slate-500">Coverage:</span>
+                                <span id="testCoverageOut" class="font-mono font-semibold"></span>
+                            </div>
+                            <div class="flex items-start justify-between gap-2">
+                                <span class="text-slate-500 pt-0.5">Tags:</span>
+                                <div id="testTagsOut" class="flex flex-wrap justify-end gap-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Entries Table -->
+                <div class="lg:col-span-7 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <h2 id="tableHeading" class="text-base font-bold">Dictionary Entries</h2>
+                            <p id="tableCount" class="text-xs text-slate-500 dark:text-slate-400">0 words</p>
+                        </div>
+                        <input id="searchInput" type="search" placeholder="Filter word or tag..."
+                            class="w-full sm:w-56 px-3 py-1.5 text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <div class="overflow-x-auto max-h-[640px] overflow-y-auto">
+                        <table class="w-full text-left text-xs sm:text-sm">
+                            <thead class="sticky top-0 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-[11px] uppercase tracking-wider text-slate-500">
+                                <tr>
+                                    <th class="px-4 py-2.5">Word</th>
+                                    <th class="px-3 py-2.5">Weight</th>
+                                    <th class="px-3 py-2.5">Tags / Meta</th>
+                                    <th class="px-4 py-2.5 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="entriesTbody" class="divide-y divide-slate-100 dark:divide-slate-800/80"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function() {
+            const LANG_LABELS = {
+                en: 'EN (English)',
+                id: 'ID (Indonesia)',
+                es: 'ES (Español)',
+                pt: 'PT (Português)',
+                fr: 'FR (Français)',
+                de: 'DE (Deutsch)',
+                ru: 'RU (Romaji)',
+                ja: 'JA (Romaji)',
+                'short-exact': '2-Char Exact'
+            };
+            const ALL_LANGS = ['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja'];
+            const SUGGESTED_TAGS = [
+                'business', 'tools', 'ecommerce', 'domain-naming', 'naming',
+                'ai-tech', 'cloud-tech', 'calculator', 'free-offer', 'ideas',
+                'auto-mobility', 'real-estate', 'parenting-baby', 'people-family',
+                'geo-local', 'civic-nation', 'personal'
+            ];
+
+            let sessionToken = '';
+            let activeKey = 'en';
+            let lexiconState = { shortExact: {}, byLang: {} };
+            let pendingDeleteWord = '';
+
+            const authSection = document.getElementById('authSection');
+            const authLoading = document.getElementById('authLoading');
+            const setupForm = document.getElementById('setupForm');
+            const loginForm = document.getElementById('loginForm');
+            const setupError = document.getElementById('setupError');
+            const loginError = document.getElementById('loginError');
+            const editorSection = document.getElementById('editorSection');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const langTabs = document.getElementById('langTabs');
+            const entriesTbody = document.getElementById('entriesTbody');
+            const searchInput = document.getElementById('searchInput');
+            const wordInput = document.getElementById('wordInput');
+            const weightInput = document.getElementById('weightInput');
+            const tagsInput = document.getElementById('tagsInput');
+            const suffixOnlyInput = document.getElementById('suffixOnlyInput');
+            const suffixOptionWrap = document.getElementById('suffixOptionWrap');
+            const shortLangsWrap = document.getElementById('shortLangsWrap');
+            const shortLangsCheckboxes = document.getElementById('shortLangsCheckboxes');
+            const entryStatus = document.getElementById('entryStatus');
+            const activeFileBadge = document.getElementById('activeFileBadge');
+            const totalEntriesBadge = document.getElementById('totalEntriesBadge');
+            const tableHeading = document.getElementById('tableHeading');
+            const tableCount = document.getElementById('tableCount');
+
+            document.getElementById('themeToggleBtn').addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                try { localStorage.setItem('preferredTheme', isDark ? 'dark' : 'light'); } catch (e) {}
+            });
+
+            function buildQuickTagButtons() {
+                const wrap = document.getElementById('quickTags');
+                wrap.textContent = '';
+                SUGGESTED_TAGS.forEach((tag) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.textContent = '+' + tag;
+                    btn.className = 'px-2 py-0.5 text-[11px] font-mono rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/50 text-slate-600 dark:text-slate-300';
+                    btn.addEventListener('click', () => {
+                        const existing = tagsInput.value.split(',').map((s) => s.trim()).filter(Boolean);
+                        if (!existing.includes(tag) && existing.length < 5) {
+                            existing.push(tag);
+                            tagsInput.value = existing.join(', ');
+                        }
+                    });
+                    wrap.appendChild(btn);
+                });
+            }
+
+            function buildShortLangCheckboxes() {
+                shortLangsCheckboxes.textContent = '';
+                ALL_LANGS.forEach((lang) => {
+                    const label = document.createElement('label');
+                    label.className = 'inline-flex items-center gap-1.5 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 text-xs font-mono cursor-pointer';
+                    const cb = document.createElement('input');
+                    cb.type = 'checkbox';
+                    cb.value = lang;
+                    cb.className = 'short-lang-cb';
+                    const txt = document.createElement('span');
+                    txt.textContent = lang;
+                    label.appendChild(cb);
+                    label.appendChild(txt);
+                    shortLangsCheckboxes.appendChild(label);
+                });
+            }
+
+            async function apiFetch(url, options = {}) {
+                const headers = Object.assign({}, options.headers || {});
+                if (sessionToken) {
+                    headers['Authorization'] = 'Bearer ' + sessionToken;
+                }
+                const res = await fetch(url, Object.assign({}, options, { headers }));
+                const data = await res.json().catch(() => ({}));
+                if (res.status === 401 && sessionToken) {
+                    sessionToken = '';
+                    editorSection.classList.add('hidden');
+                    logoutBtn.classList.add('hidden');
+                    authSection.classList.remove('hidden');
+                    await initAuth();
+                }
+                return { res, data };
+            }
+
+            function showEntryStatus(msg, isError) {
+                entryStatus.textContent = msg;
+                entryStatus.className = isError
+                    ? 'text-xs font-medium text-rose-600 dark:text-rose-400'
+                    : 'text-xs font-medium text-emerald-600 dark:text-emerald-400';
+                entryStatus.classList.remove('hidden');
+            }
+
+            function getEntriesForKey(key) {
+                if (key === 'short-exact') return lexiconState.shortExact || {};
+                return (lexiconState.byLang && lexiconState.byLang[key]) || {};
+            }
+
+            function renderTabs() {
+                langTabs.textContent = '';
+                const keys = [...ALL_LANGS, 'short-exact'];
+                let totalCount = 0;
+                keys.forEach((k) => {
+                    totalCount += Object.keys(getEntriesForKey(k)).length;
+                });
+                totalEntriesBadge.textContent = totalCount + ' total entries';
+
+                keys.forEach((key) => {
+                    const count = Object.keys(getEntriesForKey(key)).length;
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    const isActive = key === activeKey;
+                    btn.className = isActive
+                        ? 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-600 text-white shadow-sm'
+                        : 'px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800';
+                    btn.textContent = (LANG_LABELS[key] || key) + ' (' + count + ')';
+                    btn.addEventListener('click', () => {
+                        activeKey = key;
+                        pendingDeleteWord = '';
+                        resetEntryForm();
+                        renderAll();
+                    });
+                    langTabs.appendChild(btn);
+                });
+            }
+
+            function resetEntryForm() {
+                wordInput.value = '';
+                weightInput.value = '6.0';
+                tagsInput.value = '';
+                suffixOnlyInput.checked = false;
+                entryStatus.classList.add('hidden');
+                const isShort = activeKey === 'short-exact';
+                suffixOptionWrap.classList.toggle('hidden', isShort);
+                shortLangsWrap.classList.toggle('hidden', !isShort);
+                wordInput.placeholder = isShort ? 'e.g. ai (2 chars)' : 'e.g. fintech';
+                document.querySelectorAll('.short-lang-cb').forEach((cb) => {
+                    cb.checked = cb.value === 'en';
+                });
+                if (!isShort) {
+                    const testSelect = document.getElementById('testLangSelect');
+                    if (testSelect) testSelect.value = activeKey;
+                }
+            }
+
+            function renderTable() {
+                const entries = getEntriesForKey(activeKey);
+                const query = searchInput.value.trim().toLowerCase();
+                const isShort = activeKey === 'short-exact';
+
+                activeFileBadge.textContent = 'lib/lexicon/' + activeKey + '.json';
+                tableHeading.textContent = (LANG_LABELS[activeKey] || activeKey) + ' Lexicon';
+
+                const rows = Object.entries(entries)
+                    .filter(([word, meta]) => {
+                        if (!query) return true;
+                        if (word.includes(query)) return true;
+                        const tags = Array.isArray(meta[1]) ? meta[1] : [];
+                        return tags.some((t) => t.includes(query));
+                    })
+                    .sort((a, b) => a[0].localeCompare(b[0]));
+
+                tableCount.textContent = rows.length + ' of ' + Object.keys(entries).length + ' entries';
+                entriesTbody.textContent = '';
+
+                if (rows.length === 0) {
+                    const tr = document.createElement('tr');
+                    const td = document.createElement('td');
+                    td.colSpan = 4;
+                    td.className = 'px-4 py-8 text-center text-xs text-slate-500';
+                    td.textContent = 'No matching entries found.';
+                    tr.appendChild(td);
+                    entriesTbody.appendChild(tr);
+                    return;
+                }
+
+                rows.forEach(([word, meta]) => {
+                    const weight = meta[0];
+                    const tags = Array.isArray(meta[1]) ? meta[1] : [];
+                    const third = meta[2];
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40';
+
+                    const tdWord = document.createElement('td');
+                    tdWord.className = 'px-4 py-2.5 font-mono font-semibold text-slate-900 dark:text-slate-100';
+                    tdWord.textContent = word;
+
+                    const tdWeight = document.createElement('td');
+                    tdWeight.className = 'px-3 py-2.5 font-mono text-xs text-slate-600 dark:text-slate-300';
+                    tdWeight.textContent = Number(weight).toFixed(1);
+
+                    const tdMeta = document.createElement('td');
+                    tdMeta.className = 'px-3 py-2.5';
+                    const tagWrap = document.createElement('div');
+                    tagWrap.className = 'flex flex-wrap gap-1';
+
+                    tags.forEach((tg) => {
+                        const badge = document.createElement('span');
+                        badge.className = 'px-1.5 py-0.5 text-[11px] font-mono rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+                        badge.textContent = tg;
+                        tagWrap.appendChild(badge);
+                    });
+
+                    if (isShort && Array.isArray(third)) {
+                        const langBadge = document.createElement('span');
+                        langBadge.className = 'px-1.5 py-0.5 text-[11px] font-mono rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800';
+                        langBadge.textContent = 'langs: ' + third.join(',');
+                        tagWrap.appendChild(langBadge);
+                    } else if (!isShort && third && third.suffixOnly) {
+                        const sufBadge = document.createElement('span');
+                        sufBadge.className = 'px-1.5 py-0.5 text-[11px] font-mono rounded bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800';
+                        sufBadge.textContent = 'suffixOnly';
+                        tagWrap.appendChild(sufBadge);
+                    }
+                    tdMeta.appendChild(tagWrap);
+
+                    const tdAct = document.createElement('td');
+                    tdAct.className = 'px-4 py-2.5 text-right whitespace-nowrap space-x-1.5';
+
+                    const editBtn = document.createElement('button');
+                    editBtn.type = 'button';
+                    editBtn.textContent = 'Edit';
+                    editBtn.className = 'px-2 py-1 text-xs font-medium rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800';
+                    editBtn.addEventListener('click', () => {
+                        wordInput.value = word;
+                        weightInput.value = String(weight);
+                        tagsInput.value = tags.join(', ');
+                        if (isShort) {
+                            const allowed = Array.isArray(third) ? third : [];
+                            document.querySelectorAll('.short-lang-cb').forEach((cb) => {
+                                cb.checked = allowed.includes(cb.value);
+                            });
+                        } else {
+                            suffixOnlyInput.checked = Boolean(third && third.suffixOnly);
+                        }
+                        wordInput.focus();
+                    });
+                    tdAct.appendChild(editBtn);
+
+                    if (pendingDeleteWord === word) {
+                        const confirmBtn = document.createElement('button');
+                        confirmBtn.type = 'button';
+                        confirmBtn.textContent = 'Confirm';
+                        confirmBtn.className = 'px-2 py-1 text-xs font-semibold rounded bg-rose-600 text-white hover:bg-rose-700';
+                        confirmBtn.addEventListener('click', async () => {
+                            await deleteWord(word);
+                        });
+                        const cancelBtn = document.createElement('button');
+                        cancelBtn.type = 'button';
+                        cancelBtn.textContent = 'Cancel';
+                        cancelBtn.className = 'px-2 py-1 text-xs rounded border border-slate-200 dark:border-slate-700';
+                        cancelBtn.addEventListener('click', () => {
+                            pendingDeleteWord = '';
+                            renderTable();
+                        });
+                        tdAct.appendChild(confirmBtn);
+                        tdAct.appendChild(cancelBtn);
+                    } else {
+                        const delBtn = document.createElement('button');
+                        delBtn.type = 'button';
+                        delBtn.textContent = 'Delete';
+                        delBtn.className = 'px-2 py-1 text-xs font-medium rounded border border-rose-200 dark:border-rose-900/60 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40';
+                        delBtn.addEventListener('click', () => {
+                            pendingDeleteWord = word;
+                            renderTable();
+                        });
+                        tdAct.appendChild(delBtn);
+                    }
+
+                    tr.appendChild(tdWord);
+                    tr.appendChild(tdWeight);
+                    tr.appendChild(tdMeta);
+                    tr.appendChild(tdAct);
+                    entriesTbody.appendChild(tr);
+                });
+            }
+
+            function renderAll() {
+                renderTabs();
+                renderTable();
+            }
+
+            async function loadLexicons() {
+                const { res, data } = await apiFetch('/api/admin/lexicon');
+                if (!res.ok || !data.ok) return;
+                lexiconState = {
+                    shortExact: data.shortExact || {},
+                    byLang: data.byLang || {}
+                };
+                resetEntryForm();
+                renderAll();
+            }
+
+            async function deleteWord(word) {
+                const { res, data } = await apiFetch('/api/admin/lexicon/' + encodeURIComponent(activeKey) + '/' + encodeURIComponent(word), {
+                    method: 'DELETE'
+                });
+                pendingDeleteWord = '';
+                if (!res.ok || !data.ok) {
+                    showEntryStatus(data.error || 'Failed to delete entry.', true);
+                    return;
+                }
+                showEntryStatus('Deleted "' + word + '" from ' + activeKey + '.json and rebuilt bundle.js.', false);
+                await loadLexicons();
+            }
+
+            async function enterEditor() {
+                authSection.classList.add('hidden');
+                editorSection.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+                await loadLexicons();
+            }
+
+            async function initAuth() {
+                authLoading.classList.remove('hidden');
+                setupForm.classList.add('hidden');
+                loginForm.classList.add('hidden');
+
+                const { data } = await apiFetch('/api/admin/auth/status');
+                authLoading.classList.add('hidden');
+                if (data.needsSetup) {
+                    setupForm.classList.remove('hidden');
+                } else {
+                    loginForm.classList.remove('hidden');
+                }
+            }
+
+            setupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                setupError.classList.add('hidden');
+                const pw = document.getElementById('setupPassword').value;
+                const pw2 = document.getElementById('setupPasswordConfirm').value;
+                if (pw !== pw2) {
+                    setupError.textContent = 'Passwords do not match.';
+                    setupError.classList.remove('hidden');
+                    return;
+                }
+                const { res, data } = await apiFetch('/api/admin/auth/setup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw })
+                });
+                if (!res.ok || !data.ok) {
+                    setupError.textContent = data.error || 'Setup failed.';
+                    setupError.classList.remove('hidden');
+                    return;
+                }
+                sessionToken = data.token;
+                document.getElementById('setupPassword').value = '';
+                document.getElementById('setupPasswordConfirm').value = '';
+                await enterEditor();
+            });
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                loginError.classList.add('hidden');
+                const pw = document.getElementById('loginPassword').value;
+                const { res, data } = await apiFetch('/api/admin/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw })
+                });
+                if (!res.ok || !data.ok) {
+                    loginError.textContent = data.error || 'Invalid password.';
+                    loginError.classList.remove('hidden');
+                    return;
+                }
+                sessionToken = data.token;
+                document.getElementById('loginPassword').value = '';
+                await enterEditor();
+            });
+
+            logoutBtn.addEventListener('click', async () => {
+                await apiFetch('/api/admin/auth/logout', { method: 'POST' });
+                sessionToken = '';
+                editorSection.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+                authSection.classList.remove('hidden');
+                await initAuth();
+            });
+
+            document.getElementById('resetFormBtn').addEventListener('click', resetEntryForm);
+            searchInput.addEventListener('input', renderTable);
+
+            document.getElementById('entryForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const isShort = activeKey === 'short-exact';
+                const payload = {
+                    word: wordInput.value.trim().toLowerCase(),
+                    weight: Number(weightInput.value),
+                    tags: tagsInput.value.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean)
+                };
+                if (isShort) {
+                    payload.langs = Array.from(document.querySelectorAll('.short-lang-cb:checked')).map((cb) => cb.value);
+                } else {
+                    payload.suffixOnly = suffixOnlyInput.checked;
+                }
+
+                const { res, data } = await apiFetch('/api/admin/lexicon/' + encodeURIComponent(activeKey), {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok || !data.ok) {
+                    showEntryStatus(data.error || 'Failed to save entry.', true);
+                    return;
+                }
+                const actionWord = data.existed ? 'Updated' : 'Added';
+                showEntryStatus(actionWord + ' "' + data.word + '" in lib/lexicon/' + activeKey + '.json & rebuilt bundle.js.', false);
+                await loadLexicons();
+            });
+
+            document.getElementById('testForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const domain = document.getElementById('testDomainInput').value.trim();
+                const uiLang = document.getElementById('testLangSelect').value;
+                const { res, data } = await apiFetch('/api/admin/lexicon/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain, uiLang })
+                });
+                if (!res.ok || !data.ok) return;
+                const r = data.result;
+                document.getElementById('testResultBox').classList.remove('hidden');
+                document.getElementById('testTokensOut').textContent = (r.tokens || []).join(' + ');
+                document.getElementById('testCoverageOut').textContent = Math.round((r.coverage || 0) * 100) + '%';
+                const tagsOut = document.getElementById('testTagsOut');
+                tagsOut.textContent = '';
+                (r.tags || []).forEach((tg) => {
+                    const span = document.createElement('span');
+                    span.className = 'px-1.5 py-0.5 text-[11px] font-mono rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800';
+                    span.textContent = tg;
+                    tagsOut.appendChild(span);
+                });
+            });
+
+            buildQuickTagButtons();
+            buildShortLangCheckboxes();
+            initAuth();
+        })();
+    </script>
+</body>
+</html>

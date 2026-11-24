@@ -1,0 +1,123 @@
+{
+  "agentstvo": [
+    7.5,
+    [
+      "business"
+    ]
+  ],
+  "auto": [
+    5.5,
+    [
+      "auto-mobility"
+    ]
+  ],
+  "besplatno": [
+    7.8,
+    [
+      "free-offer"
+    ]
+  ],
+  "biznes": [
+    6.5,
+    [
+      "business"
+    ]
+  ],
+  "brend": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "dom": [
+    3.6,
+    [
+      "domain-naming"
+    ]
+  ],
+  "domen": [
+    5.8,
+    [
+      "domain-naming"
+    ]
+  ],
+  "gorod": [
+    6,
+    [
+      "geo-local"
+    ]
+  ],
+  "imya": [
+    5.5,
+    [
+      "naming"
+    ]
+  ],
+  "kalkul": [
+    6.5,
+    [
+      "calculator",
+      "tools"
+    ]
+  ],
+  "kompaniya": [
+    7.5,
+    [
+      "business"
+    ]
+  ],
+  "kupit": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "magazin": [
+    7,
+    [
+      "ecommerce"
+    ]
+  ],
+  "nazvanie": [
+    7.5,
+    [
+      "naming"
+    ]
+  ],
+  "pomosh": [
+    6,
+    [
+      "tools"
+    ]
+  ],
+  "rynok": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "sayt": [
+    5.5,
+    [
+      "domain-naming"
+    ]
+  ],
+  "servis": [
+    6,
+    [
+      "tools"
+    ]
+  ],
+  "tovar": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ],
+  "tsena": [
+    5.8,
+    [
+      "ecommerce"
+    ]
+  ]
+}
