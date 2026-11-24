@@ -231,3 +231,385 @@ GROUP BY month_utc
 ORDER BY month_utc DESC;
 ```
 
+---
+
+## 8. Strategi URL Path & SEO Multilingual
+
+Agar selaras dengan `scripts/site-builder.mjs`, redirect `_redirects` (`/en/*` -> `/*`), serta aturan *Clean URLs* Cloudflare Pages (yang me-redirect `.html` dengan status `308`), berikut standar URL path yang disarankan untuk seluruh artikel pillar, riset, kurasi, dan alat interaktif:
+
+### A. Struktur Dasar & Pola Build (`200 OK` Tanpa Hop `308`)
+- **Prefix Bahasa Konsisten**:
+  - **English (`en`, default)**: berada di root tanpa prefix (`/guides/...`, `/research/...`, `/tools/...`).
+  - **7 Bahasa Lain**: memakai prefix ISO 2-huruf (`/id/...`, `/es/...`, `/pt/...`, `/fr/...`, `/de/...`, `/ru/...`, `/ja/...`).
+- **Format Direktori `.../index.html` + Trailing Slash (`/`)**:
+  - Setiap artikel dibuild menjadi `dist/<path>/index.html` (contoh: `dist/guides/domain-scoring-methodology/index.html` dan `dist/id/guides/domain-scoring-methodology/index.html`).
+  - Seluruh tag `canonical`, `hreflang`, `og:url`, tautan internal, dan `sitemap.xml` memakai **trailing slash (`/`)** yang sama sehingga langsung merespons `HTTP 200 OK` tanpa terkena redirect `308`.
+
+### B. Peta Kategori URL (*Hub-and-Spoke* Maksimal 2 Level)
+| Kategori | URL Hub Indeks (EN / ID) | Contoh URL Artikel | Peran SEO |
+| --- | --- | --- | --- |
+| **Pillar Articles** | `/guides/` & `/id/guides/` | `/guides/domain-scoring-methodology/`<br>`/guides/radio-test-brand-linguistics/`<br>`/guides/dns-ns-vs-rdap-availability/`<br>`/guides/domain-red-flags-due-diligence/`<br>`/guides/compound-word-morphology/`<br>`/guides/cctld-vs-gtld-international-seo/` | Penguatan E-E-A-T & rujukan metodologi/edukasi |
+| **Studi Data, Indeks, & Kurasi** | `/research/` & `/id/research/` | `/research/tld-length-availability-study/`<br>`/research/emd-pmd-over-optimization-data/`<br>`/research/domain-quality-index-2026-q4/`<br>`/research/curated-ai-saas-domains/` | Magnet backlink (*data studies*) & kurasi editorial |
+| **Alat Interaktif** | `/tools/` & `/id/tools/` | `/tools/domain-explorer/`<br>`/tools/radio-test-calculator/` | Utilitas *linkbait* berbasis data agregat D1 |
+
+### C. Pemilihan Slug Multilingual: *Uniform ASCII Slugs* vs *Localized Slugs*
+- **Opsi 1 — Uniform ASCII Slugs *(Direkomendasikan)***:
+  - Prefix bahasa berubah, slug tetap seragam dalam ASCII Inggris (mis. `/guides/radio-test-brand-linguistics/` dan `/id/guides/radio-test-brand-linguistics/`), sementara `<title>`, `<meta description>`, `<h1>`, dan seluruh isi artikel 100% berbahasa lokal.
+  - **Keunggulan**: Sinkronisasi otomatis `hreflang`, language switcher, dan `sitemap.xml` tanpa risiko broken link `404` atau URL ter-encode panjang (`%E3%83...`) pada bahasa non-Latin (`ja`, `ru`).
+- **Opsi 2 — Localized ASCII Slugs *(Jika menargetkan kata kunci URL lokal)***:
+  - Slug diterjemahkan dalam huruf ASCII/romaji per bahasa (mis. `/id/panduan/metodologi-radio-test/`), namun wajib memakai tabel peta `slugByLang` eksplisit di konfigurasi build agar `hreflang` dan language switcher tetap menunjuk ke pasangan halaman yang tepat (1-to-1).
+
+### D. Aturan Teknis SEO Multilingual untuk Build & Sitemap
+1. **Jangan Publikasikan Bahasa yang Belum Diterjemahkan**: Jika artikel baru tersedia untuk `en` dan `id` saja, build HTML, tag `hreflang`, dan entri `sitemap.xml` **hanya** untuk `en` dan `id` (+ `x-default` mengarah ke `en`). Jangan mencetak halaman `/es/...` berisi teks bahasa Inggris.
+2. **Self-Referencing `canonical` + Bidirectional `hreflang`**: Setiap halaman bahasa menunjuk `canonical` ke URL dirinya sendiri dan mencantumkan seluruh versi bahasa aktif secara timbal balik.
+3. **Language Switcher Kontekstual**: Jika pengguna berada di artikel yang belum memiliki terjemahan untuk bahasa target, arahkan ke halaman indeks `/<lang>/guides/` (atau `/<lang>/`), bukan ke URL `404`.
+4. **Schema.org `TechArticle` / `Article` + `BreadcrumbList`**: Lengkapi JSON-LD tiap artikel dengan `inLanguage`, `datePublished`, `dateModified`, `author`/`publisher`, serta `BreadcrumbList` (`Home` -> `Guides/Research` -> `Judul Artikel`) untuk sinyal E-E-A-T di SERP.
+5. **Akurasi `<lastmod>` di `sitemap.xml`**: Gunakan tanggal pembaruan aktual artikel (`dateModified`), bukan tanggal build massal yang selalu berubah setiap kali deploy.
+
+---
+
+## 9. Rancangan Arsitektur Direktori & Sumber Konten (`content/articles/`)
+
+Agar artikel pillar, riset data D1, kurasi, dan alat interaktif terkelola rapi tanpa mencampuri halaman inti (`index.html`, `about.html`, `privacy-policy.html`, `terms.html`, `disclaimer.html`, `contact.html`) maupun halaman internal (`/admin-lexicon.html`), seluruh aset editorial dan builder ditempatkan di folder terpisah yang **tidak** di-copy langsung sebagai raw file ke `dist/`:
+
+```text
+/
+├── content/
+│   └── articles/
+│       ├── manifest.json                     # Registry pusat semua artikel, section, slug, relasi, & status bahasa
+│       ├── hubs.json                         # Copywriting judul, deskripsi, & SEO per bahasa untuk hub /guides/, /research/, /tools/
+│       ├── data/                             # Snapshot JSON hasil query agregat D1 (read-only untuk tabel/grafik artikel)
+│       │   ├── tld-length-stats-2026-q4.json
+│       │   └── domain-quality-index-2026-q4.json
+│       ├── guides/
+│       │   ├── domain-scoring-methodology/
+│       │   │   ├── en.json                   # Konten lengkap Bahasa Inggris (published)
+│       │   │   └── id.json                   # Konten lengkap Bahasa Indonesia (published)
+│       │   └── radio-test-brand-linguistics/
+│       │       ├── en.json
+│       │       └── id.json
+│       ├── research/
+│       │   └── tld-length-availability-study/
+│       │       ├── en.json
+│       │       └── id.json
+│       └── tools/
+│           └── domain-explorer/
+│               ├── en.json
+│               └── id.json
+├── templates/
+│   ├── article.html                          # Template HTML artikel (berisi marker SITE_CONFIG:HEAD_START/END)
+│   └── article-hub.html                      # Template HTML halaman indeks kategori (/guides/, /research/, /tools/)
+└── scripts/
+    ├── site-builder.mjs                      # Helper existing + helper renderArticlePage(), renderHubPage(), & extend buildSitemapXml()
+    ├── article-builder.mjs                   # Loader manifest.json, validator schema, renderer Markdown/blok konten -> HTML
+    └── build-static.mjs                      # Memanggil static pages + loop render semua hub & artikel ke dist/
+```
+
+**Aturan Isolasi Direktori:**
+- `server.js` **wajib memblokir** akses publik langsung ke `/content/*` dan `/templates/*` (selain `/lib`, `/functions`, `/migrations`, `/scripts`), sehingga pengunjung hanya mengakses HTML hasil render.
+- `scripts/build-static.mjs` hanya menulis output HTML final ke `dist/` dan menyalin `dist/assets/`. File sumber `.json`/template mentah tidak pernah ikut ter-deploy ke `dist/`.
+
+---
+
+## 10. Konvensi Skema `manifest.json` & Kontrak Data per Bahasa
+
+### A. Skema Pusat `content/articles/manifest.json`
+Setiap artikel didaftarkan sebagai satu objek di array `articles`. Bahasa yang belum siap **jangan** dimasukkan ke `locales` (atau set `"published": false`).
+
+```json
+{
+  "schemaVersion": 1,
+  "sections": ["guides", "research", "tools"],
+  "articles": [
+    {
+      "id": "domain-scoring-methodology",
+      "section": "guides",
+      "defaultSlug": "domain-scoring-methodology",
+      "slugByLang": {},
+      "articleType": "TechArticle",
+      "isPillar": true,
+      "datePublished": "2026-11-20",
+      "dateModified": "2026-11-24",
+      "author": {
+        "name": "Tim Riset Domain Name",
+        "role": "Domain Linguistics & DNS Research",
+        "url": "/about.html"
+      },
+      "dataSnapshot": {
+        "file": "domain-quality-index-2026-q4.json",
+        "table": "available_domains",
+        "sampleSize": 18420,
+        "dateRange": "2026-09-01 to 2026-11-20"
+      },
+      "relatedIds": [
+        "radio-test-brand-linguistics",
+        "tld-length-availability-study",
+        "domain-red-flags-due-diligence"
+      ],
+      "locales": {
+        "en": {
+          "published": true,
+          "title": "Domain Quality Scoring Methodology: Length, Syllable Flow & Lexicon Heuristics",
+          "metaDesc": "Technical breakdown of how quality_score, word_count, and hyphen signals evaluate brandable domain names.",
+          "keywords": "domain quality score, brandable domain metrics, domain heuristics, RFC 1035",
+          "h1": "Domain Quality Scoring Methodology (0–100 Scale)",
+          "excerpt": "How length, syllable balance, TLD context, and lexical decomposition combine into a transparent quality score."
+        },
+        "id": {
+          "published": true,
+          "title": "Metodologi Skor Kualitas Domain: Panjang Karakter, Suku Kata & Leksikon",
+          "metaDesc": "Penjelasan teknis bagaimana quality_score, jumlah kata, dan sinyal tanda hubung menilai kualitas nama domain.",
+          "keywords": "skor kualitas domain, metodologi penilaian domain, domain brandable, riset domain",
+          "h1": "Metodologi Skor Kualitas Domain (Skala 0–100)",
+          "excerpt": "Cara kerja kombinasi panjang SLD, keseimbangan suku kata, konteks TLD, dan pemisahan kata leksikon."
+        },
+        "es": {
+          "published": false
+        }
+      }
+    }
+  ]
+}
+```
+
+### B. Kontrak File Konten Artikel (`content/articles/<section>/<id>/<lang>.json`)
+Setiap pasangan `<id>` dan `<lang>` yang memiliki `"published": true` wajib memiliki file JSON konten dengan struktur terstandar agar template mudah merender TOC, *Key Takeaways*, tabel data D1, serta FAQ:
+
+```json
+{
+  "id": "domain-scoring-methodology",
+  "lang": "id",
+  "readingTimeMinutes": 8,
+  "breadcrumbLabel": "Metodologi Skor Domain",
+  "keyTakeaways": [
+    "Skor 0–100 dihitung deterministik dari panjang SLD, jumlah kata, dan rasio vokal.",
+    "Domain 1–2 kata tanpa tanda hubung rata-rata mencatat quality_score 22 poin lebih tinggi.",
+    "Pemisahan kata per bahasa mencegah false-positive pada kata majemuk lokal."
+  ],
+  "sections": [
+    {
+      "anchor": "ringkasan-model-penilaian",
+      "heading": "1. Ringkasan Model Penilaian Deterministik",
+      "paragraphs": [
+        "Paragraf editorial mendalam minimal 80–120 kata per sub-bagian..."
+      ],
+      "table": {
+        "caption": "Distribusi Skor Berdasarkan Panjang SLD (Sampel D1 N = 18.420)",
+        "headers": ["Rentang Panjang SLD", "Jumlah Sampel", "Rata-rata quality_score"],
+        "rows": [
+          ["4–7 karakter", "2.140", "81.4"],
+          ["8–12 karakter", "9.850", "72.8"]
+        ]
+      }
+    }
+  ],
+  "methodologyNote": "Seluruh angka agregat dihitung dari tabel available_domains menggunakan kueri GROUP BY tanpa menampilkan domain sensitif pengguna secara mentah tanpa kurasi.",
+  "faqs": [
+    {
+      "q": "Apakah skor kualitas domain tinggi menjamin peringkat #1 di Google?",
+      "a": "Tidak. quality_score mengukur kualitas linguistik dan struktur nama domain, sedangkan peringkat SERP tetap ditentukan oleh kualitas konten, otoritas, dan relevansi."
+    }
+  ]
+}
+```
+
+**Aturan Validasi Konten:**
+1. Nilai `slug` (baik `defaultSlug` maupun `slugByLang[lang]`) **wajib** memenuhi regex `^[a-z0-9]+(?:-[a-z0-9]+)*$` (lowercase ASCII, tanpa spasi, tanpa underscore, tanpa ekstensi `.html`).
+2. `section` hanya boleh bernilai `"guides"`, `"research"`, atau `"tools"`.
+3. `articleType` hanya boleh `"TechArticle"` (panduan teknis/metodologi), `"Article"` (studi data/kurasi), atau `"WebApplication"` (halaman alat interaktif).
+4. Jika `locales[lang].published !== true`, build **wajib melewatinya** (tidak membuat file HTML di `dist/`, tidak memasukkan ke `hreflang`, dan tidak memasukkan ke `sitemap.xml`).
+
+---
+
+## 11. Konvensi Routing, Build Output (`dist/`), & Sinkronisasi `server.js`
+
+Seluruh artikel dan halaman hub menggunakan pola direktori `.../index.html` agar selaras dengan *Clean URLs* Cloudflare Pages (tanpa memicu hop redirect `308`).
+
+### A. Peta Output Build Statis (`dist/`)
+| Jenis Halaman | Bahasa | Output File di `dist/` | URL Publik Kanonik |
+| --- | --- | --- | --- |
+| Hub Kategori | `en` (default) | `dist/<section>/index.html` | `/guides/`, `/research/`, `/tools/` |
+| Hub Kategori | non-`en` (`id`, dll.) | `dist/<lang>/<section>/index.html` | `/id/guides/`, `/id/research/`, `/id/tools/` |
+| Artikel / Tool | `en` (default) | `dist/<section>/<slug>/index.html` | `/guides/domain-scoring-methodology/` |
+| Artikel / Tool | non-`en` (`id`, dll.) | `dist/<lang>/<section>/<slug>/index.html` | `/id/guides/domain-scoring-methodology/` |
+
+### B. Aturan Redirect & Normalisasi URL
+1. **Prefix `/en/*` (`dist/_redirects` & `server.js`)**: Aturan existing di `buildCloudflareRedirects()` (`/en/* /:splat 301`) secara otomatis mengarahkan `/en/guides/...` ke `/guides/...` dengan status `301`.
+2. **Enforce Trailing Slash di `server.js` (Express Preview)**:
+   - Request tanpa trailing slash (`/guides/domain-scoring-methodology` atau `/id/guides`) di-redirect `301` ke versi dengan trailing slash (`/guides/domain-scoring-methodology/` atau `/id/guides/`).
+   - Request dengan `/index.html` di akhir path (`/guides/domain-scoring-methodology/index.html`) di-redirect `301` ke `/guides/domain-scoring-methodology/` agar perilaku preview lokal identik dengan produksi Cloudflare Pages.
+3. **Header Cache (`dist/_headers`)**:
+   - Halaman HTML artikel tetap memakai header keamanan global (`X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`).
+   - File aset statis (`/assets/*`) memakai cache panjang `public, max-age=86400, stale-while-revalidate=604800`, sedangkan file XML/TXT (`/sitemap.xml`, `/robots.txt`, `/ads.txt`) memakai `max-age=3600`.
+4. **Placeholder Config Situs Wajib di Template**:
+   - `templates/article.html` dan `templates/article-hub.html` **wajib** mempertahankan komentar marker `<!-- SITE_CONFIG:HEAD_START -->` dan `<!-- SITE_CONFIG:HEAD_END -->` agar `buildHeadTags(config)` di `scripts/site-builder.mjs` tetap menyuntikkan tag verifikasi GSC/Bing/Yandex/Ahrefs, GA4, dan meta AdSense secara otomatis, serta mengganti fallback URL `https://domainname.web.id` jika `site.config.json` berubah.
+
+---
+
+## 12. Konvensi Template `<head>` SEO & Schema.org JSON-LD Artikel
+
+Setiap halaman artikel yang dirender wajib menghasilkan blok `<head>` lengkap berikut (disesuaikan per bahasa aktif):
+
+### A. Tag Meta, Canonical, & `hreflang`
+```html
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metodologi Skor Kualitas Domain (Skala 0–100) — Domain Name</title>
+  <meta name="description" content="Penjelasan teknis bagaimana quality_score..." />
+  <meta name="keywords" content="skor kualitas domain, metodologi penilaian domain..." />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+  <!-- Self-referencing canonical wajib memakai trailing slash -->
+  <link rel="canonical" href="https://domainname.web.id/id/guides/domain-scoring-methodology/" />
+
+  <!-- Bidirectional hreflang: HANYA untuk bahasa yang published: true -->
+  <link rel="alternate" hreflang="en" href="https://domainname.web.id/guides/domain-scoring-methodology/" />
+  <link rel="alternate" hreflang="id" href="https://domainname.web.id/id/guides/domain-scoring-methodology/" />
+  <link rel="alternate" hreflang="x-default" href="https://domainname.web.id/guides/domain-scoring-methodology/" />
+
+  <!-- Open Graph Artikel -->
+  <meta property="og:type" content="article" />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="Domain Name — domainname.web.id" />
+  <meta property="og:title" content="Metodologi Skor Kualitas Domain (Skala 0–100)" />
+  <meta property="og:description" content="Penjelasan teknis bagaimana quality_score..." />
+  <meta property="og:url" content="https://domainname.web.id/id/guides/domain-scoring-methodology/" />
+  <meta property="article:published_time" content="2026-11-20T00:00:00Z" />
+  <meta property="article:modified_time" content="2026-11-24T00:00:00Z" />
+  <meta property="article:section" content="Guides" />
+
+  <!-- SITE_CONFIG:HEAD_START -->
+  <!-- SITE_CONFIG:HEAD_END -->
+</head>
+```
+
+### B. Template Schema.org JSON-LD (`@graph`)
+Setiap artikel menyertakan satu blok `<script type="application/ld+json">` berisi `@graph` dengan 3 entitas inti untuk sinyal E-E-A-T dan *Breadcrumb Rich Result*:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "@id": "https://domainname.web.id/id/guides/domain-scoring-methodology/#article",
+      "mainEntityOfPage": "https://domainname.web.id/id/guides/domain-scoring-methodology/",
+      "headline": "Metodologi Skor Kualitas Domain (Skala 0–100)",
+      "description": "Penjelasan teknis bagaimana quality_score, jumlah kata, dan sinyal tanda hubung menilai kualitas nama domain.",
+      "inLanguage": "id",
+      "datePublished": "2026-11-20",
+      "dateModified": "2026-11-24",
+      "author": {
+        "@type": "Organization",
+        "name": "Tim Riset Domain Name",
+        "url": "https://domainname.web.id/id/about.html"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Domain Name",
+        "url": "https://domainname.web.id/"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Domain Name",
+        "url": "https://domainname.web.id/"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://domainname.web.id/id/guides/domain-scoring-methodology/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Beranda", "item": "https://domainname.web.id/id/" },
+        { "@type": "ListItem", "position": 2, "name": "Panduan", "item": "https://domainname.web.id/id/guides/" },
+        { "@type": "ListItem", "position": 3, "name": "Metodologi Skor Domain", "item": "https://domainname.web.id/id/guides/domain-scoring-methodology/" }
+      ]
+    }
+  ]
+}
+```
+*(Catatan: Jika artikel memiliki daftar `faqs` minimal 2 butir, tambahkan node `FAQPage` ke dalam `@graph` yang sama.)*
+
+---
+
+## 13. Konvensi Struktur Halaman Artikel, E-E-A-T, & Kepatuhan AdSense
+
+### A. Urutan Blok Wajib di Body Artikel (`templates/article.html`)
+1. **Top Navigation Bar & Language Switcher**:
+   - Tautan kembali ke Generator (`/` atau `/<lang>/`), Hub (`/guides/`, `/research/`), dan *Trust Pages* (`about.html`, `contact.html`).
+   - **Aturan Fallback Language Switcher**: Saat pengguna memilih bahasa tujuan `targetLang`:
+     1. Jika artikel aktif memiliki versi `published: true` pada `targetLang` -> arahkan ke URL artikel tersebut.
+     2. Jika belum ada terjemahannya -> arahkan ke hub `/<targetLang>/<section>/` (jika hub tersedia), atau fallback aman ke `/<targetLang>/`. **Jangan pernah** mengarahkan ke URL `404`.
+2. **Breadcrumb Nav**: `Home > Guides/Research/Tools > Judul Singkat`.
+3. **Header Artikel & Bar Metadata E-E-A-T**:
+   - Satu `<h1>` utama.
+   - Metadata eksplisit: Penulis/Tim Riset (tautan ke `/about.html` lokal), Tanggal Terbit (`datePublished`), Terakhir Diperbarui (`dateModified`), serta lencana cakupan dataset jika memakai data D1 (contoh: `Dataset: available_domains · N = 18.420 · Periode Sep–Nov 2026`).
+4. **Kotak Ringkasan (*Key Takeaways*)**: 3–5 poin inti berbasis data/metodologi agar pembaca dan crawler langsung menangkap nilai artikel.
+5. **Daftar Isi (*Table of Contents*)**: Tautan anchor `#...` ke seluruh `<h2>` utama.
+6. **Isi Editorial + Tabel/Visualisasi Data**:
+   - Minimal **800–1.500 kata** editorial terstruktur (`<h2>`, `<h3>`, paragraf analisis, studi kasus baik vs buruk).
+   - Untuk konten berbasiskan data `available_domains`, wajib menyertakan kotak **Catatan Metodologi & Keterbatasan Data** (menjelaskan perbedaan status `available` DNS/RDAP, ukuran sampel, dan ketidakpastian harga registrasi aktual).
+7. **Blok Hub-and-Spoke (*Baca Juga & Alat Terkait*)**:
+   - Minimal 2 tautan internal ke artikel pillar/riset lain dalam bahasa yang sama.
+   - 1 CTA kontekstual menuju generator utama (`/` atau `/<lang>/`) atau alat interaktif (`/tools/domain-explorer/`).
+8. **Footer Kepatuhan (*Trust Pages*)**:
+   - Wajib memuat tautan lokal ke `about.html`, `privacy-policy.html`, `terms.html`, `disclaimer.html`, dan `contact.html` sesuai konvensi `assets/trust-i18n.js`.
+
+### B. Disiplin Penempatan Iklan AdSense (Non-Auto Ads)
+Selaras dengan konfigurasi `site.config.json` (`"enableAutoAdsScript": false`) dan kebijakan tata letak di `doku.md`:
+- **Tanpa Auto Ads**: Jangan menyuntikkan skrip `adsbygoogle` dengan parameter Auto Ads global yang memecah struktur *above-the-fold* atau menempel di dalam tabel data.
+- **Maksimal 2 Slot Manual per Artikel Panjang**:
+  - Slot 1: Setelah blok *Key Takeaways* / di antara sub-bagian editorial ke-2 dan ke-3 (memiliki jarak margin vertikal minimal `24px` dari judul/tabel).
+  - Slot 2: Di bawah isi editorial utama (sebelum blok *Baca Juga / Footer*).
+- **Halaman Hub Indeks (`/guides/`, `/research/`, `/tools/`) & Halaman Pendek**: **0 slot iklan** apabila halaman hanya berisi daftar kartu ringkasan dan belum memiliki minimal 500 kata narasi pengantar editorial, guna menghindari pelanggaran *Valuable Inventory: Scraped/Thin Content*.
+- **Halaman `/admin-lexicon` dan `/api/*`**: Dilarang keras memuat skrip AdSense atau analytics publik.
+
+---
+
+## 14. Konvensi `sitemap.xml` & Checklist Validasi Build Otomatis
+
+### A. Aturan Pembuatan `sitemap.xml` (`buildSitemapXml`)
+Extend `buildSitemapXml(config)` di `scripts/site-builder.mjs` agar menggabungkan 3 kelompok URL dalam urutan prioritas:
+1. **Generator Utama & Halaman Inti**:
+   - `/` (`priority: 1.0`) dan `/<lang>/` (`0.9`).
+   - Trust pages (`about.html`, `privacy-policy.html`, `terms.html`, `disclaimer.html`, `contact.html`) dengan `priority: 0.6` (`en`) / `0.5` (non-`en`).
+2. **Halaman Hub Kategori** (`/guides/`, `/research/`, `/tools/`):
+   - Hanya dicetak untuk bahasa yang memiliki minimal 1 artikel `published: true` di kategori tersebut.
+   - `priority`: `0.8` (`en`) / `0.7` (non-`en`), `changefreq: weekly`.
+   - `<lastmod>`: tanggal `dateModified` terbaru dari artikel di dalam hub tersebut (bukan `new Date()` build).
+3. **Halaman Artikel & Alat Interaktif**:
+   - Hanya dicetak untuk bahasa dengan `locales[lang].published === true`.
+   - `priority`: `0.8` (`en` pillar) / `0.7` (non-`en` pillar & `en` research/tool) / `0.6` (non-`en` research/tool).
+   - `changefreq`: `monthly` untuk panduan/riset yang stabil, `weekly` untuk studi/indeks yang diperbarui berkala.
+   - `<lastmod>`: wajib diambil langsung dari `article.dateModified` di `manifest.json`.
+   - `<xhtml:link rel="alternate">`: hanya mendaftarkan bahasa yang berstatus `published: true` pada artikel tersebut (+ `x-default` mengarah ke URL `en`).
+
+### B. Checklist Validasi Build Sebelum Deploy (`npm run build`)
+Sebelum hasil build `dist/` di-push ke Cloudflare Pages, skrip validasi build wajib memeriksa seluruh syarat berikut (gagal = exit code non-zero):
+1. **Integritas Manifest & File Konten**: Semua entri dengan `published: true` memiliki file `<lang>.json` yang valid, `title` (30–65 karakter ideal), `metaDesc` (70–160 karakter ideal), dan `dateModified >= datePublished`.
+2. **Anti-Duplikat & Format Slug**: Tidak ada tabrakan URL output antar artikel pada `(lang, section, slug)` yang sama; seluruh slug cocok dengan `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
+3. **Simetri Bidirectional `hreflang` & Trailing Slash**: Setiap URL yang tercantum di tag `<link rel="alternate">` pada halaman HTML maupun di `sitemap.xml` benar-benar ada di `dist/<path>/index.html` dan diakhiri `/`.
+4. **Kebersihan Output `dist/`**: Pastikan `dist/admin-lexicon.html`, `dist/content/`, `dist/templates/`, serta file rahasia (`.admin-auth.json`, `.env`) **tidak** ada di dalam folder `dist/`.
+5. **Validitas Syntax & Build**: Menjalankan `npm run lint` dan `npm run build` tanpa error sebelum deploy.
+
+
+
+Struktur routing artikel multilingual, template HTML artikel & hub kategori, integrasi build statis, serta panduan penulisan lengkap sudah selesai disiapkan.
+1. Struktur Konten & Template HTML
+Registry & Metadata:
+content/articles/manifest.json disiapkan sebagai registry pusat artikel (schemaVersion: 1, section guides, research, tools).
+content/articles/hubs.json berisi copywriting lokal 8 bahasa (en, id, es, pt, fr, de, ru, ja) untuk halaman hub /guides/, /research/, dan /tools/.
+Template (templates/article.html & templates/article-hub.html):
+Selaras dengan desain UI situs utama (Tailwind, dark mode, navigasi header, language switcher kontekstual dengan fallback aman ke hub kategori, dan footer interlinked ke seluruh trust pages).
+Mendukung <head> SEO lengkap (canonical trailing slash, hreflang khusus bahasa published: true + x-default, Open Graph artikel), JSON-LD @graph (TechArticle/Article/WebApplication, BreadcrumbList, serta FAQPage otomatis jika FAQ >= 2), bar metadata E-E-A-T (Author, Published, Updated, Dataset), Key Takeaways, TOC otomatis, tabel/callout/kode, catatan metodologi, Hub-and-Spoke Related Articles, dan maksimal 2 slot AdSense manual kondisional.
+2. Builder & Sitemap (scripts/site-builder.mjs & scripts/build-static.mjs)
+Menambahkan helper loadArticleManifest, loadArticleHubs, validateArticleManifest, findPublishedArticleByRoute, getPublishedArticlesForHub, getActiveArticleHubs, renderArticlePage, dan renderArticleHubPage.
+Memperluas buildSitemapXml agar otomatis menyertakan hub kategori aktif dan artikel dengan published: true memakai <lastmod> dari dateModified.
+scripts/build-static.mjs kini memvalidasi manifest terlebih dahulu sebelum merender seluruh halaman statis inti, 24 halaman hub kategori (dist/<section>/index.html & dist/<lang>/<section>/index.html), dan seluruh artikel terbit ke dist/.
+3. Routing Express (server.js)
+Menambahkan route untuk hub dan artikel pada bahasa default (/<section>/, /<section>/<slug>/) dan 7 bahasa lain (/<lang>/<section>/, /<lang>/<section>/<slug>/).
+Menegakkan redirect 301 untuk /en/<section>... -> /<section>..., normalisasi non-trailing slash -> trailing /, serta /index.html -> /.
+Memblokir akses publik langsung ke /content/* dan /templates/* (404).
+4. Panduan Penulisan Artikel (doku.writing.md)
+Menyediakan alur kerja publikasi dari query D1 ke build dist/, panduan penulisan spesifik untuk Studi Data & Statistik, Kurasi Niche Editorial, Alat Interaktif, 7 Pillar Articles E-E-A-T, dan Hub Kategori, referensi lengkap seluruh field JSON konten, standar lokalisasi 8 bahasa, serta checklist QC pra-publikasi.
