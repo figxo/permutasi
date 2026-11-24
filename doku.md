@@ -453,6 +453,10 @@ Halaman `/admin-lexicon` dilayani oleh server Express (`server.js`), sehingga **
 - **Google AI Studio Preview (dan Server Node.js / Container Lain)**: Dapat diakses melalui `<URL_PREVIEW>/admin-lexicon`. Karena filesystem container bersifat sementara (*ephemeral*), perubahan kamus di preview tetap perlu di-commit/ekspor ke GitHub agar permanen. Jika Anda membagikan **Shared App URL** AI Studio (yang juga menjalankan `server.js`), pastikan `ADMIN_PASSWORD` sudah diatur di Secrets atau sudah di-claim terlebih dahulu.
 - **Cloudflare Pages Produksi (`dist/`) — Tidak Tersedia (404)**: Saat `npm run build` dijalankan untuk Cloudflare Pages, `admin-lexicon.html` **tidak ikut dibangun** ke folder `dist/` dan endpoint `/api/admin/*` tidak ada di `functions/`, sehingga halaman admin aman dan tidak terekspos di domain publik (`https://domainname.web.id/admin-lexicon`).
 
+
+- Gunakan SiBotak?
+
+
 #### 4. How-To: Menambah atau Mengubah Entri Dictionary via Admin UI (`/admin-lexicon`)
 1. **Jalankan server lokal** (`npm run dev`) dan buka `http://localhost:3000/admin-lexicon` (atau `<URL_PREVIEW>/admin-lexicon`).
 2. **Login** menggunakan `ADMIN_PASSWORD` (atau buat password awal bila muncul form *First-Run Admin Setup*).
