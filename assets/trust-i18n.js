@@ -1,6 +1,6 @@
 (function (root) {
     const SUPPORTED_LANGS = ['en', 'id', 'es', 'pt', 'fr', 'de', 'ru', 'ja'];
-    const TRUST_PAGES = ['index.html', 'about.html', 'privacy-policy.html', 'terms.html', 'disclaimer.html', 'contact.html'];
+    const TRUST_PAGES = ['index.html', 'guide.html', 'faq.html', 'about.html', 'privacy-policy.html', 'terms.html', 'disclaimer.html', 'contact.html'];
     const OG_LOCALE = {
         en: 'en_US',
         id: 'id_ID',
@@ -254,7 +254,7 @@
                 '<strong>Pintasan Riset Aman SEO:</strong> Tautan pemeriksaan cepat ke Wayback Machine, Ahrefs, dan pencarian Google <code>site:</code> dilindungi atribut ketat <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Independensi Editorial & Transparansi',
-            s3p1: 'Domain Name beroperasi sebagai utilitas web independen dan tidak menjual pendaftaran domain secara langsung maupun menerima komisi untuk mengutamakan ekstensi tertentu. Seluruh panduan di <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">Panduan & FAQ</a> disusun murni untuk tujuan edukasi dan riset.',
+            s3p1: 'Domain Name beroperasi sebagai utilitas web independen dan tidak menjual pendaftaran domain secara langsung maupun menerima komisi untuk mengutamakan ekstensi tertentu. Seluruh panduan di <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">Panduan & FAQ</a> disusun murni untuk tujuan edukasi dan riset.',
             s3p2: 'Sebelum mendaftarkan kandidat domain, pengguna tetap wajib memverifikasi ketersediaan, merek dagang, dan riwayat secara mandiri sesuai <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Ketentuan Layanan</a> dan <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Sanggahan (Disclaimer)</a>.',
             boxH: 'Hubungi Kami',
             boxP: (email) => `Punya masukan, permintaan fitur, laporan bug, atau pertanyaan kepatuhan? Kunjungi <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Halaman Kontak</a> atau kirim email ke <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -277,7 +277,7 @@
                 '<strong>Accesos Directos Seguros para SEO:</strong> Enlaces a Wayback Machine, Ahrefs y Google <code>site:</code> protegidos con <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Independencia Editorial y Transparencia',
-            s3p1: 'Domain Name es una herramienta independiente; no vendemos dominios ni cobramos comisiones por priorizar extensiones. Consulta la <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">Guía y FAQ</a> para fines educativos.',
+            s3p1: 'Domain Name es una herramienta independiente; no vendemos dominios ni cobramos comisiones por priorizar extensiones. Consulta la <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">Guía y FAQ</a> para fines educativos.',
             s3p2: 'Antes de registrar un dominio, verifica disponibilidad y marcas registradas según nuestros <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Términos de Servicio</a> y <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Aviso Legal</a>.',
             boxH: 'Contacto',
             boxP: (email) => `¿Tienes comentarios, reportes o consultas? Visita nuestra <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Página de Contacto</a> o escribe a <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -300,7 +300,7 @@
                 '<strong>Atalhos Seguros para SEO:</strong> Links para Wayback Machine, Ahrefs e Google <code>site:</code> com <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Independência Editorial e Transparência',
-            s3p1: 'Operamos de forma independente sem vender registros diretamente. Os materiais no <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">Guia e FAQ</a> são exclusivamente educativos.',
+            s3p1: 'Operamos de forma independente sem vender registros diretamente. Os materiais no <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">Guia e FAQ</a> são exclusivamente educativos.',
             s3p2: 'Verifique sempre disponibilidade e marcas antes de registrar conforme nossos <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Termos de Uso</a> e <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Aviso Legal</a>.',
             boxH: 'Fale Conosco',
             boxP: (email) => `Dúvidas, sugestões ou suporte? Acesse a <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Página de Contato</a> ou envie e-mail para <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -323,7 +323,7 @@
                 '<strong>Raccourcis Sûrs :</strong> Liens Wayback Machine, Ahrefs et Google <code>site:</code> protégés par <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Indépendance & Transparence',
-            s3p1: 'Domain Name est un outil utilitaire indépendant sans affiliation avec les bureaux d’enregistrement. Les guides de notre <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">section Aide & FAQ</a> sont purement informatifs.',
+            s3p1: 'Domain Name est un outil utilitaire indépendant sans affiliation avec les bureaux d’enregistrement. Les guides de notre <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">section Aide & FAQ</a> sont purement informatifs.',
             s3p2: 'Vérifiez toujours la disponibilité et les marques conformément à nos <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Conditions d’utilisation</a> et <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Mentions légales</a>.',
             boxH: 'Nous Contacter',
             boxP: (email) => `Une question ou suggestion ? Rendez-vous sur notre <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Page Contact</a> ou écrivez à <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -346,7 +346,7 @@
                 '<strong>SEO-sichere Prüf-Shortcuts:</strong> Links zu Wayback Machine, Ahrefs und Google <code>site:</code> nutzen <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Redaktionelle Unabhängigkeit & Transparenz',
-            s3p1: 'Domain Name arbeitet unabhängig und verkauft selbst keine Domains. Alle Hinweise in <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">Leitfaden & FAQ</a> dienen ausschließlich zu Informationszwecken.',
+            s3p1: 'Domain Name arbeitet unabhängig und verkauft selbst keine Domains. Alle Hinweise in <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">Leitfaden & FAQ</a> dienen ausschließlich zu Informationszwecken.',
             s3p2: 'Prüfen Sie vor einer Registrierung stets Verfügbarkeit und Markenrechte gemäß unseren <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Nutzungsbedingungen</a> und dem <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Haftungsausschluss</a>.',
             boxH: 'Kontakt aufnehmen',
             boxP: (email) => `Fragen oder Feedback? Besuchen Sie unsere <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Kontaktseite</a> oder schreiben Sie an <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -369,7 +369,7 @@
                 '<strong>Безопасные ссылки проверки:</strong> Переходы в Wayback Machine, Ahrefs и Google <code>site:</code> защищены атрибутом <code>rel="nofollow noopener noreferrer"</code>.'
             ],
             s3h: 'Независимость и прозрачность',
-            s3p1: 'Сервис полностью независим и не является регистратором. Материалы в разделе <a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">Руководство и FAQ</a> предназначены для обучения и анализа.',
+            s3p1: 'Сервис полностью независим и не является регистратором. Материалы в разделе <a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">Руководство и FAQ</a> предназначены для обучения и анализа.',
             s3p2: 'Перед регистрацией домена проверяйте права на товарные знаки согласно <a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">Условиям использования</a> и <a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">Отказу от ответственности</a>.',
             boxH: 'Связаться с нами',
             boxP: (email) => `Есть вопросы или предложения? Перейдите на страницу <a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">Контакты</a> или напишите на <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a>.`
@@ -392,7 +392,7 @@
                 '<strong>安全な調査リンク:</strong> Wayback Machine、Ahrefs、Google検索 <code>site:</code> へのリンクには <code>rel="nofollow noopener noreferrer"</code> を適用しています。'
             ],
             s3h: '独立性と透明性',
-            s3p1: '当サイトは独立したユーティリティであり、ドメイン登録代行や特定拡張子の優遇は行いません。<a href="index.html#localizedEducationalContent" class="text-blue-600 dark:text-blue-400 hover:underline">ガイド・FAQ</a>は教育目的で提供されています。',
+            s3p1: '当サイトは独立したユーティリティであり、ドメイン登録代行や特定拡張子の優遇は行いません。<a href="guide.html" class="text-blue-600 dark:text-blue-400 hover:underline">ガイド・FAQ</a>は教育目的で提供されています。',
             s3p2: '登録前には必ず<a href="terms.html" class="text-blue-600 dark:text-blue-400 hover:underline">利用規約</a>および<a href="disclaimer.html" class="text-blue-600 dark:text-blue-400 hover:underline">免責事項</a>に従い、空き状況と商標権をご確認ください。',
             boxH: 'お問い合わせ',
             boxP: (email) => `ご意見・不具合報告は<a href="contact.html" class="text-blue-600 dark:text-blue-400 font-medium hover:underline">お問い合わせページ</a>または <a href="mailto:${email}" class="font-mono text-blue-600 dark:text-blue-400 hover:underline">${email}</a> までご連絡ください。`

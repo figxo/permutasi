@@ -5,8 +5,16 @@ import { fileURLToPath } from 'url';
 import {
   STATIC_HTML_PAGES,
   SUPPORTED_LANGUAGES,
+  ARTICLE_SECTIONS,
   loadSiteConfig,
+  loadArticleManifest,
+  findPublishedArticleByRoute,
+  getHubPath,
   renderLocalizedPage,
+  renderGuidePage,
+  renderFaqPage,
+  renderArticleHubPage,
+  renderArticlePage,
   buildAdsTxt,
   buildRobotsTxt,
   buildSitemapXml
@@ -65,7 +73,23 @@ for (const pageFile of STATIC_HTML_PAGES) {
   });
 }
 
+app.get(['/guide', '/guide.html'], (req, res) => {
+  const queryLang = String(req.query?.lang || '').toLowerCase();
+  const lang = SUPPORTED_LANGUAGES.includes(queryLang) ? queryLang : 'en';
+  const config = loadSiteConfig(__dirname);
+  return res.type('html').send(renderGuidePage(__dirname, lang, config));
+});
+
+app.get(['/faq', '/faq.html'], (req, res) => {
+  const queryLang = String(req.query?.lang || '').toLowerCase();
+  const lang = SUPPORTED_LANGUAGES.includes(queryLang) ? queryLang : 'en';
+  const config = loadSiteConfig(__dirname);
+  return res.type('html').send(renderFaqPage(__dirname, lang, config));
+});
+
 app.get(['/en', '/en/'], (_req, res) => res.redirect(301, '/'));
+app.get(['/en/guide', '/en/guide.html'], (_req, res) => res.redirect(301, '/guide.html'));
+app.get(['/en/faq', '/en/faq.html'], (_req, res) => res.redirect(301, '/faq.html'));
 for (const pageFile of STATIC_HTML_PAGES) {
   const cleanSlug = pageFile.replace(/\.html$/i, '');
   const dest = pageFile === 'index.html' ? '/' : `/${pageFile}`;
@@ -75,10 +99,81 @@ for (const pageFile of STATIC_HTML_PAGES) {
 for (const lang of SUPPORTED_LANGUAGES) {
   if (lang === 'en') continue;
   app.get([`/${lang}`, `/${lang}/`], (_req, res) => sendRenderedPage(res, 'index.html', lang));
+  app.get([`/${lang}/guide`, `/${lang}/guide.html`], (_req, res) => {
+    const config = loadSiteConfig(__dirname);
+    return res.type('html').send(renderGuidePage(__dirname, lang, config));
+  });
+  app.get([`/${lang}/faq`, `/${lang}/faq.html`], (_req, res) => {
+    const config = loadSiteConfig(__dirname);
+    return res.type('html').send(renderFaqPage(__dirname, lang, config));
+  });
   for (const pageFile of STATIC_HTML_PAGES) {
     const cleanSlug = pageFile.replace(/\.html$/i, '');
     app.get([`/${lang}/${pageFile}`, `/${lang}/${cleanSlug}`], (_req, res) => {
       return sendRenderedPage(res, pageFile, lang);
+    });
+  }
+}
+
+for (const section of ARTICLE_SECTIONS) {
+  app.get([`/en/${section}`, `/en/${section}/`, `/en/${section}/index.html`], (_req, res) => {
+    return res.redirect(301, getHubPath(section, 'en'));
+  });
+  app.get([`/en/${section}/:slug`, `/en/${section}/:slug/`, `/en/${section}/:slug/index.html`], (req, res) => {
+    const slug = String(req.params.slug || '').trim().toLowerCase();
+    return res.redirect(301, `/${section}/${encodeURIComponent(slug)}/`);
+  });
+
+  app.get([`/${section}`, `/${section}/`, `/${section}/index.html`], (req, res) => {
+    const canonicalPath = getHubPath(section, 'en');
+    if (req.path !== canonicalPath) {
+      return res.redirect(301, canonicalPath);
+    }
+    const config = loadSiteConfig(__dirname);
+    const manifest = loadArticleManifest(__dirname);
+    return res.type('html').send(renderArticleHubPage(__dirname, section, 'en', config, manifest));
+  });
+
+  app.get([`/${section}/:slug`, `/${section}/:slug/`, `/${section}/:slug/index.html`], (req, res) => {
+    const slug = String(req.params.slug || '').trim().toLowerCase();
+    const match = findPublishedArticleByRoute(__dirname, section, slug, 'en');
+    if (!match) {
+      return res.status(404).end();
+    }
+    const canonicalPath = `/${section}/${slug}/`;
+    if (req.path !== canonicalPath) {
+      return res.redirect(301, canonicalPath);
+    }
+    const config = loadSiteConfig(__dirname);
+    return res.type('html').send(renderArticlePage(__dirname, match.article, 'en', config, match.manifest));
+  });
+}
+
+for (const lang of SUPPORTED_LANGUAGES) {
+  if (lang === 'en') continue;
+  for (const section of ARTICLE_SECTIONS) {
+    app.get([`/${lang}/${section}`, `/${lang}/${section}/`, `/${lang}/${section}/index.html`], (req, res) => {
+      const canonicalPath = getHubPath(section, lang);
+      if (req.path !== canonicalPath) {
+        return res.redirect(301, canonicalPath);
+      }
+      const config = loadSiteConfig(__dirname);
+      const manifest = loadArticleManifest(__dirname);
+      return res.type('html').send(renderArticleHubPage(__dirname, section, lang, config, manifest));
+    });
+
+    app.get([`/${lang}/${section}/:slug`, `/${lang}/${section}/:slug/`, `/${lang}/${section}/:slug/index.html`], (req, res) => {
+      const slug = String(req.params.slug || '').trim().toLowerCase();
+      const match = findPublishedArticleByRoute(__dirname, section, slug, lang);
+      if (!match) {
+        return res.status(404).end();
+      }
+      const canonicalPath = `/${lang}/${section}/${slug}/`;
+      if (req.path !== canonicalPath) {
+        return res.redirect(301, canonicalPath);
+      }
+      const config = loadSiteConfig(__dirname);
+      return res.type('html').send(renderArticlePage(__dirname, match.article, lang, config, match.manifest));
     });
   }
 }
@@ -96,7 +191,7 @@ app.get('/sitemap.xml', (_req, res) => {
   if (!config.seo.generateSitemapXml) {
     return res.status(404).end();
   }
-  res.type('application/xml').send(buildSitemapXml(config));
+  res.type('application/xml').send(buildSitemapXml(config, __dirname));
 });
 
 app.get('/ads.txt', (_req, res) => {
@@ -261,7 +356,7 @@ app.post('/api/admin/lexicon/test', requireAdminAuth, express.json({ limit: '8kb
   return res.json({ ok: true, result });
 });
 
-app.use(['/lib', '/functions', '/migrations', '/scripts'], (_req, res) => res.status(404).end());
+app.use(['/lib', '/functions', '/migrations', '/scripts', '/content', '/templates'], (_req, res) => res.status(404).end());
 app.use(express.static(path.join(__dirname), { index: false, dotfiles: 'deny' }));
 
 app.listen(PORT, '0.0.0.0', () => {
