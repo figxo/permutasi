@@ -512,82 +512,110 @@
                                 <button type="button" onclick="addPlaceholderToken('consonant')" id="btnCons" class="min-h-[38px] sm:min-h-[36px] px-2.5 py-1 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 text-[12px] font-mono font-semibold rounded-md border border-cyan-200 shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">+ [consonant]</button>
                             </div>
 
-                            <!-- Pronounceable Pattern Presets -->
+                            <!-- Pronounceable Styles -->
                             <div id="pronouncePresetsSection" class="pt-3.5 border-t border-white/15 flex flex-col gap-3">
-                                <div class="flex flex-wrap items-center justify-between gap-2.5">
-                                    <div class="flex flex-col gap-0.5 min-w-0">
-                                        <div class="flex flex-wrap items-center gap-2 min-w-0">
-                                            <span id="uiPresetsLabel" class="text-[11px] uppercase tracking-wider text-white font-semibold leading-[1.4]">Pronounceable Presets:</span>
-                                            <span id="presetAppliedBadge" role="status" aria-live="polite" class="hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-400/25 border border-emerald-300/50 text-[11px] font-semibold text-emerald-100 whitespace-nowrap">✓ Preset applied</span>
-                                        </div>
-                                        <p id="uiPresetsHelper" class="text-[12px] text-white/80 leading-[1.4]">Click any card to insert at cursor · Live examples use your keyword</p>
+                                <div class="flex flex-col gap-0.5 min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 min-w-0">
+                                        <span id="uiPresetsLabel" class="text-[11px] uppercase tracking-wider text-white font-semibold leading-[1.4]">Pronounceable Styles</span>
+                                        <span id="presetAppliedBadge" role="status" aria-live="polite" class="hidden inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-400/25 border border-emerald-300/50 text-[11px] font-semibold text-emerald-100 whitespace-nowrap">✓ Style applied</span>
                                     </div>
-                                    <label for="softConsonantsCheckbox" id="uiSoftConsTooltip" title="Exclude heavy letters (k, q, x, z) from [consonant] for smoother startup-style domain names" class="inline-flex items-center gap-2 min-h-[34px] px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/25 text-[12px] font-medium text-white cursor-pointer select-none transition-colors">
-                                        <input type="checkbox" id="softConsonantsCheckbox" checked onchange="setActiveGenerateSlot('pattern'); generateDomains()" class="h-3.5 w-3.5 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
-                                        <span id="uiSoftConsLabel">Soft Consonants (no k, q, x, z)</span>
+                                    <p id="uiPresetsHelper" class="text-[12px] text-white/80 leading-[1.4]">Click any style to insert its pattern · Live examples use your keyword</p>
+                                </div>
+
+                                <div id="presetCardsGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                    <!-- Primary 1: Smooth Ending -->
+                                    <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv')" class="preset-pattern-btn min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-emerald-700/55 hover:bg-emerald-600/70 border border-emerald-300/80 transition-all duration-150 flex flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyCvTitle" class="text-[14px] font-bold text-white leading-[1.3] truncate">Smooth Ending</span>
+                                            <span id="uiPresetRecBadge" class="shrink-0 text-[10px] font-bold uppercase tracking-wide text-emerald-200 whitespace-nowrap">★ Recommended</span>
+                                        </span>
+                                        <span id="uiPresetAnyCvSample" data-preset-sample="any-cv" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-white tracking-tight leading-tight truncate"><span class="text-white/90">business</span><span class="text-emerald-200">ra</span></span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyCvSub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">Soft &amp; easy to say</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[any]+[cons]+[v]</span>
+                                        </span>
+                                    </button>
+
+                                    <!-- Primary 2: Short & Catchy -->
+                                    <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv')" class="preset-pattern-btn min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-cyan-700/55 hover:bg-cyan-600/70 border border-cyan-300/80 transition-all duration-150 flex flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvCvTitle" class="text-[14px] font-bold text-white leading-[1.3] truncate">Short &amp; Catchy</span>
+                                        </span>
+                                        <span id="uiPresetCvCvSample" data-preset-sample="cv-cv" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-cyan-200 tracking-tight leading-tight truncate">mira</span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvCvSub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">4 letters, memorable</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[c]+[v]+[c]+[v]</span>
+                                        </span>
+                                    </button>
+
+                                    <!-- Primary 3 (Desktop 3rd card, Mobile inside Bottom Sheet): Modern Ending -->
+                                    <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc')" class="preset-pattern-btn hidden sm:flex min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-rose-700/55 hover:bg-rose-600/70 border border-rose-300/80 transition-all duration-150 flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyVcTitle" class="text-[14px] font-bold text-white leading-[1.3] truncate">Modern Ending</span>
+                                        </span>
+                                        <span id="uiPresetAnyVcSample" data-preset-sample="any-vc" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-white tracking-tight leading-tight truncate"><span class="text-white/90">business</span><span class="text-rose-200">al</span></span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetAnyVcSub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">Clean vowel + consonant finish</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[any]+[v]+[cons]</span>
+                                        </span>
+                                    </button>
+
+                                    <!-- Secondary 4 (More styles on Desktop): With Prefix -->
+                                    <button type="button" data-preset-id="cv-any" data-preset-tier="more" onclick="applyPatternPreset('cv-any')" class="preset-pattern-btn preset-more-card hidden min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-violet-700/55 hover:bg-violet-600/70 border border-violet-300/80 transition-all duration-150 flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvAnyTitle" class="text-[14px] font-bold text-white leading-[1.3] truncate">With Prefix</span>
+                                        </span>
+                                        <span id="uiPresetCvAnySample" data-preset-sample="cv-any" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-white tracking-tight leading-tight truncate"><span class="text-violet-200">ra</span><span class="text-white/90">business</span></span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvAnySub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">Add 2 letters in front</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[c]+[v]+[any]</span>
+                                        </span>
+                                    </button>
+
+                                    <!-- Secondary 5 (More styles on Desktop): With Dash -->
+                                    <button type="button" data-preset-id="cvc-v" data-preset-tier="more" onclick="applyPatternPreset('cvc-v')" class="preset-pattern-btn preset-more-card hidden min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-amber-700/55 hover:bg-amber-600/70 border border-amber-300/80 transition-all duration-150 flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvcVTitle" class="text-[14px] font-bold text-white leading-[1.3] truncate">With Dash</span>
+                                        </span>
+                                        <span id="uiPresetCvcVSample" data-preset-sample="cvc-v" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-white tracking-tight leading-tight truncate"><span class="text-white/90">bar</span><span class="text-amber-200">-</span><span class="text-white/90">a</span></span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetCvcVSub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">Easier to read</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[c]+[v]+[c]+[-]+[v]</span>
+                                        </span>
+                                    </button>
+
+                                    <!-- Secondary 6 (More styles on Desktop): Two Words Bridge -->
+                                    <button type="button" data-preset-id="natural-3" data-preset-tier="more" onclick="applyPatternPreset('natural-3')" class="preset-pattern-btn preset-more-card hidden min-h-[76px] sm:min-h-[96px] text-left px-3.5 py-3 rounded-xl bg-sky-700/55 hover:bg-sky-600/70 border border-sky-300/80 transition-all duration-150 flex-col justify-between gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetNatural3Title" class="text-[14px] font-bold text-white leading-[1.3] truncate">Two Words Bridge</span>
+                                        </span>
+                                        <span id="uiPresetNatural3Sample" data-preset-sample="natural-3" class="font-mono text-[15px] sm:text-[14.5px] font-bold text-white tracking-tight leading-tight truncate"><span class="text-white/90">business</span><span class="text-sky-200">a</span><span class="text-white/90">pro</span></span>
+                                        <span class="flex items-center justify-between gap-2 w-full">
+                                            <span id="uiPresetNatural3Sub" class="text-[12px] sm:text-[11.5px] text-white/85 leading-[1.35] truncate">Link 2 words with a vowel</span>
+                                            <span class="hidden sm:inline font-mono text-[10px] text-white/55 shrink-0">[any]+[v]+[sec]</span>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <!-- Style Controls Row (Mobile Bottom Sheet trigger / Desktop More Styles + Soft Letters Toggle) -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pt-0.5">
+                                    <button type="button" id="openMobileStylesBtn" onclick="openStylesBottomSheet()" class="sm:hidden inline-flex items-center justify-center gap-2 w-full min-h-[44px] px-4 py-2 rounded-xl bg-white/15 hover:bg-white/20 border border-white/30 text-[13px] font-semibold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+                                        <span id="uiViewAllStylesLabel">View all styles (6)</span>
+                                        <svg aria-hidden="true" class="w-4 h-4 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+
+                                    <button type="button" id="toggleMoreStylesBtn" aria-expanded="false" onclick="toggleMorePresetStyles()" class="hidden sm:inline-flex items-center gap-1.5 min-h-[34px] px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/[0.16] border border-white/25 text-[12px] font-semibold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white w-fit">
+                                        <span id="uiMoreStylesLabel">More styles</span>
+                                        <svg id="uiMoreStylesChevron" aria-hidden="true" class="w-3.5 h-3.5 text-white/80 transition-transform duration-150" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                    </button>
+
+                                    <label for="softConsonantsCheckbox" id="uiSoftConsTooltip" title="Exclude heavy letters (k, q, x, z) for smoother startup-style domain names" class="inline-flex items-center gap-2 min-h-[36px] px-2.5 py-1 rounded-lg bg-white/[0.08] hover:bg-white/[0.14] border border-white/20 text-[12px] font-medium text-white/95 cursor-pointer select-none transition-colors w-full sm:w-auto justify-start">
+                                        <input type="checkbox" id="softConsonantsCheckbox" checked onchange="syncSoftConsonantsCheckboxes(this.checked); setActiveGenerateSlot('pattern'); generateDomains()" class="h-3.5 w-3.5 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
+                                        <span id="uiSoftConsLabel">Use softer letters (no k, q, x, z)</span>
                                     </label>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-                                    <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-emerald-700/55 hover:bg-emerald-600/70 border border-emerald-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetAnyCvTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Keyword + Ending</span>
-                                            <span id="uiPresetAnyCvSample" class="font-mono text-[12px] font-bold text-emerald-200 whitespace-nowrap shrink-0">→ bizra</span>
-                                        </span>
-                                        <span id="uiPresetAnyCvSub" class="text-[11.5px] text-white/90 leading-[1.35]">Smooth startup suffix</span>
-                                        <span class="flex items-center justify-between gap-2 w-full pt-0.5 text-[11px] font-mono leading-[1.3]">
-                                            <span class="truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
-                                            <span id="uiPresetRecBadge" class="shrink-0 font-sans text-[10px] font-bold uppercase tracking-wide text-emerald-200 whitespace-nowrap">★ Recommended</span>
-                                        </span>
-                                    </button>
-
-                                    <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-cyan-700/55 hover:bg-cyan-600/70 border border-cyan-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetCvCvTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">4-Letter Brandable</span>
-                                            <span id="uiPresetCvCvSample" class="font-mono text-[12px] font-bold text-cyan-200 whitespace-nowrap shrink-0">→ mira</span>
-                                        </span>
-                                        <span id="uiPresetCvCvSub" class="text-[11.5px] text-white/90 leading-[1.35]">Short coined name, easy to recall</span>
-                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
-                                    </button>
-
-                                    <button type="button" data-preset-id="cv-any" onclick="applyPatternPreset('cv-any')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-violet-700/55 hover:bg-violet-600/70 border border-violet-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetCvAnyTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Prefix + Keyword</span>
-                                            <span id="uiPresetCvAnySample" class="font-mono text-[12px] font-bold text-violet-200 whitespace-nowrap shrink-0">→ rabiz</span>
-                                        </span>
-                                        <span id="uiPresetCvAnySub" class="text-[11.5px] text-white/90 leading-[1.35]">Catchy 2-letter opener</span>
-                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-indigo-200 font-semibold">[any]</span></span>
-                                    </button>
-
-                                    <button type="button" data-preset-id="cvc-v" onclick="applyPatternPreset('cvc-v')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-amber-700/55 hover:bg-amber-600/70 border border-amber-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetCvcVTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Punchy Rhythm</span>
-                                            <span id="uiPresetCvcVSample" class="font-mono text-[12px] font-bold text-amber-200 whitespace-nowrap shrink-0">→ bar-a</span>
-                                        </span>
-                                        <span id="uiPresetCvcVSub" class="text-[11.5px] text-white/90 leading-[1.35]">Crisp flow with optional dash</span>
-                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span> <span class="text-white/60">+</span> <span class="text-slate-200 font-semibold">[dash]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span></span>
-                                    </button>
-
-                                    <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-rose-700/55 hover:bg-rose-600/70 border border-rose-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetAnyVcTitle" class="text-[13px] font-bold text-white leading-[1.3] truncate">Keyword + Crisp End</span>
-                                            <span id="uiPresetAnyVcSample" class="font-mono text-[12px] font-bold text-rose-200 whitespace-nowrap shrink-0">→ bizal</span>
-                                        </span>
-                                        <span id="uiPresetAnyVcSub" class="text-[11.5px] text-white/90 leading-[1.35]">Modern vowel-consonant finish</span>
-                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-cyan-200 font-semibold">[cons]</span></span>
-                                    </button>
-
-                                    <button type="button" data-preset-id="natural-3" onclick="applyPatternPreset('natural-3')" class="preset-pattern-btn min-h-[82px] text-left px-3.5 py-2.5 rounded-xl bg-sky-700/55 hover:bg-sky-600/70 border border-sky-300/80 transition-all duration-150 flex flex-col justify-between gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                                        <span class="flex items-center justify-between gap-2 w-full">
-                                            <span id="uiPresetNatural3Title" class="text-[13px] font-bold text-white leading-[1.3] truncate">2-Word Vowel Bridge</span>
-                                            <span id="uiPresetNatural3Sample" class="font-mono text-[12px] font-bold text-sky-200 whitespace-nowrap shrink-0">→ bizapro</span>
-                                        </span>
-                                        <span id="uiPresetNatural3Sub" class="text-[11.5px] text-white/90 leading-[1.35]">Smooth link between 2 keywords</span>
-                                        <span class="text-[11px] font-mono leading-[1.3] truncate"><span class="text-indigo-200 font-semibold">[any]</span> <span class="text-white/60">+</span> <span class="text-rose-200 font-semibold">[vowel]</span> <span class="text-white/60">+</span> <span class="text-emerald-200 font-semibold">[sec]</span></span>
-                                    </button>
-                                </div>
-
-                                <!-- Pronunciation Micro-Tips -->
+                                <!-- Pronunciation Micro-Tips (Collapsed by Default) -->
                                 <details id="pronounceTipsDetails" class="group rounded-lg bg-white/[0.07] border border-white/15 text-white">
                                     <summary class="flex items-center justify-between gap-2 px-3 py-2.5 min-h-[40px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden text-[12px] sm:text-[13px] font-semibold text-white/95 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white rounded-lg">
                                         <span class="inline-flex items-center gap-2 min-w-0">
@@ -1316,6 +1344,82 @@
             <p id="infoModalBody" class="text-[14px] md:text-[15px] text-slate-600 dark:text-slate-300 leading-[1.5] md:leading-[1.6]"></p>
             <div class="flex justify-end pt-2">
                 <button type="button" id="infoModalCloseBtn" onclick="closeInfoModal()" class="min-h-[40px] px-4 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[12px] md:text-[13px] font-semibold rounded-lg hover:opacity-90 transition-opacity">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Sheet: All Pronounceable Styles -->
+    <div id="stylesBottomSheet" role="dialog" aria-modal="true" aria-labelledby="uiSheetStylesTitle" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/70 backdrop-blur-sm">
+        <div class="w-full max-w-lg max-h-[86vh] rounded-t-2xl sm:rounded-2xl bg-[#131354] border-t sm:border border-white/20 shadow-2xl flex flex-col overflow-hidden text-white">
+            <div class="pt-2.5 px-4 pb-3 border-b border-white/15 flex flex-col gap-2">
+                <div aria-hidden="true" class="w-10 h-1 rounded-full bg-white/30 mx-auto sm:hidden"></div>
+                <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <h3 id="uiSheetStylesTitle" class="text-[16px] font-bold text-white leading-tight">Choose a Name Style</h3>
+                        <p id="uiSheetStylesSub" class="text-[12px] text-white/75 leading-snug mt-0.5">Tap a style to apply it to your formula</p>
+                    </div>
+                    <button type="button" onclick="closeStylesBottomSheet()" aria-label="Close styles sheet" class="min-h-[38px] min-w-[38px] inline-flex items-center justify-center rounded-lg text-white/75 hover:text-white hover:bg-white/15 transition-colors shrink-0">
+                        <svg aria-hidden="true" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-y-auto px-4 py-3.5 flex flex-col gap-2.5">
+                <label for="mobileSheetSoftConsCheckbox" class="inline-flex items-center gap-2.5 min-h-[42px] px-3 py-2 rounded-xl bg-white/10 border border-white/20 text-[12.5px] font-medium text-white cursor-pointer select-none">
+                    <input type="checkbox" id="mobileSheetSoftConsCheckbox" checked onchange="syncSoftConsonantsCheckboxes(this.checked); setActiveGenerateSlot('pattern'); generateDomains()" class="h-4 w-4 rounded border-white/70 bg-white text-blue-600 focus:ring-white cursor-pointer shrink-0">
+                    <span id="uiMobileSheetSoftConsLabel">Use softer letters (no k, q, x, z)</span>
+                </label>
+
+                <button type="button" data-preset-id="any-cv" onclick="applyPatternPreset('any-cv', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-emerald-700/60 hover:bg-emerald-600/75 border border-emerald-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span class="flex items-center gap-2">
+                            <span id="uiSheetAnyCvTitle" class="text-[14px] font-bold text-white leading-tight">Smooth Ending</span>
+                            <span id="uiSheetRecBadge" class="text-[10px] font-bold uppercase tracking-wide text-emerald-200 whitespace-nowrap">★ Recommended</span>
+                        </span>
+                        <span id="uiSheetAnyCvSub" class="text-[12px] text-white/85 leading-snug">Soft &amp; easy to say</span>
+                    </span>
+                    <span data-preset-sample="any-cv" class="font-mono text-[15px] font-bold text-white whitespace-nowrap shrink-0"><span class="text-white/90">business</span><span class="text-emerald-200">ra</span></span>
+                </button>
+
+                <button type="button" data-preset-id="cv-cv" onclick="applyPatternPreset('cv-cv', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-cyan-700/60 hover:bg-cyan-600/75 border border-cyan-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span id="uiSheetCvCvTitle" class="text-[14px] font-bold text-white leading-tight">Short &amp; Catchy</span>
+                        <span id="uiSheetCvCvSub" class="text-[12px] text-white/85 leading-snug">4 letters, memorable</span>
+                    </span>
+                    <span data-preset-sample="cv-cv" class="font-mono text-[15px] font-bold text-cyan-200 whitespace-nowrap shrink-0">mira</span>
+                </button>
+
+                <button type="button" data-preset-id="any-vc" onclick="applyPatternPreset('any-vc', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-rose-700/60 hover:bg-rose-600/75 border border-rose-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span id="uiSheetAnyVcTitle" class="text-[14px] font-bold text-white leading-tight">Modern Ending</span>
+                        <span id="uiSheetAnyVcSub" class="text-[12px] text-white/85 leading-snug">Clean vowel + consonant finish</span>
+                    </span>
+                    <span data-preset-sample="any-vc" class="font-mono text-[15px] font-bold text-white whitespace-nowrap shrink-0"><span class="text-white/90">business</span><span class="text-rose-200">al</span></span>
+                </button>
+
+                <button type="button" data-preset-id="cv-any" onclick="applyPatternPreset('cv-any', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-violet-700/60 hover:bg-violet-600/75 border border-violet-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span id="uiSheetCvAnyTitle" class="text-[14px] font-bold text-white leading-tight">With Prefix</span>
+                        <span id="uiSheetCvAnySub" class="text-[12px] text-white/85 leading-snug">Add 2 letters in front</span>
+                    </span>
+                    <span data-preset-sample="cv-any" class="font-mono text-[15px] font-bold text-white whitespace-nowrap shrink-0"><span class="text-violet-200">ra</span><span class="text-white/90">business</span></span>
+                </button>
+
+                <button type="button" data-preset-id="cvc-v" onclick="applyPatternPreset('cvc-v', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-amber-700/60 hover:bg-amber-600/75 border border-amber-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span id="uiSheetCvcVTitle" class="text-[14px] font-bold text-white leading-tight">With Dash</span>
+                        <span id="uiSheetCvcVSub" class="text-[12px] text-white/85 leading-snug">Easier to read</span>
+                    </span>
+                    <span data-preset-sample="cvc-v" class="font-mono text-[15px] font-bold text-white whitespace-nowrap shrink-0"><span class="text-white/90">bar</span><span class="text-amber-200">-</span><span class="text-white/90">a</span></span>
+                </button>
+
+                <button type="button" data-preset-id="natural-3" onclick="applyPatternPreset('natural-3', { closeSheet: true })" class="preset-pattern-btn min-h-[72px] w-full text-left px-4 py-3 rounded-xl bg-sky-700/60 hover:bg-sky-600/75 border border-sky-300/80 transition-all flex items-center justify-between gap-3">
+                    <span class="min-w-0 flex flex-col gap-0.5">
+                        <span id="uiSheetNatural3Title" class="text-[14px] font-bold text-white leading-tight">Two Words Bridge</span>
+                        <span id="uiSheetNatural3Sub" class="text-[12px] text-white/85 leading-snug">Link 2 words with a vowel</span>
+                    </span>
+                    <span data-preset-sample="natural-3" class="font-mono text-[15px] font-bold text-white whitespace-nowrap shrink-0"><span class="text-white/90">business</span><span class="text-sky-200">a</span><span class="text-white/90">pro</span></span>
+                </button>
             </div>
         </div>
     </div>
@@ -3174,24 +3278,29 @@
 
         const pronounceablePresetsI18n = {
             en: {
-                presetsLabel: 'Pronounceable Presets:',
-                presetsHelper: 'Click any card to insert at cursor · Live examples use your keyword',
+                presetsLabel: 'Pronounceable Styles',
+                presetsHelper: 'Click any style to insert its pattern · Live examples use your keyword',
                 presetRecBadge: '★ Recommended',
-                presetAppliedMsg: '✓ Preset added',
-                softConsLabel: 'Soft Consonants (no k, q, x, z)',
-                softConsTitle: 'Exclude heavy letters (k, q, x, z) from [consonant] for smoother startup-style domain names',
-                presetAnyCvTitle: 'Keyword + Ending',
-                presetAnyCvSub: 'Smooth startup suffix',
-                presetCvCvTitle: '4-Letter Brandable',
-                presetCvCvSub: 'Short coined name, easy to recall',
-                presetCvAnyTitle: 'Prefix + Keyword',
-                presetCvAnySub: 'Catchy 2-letter opener',
-                presetCvcVTitle: 'Punchy Rhythm',
-                presetCvcVSub: 'Crisp flow with optional dash',
-                presetAnyVcTitle: 'Keyword + Crisp End',
-                presetAnyVcSub: 'Modern vowel-consonant finish',
-                presetNatural3Title: '2-Word Vowel Bridge',
-                presetNatural3Sub: 'Smooth link between 2 keywords',
+                presetAppliedMsg: '✓ Style applied',
+                softConsLabel: 'Use softer letters (no k, q, x, z)',
+                softConsTitle: 'Exclude heavy letters (k, q, x, z) for smoother startup-style domain names',
+                moreStylesLabel: 'More styles',
+                lessStylesLabel: 'Fewer styles',
+                viewAllStylesLabel: 'View all styles (6)',
+                sheetStylesTitle: 'Choose a Name Style',
+                sheetStylesSub: 'Tap a style to apply it to your formula',
+                presetAnyCvTitle: 'Smooth Ending',
+                presetAnyCvSub: 'Soft & easy to say',
+                presetCvCvTitle: 'Short & Catchy',
+                presetCvCvSub: '4 letters, memorable',
+                presetAnyVcTitle: 'Modern Ending',
+                presetAnyVcSub: 'Clean vowel + consonant finish',
+                presetCvAnyTitle: 'With Prefix',
+                presetCvAnySub: 'Add 2 letters in front',
+                presetCvcVTitle: 'With Dash',
+                presetCvcVSub: 'Easier to read',
+                presetNatural3Title: 'Two Words Bridge',
+                presetNatural3Sub: 'Link 2 words with a vowel',
                 pronounceTipsTitle: 'Pronunciation Micro-Tips',
                 tipRuleTitle: 'Basic Rule',
                 tipRuleDesc: 'Alternating [consonant] and [vowel] creates open syllables that are easy to read and remember.',
@@ -3209,24 +3318,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             id: {
-                presetsLabel: 'Preset Pola Mudah Dilafalkan:',
-                presetsHelper: 'Klik kartu mana saja untuk menyisipkan di posisi kursor · Contoh memakai keyword Anda',
+                presetsLabel: 'Gaya Nama Mudah Dilafalkan',
+                presetsHelper: 'Klik salah satu untuk memasukkan pola ke formula · Contoh memakai keyword Anda',
                 presetRecBadge: '★ Rekomendasi',
-                presetAppliedMsg: '✓ Preset ditambahkan',
-                softConsLabel: 'Soft Consonants (tanpa k, q, x, z)',
-                softConsTitle: 'Kecualikan huruf berat (k, q, x, z) dari [consonant] agar hasil terasa natural ala merek startup',
-                presetAnyCvTitle: 'Keyword + Akhiran',
-                presetAnyCvSub: 'Akhiran startup paling natural',
-                presetCvCvTitle: '4 Huruf Brandable',
-                presetCvCvSub: 'Nama pendek unik tanpa keyword',
-                presetCvAnyTitle: 'Awalan + Keyword',
-                presetCvAnySub: 'Suku kata pembuka yang catchy',
-                presetCvcVTitle: 'Ritme Berjeda',
-                presetCvcVSub: 'Alunan tegas dengan/tanpa tanda -',
-                presetAnyVcTitle: 'Keyword + Penutup',
-                presetAnyVcSub: 'Penutup modern & terdengar tegas',
-                presetNatural3Title: 'Jembatan 2 Kata',
-                presetNatural3Sub: 'Gabung 2 keyword lebih halus',
+                presetAppliedMsg: '✓ Gaya diterapkan',
+                softConsLabel: 'Gunakan huruf yang lebih lembut (tanpa k, q, x, z)',
+                softConsTitle: 'Kecualikan huruf berat (k, q, x, z) agar hasil terasa natural ala merek startup',
+                moreStylesLabel: 'Gaya lainnya',
+                lessStylesLabel: 'Tampilkan lebih sedikit',
+                viewAllStylesLabel: 'Lihat semua gaya (6)',
+                sheetStylesTitle: 'Pilih Gaya Nama',
+                sheetStylesSub: 'Ketuk salah satu gaya untuk langsung memakainya',
+                presetAnyCvTitle: 'Akhiran Halus',
+                presetAnyCvSub: 'Lembut & mudah diucapkan',
+                presetCvCvTitle: 'Singkat & Menarik',
+                presetCvCvSub: '4 huruf, mudah diingat',
+                presetAnyVcTitle: 'Akhiran Modern',
+                presetAnyVcSub: 'Penutup vokal + konsonan',
+                presetCvAnyTitle: 'Dengan Awalan',
+                presetCvAnySub: 'Tambah 2 huruf di depan',
+                presetCvcVTitle: 'Dengan Tanda Hubung',
+                presetCvcVSub: 'Lebih mudah dibaca',
+                presetNatural3Title: 'Gabung 2 Kata',
+                presetNatural3Sub: 'Hubungkan 2 kata dengan vokal',
                 pronounceTipsTitle: 'Panduan Singkat Pelafalan',
                 tipRuleTitle: 'Aturan Dasar',
                 tipRuleDesc: 'Selang-seling [consonant] dan [vowel] menciptakan suku kata terbuka yang mudah dibaca dan diingat.',
@@ -3244,24 +3358,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             es: {
-                presetsLabel: 'Patrones Pronunciables:',
-                presetsHelper: 'Haz clic para insertar en el cursor · Ejemplos en vivo con tu palabra clave',
+                presetsLabel: 'Estilos Pronunciables',
+                presetsHelper: 'Haz clic en un estilo para insertar su patrón · Ejemplos con tu palabra clave',
                 presetRecBadge: '★ Recomendado',
-                presetAppliedMsg: '✓ Patrón añadido',
-                softConsLabel: 'Consonantes Suaves (sin k, q, x, z)',
-                softConsTitle: 'Excluye letras pesadas (k, q, x, z) de [consonant] para lograr nombres más fluidos',
-                presetAnyCvTitle: 'Keyword + Cierre',
-                presetAnyCvSub: 'Sufijo fluido estilo startup',
-                presetCvCvTitle: 'Marca de 4 Letras',
-                presetCvCvSub: 'Nombre corto y fácil de recordar',
-                presetCvAnyTitle: 'Prefijo + Keyword',
-                presetCvAnySub: 'Inicio breve y pegadizo',
-                presetCvcVTitle: 'Ritmo Marcado',
-                presetCvcVSub: 'Flujo ágil con o sin guion',
-                presetAnyVcTitle: 'Keyword + Final Firme',
-                presetAnyVcSub: 'Cierre moderno vocal-consonante',
+                presetAppliedMsg: '✓ Estilo aplicado',
+                softConsLabel: 'Usar letras más suaves (sin k, q, x, z)',
+                softConsTitle: 'Excluye letras pesadas (k, q, x, z) para lograr nombres más fluidos',
+                moreStylesLabel: 'Más estilos',
+                lessStylesLabel: 'Menos estilos',
+                viewAllStylesLabel: 'Ver todos los estilos (6)',
+                sheetStylesTitle: 'Elige un Estilo de Nombre',
+                sheetStylesSub: 'Toca un estilo para aplicarlo a tu fórmula',
+                presetAnyCvTitle: 'Cierre Suave',
+                presetAnyCvSub: 'Fluido y fácil de decir',
+                presetCvCvTitle: 'Corto y Pegadizo',
+                presetCvCvSub: '4 letras, fácil de recordar',
+                presetAnyVcTitle: 'Final Moderno',
+                presetAnyVcSub: 'Cierre limpio vocal + consonante',
+                presetCvAnyTitle: 'Con Prefijo',
+                presetCvAnySub: 'Añade 2 letras al inicio',
+                presetCvcVTitle: 'Con Guion',
+                presetCvcVSub: 'Más fácil de leer',
                 presetNatural3Title: 'Puente de 2 Palabras',
-                presetNatural3Sub: 'Une 2 keywords con suavidad',
+                presetNatural3Sub: 'Une 2 palabras con una vocal',
                 pronounceTipsTitle: 'Micro-Guía de Pronunciación',
                 tipRuleTitle: 'Regla Básica',
                 tipRuleDesc: 'Alternar [consonant] y [vowel] crea sílabas abiertas fáciles de leer y recordar.',
@@ -3279,24 +3398,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             pt: {
-                presetsLabel: 'Padrões Pronunciáveis:',
-                presetsHelper: 'Clique para inserir no cursor · Exemplos ao vivo com sua palavra-chave',
+                presetsLabel: 'Estilos Pronunciáveis',
+                presetsHelper: 'Clique em um estilo para inserir o padrão · Exemplos com sua palavra-chave',
                 presetRecBadge: '★ Recomendado',
-                presetAppliedMsg: '✓ Padrão adicionado',
-                softConsLabel: 'Consoantes Suaves (sem k, q, x, z)',
-                softConsTitle: 'Exclui letras pesadas (k, q, x, z) de [consonant] para nomes mais naturais',
-                presetAnyCvTitle: 'Keyword + Sufixo',
-                presetAnyCvSub: 'Final natural estilo startup',
-                presetCvCvTitle: 'Marca de 4 Letras',
-                presetCvCvSub: 'Nome curto, único e memorável',
-                presetCvAnyTitle: 'Prefixo + Keyword',
-                presetCvAnySub: 'Abertura curta e cativante',
-                presetCvcVTitle: 'Ritmo Marcado',
-                presetCvcVSub: 'Sonoridade ágil com ou sem hífen',
-                presetAnyVcTitle: 'Keyword + Final Firme',
-                presetAnyVcSub: 'Encerramento moderno e direto',
+                presetAppliedMsg: '✓ Estilo aplicado',
+                softConsLabel: 'Usar letras mais suaves (sem k, q, x, z)',
+                softConsTitle: 'Exclui letras pesadas (k, q, x, z) para nomes mais naturais',
+                moreStylesLabel: 'Mais estilos',
+                lessStylesLabel: 'Menos estilos',
+                viewAllStylesLabel: 'Ver todos os estilos (6)',
+                sheetStylesTitle: 'Escolha um Estilo de Nome',
+                sheetStylesSub: 'Toque em um estilo para aplicar à fórmula',
+                presetAnyCvTitle: 'Final Suave',
+                presetAnyCvSub: 'Leve e fácil de pronunciar',
+                presetCvCvTitle: 'Curto e Marcante',
+                presetCvCvSub: '4 letras, fácil de lembrar',
+                presetAnyVcTitle: 'Final Moderno',
+                presetAnyVcSub: 'Fechamento limpo vogal + consoante',
+                presetCvAnyTitle: 'Com Prefixo',
+                presetCvAnySub: 'Adiciona 2 letras no início',
+                presetCvcVTitle: 'Com Hífen',
+                presetCvcVSub: 'Mais fácil de ler',
                 presetNatural3Title: 'Ponte de 2 Palavras',
-                presetNatural3Sub: 'Liga 2 keywords com fluidez',
+                presetNatural3Sub: 'Liga 2 palavras com uma vogal',
                 pronounceTipsTitle: 'Micro-Dicas de Pronúncia',
                 tipRuleTitle: 'Regra Básica',
                 tipRuleDesc: 'Alternar [consonant] e [vowel] cria sílabas abertas fáceis de ler e memorizar.',
@@ -3314,24 +3438,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             fr: {
-                presetsLabel: 'Modèles Prononçables :',
-                presetsHelper: 'Cliquez pour insérer au curseur · Exemples en direct avec votre mot-clé',
+                presetsLabel: 'Styles Prononçables',
+                presetsHelper: 'Cliquez sur un style pour insérer son motif · Exemples avec votre mot-clé',
                 presetRecBadge: '★ Recommandé',
-                presetAppliedMsg: '✓ Modèle ajouté',
-                softConsLabel: 'Consonnes Douces (sans k, q, x, z)',
-                softConsTitle: 'Exclut les lettres lourdes (k, q, x, z) de [consonant] pour des noms plus fluides',
-                presetAnyCvTitle: 'Mot-clé + Finale',
-                presetAnyCvSub: 'Terminaison fluide type startup',
-                presetCvCvTitle: 'Marque 4 Lettres',
-                presetCvCvSub: 'Nom court et facile à retenir',
-                presetCvAnyTitle: 'Préfixe + Mot-clé',
-                presetCvAnySub: 'Ouverture courte et accrocheuse',
-                presetCvcVTitle: 'Rythme Cadencé',
-                presetCvcVSub: 'Sonorité vive avec/sans tiret',
-                presetAnyVcTitle: 'Mot-clé + Fin Nette',
-                presetAnyVcSub: 'Finale moderne voyelle-consonne',
+                presetAppliedMsg: '✓ Style appliqué',
+                softConsLabel: 'Utiliser des lettres plus douces (sans k, q, x, z)',
+                softConsTitle: 'Exclut les lettres lourdes (k, q, x, z) pour des noms plus fluides',
+                moreStylesLabel: 'Plus de styles',
+                lessStylesLabel: 'Moins de styles',
+                viewAllStylesLabel: 'Voir tous les styles (6)',
+                sheetStylesTitle: 'Choisir un Style de Nom',
+                sheetStylesSub: 'Touchez un style pour l’appliquer à votre formule',
+                presetAnyCvTitle: 'Finale Douce',
+                presetAnyCvSub: 'Fluide et facile à dire',
+                presetCvCvTitle: 'Court & Accrocheur',
+                presetCvCvSub: '4 lettres, facile à retenir',
+                presetAnyVcTitle: 'Finale Moderne',
+                presetAnyVcSub: 'Terminaison nette voyelle + consonne',
+                presetCvAnyTitle: 'Avec Préfixe',
+                presetCvAnySub: 'Ajoute 2 lettres au début',
+                presetCvcVTitle: 'Avec Tiret',
+                presetCvcVSub: 'Plus facile à lire',
                 presetNatural3Title: 'Lien à 2 Mots',
-                presetNatural3Sub: 'Relie 2 mots-clés en douceur',
+                presetNatural3Sub: 'Relie 2 mots par une voyelle',
                 pronounceTipsTitle: 'Micro-Conseils de Prononciation',
                 tipRuleTitle: 'Règle de Base',
                 tipRuleDesc: 'Alterner [consonant] et [vowel] crée des syllabes ouvertes faciles à lire et retenir.',
@@ -3349,24 +3478,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             de: {
-                presetsLabel: 'Aussprechbare Vorlagen:',
-                presetsHelper: 'Klicken zum Einfügen am Cursor · Live-Beispiele mit Ihrem Keyword',
+                presetsLabel: 'Aussprechbare Stile',
+                presetsHelper: 'Stil anklicken, um das Muster einzufügen · Beispiele mit Ihrem Keyword',
                 presetRecBadge: '★ Empfohlen',
-                presetAppliedMsg: '✓ Vorlage eingefügt',
-                softConsLabel: 'Weiche Konsonanten (ohne k, q, x, z)',
-                softConsTitle: 'Schließt harte Buchstaben (k, q, x, z) aus [consonant] für natürlichere Namen aus',
-                presetAnyCvTitle: 'Keyword + Endung',
-                presetAnyCvSub: 'Flüssige Startup-Endung',
-                presetCvCvTitle: '4-Buchstaben-Marke',
-                presetCvCvSub: 'Kurz, einprägsam, ohne Keyword',
-                presetCvAnyTitle: 'Präfix + Keyword',
-                presetCvAnySub: 'Eingängiger 2-Zeichen-Start',
-                presetCvcVTitle: 'Betonter Rhythmus',
-                presetCvcVSub: 'Klarer Klang mit/ohne Bindestrich',
-                presetAnyVcTitle: 'Keyword + Klare Endung',
-                presetAnyVcSub: 'Moderner Vokal-Konsonant-Schluss',
-                presetNatural3Title: '2-Wort-Vokalbrücke',
-                presetNatural3Sub: 'Verbindet 2 Keywords geschmeidig',
+                presetAppliedMsg: '✓ Stil übernommen',
+                softConsLabel: 'Weichere Buchstaben nutzen (ohne k, q, x, z)',
+                softConsTitle: 'Schließt harte Buchstaben (k, q, x, z) für flüssigere Namen aus',
+                moreStylesLabel: 'Weitere Stile',
+                lessStylesLabel: 'Weniger Stile',
+                viewAllStylesLabel: 'Alle Stile ansehen (6)',
+                sheetStylesTitle: 'Namensstil wählen',
+                sheetStylesSub: 'Tippen Sie auf einen Stil, um ihn anzuwenden',
+                presetAnyCvTitle: 'Weiche Endung',
+                presetAnyCvSub: 'Flüssig & leicht auszusprechen',
+                presetCvCvTitle: 'Kurz & Einprägsam',
+                presetCvCvSub: '4 Buchstaben, gut merkbar',
+                presetAnyVcTitle: 'Moderne Endung',
+                presetAnyVcSub: 'Klarer Vokal + Konsonant-Schluss',
+                presetCvAnyTitle: 'Mit Präfix',
+                presetCvAnySub: '2 Buchstaben voranstellen',
+                presetCvcVTitle: 'Mit Bindestrich',
+                presetCvcVSub: 'Leichter zu lesen',
+                presetNatural3Title: '2-Wort-Brücke',
+                presetNatural3Sub: '2 Wörter mit Vokal verbinden',
                 pronounceTipsTitle: 'Aussprache-Kurztipps',
                 tipRuleTitle: 'Grundregel',
                 tipRuleDesc: 'Der Wechsel von [consonant] und [vowel] erzeugt offene, leicht merkbare Silben.',
@@ -3384,24 +3518,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             ru: {
-                presetsLabel: 'Благозвучные шаблоны:',
-                presetsHelper: 'Нажмите, чтобы вставить в позицию курсора · Примеры с вашим словом',
+                presetsLabel: 'Звучные стили',
+                presetsHelper: 'Нажмите на стиль, чтобы вставить шаблон · Примеры с вашим словом',
                 presetRecBadge: '★ Рекомендуем',
-                presetAppliedMsg: '✓ Шаблон добавлен',
-                softConsLabel: 'Мягкие согласные (без k, q, x, z)',
-                softConsTitle: 'Исключает резкие и редкие буквы (k, q, x, z) из [consonant] для более плавного звучания',
-                presetAnyCvTitle: 'Слово + Окончание',
-                presetAnyCvSub: 'Плавный стартап-суффикс',
-                presetCvCvTitle: 'Короткий бренд (4 б.)',
-                presetCvCvSub: 'Лаконичное и запоминающееся имя',
-                presetCvAnyTitle: 'Префикс + Слово',
-                presetCvAnySub: 'Звучное короткое начало',
-                presetCvcVTitle: 'Ритм с паузой',
-                presetCvcVSub: 'Четкий ритм с дефисом или без',
-                presetAnyVcTitle: 'Слово + Четкий финал',
-                presetAnyVcSub: 'Современное окончание',
+                presetAppliedMsg: '✓ Стиль применен',
+                softConsLabel: 'Использовать мягкие буквы (без k, q, x, z)',
+                softConsTitle: 'Исключает резкие и редкие буквы (k, q, x, z) для более плавного звучания',
+                moreStylesLabel: 'Другие стили',
+                lessStylesLabel: 'Скрыть лишние',
+                viewAllStylesLabel: 'Показать все стили (6)',
+                sheetStylesTitle: 'Выберите стиль имени',
+                sheetStylesSub: 'Нажмите на стиль, чтобы применить шаблон',
+                presetAnyCvTitle: 'Плавное окончание',
+                presetAnyCvSub: 'Мягко и легко произносится',
+                presetCvCvTitle: 'Короткий и броский',
+                presetCvCvSub: '4 буквы, легко запомнить',
+                presetAnyVcTitle: 'Современный финал',
+                presetAnyVcSub: 'Четкая концовка: гласная + согласная',
+                presetCvAnyTitle: 'С префиксом',
+                presetCvAnySub: 'Добавить 2 буквы в начале',
+                presetCvcVTitle: 'Через дефис',
+                presetCvcVSub: 'Проще читать с первого взгляда',
                 presetNatural3Title: 'Связка 2 слов',
-                presetNatural3Sub: 'Мягкий переход между словами',
+                presetNatural3Sub: 'Соединить 2 слова гласной',
                 pronounceTipsTitle: 'Краткие советы по звучанию',
                 tipRuleTitle: 'Базовое правило',
                 tipRuleDesc: 'Чередование [consonant] и [vowel] создает открытые слоги, которые легко читать и запоминать.',
@@ -3419,24 +3558,29 @@
                 scoreEmdPmd: 'EMD / PMD'
             },
             ja: {
-                presetsLabel: '発音しやすいプリセット:',
-                presetsHelper: 'クリックでカーソル位置に挿入 · あなたのキーワードで例を表示',
+                presetsLabel: '発音しやすいスタイル',
+                presetsHelper: 'クリックでパターンを数式に挿入 · あなたのキーワードで例を表示',
                 presetRecBadge: '★ おすすめ',
-                presetAppliedMsg: '✓ 挿入しました',
-                softConsLabel: 'ソフト子音 (k, q, x, z 除外)',
-                softConsTitle: '[consonant] から k, q, x, z を除外して自然なブランド名を生成します',
-                presetAnyCvTitle: '語 + 語尾アレンジ',
-                presetAnyCvSub: '自然なスタートアップ風語尾',
-                presetCvCvTitle: '4文字ブランド名',
-                presetCvCvSub: '短くて覚えやすい造語スタイル',
-                presetCvAnyTitle: '接頭語 + キーワード',
-                presetCvAnySub: '耳に残る2文字のオープニング',
-                presetCvcVTitle: 'メリハリのあるリズム',
-                presetCvcVSub: 'ハイフン有無でリズム感を演出',
-                presetAnyVcTitle: '語 + シャープな結び',
-                presetAnyVcSub: 'モダンで歯切れの良い語尾',
+                presetAppliedMsg: '✓ 適用しました',
+                softConsLabel: '柔らかい音を使う（k, q, x, z 除外）',
+                softConsTitle: 'k, q, x, z を除外して自然で呼びやすい名前を生成します',
+                moreStylesLabel: 'その他のスタイル',
+                lessStylesLabel: '閉じる',
+                viewAllStylesLabel: 'すべてのスタイルを見る (6)',
+                sheetStylesTitle: 'ネーミングスタイルを選択',
+                sheetStylesSub: 'タップして数式にパターンを適用します',
+                presetAnyCvTitle: 'なめらかな語尾',
+                presetAnyCvSub: '発音しやすくスタートアップ風',
+                presetCvCvTitle: '短くてキャッチー',
+                presetCvCvSub: '覚えやすい4文字スタイル',
+                presetAnyVcTitle: 'モダンな語尾',
+                presetAnyVcSub: '母音＋子音でシャープに結ぶ',
+                presetCvAnyTitle: '接頭語プラス',
+                presetCvAnySub: '先頭に2文字を追加',
+                presetCvcVTitle: 'ハイフン区切り',
+                presetCvcVSub: '視認性が高く読みやすい',
                 presetNatural3Title: '2語を母音でつなぐ',
-                presetNatural3Sub: '2つのキーワードを滑らかに結合',
+                presetNatural3Sub: '2つの単語を母音で滑らかに結合',
                 pronounceTipsTitle: '発音しやすいネーミングのヒント',
                 tipRuleTitle: '基本ルール',
                 tipRuleDesc: '[consonant] と [vowel] を交互に並べると、読みやすく覚えやすい開音節になります。',
@@ -4239,19 +4383,36 @@
                 uiPresetsLabel: t.presetsLabel,
                 uiPresetsHelper: t.presetsHelper,
                 uiPresetRecBadge: t.presetRecBadge,
+                uiSheetRecBadge: t.presetRecBadge,
                 uiSoftConsLabel: t.softConsLabel,
+                uiMobileSheetSoftConsLabel: t.softConsLabel,
+                uiViewAllStylesLabel: t.viewAllStylesLabel,
+                uiSheetStylesTitle: t.sheetStylesTitle,
+                uiSheetStylesSub: t.sheetStylesSub,
                 uiPresetAnyCvTitle: t.presetAnyCvTitle,
                 uiPresetAnyCvSub: t.presetAnyCvSub,
+                uiSheetAnyCvTitle: t.presetAnyCvTitle,
+                uiSheetAnyCvSub: t.presetAnyCvSub,
                 uiPresetCvCvTitle: t.presetCvCvTitle,
                 uiPresetCvCvSub: t.presetCvCvSub,
+                uiSheetCvCvTitle: t.presetCvCvTitle,
+                uiSheetCvCvSub: t.presetCvCvSub,
                 uiPresetCvAnyTitle: t.presetCvAnyTitle,
                 uiPresetCvAnySub: t.presetCvAnySub,
+                uiSheetCvAnyTitle: t.presetCvAnyTitle,
+                uiSheetCvAnySub: t.presetCvAnySub,
                 uiPresetCvcVTitle: t.presetCvcVTitle,
                 uiPresetCvcVSub: t.presetCvcVSub,
+                uiSheetCvcVTitle: t.presetCvcVTitle,
+                uiSheetCvcVSub: t.presetCvcVSub,
                 uiPresetAnyVcTitle: t.presetAnyVcTitle,
                 uiPresetAnyVcSub: t.presetAnyVcSub,
+                uiSheetAnyVcTitle: t.presetAnyVcTitle,
+                uiSheetAnyVcSub: t.presetAnyVcSub,
                 uiPresetNatural3Title: t.presetNatural3Title,
                 uiPresetNatural3Sub: t.presetNatural3Sub,
+                uiSheetNatural3Title: t.presetNatural3Title,
+                uiSheetNatural3Sub: t.presetNatural3Sub,
                 uiPronounceTipsTitle: t.pronounceTipsTitle,
                 uiTipRuleTitle: t.tipRuleTitle,
                 uiTipRuleDesc: t.tipRuleDesc,
@@ -4266,6 +4427,7 @@
             });
             const softConsTooltipEl = document.getElementById('uiSoftConsTooltip');
             if (softConsTooltipEl && t.softConsTitle) softConsTooltipEl.setAttribute('title', t.softConsTitle);
+            updateMoreStylesButtonLabel();
             syncActivePresetUi();
             document.getElementById('uiGenBtn').innerText = t.genBtn;
             const advGenBtnEl = document.getElementById('uiAdvGenBtn');
@@ -6955,8 +7117,9 @@
             if (perm3El) perm3El.checked = false;
             if (permDashEl) permDashEl.checked = false;
             if (permNoDashEl) permNoDashEl.checked = true;
-            const softConsEl = document.getElementById('softConsonantsCheckbox');
-            if (softConsEl) softConsEl.checked = true;
+            syncSoftConsonantsCheckboxes(true);
+            setMorePresetStylesExpanded(false);
+            closeStylesBottomSheet();
             resetFormulaCursorTracking();
             syncActivePresetUi();
 
@@ -7131,20 +7294,107 @@
             }
         }
 
+        let morePresetStylesExpanded = false;
+
+        function syncSoftConsonantsCheckboxes(isChecked) {
+            const val = Boolean(isChecked);
+            const mainEl = document.getElementById('softConsonantsCheckbox');
+            const sheetEl = document.getElementById('mobileSheetSoftConsCheckbox');
+            if (mainEl) mainEl.checked = val;
+            if (sheetEl) sheetEl.checked = val;
+        }
+
+        function updateMoreStylesButtonLabel() {
+            const t = dict[currentLang] || dict.en;
+            const labelEl = document.getElementById('uiMoreStylesLabel');
+            const btnEl = document.getElementById('toggleMoreStylesBtn');
+            const chevronEl = document.getElementById('uiMoreStylesChevron');
+            if (labelEl) {
+                labelEl.innerText = morePresetStylesExpanded
+                    ? (t.lessStylesLabel || 'Fewer styles')
+                    : (t.moreStylesLabel || 'More styles');
+            }
+            if (btnEl) {
+                btnEl.setAttribute('aria-expanded', morePresetStylesExpanded ? 'true' : 'false');
+            }
+            if (chevronEl) {
+                chevronEl.classList.toggle('rotate-180', morePresetStylesExpanded);
+            }
+        }
+
+        function setMorePresetStylesExpanded(expanded) {
+            morePresetStylesExpanded = Boolean(expanded);
+            document.querySelectorAll('.preset-more-card[data-preset-tier="more"]').forEach((card) => {
+                card.classList.toggle('sm:flex', morePresetStylesExpanded);
+            });
+            updateMoreStylesButtonLabel();
+        }
+
+        function toggleMorePresetStyles() {
+            setMorePresetStylesExpanded(!morePresetStylesExpanded);
+        }
+
+        function openStylesBottomSheet() {
+            const sheet = document.getElementById('stylesBottomSheet');
+            if (!sheet) return;
+            syncActivePresetUi();
+            sheet.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeStylesBottomSheet() {
+            const sheet = document.getElementById('stylesBottomSheet');
+            if (!sheet) return;
+            sheet.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function renderSampleSegments(el, segments) {
+            if (!el) return;
+            const frag = document.createDocumentFragment();
+            segments.forEach((seg) => {
+                const span = document.createElement('span');
+                span.className = seg.cls;
+                span.textContent = seg.text;
+                frag.appendChild(span);
+            });
+            el.replaceChildren(frag);
+        }
+
         function updatePresetLiveExamples(kw, kw2) {
-            const base = (kw || 'biz').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8) || 'biz';
+            const base = (kw || 'business').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 8) || 'business';
             const sec = (kw2 || 'pro').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 6) || 'pro';
-            const sampleMap = {
-                uiPresetAnyCvSample: '→ ' + base + 'ra',
-                uiPresetCvCvSample: '→ mira',
-                uiPresetCvAnySample: '→ ra' + base,
-                uiPresetCvcVSample: '→ bar-a',
-                uiPresetAnyVcSample: '→ ' + base + 'al',
-                uiPresetNatural3Sample: '→ ' + base + 'a' + sec
+            const samples = {
+                'any-cv': [
+                    { text: base, cls: 'text-white/90' },
+                    { text: 'ra', cls: 'text-emerald-200' }
+                ],
+                'cv-cv': [
+                    { text: 'mira', cls: 'text-cyan-200' }
+                ],
+                'any-vc': [
+                    { text: base, cls: 'text-white/90' },
+                    { text: 'al', cls: 'text-rose-200' }
+                ],
+                'cv-any': [
+                    { text: 'ra', cls: 'text-violet-200' },
+                    { text: base, cls: 'text-white/90' }
+                ],
+                'cvc-v': [
+                    { text: 'bar', cls: 'text-white/90' },
+                    { text: '-', cls: 'text-amber-200' },
+                    { text: 'a', cls: 'text-white/90' }
+                ],
+                'natural-3': [
+                    { text: base, cls: 'text-white/90' },
+                    { text: 'a', cls: 'text-sky-200' },
+                    { text: sec, cls: 'text-white/90' }
+                ]
             };
-            Object.entries(sampleMap).forEach(([elId, val]) => {
-                const el = document.getElementById(elId);
-                if (el) el.innerText = val;
+            Object.entries(samples).forEach(([pid, segments]) => {
+                document.querySelectorAll('[data-preset-sample="' + pid + '"]').forEach((el) => {
+                    renderSampleSegments(el, segments);
+                });
             });
         }
 
@@ -7166,7 +7416,7 @@
             });
         }
 
-        function applyPatternPreset(presetId) {
+        function applyPatternPreset(presetId, options) {
             const formula = PATTERN_PRESETS[presetId];
             const input = document.getElementById('formulaInput');
             if (!formula || !input) return;
@@ -7174,10 +7424,14 @@
             insertFormulaSnippetAtCursor(input, formula);
             syncActivePresetUi(presetId);
 
+            if (options && options.closeSheet) {
+                closeStylesBottomSheet();
+            }
+
             const badge = document.getElementById('presetAppliedBadge');
             if (badge) {
                 const t = dict[currentLang] || dict.en;
-                badge.textContent = t.presetAppliedMsg || '✓ Preset applied';
+                badge.textContent = t.presetAppliedMsg || '✓ Style applied';
                 badge.classList.remove('hidden');
                 if (presetBadgeTimer) clearTimeout(presetBadgeTimer);
                 presetBadgeTimer = setTimeout(() => {
@@ -7307,9 +7561,16 @@
                     if (e.target === infoModal) closeInfoModal();
                 });
             }
+            const stylesSheet = document.getElementById('stylesBottomSheet');
+            if (stylesSheet) {
+                stylesSheet.addEventListener('click', function(e) {
+                    if (e.target === stylesSheet) closeStylesBottomSheet();
+                });
+            }
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     closeInfoModal();
+                    closeStylesBottomSheet();
                     closeMobileMenu();
                 }
             });
