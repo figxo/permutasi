@@ -222,6 +222,19 @@
             border: 1px solid var(--border-neutral);
         }
 
+        @keyframes domainRowFadeIn {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .domain-row-fade-in {
+            animation: domainRowFadeIn 0.2s ease-out both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .domain-row-fade-in {
+                animation: none;
+            }
+        }
+
         @media (max-width: 375px) {
             #domainAnalysisPanel table th,
             #domainAnalysisPanel table td:not([colspan]) {
@@ -288,16 +301,20 @@
             <nav aria-label="Primary Navigation" class="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-600 dark:text-slate-300">
                 <a href="#generatorSection" id="uiNavGen" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Generator</a>
                 <a href="#domainAnalysisPanel" id="uiNavResults" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Results</a>
-                <a href="#localizedEducationalContent" id="uiNavGuide" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Guide</a>
-                <a href="#faqSection" id="uiNavFaq" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">FAQ</a>
+                <a href="/guide.html" id="uiNavGuide" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Guide</a>
+                <a href="/faq.html" id="uiNavFaq" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">FAQ</a>
                 <span aria-hidden="true" class="h-4 w-px bg-slate-200 dark:bg-slate-800 shrink-0"></span>
                 <a href="/guides/" id="uiNavHubGuides" data-hub-section="guides" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Guides</a>
                 <a href="/research/" id="uiNavHubResearch" data-hub-section="research" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Research</a>
                 <a href="/tools/" id="uiNavHubTools" data-hub-section="tools" class="hover:text-slate-900 dark:hover:text-white hover:underline underline-offset-4 whitespace-nowrap shrink-0 transition-colors">Tools</a>
             </nav>
 
-            <!-- Zone 3: Compact Language Switcher + Theme Toggle + Mobile Hamburger -->
+            <!-- Zone 3: Compact Reset + Language Switcher + Theme Toggle + Mobile Hamburger -->
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                <button type="button" id="uiHeaderResetBtn" onclick="resetToHome(event)" title="Reset all form inputs, filters, and results to default and return to top" class="ui-reset-all-btn hidden sm:inline-flex items-center justify-center gap-1.5 min-h-[40px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-rose-50 dark:hover:bg-rose-950/60 hover:border-rose-300 dark:hover:border-rose-700 text-slate-700 dark:text-slate-200 hover:text-rose-700 dark:hover:text-rose-300 text-xs font-semibold transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
+                    <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                    <span class="ui-reset-all-label">Start Over</span>
+                </button>
                 <nav id="uiLangNav" aria-label="Language Selector" class="flex items-center shrink-0">
                     <label id="uiLangLabel" for="langSelect" class="sr-only">Language</label>
                     <select id="langSelect" aria-label="Select Language" title="Select Language" onchange="onUserLanguageSelect(this.value)" class="min-h-[44px] sm:min-h-[40px] w-auto min-w-[3.25rem] bg-white dark:bg-slate-900 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 px-2 sm:px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 cursor-pointer shrink-0">
@@ -341,8 +358,8 @@
             <nav aria-label="Mobile Navigation" class="flex flex-col gap-1.5 text-sm font-medium">
                 <a href="#generatorSection" onclick="closeMobileMenu()" id="uiMobileNavGen" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Generator</a>
                 <a href="#domainAnalysisPanel" onclick="closeMobileMenu()" id="uiMobileNavResults" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Results</a>
-                <a href="#localizedEducationalContent" onclick="closeMobileMenu()" id="uiMobileNavGuide" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Guide</a>
-                <a href="#faqSection" onclick="closeMobileMenu()" id="uiMobileNavFaq" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">FAQ</a>
+                <a href="/guide.html" onclick="closeMobileMenu()" id="uiMobileNavGuide" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">Guide</a>
+                <a href="/faq.html" onclick="closeMobileMenu()" id="uiMobileNavFaq" class="min-h-[44px] flex items-center px-3 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900">FAQ</a>
                 <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center gap-x-4 gap-y-1 px-3">
                     <a href="/guides/" onclick="closeMobileMenu()" id="uiMobileHubGuides" data-hub-section="guides" class="min-h-[40px] inline-flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Guides</a>
                     <a href="/research/" onclick="closeMobileMenu()" id="uiMobileHubResearch" data-hub-section="research" class="min-h-[40px] inline-flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline">Research</a>
@@ -360,7 +377,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-10 sm:pt-2.5 sm:pb-8 md:pt-3 md:pb-10 flex flex-col gap-9 sm:gap-9 md:gap-10">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-10 sm:pt-2.5 sm:pb-8 md:pt-3 md:pb-10 flex flex-col gap-6 md:gap-7">
 
         <!-- Hero Section -->
         <section class="max-w-4xl flex flex-col">
@@ -374,7 +391,7 @@
         </section>
 
         <!-- Core Multi-Column Workspace (Single-Column Mobile, 12-Col Desktop) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-9 md:gap-7 lg:gap-8 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 md:gap-6 items-start">
 
             <!-- Column 1: Generator Form Card -->
             <section id="generatorSection" aria-labelledby="uiSectionGenTitle" class="lg:col-span-12 bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5 md:gap-6 min-w-0">
@@ -398,47 +415,51 @@
                     <div id="basicKeywordExtBlock" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="flex flex-col gap-2 min-w-0">
                             <label for="keywordInput" id="uiKeyword1Label" class="block text-[13px] md:text-[14px] font-semibold text-white leading-[1.4]">Primary Keyword:</label>
-                            <input type="text" id="keywordInput" value="business" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder="Example: calc, shop">
+                            <input type="text" id="keywordInput" value="business" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true,resetStatusFilter:true,showSkeleton:true});}" class="w-full min-h-[48px] px-3.5 py-2 text-[15px] leading-[1.5] bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder="e.g. business, coffee, ai">
                         </div>
                         <div class="flex flex-col gap-2 min-w-0">
                             <label for="extInput" id="uiExtLabel" class="block text-[13px] md:text-[14px] font-semibold text-white leading-[1.4]">Extensions (e.g. .com, .io):</label>
-                            <input type="text" id="extInput" value=".com, .net, .io, .org" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder=".net, .com, .io">
+                            <input type="text" id="extInput" value=".com, .net, .co, .org, .io, .ai, .app, .us" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); generateDomains()" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true,resetStatusFilter:true,showSkeleton:true});}" class="w-full min-h-[48px] px-3.5 py-2 text-[14px] leading-[1.5] font-mono bg-white text-[#111827] placeholder:text-slate-500 border border-white/90 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#de3723]" placeholder=".com, .net, .co, .org, .io, .ai, .app, .us">
                         </div>
                     </div>
 
-                    <!-- Primary Touch-Friendly Action Button (Mutually Exclusive with Bottom Pattern Button) -->
-                    <div id="genBtnBasicWrap" class="pt-1">
-                        <div class="flex justify-center">
-                            <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true })" id="uiGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#131354] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#131354] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#131354] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
+                    <!-- Primary Touch-Friendly Action Button & Trust Microcopy -->
+                    <div id="genBtnBasicWrap" class="pt-1 flex flex-col items-center gap-2.5">
+                        <div class="flex justify-center w-full">
+                            <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true, showSkeleton: true })" id="uiGenBtn" class="inline-flex items-center justify-center w-full sm:w-auto min-h-[48px] px-7 py-2.5 bg-[#131354] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#131354] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#131354] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#de3723]">
                                 Generate Domain Names
                             </button>
                         </div>
+                        <p id="uiGenMicrocopy" class="text-[12px] text-white/90 text-center leading-[1.4]">✓ RFC 1035 compliant · ✓ No tracking · ✓ Runs offline in browser</p>
                     </div>
                 </div>
 
-                <!-- Collapsible Secondary Keywords, Word-Order Permutations & Custom Patterns (< md closed by default, md+ open) -->
-                <details id="advancedOptionsDetails" class="scroll-mt-16 md:scroll-mt-20 group rounded-xl border border-[#2165b3] bg-white dark:bg-slate-900 md:border-0 md:bg-transparent">
-                    <summary class="md:hidden flex items-center justify-between gap-3 px-4 py-3 min-h-[44px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl group-open:rounded-b-none bg-[#2165b3] hover:bg-[#1c579b] text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2165b3]">
+                <!-- Collapsible Advanced Options (Collapsed by default on both Desktop & Mobile) -->
+                <details id="advancedOptionsDetails" class="scroll-mt-16 md:scroll-mt-20 group rounded-xl border border-[#2165b3] bg-white dark:bg-slate-900">
+                    <summary class="flex items-center justify-between gap-3 px-4 py-3 min-h-[48px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl group-open:rounded-b-none bg-[#2165b3] hover:bg-[#1c579b] text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2165b3]">
                         <span class="inline-flex items-center gap-2.5 min-w-0">
                             <span aria-hidden="true" class="inline-flex items-center gap-1 px-1.5 py-1 rounded-md bg-white/15 border border-white/30 text-white shrink-0">
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
                                 <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
                             </span>
-                            <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-white leading-[1.4]">Add / Customize</span>
+                            <span class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 min-w-0">
+                                <span id="uiAdvOptionsLabel" class="text-[14px] font-semibold text-white leading-[1.4]">Advanced Options</span>
+                                <span id="uiAdvOptionsHint" class="hidden sm:inline text-[12px] font-normal text-white/85 truncate">(Secondary, Tertiary, Shuffle, Pattern, Name Styles)</span>
+                            </span>
                         </span>
                         <svg aria-hidden="true" class="w-4 h-4 text-white shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </summary>
 
-                    <div class="px-3.5 py-4 sm:px-4 sm:py-5 md:p-0 flex flex-col gap-5 md:gap-6 border-t border-[#2165b3]/20 md:border-t-0">
+                    <div class="px-3.5 py-4 sm:p-5 flex flex-col gap-5 md:gap-6 border-t border-[#2165b3]/20">
                         <!-- Secondary & Tertiary Keywords (Teal Accent #578686, White Text) -->
                         <div onfocusin="setActiveGenerateSlot('basic')" class="rounded-xl p-4 sm:p-5 bg-[#578686] text-[#FFFFFF] border border-[#446b6b] shadow-sm grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword2Input" id="uiKeyword2Label" class="block text-[13px] md:text-[14px] font-semibold text-[#FFFFFF] leading-[1.45]">Secondary Keyword:</label>
-                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: pro, online">
+                                <input type="text" id="keyword2Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true,resetStatusFilter:true,showSkeleton:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: pro, online">
                             </div>
                             <div class="flex flex-col gap-2 min-w-0">
                                 <label for="keyword3Input" id="uiKeyword3Label" class="block text-[13px] md:text-[14px] font-semibold text-[#FFFFFF] leading-[1.45]">Tertiary Keyword:</label>
-                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: app, hub">
+                                <input type="text" id="keyword3Input" value="" onfocus="setActiveGenerateSlot('basic')" oninput="setActiveGenerateSlot('basic'); updateDynamicSEO(); generateDomains();" onkeydown="if(event.key==='Enter'){event.preventDefault();generateDomains({scrollToResults:true,resetStatusFilter:true,showSkeleton:true});}" class="w-full min-h-[44px] px-3.5 py-2 text-[15px] leading-[1.5] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-white/90 rounded-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#578686]" placeholder="Example: app, hub">
                             </div>
                         </div>
 
@@ -644,7 +665,7 @@
                             <!-- Bottom-of-Options Generate Action (Mutually Exclusive with Top Button) -->
                             <div id="genBtnPatternWrap" class="hidden pt-3 border-t border-white/25">
                                 <div class="flex justify-center">
-                                    <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true })" id="uiAdvGenBtn" class="inline-flex items-center justify-center w-auto min-h-[44px] px-6 py-2.5 bg-[#c83e0c] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#c83e0c] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#f05422] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#131354]">
+                                    <button type="button" onclick="generateDomains({ scrollToResults: true, resetStatusFilter: true, showSkeleton: true })" id="uiAdvGenBtn" class="inline-flex items-center justify-center w-auto min-h-[48px] px-6 py-2.5 bg-[#c83e0c] hover:bg-[#FFFFFF] text-[#FFFFFF] hover:text-[#c83e0c] text-[15px] font-bold rounded-lg shadow-md border-2 border-white/95 hover:border-[#f05422] transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#131354]">
                                         Generate Domain Names
                                     </button>
                                 </div>
@@ -660,20 +681,15 @@
                         </div>
                     </div>
                 </details>
-                <script>
-                    (function() {
-                        try {
-                            var advEl = document.getElementById('advancedOptionsDetails');
-                            var mq = window.matchMedia('(min-width: 768px)');
-                            if (advEl && mq.matches) advEl.setAttribute('open', '');
-                            if (advEl && mq.addEventListener) {
-                                mq.addEventListener('change', function(e) {
-                                    if (e.matches) advEl.setAttribute('open', '');
-                                });
-                            }
-                        } catch (e) {}
-                    })();
-                </script>
+
+                <!-- Quick Examples Bar -->
+                <div id="quickExamplesBar" class="flex flex-wrap items-center gap-2 pt-0.5">
+                    <span id="uiQuickExLabel" class="text-[12px] font-semibold text-slate-500 dark:text-slate-400 mr-1">Quick examples:</span>
+                    <button type="button" id="uiQuickExBtn1" data-kw1="ai" data-kw2="tools" onclick="applyQuickExample(this.dataset.kw1, this.dataset.kw2)" class="min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:border-blue-300 dark:hover:border-blue-700 text-[12px] sm:text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer">ai tools</button>
+                    <button type="button" id="uiQuickExBtn2" data-kw1="coffee" data-kw2="shop" onclick="applyQuickExample(this.dataset.kw1, this.dataset.kw2)" class="min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:border-blue-300 dark:hover:border-blue-700 text-[12px] sm:text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer">coffee shop</button>
+                    <button type="button" id="uiQuickExBtn3" data-kw1="fitness" data-kw2="app" onclick="applyQuickExample(this.dataset.kw1, this.dataset.kw2)" class="min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:border-blue-300 dark:hover:border-blue-700 text-[12px] sm:text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer">fitness app</button>
+                    <button type="button" id="uiQuickExBtn4" data-kw1="micro" data-kw2="saas" onclick="applyQuickExample(this.dataset.kw1, this.dataset.kw2)" class="min-h-[44px] sm:min-h-[34px] px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 hover:bg-blue-50 dark:hover:bg-blue-950/50 hover:border-blue-300 dark:hover:border-blue-700 text-[12px] sm:text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer">micro saas</button>
+                </div>
             </section>
 
             <!-- Column 2: Results Output & Analysis Table Card (Hidden visually/layout-wise; state & helpers preserved) -->
@@ -728,16 +744,16 @@
             </section>
         </div>
 
-        <!-- Full-Width Interactive Domain Availability, Backlink, Archive & Index Data Section -->
+        <!-- Full-Width Interactive Domain Results & Availability Panel -->
         <section id="domainAnalysisPanel" aria-labelledby="uiAnalysisTitle" class="scroll-mt-16 md:scroll-mt-20 w-full bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] p-4 sm:p-6 md:p-7 flex flex-col gap-4 md:gap-5 min-w-0">
             <div class="bg-[#ECF2F2] text-[#292929] border border-[#C9D8D8] rounded-xl p-4 sm:p-5 flex flex-col gap-1.5 shadow-sm">
-                <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#292929] leading-[1.4]">Domain Availability, Backlink, Archive &amp; Index Data</h2>
-                <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#292929]/90 leading-[1.5]">Inspect each domain via Availability, Ahrefs Backlinks, Wayback Machine records, or Google Index.</p>
+                <h2 id="uiAnalysisTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-[#292929] leading-[1.4]">Domain Results</h2>
+                <p id="uiAnalysisSub" class="text-[13px] md:text-[14px] text-[#292929]/90 leading-[1.5]">Check availability, brand score, backlink history, or archives instantly.</p>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-2.5">
                 <div id="domainAnalysisMeta" class="text-[11px] md:text-[12px] uppercase tracking-wider font-semibold text-[#3F3042] tabular-nums leading-[1.4]"></div>
-                <button type="button" id="uiResetAnalysisBtn" onclick="resetToHome(event)" title="Reset all form inputs, filters, and results to default and return to top" class="ui-reset-all-btn inline-flex items-center justify-center gap-1.5 min-h-[40px] px-3.5 py-1.5 rounded-lg border border-[#C9D8D8] bg-[#ECF2F2] hover:bg-rose-50 hover:border-rose-300 text-[#292929] hover:text-rose-700 text-[12px] md:text-[13px] font-semibold transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
+                <button type="button" id="uiResetAnalysisBtn" onclick="resetToHome(event)" title="Reset all form inputs, filters, and results to default and return to top" class="ui-reset-all-btn inline-flex items-center justify-center gap-1.5 min-h-[48px] sm:min-h-[40px] px-3.5 py-1.5 rounded-lg border border-[#C9D8D8] bg-[#ECF2F2] hover:bg-rose-50 hover:border-rose-300 text-[#292929] hover:text-rose-700 text-[12px] md:text-[13px] font-semibold transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
                     <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
                     <span id="uiResetAnalysisLabel" class="ui-reset-all-label">Start Over</span>
                 </button>
@@ -747,37 +763,41 @@
             <div id="domainBatchActionBar" class="flex flex-col gap-3 p-3 sm:p-4 rounded-xl bg-[#ECF2F2] border border-[#C9D8D8]">
                 <div class="flex flex-wrap items-center gap-2.5 min-w-0">
                     <span id="domainSelectionStatus" class="text-[12px] md:text-[13px] font-semibold text-[#292929] tabular-nums">0 selected</span>
-                    <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[32px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors">
+                    <button type="button" id="uiBatchClearSelBtn" onclick="clearDomainSelection()" class="hidden min-h-[36px] px-2.5 py-1 text-[11px] md:text-[12px] font-medium rounded-md border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors">
                         Clear
                     </button>
                 </div>
                 <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 w-full">
                     <div class="w-full sm:w-44 shrink-0">
                         <label id="uiAnalysisStatusFilterLabel" for="analysisStatusFilter" class="sr-only">Filter by availability status</label>
-                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686] cursor-pointer">
+                        <select id="analysisStatusFilter" onchange="renderDomainAnalysisList(true)" class="w-full min-h-[48px] sm:min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#FFFFFF] text-[#292929] border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686] cursor-pointer">
                             <option id="uiStatusOptAll" value="all">Select Status: All</option>
+                            <option id="uiStatusOptAvailCheck" value="available_or_check">Available &amp; Check</option>
                             <option id="uiStatusOptAvailable" value="available">Available</option>
                             <option id="uiStatusOptTaken" value="taken">Taken</option>
                             <option id="uiStatusOptCheck" value="check">Check</option>
                         </select>
                     </div>
+                    <button type="button" id="uiAvailOnlyBtn" onclick="toggleAvailableOnlyFilter()" aria-pressed="false" class="min-h-[48px] sm:min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3.5 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#ECF2F2] transition-colors whitespace-nowrap">
+                        Available only
+                    </button>
                     <div class="w-full sm:w-52 md:w-56 shrink-0">
                         <label id="uiAnalysisFilterLabel" for="analysisFilterInput" class="sr-only">Filter generated domains</label>
-                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686]" placeholder="Filter domains (e.g. .com, -0)...">
+                        <input type="text" id="analysisFilterInput" oninput="renderDomainAnalysisList(true)" class="w-full min-h-[48px] sm:min-h-[40px] px-3 py-1.5 text-[12px] md:text-[13px] bg-[#FFFFFF] text-[#292929] placeholder:text-[#3F3042]/70 border border-[#C9D8D8] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#578686]" placeholder="Filter domains (e.g. .com, -0)...">
                     </div>
-                    <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchRemoveBtn" onclick="removeSelectedDomains()" disabled class="min-h-[48px] sm:min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-semibold rounded-lg border border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100 disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Remove Selected
                     </button>
-                    <button type="button" id="uiBatchCopyBtn" onclick="copyBatchDomains('text')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchCopyBtn" onclick="copyBatchDomains('text')" class="min-h-[48px] sm:min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Copy
                     </button>
-                    <button type="button" id="uiBatchCopyMdBtn" onclick="copyBatchDomains('markdown')" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchCopyMdBtn" onclick="copyBatchDomains('markdown')" class="min-h-[48px] sm:min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Copy MD
                     </button>
-                    <button type="button" id="uiBatchDownloadBtn" onclick="downloadBatchDomainsTxt()" class="min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
+                    <button type="button" id="uiBatchDownloadBtn" onclick="downloadBatchDomainsTxt()" class="min-h-[48px] sm:min-h-[40px] flex-1 sm:flex-initial inline-flex items-center justify-center px-3 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] disabled:opacity-45 disabled:cursor-not-allowed transition-colors whitespace-nowrap">
                         Export .txt
                     </button>
-                    <a id="batchDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBatchDnsLink(event)" class="min-h-[40px] w-full sm:w-auto inline-flex items-center justify-center px-3.5 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors whitespace-nowrap">
+                    <a id="batchDnsBtn" href="https://dnsrobot.net/domain-age-checker" target="_blank" rel="nofollow noopener noreferrer" onclick="return prepareBatchDnsLink(event)" class="min-h-[48px] sm:min-h-[40px] w-full sm:w-auto inline-flex items-center justify-center px-3.5 py-1.5 text-[12px] md:text-[13px] font-medium rounded-lg border border-[#C9D8D8] bg-[#FFFFFF] text-[#292929] hover:bg-[#EDEDED] transition-colors whitespace-nowrap">
                         Bulk Check
                     </a>
                 </div>
@@ -805,8 +825,8 @@
             </div>
 
             <div id="domainAnalysisMoreWrap" class="text-center hidden pt-1">
-                <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[40px] px-4 py-1.5 text-[12px] md:text-[13px] font-semibold bg-[#f9e1d9]/75 hover:bg-[#f9e1d9] text-[#292929] border border-[#f05422]/35 rounded-lg transition-colors">
-                    Show More (+100)
+                <button type="button" id="uiAnalysisLoadMoreBtn" onclick="loadMoreAnalysisRows()" class="min-h-[48px] w-full sm:w-auto px-5 py-2 text-[13px] font-semibold bg-[#f9e1d9]/75 hover:bg-[#f9e1d9] text-[#292929] border border-[#f05422]/35 rounded-lg transition-colors">
+                    Show More (+24)
                 </button>
             </div>
         </section>
@@ -814,460 +834,101 @@
         <!-- ADSENSE MANUAL SLOT 1: Desktop 970x90 / 728x90 Leaderboard | Mobile 320x100 Large Banner -->
         <div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="index-below-workspace" data-ad-recommended-size="970x90 / 728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[970px] mx-auto min-h-[100px] sm:min-h-[90px] bg-white dark:bg-slate-900/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex items-center justify-center"></div>
 
-        <!-- Share & Export Link Section -->
-        <section id="shareExportSection" aria-labelledby="uiShareTitle" class="bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8] py-5 px-4 sm:p-6 md:p-7 flex flex-col gap-5">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
-                <div class="flex flex-col gap-1.5 min-w-0">
-                    <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-[#292929] leading-[1.4]">Share &amp; Export Link</h2>
-                    <p id="uiShareSub" class="text-[14px] md:text-[15px] text-[#3F3042] leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
+        <!-- Slim Collapsible Share & Export Link Section -->
+        <details id="shareExportSection" class="group bg-[#FFFFFF] text-[#292929] rounded-xl shadow-sm border border-[#C9D8D8]">
+            <summary class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 min-h-[52px] cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl group-open:rounded-b-none hover:bg-[#ECF2F2]/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2165b3]">
+                <span class="inline-flex items-center gap-2.5 min-w-0">
+                    <svg aria-hidden="true" class="w-4 h-4 text-[#2165b3] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                    <span id="uiShareSummaryTitle" class="text-[14px] sm:text-[15px] font-bold text-[#292929] truncate">Share &amp; Export Link</span>
+                </span>
+                <svg aria-hidden="true" class="w-4 h-4 text-[#3F3042] shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </summary>
+
+            <div class="px-4 pb-5 pt-2 sm:px-6 sm:pb-6 flex flex-col gap-5 border-t border-[#C9D8D8]/70">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 pt-2">
+                    <div class="flex flex-col gap-1.5 min-w-0">
+                        <h2 id="uiShareTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold text-[#292929] leading-[1.4]">Share &amp; Export Link</h2>
+                        <p id="uiShareSub" class="text-[14px] md:text-[15px] text-[#3F3042] leading-[1.55]">Share this page URL with active language (?lang) and keyword (?kw) parameters preserved automatically.</p>
+                    </div>
+                    <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-[#292929] cursor-pointer select-none bg-[#ECF2F2] px-3 py-1.5 rounded-lg border border-[#C9D8D8] shrink-0">
+                        <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-[#578686] text-[#0C723F] focus:ring-[#0C723F] cursor-pointer">
+                        <span id="uiShareIncludeCountLabel">Include generated domain count in share text</span>
+                    </label>
                 </div>
-                <label for="shareIncludeCount" class="inline-flex items-center gap-2 min-h-[40px] text-[12px] md:text-[13px] font-medium text-[#292929] cursor-pointer select-none bg-[#ECF2F2] px-3 py-1.5 rounded-lg border border-[#C9D8D8] shrink-0">
-                    <input type="checkbox" id="shareIncludeCount" checked onchange="updateShareUI()" class="rounded border-[#578686] text-[#0C723F] focus:ring-[#0C723F] cursor-pointer">
-                    <span id="uiShareIncludeCountLabel">Include generated domain count in share text</span>
-                </label>
-            </div>
 
-            <div>
-                <label id="uiShareUrlLabel" for="shareUrlPreview" class="sr-only">Active Shareable Link</label>
-                <input type="text" id="shareUrlPreview" readonly onclick="this.select()" class="w-full min-h-[44px] px-3.5 py-2 font-mono text-[12px] md:text-[13px] bg-[#ECF2F2]/60 text-[#292929] border border-[#C9D8D8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2165b3]" value="">
-            </div>
+                <div>
+                    <label id="uiShareUrlLabel" for="shareUrlPreview" class="sr-only">Active Shareable Link</label>
+                    <input type="text" id="shareUrlPreview" readonly onclick="this.select()" class="w-full min-h-[44px] px-3.5 py-2 font-mono text-[12px] md:text-[13px] bg-[#ECF2F2]/60 text-[#292929] border border-[#C9D8D8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2165b3]" value="">
+                </div>
 
-            <!-- Localized Share Buttons + Universal Copy All -->
-            <div class="flex flex-col gap-3 pt-1">
-                <p id="uiLocalizedShareHeading" class="text-[11px] uppercase tracking-wider font-semibold text-[#3F3042] leading-[1.4]">
-                    Recommended Share Channels
-                </p>
-                <div class="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-2.5 sm:gap-3">
-                    <div id="localizedShareButtons" class="contents sm:flex sm:flex-wrap sm:items-center sm:gap-3"></div>
-                    <button type="button" onclick="copyAllDomainsShare()" id="uiShareCopyAllBtn" class="w-full sm:w-auto min-h-[44px] inline-flex items-center justify-center gap-2 bg-[#de3723] hover:bg-[#c52f1d] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#de3723] focus-visible:ring-offset-2">
-                        <svg aria-hidden="true" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                        <span id="uiShareCopyAllText">Copy All</span>
+                <!-- Localized Share Buttons + Universal Copy All -->
+                <div class="flex flex-col gap-3 pt-1">
+                    <p id="uiLocalizedShareHeading" class="text-[11px] uppercase tracking-wider font-semibold text-[#3F3042] leading-[1.4]">
+                        Recommended Share Channels
+                    </p>
+                    <div class="grid grid-cols-1 sm:flex sm:flex-wrap sm:items-center gap-2.5 sm:gap-3">
+                        <div id="localizedShareButtons" class="contents sm:flex sm:flex-wrap sm:items-center sm:gap-3"></div>
+                        <button type="button" onclick="copyAllDomainsShare()" id="uiShareCopyAllBtn" class="w-full sm:w-auto min-h-[48px] sm:min-h-[44px] inline-flex items-center justify-center gap-2 bg-[#de3723] hover:bg-[#c52f1d] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#de3723] focus-visible:ring-offset-2">
+                            <svg aria-hidden="true" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span id="uiShareCopyAllText">Copy All</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Copy Utilities -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-stretch md:items-center gap-2.5 sm:gap-3 pt-4 border-t border-[#C9D8D8]">
+                    <button type="button" onclick="copyShareLink()" id="uiShareCopyUrlBtn" class="w-full md:w-auto min-h-[48px] sm:min-h-[44px] inline-flex items-center justify-center bg-[#2165b3] hover:bg-[#1a5293] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2165b3] focus-visible:ring-offset-2">
+                        Copy Link
+                    </button>
+                    <button type="button" onclick="copyHtmlAnchor()" id="uiShareCopyHtmlBtn" class="w-full md:w-auto min-h-[48px] sm:min-h-[44px] inline-flex items-center justify-center bg-[#578686] hover:bg-[#466e6e] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686] focus-visible:ring-offset-2">
+                        Copy HTML &lt;a&gt;
+                    </button>
+                    <button type="button" onclick="copyWhatsAppMessage()" id="uiShareCopyMsgBtn" class="w-full md:w-auto min-h-[48px] sm:min-h-[44px] inline-flex items-center justify-center bg-[#0C723F] hover:bg-[#095a31] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F] focus-visible:ring-offset-2">
+                        Copy Share Text
                     </button>
                 </div>
+
+                <p id="shareFeedback" aria-live="polite" class="text-[12px] md:text-[13px] font-semibold text-[#0C723F] min-h-[1rem] hidden"></p>
             </div>
+        </details>
 
-            <!-- Quick Copy Utilities -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 md:flex md:flex-wrap items-stretch md:items-center gap-2.5 sm:gap-3 pt-4 border-t border-[#C9D8D8]">
-                <button type="button" onclick="copyShareLink()" id="uiShareCopyUrlBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#2165b3] hover:bg-[#1a5293] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2165b3] focus-visible:ring-offset-2">
-                    Copy Link
-                </button>
-                <button type="button" onclick="copyHtmlAnchor()" id="uiShareCopyHtmlBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#578686] hover:bg-[#466e6e] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686] focus-visible:ring-offset-2">
-                    Copy HTML &lt;a&gt;
-                </button>
-                <button type="button" onclick="copyWhatsAppMessage()" id="uiShareCopyMsgBtn" class="w-full md:w-auto min-h-[44px] inline-flex items-center justify-center bg-[#0C723F] hover:bg-[#095a31] text-[#FFFFFF] shadow-sm text-[12px] md:text-[13px] font-semibold px-4 py-2 rounded-lg transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F] focus-visible:ring-offset-2">
-                    Copy Share Text
-                </button>
-            </div>
-
-            <p id="shareFeedback" aria-live="polite" class="text-[12px] md:text-[13px] font-semibold text-[#0C723F] min-h-[1rem] hidden"></p>
-        </section>
-
-        <!-- Localized Guide & Educational Content -->
-        <section id="localizedEducationalContent" aria-label="Domain SEO Guide, Strategy &amp; Validation" class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-6 md:p-8">
-            <div class="flex flex-col gap-9 md:gap-10">
-                <div id="eduTopSections" class="flex flex-col gap-8">
-                    <article class="flex flex-col gap-4">
-                        <div class="edu-callout-header rounded-xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-3">
-                            <h2 class="edu-heading text-[18px] md:text-[20px] lg:text-[22px] font-bold leading-[1.35]">Guide &amp; How to Use This Tool</h2>
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-white/15 border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider text-[#FDFEFE]">RFC 1035</span>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 md:gap-4 text-[15px] lg:text-[16px] leading-[1.6]">
-                            <div class="edu-card-soft p-4 sm:p-5 rounded-xl flex flex-col gap-2">
-                                <div class="flex items-center gap-2.5">
-                                    <span aria-hidden="true" class="edu-badge-teal w-6 h-6 rounded-md inline-flex items-center justify-center text-[12px] font-mono font-bold shrink-0">1</span>
-                                    <h3 class="edu-heading text-[16px] font-bold leading-[1.4]">1. Enter Keywords &amp; Extensions</h3>
-                                </div>
-                                <p class="edu-body">Fill in Primary, Secondary, and Tertiary Keywords according to your niche or brand idea (e.g., calc, pro, app). Enter desired domain extensions separated by commas (e.g., .com, .io, .net).</p>
-                            </div>
-                            <div class="edu-card-neutral p-4 sm:p-5 rounded-xl flex flex-col gap-2">
-                                <div class="flex items-center gap-2.5">
-                                    <span aria-hidden="true" class="edu-badge-teal w-6 h-6 rounded-md inline-flex items-center justify-center text-[12px] font-mono font-bold shrink-0">2</span>
-                                    <h3 class="edu-heading text-[16px] font-bold leading-[1.4]">2. Build Pattern Formula &amp; RFC 1035</h3>
-                                </div>
-                                <p class="edu-body">Use placeholders like [primary], [secondary], [tertiary], [dash], [number], [vowel], and [consonant] with automatic RFC 1035 standard sanitization.</p>
-                            </div>
-                            <div class="edu-card-soft md:col-span-2 p-4 sm:p-5 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                                <div class="flex flex-col gap-2 min-w-0">
-                                    <div class="flex items-center gap-2.5">
-                                        <span aria-hidden="true" class="edu-badge-teal w-6 h-6 rounded-md inline-flex items-center justify-center text-[12px] font-mono font-bold shrink-0">5</span>
-                                        <h3 class="edu-heading text-[16px] font-bold leading-[1.4]">5. Instant Start Over &amp; Full Form Reset</h3>
-                                    </div>
-                                    <p class="edu-body">Feeling stuck after tweaking keywords, custom pattern tokens, or filters? Click the &quot;Start Over&quot; button at the top of the generator form, below the advanced pattern options, or inside the analysis table toolbar (including when a filter shows zero matches). It wipes all previous inputs, checkboxes, custom formulas, filters, and row removals back to a clean default state and smoothly scrolls you back to the top of the page.</p>
-                                </div>
-                                <button type="button" onclick="resetToHome(event)" class="ui-reset-all-btn inline-flex items-center justify-center gap-1.5 min-h-[40px] px-4 py-2 rounded-lg border border-[#578686]/40 bg-[#FFFFFF] hover:bg-rose-50 hover:border-rose-300 text-[#292929] hover:text-rose-700 text-[13px] font-semibold shadow-sm transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
-                                    <svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-                                    <span class="ui-reset-all-label">Start Over</span>
-                                </button>
-                            </div>
-                        </div>
-                    </article>
+        <!-- Concise 3-Step How-To Summary + Deep Links to Dedicated Guide & FAQ Pages -->
+        <section id="howToUseSummarySection" aria-labelledby="uiHowToTitle" class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4 sm:p-6 md:p-7 flex flex-col gap-5">
+            <div class="flex flex-wrap items-center justify-between gap-2.5">
+                <div class="flex flex-wrap items-center gap-2.5 min-w-0">
+                    <span id="uiHowToBadge" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-[11px] font-mono font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 shrink-0">3 Steps</span>
+                    <h2 id="uiHowToTitle" class="text-[17px] sm:text-[18px] md:text-[20px] font-bold tracking-tight text-slate-900 dark:text-white leading-[1.35]">How to use this tool in 3 steps</h2>
                 </div>
+                <span aria-hidden="true" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 shrink-0">RFC 1035</span>
+            </div>
 
-                <!-- Strategy & Best Practices (Static HTML) -->
-                <article id="keywordStrategySection" data-rendered-lang="en" class="edu-section-divider pt-8 md:pt-9 flex flex-col gap-4">
-                    <div class="flex flex-wrap items-center gap-2.5">
-                        <span aria-hidden="true" class="edu-badge-positive inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider">Best Practices</span>
-                        <h2 id="uiStratTitle" class="edu-heading text-[18px] md:text-[20px] lg:text-[22px] font-bold leading-[1.35]">Keyword Strategy &amp; Domain Naming Best Practices</h2>
-                    </div>
-                    <div class="flex flex-col gap-3 text-[15px] lg:text-[16px] leading-[1.6]">
-                        <details class="edu-card-soft group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiStratKwTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">Keyword Strategy</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <ul class="edu-body flex flex-col gap-2 list-disc list-inside">
-                                    <li id="uiStratKw1">Primary Keyword ([primary]): Core niche or main topic (e.g., calc, shop, travel). Must align with core business or audience intent.</li>
-                                    <li id="uiStratKw2">Secondary Keyword ([secondary]): Modifier or descriptive category (e.g., pro, fast, hub). Helps expand brand context and variations.</li>
-                                    <li id="uiStratKw3">Tertiary Keyword ([tertiary]): Format or platform suffix (e.g., app, go, io). Ideal for large-scale domain research.</li>
-                                </ul>
-                            </div>
-                        </details>
-                        <details class="edu-card-neutral group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                <span id="uiStratBpTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">Domain Naming Best Practices</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <ul class="edu-body flex flex-col gap-2 list-disc list-inside">
-                                    <li id="uiStratBp1">Short &amp; Memorable: Limit character length for easy typing and pronunciation (ideally 12-15 characters).</li>
-                                    <li id="uiStratBp2">Avoid Typos: Use natural combinations of vowels and consonants to prevent user confusion.</li>
-                                    <li id="uiStratBp3">Consider Dashes: Using [dash] aids multi-word readability, but use sparingly.</li>
-                                    <li id="uiStratBp4">Choose Right Extensions: Use .com for global reach, country-specific ccTLDs for local markets, or niche extensions.</li>
-                                </ul>
-                            </div>
-                        </details>
-                    </div>
-                </article>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 md:gap-4">
+                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 p-4 flex flex-col gap-1.5">
+                    <h3 id="uiStep1Title" class="text-[15px] font-bold text-slate-900 dark:text-white leading-[1.4]">1. Enter keywords</h3>
+                    <p id="uiStep1Desc" class="text-[13.5px] sm:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.55]">Type your main keyword and preferred domain extensions.</p>
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 p-4 flex flex-col gap-1.5">
+                    <h3 id="uiStep2Title" class="text-[15px] font-bold text-slate-900 dark:text-white leading-[1.4]">2. Generate &amp; filter</h3>
+                    <p id="uiStep2Desc" class="text-[13.5px] sm:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.55]">Compare pronounceable scores and filter by available status.</p>
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 p-4 flex flex-col gap-1.5">
+                    <h3 id="uiStep3Title" class="text-[15px] font-bold text-slate-900 dark:text-white leading-[1.4]">3. Check &amp; export</h3>
+                    <p id="uiStep3Desc" class="text-[13.5px] sm:text-[14px] text-slate-600 dark:text-slate-300 leading-[1.55]">Copy or export winners, or open Advanced Options for custom formulas.</p>
+                </div>
+            </div>
 
-                <!-- Extension Strategy (Static HTML) -->
-                <article id="extensionStrategySection" data-rendered-lang="en" class="edu-section-divider pt-8 md:pt-9 flex flex-col gap-4">
-                    <div class="edu-callout-header rounded-xl p-4 sm:p-5 flex flex-col gap-2">
-                        <h2 id="uiExtStratTitle" class="edu-heading text-[18px] md:text-[20px] lg:text-[22px] font-bold leading-[1.35]">Domain Extension Strategy &amp; Google SERP Signals (Target Market &amp; Regional)</h2>
-                        <p id="uiExtStratIntro" class="edu-muted text-[14px] sm:text-[15px] leading-[1.6] opacity-95">In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:</p>
-                    </div>
-                    <div class="flex flex-col gap-3 text-[15px] leading-[1.6]">
-                        <details class="edu-card-soft group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiExtGTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">gTLDs (.com, .net, .org)</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiExtGDesc" class="edu-body text-[15px] leading-[1.6]">Global generic extensions with no specific regional bias. Ideal for cross-border international target markets or general authority websites.</p>
-                            </div>
-                        </details>
-                        <details class="edu-card-neutral group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiExtLocTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">Local ccTLDs (.us, .co.uk, .io)</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiExtLocDesc" class="edu-body text-[15px] leading-[1.6]">Provide strong regional geotargeting signals to Google indicating the website targets local audiences. Great for boosting local SERP rankings.</p>
-                            </div>
-                        </details>
-                        <details class="edu-card-soft group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiExtNTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">nTLDs (.io, .app, .tech, .shop)</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiExtNDesc" class="edu-body text-[15px] leading-[1.6]">Modern thematic extensions signaling specific intent (SaaS, e-commerce, developer tool). Treated equally to gTLDs in SERP signals.</p>
-                            </div>
-                        </details>
-                    </div>
-                </article>
-
-                <!-- Domain Naming Risks & Google Penalty Warning (Static HTML) -->
-                <article id="domainRisksSection" data-rendered-lang="en" class="edu-section-divider pt-8 md:pt-9 flex flex-col gap-4">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex flex-wrap items-center gap-2.5">
-                            <span aria-hidden="true" class="edu-badge-teal inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider">Risk Audit</span>
-                            <h2 id="uiRiskTitle" class="edu-heading text-[18px] md:text-[20px] lg:text-[22px] font-bold leading-[1.35]">Domain Naming Risks &amp; Google Penalty Warning</h2>
-                        </div>
-                        <p id="uiRiskIntro" class="edu-muted text-[15px] lg:text-[16px] leading-[1.6]">When researching and generating domain permutations (especially for bulk campaigns or expired/dropped domains), beware of fatal risks that can trigger algorithmic penalties:</p>
-                    </div>
-                    <div class="flex flex-col gap-3 text-[15px] leading-[1.6]">
-                        <details class="edu-card-caution group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                <span id="uiRiskEmdTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">EMD (Exact Match Domain) Trap</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiRiskEmdDesc" class="edu-body">Using exact commercial keyword matches (e.g., best-cheap-shoes.com) without high content quality makes sites vulnerable to Google EMD updates.</p>
-                            </div>
-                        </details>
-                        <details class="edu-card-caution group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                <span id="uiRiskSpamTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">Low-Quality Automated Content Risk</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiRiskSpamDesc" class="edu-body">Search ranking systems actively filter thousands of thin, low-value automated pages that lack original substance for visitors.</p>
-                            </div>
-                        </details>
-                        <details class="edu-card-caution group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                <span id="uiRiskBacklinkTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">Prior Backlink &amp; Reputation History (Aged Domains)</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <p id="uiRiskBacklinkDesc" class="edu-body">When acquiring previously registered domains, always verify archive history (Wayback Machine) and link profiles to avoid inheriting algorithmic downgrades from low-quality link networks.</p>
-                            </div>
-                        </details>
-                    </div>
-                    <div class="flex flex-col gap-3 text-[15px] leading-[1.6]">
-                        <details class="edu-card-soft group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiTipsCheckTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">1. How to Check History &amp; Domain Risks</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <ul class="edu-body flex flex-col gap-1.5 list-disc list-inside">
-                                    <li id="uiTipsCheck1">Wayback Machine (Archive.org): Verify whether the domain previously hosted unrelated, deceptive, or low-quality content.</li>
-                                    <li id="uiTipsCheck2">Backlink Checker (Ahrefs, Semrush, Moz): Audit referring links to ensure clean, natural anchor text distributions.</li>
-                                    <li id="uiTipsCheck3">Google Search Console (GSC): Check for historical Manual Actions or Security Issues if acquiring an aged domain.</li>
-                                </ul>
-                            </div>
-                        </details>
-                        <details class="edu-card-positive group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                <span id="uiTipsAvoidTitle" class="edu-text-positive text-[15px] md:text-[16px] font-bold leading-[1.45]">2. How to Avoid Penalty Risks</span>
-                                <svg aria-hidden="true" class="edu-text-positive w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <ul class="edu-body flex flex-col gap-1.5 list-disc list-inside">
-                                    <li id="uiTipsAvoid1">Use unique brandable names or natural partial match combinations rather than pure EMDs.</li>
-                                    <li id="uiTipsAvoid2">For large-scale sites, ensure every page delivers unique, genuinely useful value for real users.</li>
-                                    <li id="uiTipsAvoid3">Conduct thorough due diligence before purchasing dropped or aged domains.</li>
-                                </ul>
-                            </div>
-                        </details>
-                        <details class="edu-card-neutral group rounded-xl">
-                            <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                                <span id="uiTipsCureTitle" class="edu-heading text-[15px] md:text-[16px] font-bold leading-[1.45]">3. Resolution (Recoverable vs. Non-Recoverable)</span>
-                                <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                            </summary>
-                            <div class="px-4 sm:px-5 pb-4 pt-0">
-                                <ul class="edu-body flex flex-col gap-1.5 list-disc list-inside">
-                                    <li id="uiTipsCure1">Algorithmic EMD / Content Quality Cases: Gradually recoverable by upgrading editorial quality, pruning thin pages, and building authentic brand authority.</li>
-                                    <li id="uiTipsCure2">Manual Actions Cases: Recoverable by cleaning unnatural backlinks, submitting a Disavow file, and filing a Reconsideration Request via GSC.</li>
-                                    <li id="uiTipsCure3">Severe Negative History Domains: Very hard to recover. If an aged domain carries persistent manual flags or years of abusive history, starting fresh on a clean domain is strongly recommended.</li>
-                                </ul>
-                            </div>
-                        </details>
-                    </div>
-                </article>
-
-                <!-- Good vs Bad Domain Examples (Static HTML) -->
-                <article id="domainExamplesSection" data-rendered-lang="en" class="edu-section-divider pt-8 md:pt-9 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6 text-[15px] leading-[1.6]">
-                    <div class="flex flex-col gap-3.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span aria-hidden="true" class="inline-flex items-center px-2 py-0.5 rounded-md bg-[#3F3042] text-[#FDFEFE] text-[11px] font-mono font-bold uppercase tracking-wider">Avoid</span>
-                            <h2 id="uiBadExTitle" class="edu-heading text-[17px] sm:text-[18px] md:text-[20px] font-bold leading-[1.35]">Examples of High-Risk / Poor Domain Names</h2>
-                        </div>
-                        <div class="flex flex-col gap-3">
-                            <details class="edu-card-caution group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                    <span id="uiBad1Title" class="edu-heading text-[15px] md:text-[16px] font-bold">1. Quality Risk (Keyword Stuffing &amp; EMD)</span>
-                                    <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiBad1ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiBad1Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-all">best-discount-leather-shoes-newyork.example</code></p>
-                                    <p id="uiBad1Reason" class="edu-muted text-[14px] leading-[1.55]">Excessive keyword stacking without distinct brand identity appears unnatural to search engines and users.</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-caution group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                    <span id="uiBad2Title" class="edu-heading text-[15px] md:text-[16px] font-bold">2. Hard to Find / Unmemorable</span>
-                                    <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiBad2ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiBad2Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-all">b3st-onl1n3-calc-t00ls-2026.example</code></p>
-                                    <p id="uiBad2Reason" class="edu-muted text-[14px] leading-[1.55]">Confusing leet-speak numbers or excessive length lead to user typos and poor brand retention.</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-caution group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                    <span id="uiBad3Title" class="edu-heading text-[15px] md:text-[16px] font-bold">3. Legal &amp; Trademark Violation Risk</span>
-                                    <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiBad3ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiBad3Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-all">official-famousbrand-deals.example / popularbrand-outlet.example</code></p>
-                                    <p id="uiBad3Reason" class="edu-muted text-[14px] leading-[1.55]">Unauthorized use of registered trademarks. High risk of cease-and-desist, lawsuits, or domain dispute (UDRP).</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-caution group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3F3042]">
-                                    <span id="uiBad4Title" class="edu-heading text-[15px] md:text-[16px] font-bold">4. Low CTR / Untrustworthy Appearance</span>
-                                    <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiBad4ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiBad4Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-all">fast-bonus-portal-99.example / quick-files-hub.example</code></p>
-                                    <p id="uiBad4Reason" class="edu-muted text-[14px] leading-[1.55]">Generic promotional wording or low-trust naming patterns tend to earn lower click-through rates in search results.</p>
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col gap-3.5">
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span aria-hidden="true" class="edu-badge-positive inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider">Safe</span>
-                            <h2 id="uiGoodExTitle" class="edu-heading text-[17px] sm:text-[18px] md:text-[20px] font-bold leading-[1.35]">Examples of Good, Legal, &amp; Safe Domain Names</h2>
-                        </div>
-                        <div class="flex flex-col gap-3">
-                            <details class="edu-card-positive group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                    <span id="uiGood1Title" class="edu-text-positive text-[15px] md:text-[16px] font-bold">1. Brandable &amp; Memorable</span>
-                                    <svg aria-hidden="true" class="edu-text-positive w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiGood1ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiGood1Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-words">calcly.com, shopiva.io, finit.app</code></p>
-                                    <p id="uiGood1Reason" class="edu-muted text-[14px] leading-[1.55]">Short, unique, easy to spell, trademark-free, with strong long-term brand equity.</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-positive group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                    <span id="uiGood2Title" class="edu-text-positive text-[15px] md:text-[16px] font-bold">2. Geo-Marketing &amp; Local Trust</span>
-                                    <svg aria-hidden="true" class="edu-text-positive w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiGood2ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiGood2Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-words">solusicalc.co.uk, coffeehouse.us, devhub.io</code></p>
-                                    <p id="uiGood2Reason" class="edu-muted text-[14px] leading-[1.55]">Combines brand/function with local target extensions, providing strong regional relevance signals in local SERPs.</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-positive group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                    <span id="uiGood3Title" class="edu-text-positive text-[15px] md:text-[16px] font-bold">3. Safe Partial Match Domain (PMD)</span>
-                                    <svg aria-hidden="true" class="edu-text-positive w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiGood3ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiGood3Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-words">calcpro.com, fixshop.net, travelhub.io</code></p>
-                                    <p id="uiGood3Reason" class="edu-muted text-[14px] leading-[1.55]">Contains relevant keywords combined with modifiers or short brand names, avoiding EMD penalties.</p>
-                                </div>
-                            </details>
-                            <details class="edu-card-positive group rounded-xl">
-                                <summary class="flex items-center justify-between gap-3 px-4 py-3.5 cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0C723F]">
-                                    <span id="uiGood4Title" class="edu-text-positive text-[15px] md:text-[16px] font-bold">4. Legally Safe &amp; High Trust (High CTR)</span>
-                                    <svg aria-hidden="true" class="edu-text-positive w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </summary>
-                                <div class="px-4 pb-4 pt-0 flex flex-col gap-2">
-                                    <p class="edu-body"><span id="uiGood4ExLabel" class="edu-muted font-semibold">Example:</span> <code id="uiGood4Ex" class="edu-code-chip inline-block px-2 py-0.5 rounded text-[13px] font-mono break-words">gadgetfix.com, fintechku.io, payfast.io</code></p>
-                                    <p id="uiGood4Reason" class="edu-muted text-[14px] leading-[1.55]">Trademark-free, utilizes trusted extensions (.com / .io), and builds instant user trust in SERP.</p>
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-                </article>
+            <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1">
+                <a href="/guide.html" id="uiCtaBestPractices" class="min-h-[48px] sm:min-h-[42px] inline-flex items-center justify-center px-4 py-2 rounded-lg bg-[#2165b3] hover:bg-[#1a5293] text-white text-[13px] md:text-[14px] font-semibold shadow-sm transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2165b3] focus-visible:ring-offset-2">
+                    Domain Naming Best Practices →
+                </a>
+                <a href="/faq.html" id="uiCtaViewFaq" class="min-h-[48px] sm:min-h-[42px] inline-flex items-center justify-center px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-[13px] md:text-[14px] font-semibold transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+                    View FAQ →
+                </a>
             </div>
         </section>
 
         <!-- ADSENSE MANUAL SLOT 2: Desktop 728x250 / 336x280 | Mobile 336x280 Rectangle -->
         <div role="region" aria-label="AdSense Placement Slot 2" data-ad-slot-position="index-between-guide-and-faq" data-ad-recommended-size="728x250 / 336x280 (Desktop) | 336x280 (Mobile)" class="w-full max-w-[336px] md:max-w-[728px] mx-auto min-h-[280px] md:min-h-[250px] bg-white dark:bg-slate-900/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex items-center justify-center"></div>
-
-        <!-- Accordion FAQ Section (Static HTML) -->
-        <section id="faqSection" data-rendered-lang="en" aria-labelledby="uiFaqTitle" class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-6 md:p-8 flex flex-col gap-5">
-            <div class="edu-callout-header rounded-xl p-4 sm:p-5 flex flex-col gap-2">
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <span aria-hidden="true" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider text-[#FDFEFE]">FAQ</span>
-                    <h2 id="uiFaqTitle" class="edu-heading text-[18px] sm:text-[20px] md:text-[22px] lg:text-[24px] font-bold tracking-tight leading-[1.35] [text-wrap:balance]">
-                        Frequently Asked Questions
-                    </h2>
-                </div>
-                <p id="uiFaqSub" class="edu-muted text-[14px] sm:text-[15px] leading-[1.6] opacity-95">
-                    Technical and practical answers for domainers, SEO specialists, startup founders, and developers.
-                </p>
-            </div>
-            <div id="faqAccordionList" class="flex flex-col gap-3">
-                <details class="edu-card-soft group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ0" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">1. What is a Domain Permutation Generator and how does it work?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA0">A Domain Permutation Generator is a specialized tool built to help researchers, developers, startup founders, and domain investors instantly generate hundreds of unique, brandable domain name combinations. By inputting up to three keywords (Primary, Secondary, and Tertiary), the engine runs a recursive combinatorial algorithm to produce full 3-word permutations, 2-word subsets, and 1-word variants in both hyphenated (-) and joined (no-dash) formats.</p>
-                    </div>
-                </details>
-                <details class="edu-card-neutral group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ1" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">2. Are the generated domains compliant with DNS standards (RFC 1035)?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA1">Yes. Every domain generated on domainname.web.id undergoes strict RFC 1035 validation and sanitization. All domain labels are normalized to lowercase letters (a-z), digits (0-9), and internal hyphens (-), with no leading or trailing hyphens, a maximum of 63 characters per DNS label, and an overall hostname length under 253 characters.</p>
-                    </div>
-                </details>
-                <details class="edu-card-soft group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ2" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">3. Why are the generated domains automatically sorted by shortest first?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA2">Short, punchy domains are significantly more valuable for branding, SEO memorability, and direct-navigation traffic. By default, the generator ranks all valid results from shortest character length to longest (capped at the top 200 domains) so you immediately spot the cleanest, most premium candidates at the top of the list.</p>
-                    </div>
-                </details>
-                <details class="edu-card-neutral group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ3" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">4. How does the &quot;Add Your Own Patterns&quot; feature work?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA3">The custom pattern box lets advanced users craft tailored naming formulas using placeholders such as [primary], [secondary], [tertiary], [vowel], [consonant], [number], and [dash]. Click the quick-insert tags below the input to assemble your formula and expand it into targeted variations.</p>
-                    </div>
-                </details>
-                <details class="edu-card-soft group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ4" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">5. Can I perform quick research and backlink checks on the generated domains?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA4">Absolutely. Next to every domain in the analysis table, secure external shortcut buttons let you inspect historical snapshots on the Wayback Machine (WM), analyze backlink profiles on Ahrefs (BL), or check Google Search indexing via site: (GG) — all protected with target=&quot;_blank&quot; rel=&quot;nofollow noopener noreferrer&quot;.</p>
-                    </div>
-                </details>
-                <details class="edu-card-neutral group rounded-xl">
-                    <summary class="w-full min-h-[52px] px-4 py-3.5 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&amp;::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#578686]">
-                        <span id="uiFaqQ5" class="edu-heading text-[15px] sm:text-[16px] md:text-[17px] font-bold leading-[1.45] md:leading-[1.5]">6. How do language-adaptive extensions, localized sharing, and privacy work?</span>
-                        <svg aria-hidden="true" class="edu-muted w-4 h-4 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9"></polyline>
-                        </svg>
-                    </summary>
-                    <div class="px-4 pb-4 pt-0 pr-4 sm:pr-6 text-[15px] lg:text-[16px] edu-body leading-[1.6]">
-                        <p id="uiFaqA5">Switching between the 8 supported languages automatically suggests popular regional TLDs (such as .com, .io, .net for English or .id, .my.id, .web.id for Indonesian) and adapts the share buttons to your region. All permutation processing runs 100% locally in your browser without tracking cookies.</p>
-                    </div>
-                </details>
-            </div>
-        </section>
-
-        <!-- Semantic Context Micro-Copy (Crawlable & Clean, Styled Like FAQ) -->
-        <section aria-labelledby="uiSectionAiTitle" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-[15px] leading-[1.6]">
-            <div class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-5 md:p-6 flex flex-col gap-4">
-                <div class="edu-callout-header rounded-xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2">
-                    <h2 id="uiSectionAiTitle" class="edu-heading text-[16px] sm:text-[17px] md:text-[18px] font-bold leading-[1.35]">AI Search Engine &amp; Domain Indexing Context</h2>
-                    <span aria-hidden="true" class="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white/15 border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider text-[#FDFEFE] shrink-0">INDEX</span>
-                </div>
-                <div class="edu-card-soft rounded-xl p-4 sm:p-5 flex-1">
-                    <p id="aiCrawlerMicroCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">This domain research page dynamically generates domain name combination matrices for primary keyword "business", helping digital marketers and developers discover high-quality domains with RFC 1035 validation.</p>
-                </div>
-            </div>
-            <div id="aiBottomNarrativeSection" class="edu-surface-container rounded-xl shadow-sm p-4 sm:p-5 md:p-6 flex flex-col gap-4">
-                <div class="edu-callout-header rounded-xl p-3.5 sm:p-4 flex flex-wrap items-center justify-between gap-2">
-                    <h2 id="uiBottomAiTitle" class="edu-heading text-[16px] sm:text-[17px] md:text-[18px] font-bold leading-[1.35]">Domain Name Formula Summary</h2>
-                    <span aria-hidden="true" class="edu-badge-positive inline-flex items-center px-2.5 py-0.5 rounded-md border border-white/25 text-[11px] font-mono font-bold uppercase tracking-wider shrink-0">RFC 1035</span>
-                </div>
-                <div class="edu-card-neutral rounded-xl p-4 sm:p-5 flex-1">
-                    <p id="aiBottomNarrativeCopy" class="edu-body text-[14px] sm:text-[15px] leading-[1.65]">The domain permutation list for "business" uses vowel variations and consonant variations based on the "[any] + [vowel] + [consonant]" formula for a hybrid domain strategy and domain research. This matrix targets .com, .net, .io, .org extensions and produces RFC 1035-compliant domain candidates.</p>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Multi-Column Clean Footer -->
@@ -1667,8 +1328,8 @@
                 kw1Placeholder: 'Example: calc, shop',
                 kw2Placeholder: 'Example: pro, online',
                 kw3Placeholder: 'Example: app, hub',
-                extPlaceholder: '.net, .com, .io',
-                defaultExts: '.com, .net, .io, .org',
+                extPlaceholder: '.com, .net, .co, .org, .io, .ai, .app, .us',
+                defaultExts: '.com, .net, .co, .org, .io, .ai, .app, .us',
                 formulaPlaceholder: 'e.g. [primary] + [number]',
                 outputLabel: 'Generated Domain Permutation List',
                 eduAriaLabel: 'Domain SEO Guide, Strategy & Validation',
@@ -2969,12 +2630,33 @@
         const uiExtraDict = {
             en: {
                 navGen: 'Generator', navResults: 'Results', navGuide: 'Guide', navFaq: 'FAQ',
-                advOptionsLabel: 'Add / Customize',
+                kw1Placeholder: 'e.g. business, coffee, ai', extPlaceholder: '.com, .net, .co, .org, .io, .ai, .app, .us',
+                genMicrocopy: '✓ RFC 1035 compliant · ✓ No tracking · ✓ Runs offline in browser',
+                advOptionsLabel: 'Advanced Options',
+                advOptionsHint: '(Secondary, Tertiary, Shuffle, Pattern, Name Styles)',
+                quickExLabel: 'Quick examples:',
+                quickExamples: [['ai', 'tools'], ['coffee', 'shop'], ['fitness', 'app'], ['micro', 'saas']],
+                analysisTitle: 'Domain Results',
+                analysisSub: 'Check availability, brand score, backlink history, or archives instantly.',
+                analysisShowingTpl: 'Generated {generated} ideas · Showing {shown} of {total}',
+                availOnlyBtn: 'Available only',
+                showMoreTpl: 'Show More (+{count})',
+                howToBadge: '3 Steps',
+                howToTitle: 'How to use this tool in 3 steps',
+                step1Title: '1. Enter keywords',
+                step1Desc: 'Type your main keyword and preferred domain extensions.',
+                step2Title: '2. Generate & filter',
+                step2Desc: 'Compare pronounceable scores and filter by available status.',
+                step3Title: '3. Check & export',
+                step3Desc: 'Copy or export winners, or open Advanced Options for custom formulas.',
+                ctaBestPractices: 'Domain Naming Best Practices →',
+                ctaViewFaq: 'View FAQ →',
+                shareSummaryTitle: 'Share & Export Link',
                 editOptionsShortcut: 'Edit Keywords & Pattern',
                 thNum: '#', thDomain: 'Domain Name', thChars: 'Chars', thAvail: 'Availability', thInspect: 'Inspect',
                 availCheckBtn: 'Check', availChecking: 'Checking...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Retry',
                 availOverLimit: '>30 chars', availOverLimitTitle: 'Availability check is limited to domains up to 30 characters',
-                statusFilterLabel: 'Filter by availability status', statusOptAll: 'Select Status: All', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
+                statusFilterLabel: 'Filter by availability status', statusOptAll: 'Select Status: All', statusOptAvailCheck: 'Available & Check', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
                 selectAllAria: 'Select all visible domains', selectDomainAria: 'Select domain', copyDomainTitle: 'Copy domain',
                 toastSingleCopiedTpl: 'Copied: {domain}',
                 batchSelectedTpl: '{selected} selected', batchAllFallbackTpl: '0 selected · actions apply to all ({total})', batchClearSel: 'Clear',
@@ -3007,12 +2689,32 @@
             },
             id: {
                 navGen: 'Generator', navResults: 'Hasil', navGuide: 'Panduan', navFaq: 'FAQ',
-                advOptionsLabel: 'Tambah / Sesuaikan',
+                genMicrocopy: '✓ Standar RFC 1035 · ✓ Tanpa pelacakan · ✓ Berjalan offline di browser',
+                advOptionsLabel: 'Opsi Lanjutan',
+                advOptionsHint: '(Kata Sekunder, Tersier, Acak Kata, Pola, Gaya Nama)',
+                quickExLabel: 'Contoh cepat:',
+                quickExamples: [['toko', 'kopi'], ['jasa', 'web'], ['baju', 'anak'], ['skincare', 'lokal']],
+                analysisTitle: 'Hasil Domain',
+                analysisSub: 'Cek ketersediaan, skor merek, riwayat backlink, atau arsip secara instan.',
+                analysisShowingTpl: 'Menghasilkan {generated} ide · Menampilkan {shown} dari {total}',
+                availOnlyBtn: 'Hanya Available',
+                showMoreTpl: 'Tampilkan Lagi (+{count})',
+                howToBadge: '3 Langkah Cepat',
+                howToTitle: 'Cara pakai alat ini dalam 3 langkah',
+                step1Title: '1. Masukkan kata kunci',
+                step1Desc: 'Ketik kata kunci utama dan pilih ekstensi domain yang diinginkan.',
+                step2Title: '2. Buat & filter hasil',
+                step2Desc: 'Bandingkan skor pengucapan lalu saring hanya domain yang masih tersedia.',
+                step3Title: '3. Cek ketersediaan & salin',
+                step3Desc: 'Salin atau ekspor kandidat terbaik, atau buka Opsi Lanjutan untuk pola khusus.',
+                ctaBestPractices: 'Panduan & Tips Penamaan Domain →',
+                ctaViewFaq: 'Lihat FAQ →',
+                shareSummaryTitle: 'Bagikan & Ekspor Tautan',
                 editOptionsShortcut: 'Ubah Kata Kunci & Pola',
                 thNum: '#', thDomain: 'Nama Domain', thChars: 'Karakter', thAvail: 'Status', thInspect: 'Cek',
                 availCheckBtn: 'Check', availChecking: 'Mengecek...', availAvailable: 'Available', availTaken: 'Taken', availNoNs: 'No NS', availRetry: 'Ulangi',
                 availOverLimit: '>30 kar.', availOverLimitTitle: 'Cek ketersediaan dibatasi untuk domain maksimal 30 karakter',
-                statusFilterLabel: 'Filter berdasarkan status ketersediaan', statusOptAll: 'Pilih Status: Semua', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
+                statusFilterLabel: 'Filter berdasarkan status ketersediaan', statusOptAll: 'Pilih Status: Semua', statusOptAvailCheck: 'Available & Check', statusOptAvailable: 'Available', statusOptTaken: 'Taken', statusOptCheck: 'Check',
                 selectAllAria: 'Pilih semua domain yang terlihat', selectDomainAria: 'Pilih domain', copyDomainTitle: 'Salin domain',
                 toastSingleCopiedTpl: 'Disalin: {domain}',
                 batchSelectedTpl: '{selected} dipilih', batchAllFallbackTpl: '0 dipilih · aksi berlaku ke semua ({total})', batchClearSel: 'Batal',
@@ -3045,12 +2747,32 @@
             },
             es: {
                 navGen: 'Generador', navResults: 'Resultados', navGuide: 'Guía', navFaq: 'FAQ',
-                advOptionsLabel: 'Añadir / Personalizar',
+                genMicrocopy: '✓ Cumple RFC 1035 · ✓ Sin rastreo · ✓ Funciona offline tras cargar',
+                advOptionsLabel: 'Opciones Avanzadas',
+                advOptionsHint: '(Secundaria, Terciaria, Mezclar, Patrón, Estilos de Nombre)',
+                quickExLabel: 'Ejemplos rápidos:',
+                quickExamples: [['tienda', 'online'], ['ia', 'tools'], ['viajes', 'baratos'], ['curso', 'online']],
+                analysisTitle: 'Resultados de Dominios',
+                analysisSub: 'Revisa disponibilidad, puntuación de marca, backlinks y archivo al instante.',
+                analysisShowingTpl: 'Generadas {generated} ideas · Mostrando {shown} de {total}',
+                availOnlyBtn: 'Solo disponibles',
+                showMoreTpl: 'Ver más (+{count})',
+                howToBadge: '3 Pasos',
+                howToTitle: 'Cómo usar esta herramienta en 3 pasos',
+                step1Title: '1. Escribe tus palabras clave',
+                step1Desc: 'Ingresa tu palabra clave principal y elige las extensiones.',
+                step2Title: '2. Genera y filtra ideas',
+                step2Desc: 'Revisa nombres pronunciables y filtra por disponibilidad al instante.',
+                step3Title: '3. Verifica y exporta',
+                step3Desc: 'Copia o exporta tus favoritos, o abre Opciones Avanzadas para fórmulas.',
+                ctaBestPractices: 'Mejores Prácticas de Dominios →',
+                ctaViewFaq: 'Ver FAQ →',
+                shareSummaryTitle: 'Compartir y Exportar Enlace',
                 editOptionsShortcut: 'Editar Palabras y Patrón',
                 thNum: '#', thDomain: 'Dominio', thChars: 'Long.', thAvail: 'Estado', thInspect: 'Inspección',
                 availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponible', availTaken: 'Ocupado', availNoNs: 'Sin NS', availRetry: 'Reintentar',
                 availOverLimit: '>30 car.', availOverLimitTitle: 'La verificación se limita a dominios de hasta 30 caracteres',
-                statusFilterLabel: 'Filtrar por disponibilidad', statusOptAll: 'Elegir Estado: Todos', statusOptAvailable: 'Disponible', statusOptTaken: 'Ocupado', statusOptCheck: 'Check',
+                statusFilterLabel: 'Filtrar por disponibilidad', statusOptAll: 'Elegir Estado: Todos', statusOptAvailCheck: 'Disponible y Check', statusOptAvailable: 'Disponible', statusOptTaken: 'Ocupado', statusOptCheck: 'Check',
                 selectAllAria: 'Seleccionar todos los dominios visibles', selectDomainAria: 'Seleccionar dominio', copyDomainTitle: 'Copiar dominio',
                 toastSingleCopiedTpl: 'Copiado: {domain}',
                 batchSelectedTpl: '{selected} seleccionados', batchAllFallbackTpl: '0 seleccionados · acciones para todos ({total})', batchClearSel: 'Limpiar',
@@ -3083,12 +2805,32 @@
             },
             pt: {
                 navGen: 'Gerador', navResults: 'Resultados', navGuide: 'Guia', navFaq: 'FAQ',
-                advOptionsLabel: 'Adicionar / Personalizar',
+                genMicrocopy: '✓ Padrão RFC 1035 · ✓ Sem rastreamento · ✓ Funciona offline após carregar',
+                advOptionsLabel: 'Opções Avançadas',
+                advOptionsHint: '(Secundária, Terciária, Misturar, Padrão, Estilos de Nome)',
+                quickExLabel: 'Exemplos rápidos:',
+                quickExamples: [['loja', 'online'], ['ia', 'app'], ['renda', 'extra'], ['saude', 'digital']],
+                analysisTitle: 'Resultados de Domínios',
+                analysisSub: 'Confira disponibilidade, pontuação de marca, backlinks e histórico na hora.',
+                analysisShowingTpl: '{generated} ideias geradas · Exibindo {shown} de {total}',
+                availOnlyBtn: 'Apenas disponíveis',
+                showMoreTpl: 'Mostrar mais (+{count})',
+                howToBadge: '3 Passos',
+                howToTitle: 'Como usar esta ferramenta em 3 passos',
+                step1Title: '1. Digite suas palavras-chave',
+                step1Desc: 'Informe sua palavra-chave principal e escolha as extensões.',
+                step2Title: '2. Gere e filtre resultados',
+                step2Desc: 'Compare nomes fáceis de pronunciar e filtre os disponíveis.',
+                step3Title: '3. Verifique e exporte',
+                step3Desc: 'Copie ou exporte sua lista, ou abra Opções Avançadas para padrões.',
+                ctaBestPractices: 'Boas Práticas de Domínios →',
+                ctaViewFaq: 'Ver FAQ →',
+                shareSummaryTitle: 'Compartilhar e Exportar Link',
                 editOptionsShortcut: 'Editar Palavras e Padrão',
                 thNum: '#', thDomain: 'Domínio', thChars: 'Tam.', thAvail: 'Status', thInspect: 'Analisar',
                 availCheckBtn: 'Check', availChecking: 'Verificando...', availAvailable: 'Disponível', availTaken: 'Registrado', availNoNs: 'Sem NS', availRetry: 'Tentar',
                 availOverLimit: '>30 car.', availOverLimitTitle: 'A verificação é limitada a domínios com até 30 caracteres',
-                statusFilterLabel: 'Filtrar por disponibilidade', statusOptAll: 'Selecionar Status: Todos', statusOptAvailable: 'Disponível', statusOptTaken: 'Registrado', statusOptCheck: 'Check',
+                statusFilterLabel: 'Filtrar por disponibilidade', statusOptAll: 'Selecionar Status: Todos', statusOptAvailCheck: 'Disponível e Check', statusOptAvailable: 'Disponível', statusOptTaken: 'Registrado', statusOptCheck: 'Check',
                 selectAllAria: 'Selecionar todos os domínios visíveis', selectDomainAria: 'Selecionar domínio', copyDomainTitle: 'Copiar domínio',
                 toastSingleCopiedTpl: 'Copiado: {domain}',
                 batchSelectedTpl: '{selected} selecionados', batchAllFallbackTpl: '0 selecionados · ações para todos ({total})', batchClearSel: 'Limpar',
@@ -3121,12 +2863,32 @@
             },
             fr: {
                 navGen: 'Générateur', navResults: 'Résultats', navGuide: 'Guide', navFaq: 'FAQ',
-                advOptionsLabel: 'Ajouter / Personnaliser',
+                genMicrocopy: '✓ Conforme RFC 1035 · ✓ Sans suivi · ✓ Fonctionne hors ligne',
+                advOptionsLabel: 'Options Avancées',
+                advOptionsHint: '(Secondaire, Tertiaire, Mélange, Modèle, Styles de Nom)',
+                quickExLabel: 'Exemples rapides :',
+                quickExamples: [['ia', 'outil'], ['mode', 'femme'], ['immo', 'paris'], ['boutique', 'bio']],
+                analysisTitle: 'Résultats de Domaines',
+                analysisSub: 'Vérifiez disponibilité, score de marque, backlinks et archives en un clic.',
+                analysisShowingTpl: '{generated} idées générées · {shown} sur {total} affichées',
+                availOnlyBtn: 'Disponibles uniquement',
+                showMoreTpl: 'Afficher plus (+{count})',
+                howToBadge: '3 Étapes',
+                howToTitle: 'Comment utiliser cet outil en 3 étapes',
+                step1Title: '1. Saisissez vos mots-clés',
+                step1Desc: 'Entrez votre mot-clé principal et vos extensions favorites.',
+                step2Title: '2. Générez et filtrez',
+                step2Desc: 'Comparez la prononciation et filtrez les domaines libres.',
+                step3Title: '3. Vérifiez et exportez',
+                step3Desc: 'Copiez vos favoris ou ouvrez Options Avancées pour des formules.',
+                ctaBestPractices: 'Bonnes Pratiques de Domaines →',
+                ctaViewFaq: 'Voir la FAQ →',
+                shareSummaryTitle: 'Partager & Exporter le Lien',
                 editOptionsShortcut: 'Modifier Mots & Modèles',
                 thNum: '#', thDomain: 'Nom de domaine', thChars: 'Car.', thAvail: 'Statut', thInspect: 'Analyser',
                 availCheckBtn: 'Check', availChecking: 'Vérification...', availAvailable: 'Disponible', availTaken: 'Pris', availNoNs: 'Sans NS', availRetry: 'Réessayer',
                 availOverLimit: '>30 car.', availOverLimitTitle: 'La vérification est limitée aux domaines de 30 caractères maximum',
-                statusFilterLabel: 'Filtrer par disponibilité', statusOptAll: 'Choisir Statut : Tous', statusOptAvailable: 'Disponible', statusOptTaken: 'Pris', statusOptCheck: 'Check',
+                statusFilterLabel: 'Filtrer par disponibilité', statusOptAll: 'Choisir Statut : Tous', statusOptAvailCheck: 'Disponible & Check', statusOptAvailable: 'Disponible', statusOptTaken: 'Pris', statusOptCheck: 'Check',
                 selectAllAria: 'Sélectionner tous les domaines visibles', selectDomainAria: 'Sélectionner le domaine', copyDomainTitle: 'Copier le domaine',
                 toastSingleCopiedTpl: 'Copié : {domain}',
                 batchSelectedTpl: '{selected} sélectionné(s)', batchAllFallbackTpl: '0 sélectionné · actions sur tous ({total})', batchClearSel: 'Effacer',
@@ -3159,12 +2921,32 @@
             },
             de: {
                 navGen: 'Generator', navResults: 'Ergebnisse', navGuide: 'Leitfaden', navFaq: 'FAQ',
-                advOptionsLabel: 'Hinzufügen / Anpassen',
+                genMicrocopy: '✓ RFC 1035-konform · ✓ Kein Tracking · ✓ Offline nutzbar',
+                advOptionsLabel: 'Erweiterte Optionen',
+                advOptionsHint: '(Sekundär, Tertiär, Mischen, Muster, Namensstile)',
+                quickExLabel: 'Schnellbeispiele:',
+                quickExamples: [['ki', 'tools'], ['online', 'shop'], ['solar', 'energie'], ['fitness', 'studio']],
+                analysisTitle: 'Domain-Ergebnisse',
+                analysisSub: 'Prüfen Sie Verfügbarkeit, Marken-Score, Backlinks und Archivdaten.',
+                analysisShowingTpl: '{generated} Ideen generiert · {shown} von {total} angezeigt',
+                availOnlyBtn: 'Nur freie',
+                showMoreTpl: 'Mehr anzeigen (+{count})',
+                howToBadge: '3 Schritte',
+                howToTitle: 'So nutzen Sie das Tool in 3 Schritten',
+                step1Title: '1. Keywords eingeben',
+                step1Desc: 'Geben Sie Ihr Haupt-Keyword und gewünschte Endungen ein.',
+                step2Title: '2. Generieren & filtern',
+                step2Desc: 'Bewerten Sie die Aussprechbarkeit und filtern Sie freie Domains.',
+                step3Title: '3. Prüfen & exportieren',
+                step3Desc: 'Kopieren Sie Favoriten oder öffnen Sie Erweiterte Optionen.',
+                ctaBestPractices: 'Domain-Naming Best Practices →',
+                ctaViewFaq: 'FAQ ansehen →',
+                shareSummaryTitle: 'Link teilen & exportieren',
                 editOptionsShortcut: 'Keywords & Muster ändern',
                 thNum: '#', thDomain: 'Domainname', thChars: 'Zeichen', thAvail: 'Status', thInspect: 'Prüfen',
                 availCheckBtn: 'Check', availChecking: 'Prüfe...', availAvailable: 'Frei', availTaken: 'Belegt', availNoNs: 'Kein NS', availRetry: 'Erneut',
                 availOverLimit: '>30 Z.', availOverLimitTitle: 'Verfügbarkeitsprüfung ist auf Domains bis 30 Zeichen begrenzt',
-                statusFilterLabel: 'Nach Verfügbarkeit filtern', statusOptAll: 'Status wählen: Alle', statusOptAvailable: 'Frei', statusOptTaken: 'Belegt', statusOptCheck: 'Check',
+                statusFilterLabel: 'Nach Verfügbarkeit filtern', statusOptAll: 'Status wählen: Alle', statusOptAvailCheck: 'Frei & Check', statusOptAvailable: 'Frei', statusOptTaken: 'Belegt', statusOptCheck: 'Check',
                 selectAllAria: 'Alle sichtbaren Domains auswählen', selectDomainAria: 'Domain auswählen', copyDomainTitle: 'Domain kopieren',
                 toastSingleCopiedTpl: 'Kopiert: {domain}',
                 batchSelectedTpl: '{selected} ausgewählt', batchAllFallbackTpl: '0 ausgewählt · Aktionen für alle ({total})', batchClearSel: 'Leeren',
@@ -3197,12 +2979,32 @@
             },
             ru: {
                 navGen: 'Генератор', navResults: 'Результаты', navGuide: 'Руководство', navFaq: 'FAQ',
-                advOptionsLabel: 'Добавить / Настроить',
+                genMicrocopy: '✓ Стандарт RFC 1035 · ✓ Без отслеживания · ✓ Работает офлайн',
+                advOptionsLabel: 'Расширенные настройки',
+                advOptionsHint: '(Доп. слова, Перемешивание, Шаблон, Стили имен)',
+                quickExLabel: 'Быстрые примеры:',
+                quickExamples: [['ai', 'bot'], ['stroy', 'dom'], ['auto', 'servis'], ['tur', 'agentstvo']],
+                analysisTitle: 'Результаты доменов',
+                analysisSub: 'Проверяйте доступность, оценку бренда, ссылки и архив истории.',
+                analysisShowingTpl: 'Создано {generated} идей · Показано {shown} из {total}',
+                availOnlyBtn: 'Только свободные',
+                showMoreTpl: 'Показать ещё (+{count})',
+                howToBadge: '3 шага',
+                howToTitle: 'Как пользоваться генератором за 3 шага',
+                step1Title: '1. Введите ключевые слова',
+                step1Desc: 'Укажите главное слово и нужные доменные зоны.',
+                step2Title: '2. Создайте и отфильтруйте',
+                step2Desc: 'Оцените звучание и отберите только свободные домены.',
+                step3Title: '3. Проверьте и сохраните',
+                step3Desc: 'Скопируйте список или откройте Расширенные настройки.',
+                ctaBestPractices: 'Руководство по выбору домена →',
+                ctaViewFaq: 'Открыть FAQ →',
+                shareSummaryTitle: 'Поделиться и экспорт ссылки',
                 editOptionsShortcut: 'Изменить слова и шаблон',
                 thNum: '#', thDomain: 'Домен', thChars: 'Длина', thAvail: 'Статус', thInspect: 'Проверка',
                 availCheckBtn: 'Check', availChecking: 'Проверка...', availAvailable: 'Свободен', availTaken: 'Занят', availNoNs: 'Нет NS', availRetry: 'Повтор',
                 availOverLimit: '>30 симв.', availOverLimitTitle: 'Проверка доступности ограничена доменами до 30 символов',
-                statusFilterLabel: 'Фильтр по статусу доступности', statusOptAll: 'Выбор статуса: Все', statusOptAvailable: 'Свободен', statusOptTaken: 'Занят', statusOptCheck: 'Check',
+                statusFilterLabel: 'Фильтр по статусу доступности', statusOptAll: 'Выбор статуса: Все', statusOptAvailCheck: 'Свободен и Check', statusOptAvailable: 'Свободен', statusOptTaken: 'Занят', statusOptCheck: 'Check',
                 selectAllAria: 'Выбрать все видимые домены', selectDomainAria: 'Выбрать домен', copyDomainTitle: 'Копировать домен',
                 toastSingleCopiedTpl: 'Скопировано: {domain}',
                 batchSelectedTpl: 'Выбрано: {selected}', batchAllFallbackTpl: 'Выбрано: 0 · действия для всех ({total})', batchClearSel: 'Сброс',
@@ -3235,12 +3037,32 @@
             },
             ja: {
                 navGen: 'ジェネレータ', navResults: '結果一覧', navGuide: 'ガイド', navFaq: 'FAQ',
-                advOptionsLabel: '追加 / カスタマイズ',
+                genMicrocopy: '✓ RFC 1035準拠 · ✓ 追跡なし · ✓ 読み込み後はオフライン動作',
+                advOptionsLabel: '詳細オプション',
+                advOptionsHint: '(第2/第3キーワード・シャッフル・独自パターン・スタイル)',
+                quickExLabel: 'クイック例:',
+                quickExamples: [['ai', 'tool'], ['cafe', 'shop'], ['game', 'app'], ['beauty', 'salon']],
+                analysisTitle: 'ドメイン候補',
+                analysisSub: '空き状況・発音スコア・被リンク・過去履歴をすぐに確認できます。',
+                analysisShowingTpl: '{generated} 件生成 · {total} 件中 {shown} 件を表示',
+                availOnlyBtn: '取得可能のみ',
+                showMoreTpl: 'さらに表示 (+{count})',
+                howToBadge: '3ステップ',
+                howToTitle: '3ステップで使うドメイン作成',
+                step1Title: '1. キーワードを入力',
+                step1Desc: 'メインキーワードと拡張子（.com, .jpなど）を入力します。',
+                step2Title: '2. 生成と絞り込み',
+                step2Desc: '発音スコアを比較し、取得可能なドメインだけに絞り込みます。',
+                step3Title: '3. 確認してエクスポート',
+                step3Desc: '候補をコピーするか、詳細オプションで独自パターンを作成します。',
+                ctaBestPractices: 'ドメイン命名のベストプラクティス →',
+                ctaViewFaq: 'FAQを見る →',
+                shareSummaryTitle: 'リンクを共有・エクスポート',
                 editOptionsShortcut: 'キーワード・パターンを変更',
                 thNum: '#', thDomain: 'ドメイン名', thChars: '文字数', thAvail: '空き状況', thInspect: '調査',
                 availCheckBtn: 'Check', availChecking: '確認中...', availAvailable: '取得可能', availTaken: '登録済', availNoNs: 'NSなし', availRetry: '再試行',
                 availOverLimit: '30文字超', availOverLimitTitle: '空き状況チェックは30文字以下のドメインのみ対応しています',
-                statusFilterLabel: '空き状況で絞り込み', statusOptAll: 'ステータス選択: すべて', statusOptAvailable: '取得可能', statusOptTaken: '登録済', statusOptCheck: 'Check',
+                statusFilterLabel: '空き状況で絞り込み', statusOptAll: 'ステータス選択: すべて', statusOptAvailCheck: '取得可能 & Check', statusOptAvailable: '取得可能', statusOptTaken: '登録済', statusOptCheck: 'Check',
                 selectAllAria: '表示中のドメインをすべて選択', selectDomainAria: 'ドメインを選択', copyDomainTitle: 'ドメインをコピー',
                 toastSingleCopiedTpl: 'コピー完了: {domain}',
                 batchSelectedTpl: '{selected} 件選択中', batchAllFallbackTpl: '0 件選択 · 全体（{total} 件）に適用', batchClearSel: '解除',
@@ -3609,9 +3431,25 @@
         let lastFilteredAnalysisDomains = [];
         let lastVisibleAnalysisDomains = [];
         const selectedDomains = new Set();
-        let analysisRenderLimit = 100;
+        function getInitialAnalysisRenderLimit() {
+            return (typeof window !== 'undefined' && window.innerWidth < 640) ? 8 : 12;
+        }
+        let analysisRenderLimit = getInitialAnalysisRenderLimit();
+        let analysisSkeletonTimer = null;
         let shareFeedbackTimer = null;
         let toastTimer = null;
+
+        function applyQuickExample(kw1, kw2) {
+            const kw1El = document.getElementById('keywordInput');
+            const kw2El = document.getElementById('keyword2Input');
+            const kw3El = document.getElementById('keyword3Input');
+            if (kw1El) kw1El.value = kw1 || '';
+            if (kw2El) kw2El.value = kw2 || '';
+            if (kw3El) kw3El.value = '';
+            setActiveGenerateSlot('basic');
+            updateDynamicSEO();
+            generateDomains({ scrollToResults: true, resetStatusFilter: true, showSkeleton: true });
+        }
 
         function getActiveKeywords(kwOverride) {
             const kwInput = document.getElementById('keywordInput');
@@ -4430,10 +4268,27 @@
             updateMoreStylesButtonLabel();
             syncActivePresetUi();
             document.getElementById('uiGenBtn').innerText = t.genBtn;
+            const genMicroEl = document.getElementById('uiGenMicrocopy');
+            if (genMicroEl && t.genMicrocopy) genMicroEl.innerText = t.genMicrocopy;
             const advGenBtnEl = document.getElementById('uiAdvGenBtn');
             if (advGenBtnEl && t.genBtn) advGenBtnEl.innerText = t.genBtn;
             const advOptionsLabelEl = document.getElementById('uiAdvOptionsLabel');
             if (advOptionsLabelEl && t.advOptionsLabel) advOptionsLabelEl.innerText = t.advOptionsLabel;
+            const advOptionsHintEl = document.getElementById('uiAdvOptionsHint');
+            if (advOptionsHintEl && t.advOptionsHint) advOptionsHintEl.innerText = t.advOptionsHint;
+            const quickExLabelEl = document.getElementById('uiQuickExLabel');
+            if (quickExLabelEl && t.quickExLabel) quickExLabelEl.innerText = t.quickExLabel;
+            if (Array.isArray(t.quickExamples)) {
+                t.quickExamples.forEach((pair, idx) => {
+                    const btn = document.getElementById(`uiQuickExBtn${idx + 1}`);
+                    if (!btn || !Array.isArray(pair)) return;
+                    const k1 = String(pair[0] || '');
+                    const k2 = String(pair[1] || '');
+                    btn.dataset.kw1 = k1;
+                    btn.dataset.kw2 = k2;
+                    btn.innerText = [k1, k2].filter(Boolean).join(' ');
+                });
+            }
             const editShortcutLabelEl = document.getElementById('uiEditOptionsShortcutLabel');
             if (editShortcutLabelEl && t.editOptionsShortcut) editShortcutLabelEl.innerText = t.editOptionsShortcut;
             document.querySelectorAll('.ui-reset-all-label').forEach((el) => {
@@ -4501,6 +4356,7 @@
             setElText('uiThInspect', t.thInspect);
             setElText('uiAnalysisStatusFilterLabel', t.statusFilterLabel);
             setElText('uiStatusOptAll', t.statusOptAll);
+            setElText('uiStatusOptAvailCheck', t.statusOptAvailCheck);
             setElText('uiStatusOptAvailable', t.statusOptAvailable);
             setElText('uiStatusOptTaken', t.statusOptTaken);
             setElText('uiStatusOptCheck', t.statusOptCheck);
@@ -4540,10 +4396,29 @@
                 if (sec) hubLink.setAttribute('href', `${hubLangPrefix}/${sec}/`);
             });
 
+            setElText('uiAvailOnlyBtn', t.availOnlyBtn);
+            setElText('uiHowToBadge', t.howToBadge);
+            setElText('uiHowToTitle', t.howToTitle);
+            setElText('uiStep1Title', t.step1Title);
+            setElText('uiStep1Desc', t.step1Desc);
+            setElText('uiStep2Title', t.step2Title);
+            setElText('uiStep2Desc', t.step2Desc);
+            setElText('uiStep3Title', t.step3Title);
+            setElText('uiStep3Desc', t.step3Desc);
+            setElText('uiCtaBestPractices', t.ctaBestPractices);
+            setElText('uiCtaViewFaq', t.ctaViewFaq);
+            setElText('uiShareSummaryTitle', t.shareSummaryTitle);
+
             const useCleanRoutes = isDedicatedRouteMode();
             const trustPrefix = useCleanRoutes ? (lang && lang !== 'en' ? `/${lang}/` : '/') : '';
             const trustSuffix = !useCleanRoutes && lang && lang !== 'en' ? `?lang=${encodeURIComponent(lang)}` : '';
             const trustLinkTargets = [
+                ['uiNavGuide', 'guide.html'],
+                ['uiNavFaq', 'faq.html'],
+                ['uiMobileNavGuide', 'guide.html'],
+                ['uiMobileNavFaq', 'faq.html'],
+                ['uiCtaBestPractices', 'guide.html'],
+                ['uiCtaViewFaq', 'faq.html'],
                 ['uiMobileAboutBtn', 'about.html'],
                 ['uiMobilePrivacyBtn', 'privacy-policy.html'],
                 ['uiMobileTermsBtn', 'terms.html'],
@@ -4903,9 +4778,13 @@
         }
 
         function generateDomains(options) {
+            if (analysisSkeletonTimer) {
+                clearTimeout(analysisSkeletonTimer);
+                analysisSkeletonTimer = null;
+            }
             if (options && options.resetStatusFilter) {
                 const statusFilterEl = document.getElementById('analysisStatusFilter');
-                if (statusFilterEl) statusFilterEl.value = 'all';
+                if (statusFilterEl) statusFilterEl.value = 'available_or_check';
             }
             const rawKeyword = document.getElementById('keywordInput').value.trim().toLowerCase();
             const rawKeyword2 = document.getElementById('keyword2Input').value.trim().toLowerCase();
@@ -5110,7 +4989,15 @@
             hasDoneInitialAutoCheck = true;
 
             scheduleAutoAvailabilityChecks(results, isImmediateAutoCheck);
-            renderDomainAnalysisList(true);
+            if (options && options.showSkeleton) {
+                renderAnalysisSkeleton(document.getElementById('domainAnalysisList'));
+                analysisSkeletonTimer = setTimeout(() => {
+                    analysisSkeletonTimer = null;
+                    renderDomainAnalysisList(true);
+                }, 160);
+            } else {
+                renderDomainAnalysisList(true);
+            }
             updateBottomAiNarrative(t, rawKeyword || 'business', rawKeyword2, rawKeyword3, formula, extensions, results);
             updateShareUI();
 
@@ -5464,7 +5351,9 @@
             in: 'https://rdap.nixiregistry.in/rdap/',
             uk: 'https://rdap.nominet.uk/uk/',
             br: 'https://rdap.registro.br/',
-            nl: 'https://rdap.sidn.nl/'
+            nl: 'https://rdap.sidn.nl/',
+            us: 'https://rdap.nic.us/',
+            ch: 'https://rdap.nic.ch/'
         };
 
         async function loadIanaRdapMap() {
@@ -5583,6 +5472,9 @@
         function matchesAvailabilityFilter(domain, statusFilter) {
             if (!statusFilter || statusFilter === 'all') return true;
             const entry = getAvailabilityCacheEntry(domain);
+            if (statusFilter === 'available_or_check') {
+                return !entry || entry.status !== 'taken';
+            }
             if (statusFilter === 'available') {
                 return Boolean(entry && entry.status === 'available');
             }
@@ -5599,7 +5491,7 @@
         function updateDomainAvailabilityCell(domain, isCheckingTransition) {
             const normTarget = normalizeDomainCacheKey(domain);
             const statusFilter = getAnalysisFilterStatus();
-            if (!isCheckingTransition && (statusFilter === 'available' || statusFilter === 'taken')) {
+            if (!isCheckingTransition && (statusFilter === 'available' || statusFilter === 'taken' || (statusFilter === 'available_or_check' && !matchesAvailabilityFilter(domain, statusFilter)))) {
                 renderDomainAnalysisList(false);
                 return;
             }
@@ -6820,13 +6712,57 @@
             }
         }
 
+        function syncAvailableOnlyButton() {
+            const btn = document.getElementById('uiAvailOnlyBtn');
+            if (!btn) return;
+            const isActive = getAnalysisFilterStatus() === 'available';
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            btn.classList.toggle('bg-[#0C723F]', isActive);
+            btn.classList.toggle('border-[#0C723F]', isActive);
+            btn.classList.toggle('text-[#FFFFFF]', isActive);
+            btn.classList.toggle('hover:bg-[#095a31]', isActive);
+            btn.classList.toggle('bg-[#FFFFFF]', !isActive);
+            btn.classList.toggle('border-[#C9D8D8]', !isActive);
+            btn.classList.toggle('text-[#292929]', !isActive);
+            btn.classList.toggle('hover:bg-[#ECF2F2]', !isActive);
+        }
+
+        function toggleAvailableOnlyFilter() {
+            const sel = document.getElementById('analysisStatusFilter');
+            if (!sel) return;
+            sel.value = sel.value === 'available' ? 'all' : 'available';
+            renderDomainAnalysisList(true);
+        }
+
+        function renderAnalysisSkeleton(listEl) {
+            if (!listEl) return;
+            const rowCount = (typeof window !== 'undefined' && window.innerWidth < 640) ? 4 : 6;
+            let html = '';
+            for (let i = 0; i < rowCount; i++) {
+                html += `
+                    <tr class="${i % 2 === 1 ? 'bg-[#f9e1d9]/40' : 'bg-[#FFFFFF]'} animate-pulse">
+                        <td class="py-2.5 px-2"><div class="h-5 w-16 rounded bg-slate-200"></div></td>
+                        <td class="py-2.5 px-2"><div class="h-4 w-4 rounded bg-slate-200"></div></td>
+                        <td class="hidden lg:table-cell py-2.5 px-2"><div class="h-4 w-5 rounded bg-slate-200"></div></td>
+                        <td class="py-2.5 px-2"><div class="h-4 w-36 sm:w-48 rounded bg-slate-200"></div></td>
+                        <td class="py-2.5 px-2"><div class="h-4 w-10 rounded bg-slate-200"></div></td>
+                        <td class="hidden lg:table-cell py-2.5 px-2"><div class="h-4 w-8 rounded bg-slate-200"></div></td>
+                        <td class="lg:hidden py-2.5 px-2"><div class="h-4 w-8 rounded bg-slate-200"></div></td>
+                        <td class="py-2.5 px-2"><div class="h-6 w-24 rounded bg-slate-200"></div></td>
+                    </tr>
+                `;
+            }
+            listEl.innerHTML = html;
+        }
+
         function loadMoreAnalysisRows() {
-            analysisRenderLimit += 100;
+            analysisRenderLimit += 24;
             renderDomainAnalysisList(false);
         }
 
         function renderDomainAnalysisList(resetLimit) {
-            if (resetLimit) analysisRenderLimit = 100;
+            if (resetLimit) analysisRenderLimit = getInitialAnalysisRenderLimit();
+            syncAvailableOnlyButton();
             const listEl = document.getElementById('domainAnalysisList');
             const metaEl = document.getElementById('domainAnalysisMeta');
             const moreWrapEl = document.getElementById('domainAnalysisMoreWrap');
@@ -6854,7 +6790,12 @@
             if (filtered.length === 0) {
                 lastVisibleAnalysisDomains = [];
                 listEl.innerHTML = `<tr><td colspan="8" class="p-6 text-[13px] md:text-[14px] text-[#3F3042] text-center"><div class="flex flex-col items-center gap-3"><span>${escapeHtmlText(t.analysisNoMatch || 'No domains match your filter.')}</span><button type="button" onclick="resetToHome(event)" title="${escapeHtmlAttr(t.resetAllTitle || 'Reset all form inputs, filters, and results to default and return to top')}" class="ui-reset-all-btn inline-flex items-center justify-center gap-1.5 min-h-[40px] px-4 py-2 rounded-lg border border-[#f05422]/40 bg-[#f9e1d9]/60 hover:bg-rose-50 hover:border-rose-400 text-[#292929] hover:text-rose-700 text-[13px] font-semibold transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"><svg aria-hidden="true" class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg><span class="ui-reset-all-label">${escapeHtmlText(t.resetAllBtn || 'Start Over')}</span></button></div></td></tr>`;
-                if (metaEl) metaEl.textContent = (t.analysisShowingTpl || 'Showing {shown} of {total} domains').replace(/\{shown\}/g, '0').replace(/\{total\}/g, String(lastGeneratedDomains.length));
+                if (metaEl) {
+                    metaEl.textContent = (t.analysisShowingTpl || 'Generated {generated} ideas · Showing {shown} of {total}')
+                        .replace(/\{generated\}/g, String(lastGeneratedDomains.length))
+                        .replace(/\{shown\}/g, '0')
+                        .replace(/\{total\}/g, '0');
+                }
                 if (moreWrapEl) moreWrapEl.classList.add('hidden');
                 syncBatchSelectionUi();
                 return;
@@ -6885,7 +6826,7 @@
                 const rowBgClass = idx % 2 === 1 ? 'bg-[#f9e1d9]' : 'bg-[#FFFFFF]';
 
                 return `
-                    <tr class="${rowBgClass} hover:bg-[#f4cec2] transition-colors">
+                    <tr class="${rowBgClass} hover:bg-[#f4cec2] transition-colors domain-row-fade-in">
                         <td data-avail-domain="${safeDomainAttr}" class="py-2 px-1.5 sm:px-2 w-px text-left whitespace-nowrap">${availCellHtml}</td>
                         <td class="py-2 px-1.5 sm:px-2 w-px text-left whitespace-nowrap">
                             <input type="checkbox" data-select-domain="${safeDomainAttr}" ${isSelected ? 'checked' : ''} onchange="toggleDomainSelection(this.getAttribute('data-select-domain'), this.checked)" aria-label="${escapeHtmlAttr(selectAriaPrefix + ': ' + domain)}" class="w-4 h-4 rounded border-[#f05422]/55 bg-[#FFFFFF] text-[#f05422] focus:ring-[#f05422] cursor-pointer align-middle">
@@ -6914,12 +6855,19 @@
             }).join('');
 
             if (metaEl) {
-                metaEl.textContent = (t.analysisShowingTpl || 'Showing {shown} of {total} domains')
+                metaEl.textContent = (t.analysisShowingTpl || 'Generated {generated} ideas · Showing {shown} of {total}')
+                    .replace(/\{generated\}/g, String(lastGeneratedDomains.length))
                     .replace(/\{shown\}/g, String(visible.length))
                     .replace(/\{total\}/g, String(filtered.length));
             }
             if (moreWrapEl) {
                 if (filtered.length > visible.length) {
+                    const remaining = filtered.length - visible.length;
+                    const stepCount = Math.min(24, remaining);
+                    const loadMoreBtn = document.getElementById('uiAnalysisLoadMoreBtn');
+                    if (loadMoreBtn) {
+                        loadMoreBtn.textContent = (t.showMoreTpl || 'Show More (+{count})').replace(/\{count\}/g, String(stepCount));
+                    }
                     moreWrapEl.classList.remove('hidden');
                 } else {
                     moreWrapEl.classList.add('hidden');
@@ -7101,7 +7049,7 @@
             if (kw1) kw1.value = 'business';
             if (kw2) kw2.value = '';
             if (kw3) kw3.value = '';
-            if (extEl) extEl.value = t.defaultExts || '.com, .net, .io, .org';
+            if (extEl) extEl.value = t.defaultExts || '.com, .net, .co, .org, .io, .ai, .app, .us';
             if (formulaEl) formulaEl.value = t.defaultFormula || '[any] + [vowel] + [consonant]';
 
             const fullWordPermEl = document.getElementById('fullWordPermCheckbox');
@@ -7126,17 +7074,22 @@
             setActiveGenerateSlot('basic');
 
             const advEl = document.getElementById('advancedOptionsDetails');
-            if (advEl && window.matchMedia && !window.matchMedia('(min-width: 768px)').matches) {
+            if (advEl) {
                 advEl.removeAttribute('open');
+            }
+            if (analysisSkeletonTimer) {
+                clearTimeout(analysisSkeletonTimer);
+                analysisSkeletonTimer = null;
             }
 
             selectedDomains.clear();
-            analysisRenderLimit = 100;
+            analysisRenderLimit = getInitialAnalysisRenderLimit();
 
             const statusFilterEl = document.getElementById('analysisStatusFilter');
             const filterInputEl = document.getElementById('analysisFilterInput');
             const selectAllEl = document.getElementById('selectAllVisibleCheckbox');
             if (statusFilterEl) statusFilterEl.value = 'all';
+            syncAvailableOnlyButton();
             if (filterInputEl) filterInputEl.value = '';
             if (selectAllEl) {
                 selectAllEl.checked = false;
