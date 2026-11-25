@@ -436,6 +436,193 @@ function computeEmdPmdScore(sld, alphaOnly, rawTargetKeywords, pronunciationComf
   };
 }
 
+const ENGLISH_COMMON_PENALTY_EXCEPTIONS = new Set([
+  'fix', 'box', 'mix', 'quiz', 'jazz', 'buzz',
+  'tax', 'max', 'flex', 'apex', 'index', 'pixel', 'relax', 'matrix', 'nexus',
+  'lux', 'luxe', 'fox', 'six', 'wax', 'hex', 'next', 'text', 'flux', 'crux',
+  'onyx', 'vertex', 'cortex', 'vortex', 'syntax', 'redux', 'plex', 'vox',
+  'ox', 'ex', 'pix', 'ax', 'dex', 'rex', 'lynx', 'sphinx',
+  'biz', 'topaz', 'blitz', 'fizz', 'fuzz', 'whiz', 'whizz', 'waltz', 'quartz',
+  'ritz', 'glitz', 'spitz', 'fez', 'oz', 'viz', 'coz',
+  'dev', 'rev', 'nav', 'gov', 'fav', 'sav', 'wav', 'tv', 'av', 'ev', 'uv', 'div', 'pov', 'suv',
+  'dj', 'vj', 'iq', 'hq', 'eq', 'faq', 'aq',
+  'shah', 'yeah', 'nah', 'bah', 'rah', 'yah', 'uh', 'oh', 'ah',
+  'utah', 'noah', 'sarah', 'jonah', 'micah', 'hannah', 'savannah', 'torah', 'allah', 'messiah',
+  'cheetah', 'pariah', 'hookah', 'loofah', 'hurrah'
+]);
+const ENGLISH_SUFFIX_EXCEPTIONS = [
+  ...Array.from(ENGLISH_COMMON_PENALTY_EXCEPTIONS).filter((w) => w.length >= 3),
+  ...EN_NICHE_STEMS.filter((w) => w.length >= 3)
+];
+const ENGLISH_STANDARD_FINAL_2_CLUSTERS = new Set([
+  'st', 'nd', 'ld', 'ft', 'mp', 'nt', 'sk', 'sp', 'ct', 'pt', 'ck', 'sh', 'ch', 'th', 'ng',
+  'll', 'ss', 'ff', 'tt', 'dd', 'bb', 'gg', 'mm', 'nn', 'pp', 'rr',
+  'rk', 'rm', 'rn', 'rp', 'rt', 'rd', 'rl', 'rb', 'rg', 'rf', 'rs',
+  'lm', 'ln', 'lp', 'lf', 'lk', 'lt', 'lb', 'ls',
+  'nk', 'ns', 'ms', 'ps', 'ts', 'ds', 'ks', 'bs', 'gs', 'ws', 'fs', 'cs',
+  'sm', 'ph', 'gh', 'wn', 'wl', 'wr', 'wh'
+]);
+const ENGLISH_STANDARD_FINAL_3_CLUSTERS = new Set([
+  'tch', 'rst', 'nch', 'rch', 'lch', 'nth', 'rth', 'lth', 'ght',
+  'nds', 'nts', 'sts', 'rts', 'rds', 'rks', 'lms', 'mps', 'nks',
+  'sks', 'cts', 'pts', 'lds', 'fts', 'ngs', 'cks', 'phs', 'mph',
+  'rld', 'lpt', 'nct', 'xts', 'ths', 'shs', 'chs', 'lls', 'ffs', 'tts'
+]);
+const ENGLISH_BRANDABLE_VALID_ENDINGS_RE = /(?:al|el|er|or|o|a|y)$/;
+
+function computeEnglishPronunciationPenalty(sld, rawTargetKeywords) {
+  const segments = String(sld || '').toLowerCase().split('-').filter(Boolean);
+  const lastSeg = (segments.length > 0 ? segments[segments.length - 1] : String(sld || '').toLowerCase()).replace(/[^a-z]/g, '');
+  if (!lastSeg) {
+    return { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
+  }
+
+  const targetKeywords = normalizeTargetKeywords(rawTargetKeywords);
+  const isExactTargetMatch = targetKeywords.some((kw) => lastSeg === kw);
+  const isSuffixTargetMatch = targetKeywords.some((kw) => kw.length >= 2 && lastSeg.endsWith(kw));
+  const isExactCommonWord = ENGLISH_COMMON_PENALTY_EXCEPTIONS.has(lastSeg) || EN_NICHE_STEMS.includes(lastSeg);
+  const isSuffixCommonWord = ENGLISH_SUFFIX_EXCEPTIONS.some((w) => lastSeg.endsWith(w));
+
+  if (isExactTargetMatch || isSuffixTargetMatch || isExactCommonWord || isSuffixCommonWord) {
+    return {
+      penalty: 0,
+      type: 'exempt',
+      isExempt: true,
+      isExactExempt: isExactTargetMatch || ENGLISH_COMMON_PENALTY_EXCEPTIONS.has(lastSeg)
+    };
+  }
+
+  if (/[jqvxz]$/.test(lastSeg)) {
+    return { penalty: 22, type: 'heavy_ending', isExempt: false, isExactExempt: false };
+  }
+
+  if (/(?:ah|ih|uh)$/.test(lastSeg)) {
+    return { penalty: 16, type: 'ah_ih_uh', isExempt: false, isExactExempt: false };
+  }
+
+  if (ENGLISH_BRANDABLE_VALID_ENDINGS_RE.test(lastSeg)) {
+    return { penalty: 0, type: 'brandable_ending', isExempt: false, isExactExempt: false };
+  }
+
+  const clusterMatch = lastSeg.match(/[bcdfghjklmnpqrstvwxz]+$/);
+  if (clusterMatch) {
+    const cluster = clusterMatch[0];
+    if (cluster.length === 2 && !ENGLISH_STANDARD_FINAL_2_CLUSTERS.has(cluster)) {
+      return { penalty: 15, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+    if (cluster.length === 3 && !ENGLISH_STANDARD_FINAL_3_CLUSTERS.has(cluster)) {
+      return { penalty: 15, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+    if (cluster.length >= 4) {
+      return { penalty: 18, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+  }
+
+  return { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
+}
+
+const INDONESIAN_COMMON_PENALTY_EXCEPTIONS = new Set([
+  'kopi', 'warung', 'karya', 'syariah',
+  'badak', 'kapak', 'bijak', 'anak', 'enak', 'masak', 'kotak', 'otak', 'jejak', 'sajak', 'pajak',
+  'max', 'pro', 'fix', 'id', 'ku', 'mu', 'in',
+  'box', 'mix', 'tax', 'flex', 'apex', 'index', 'pixel', 'matrix', 'nexus', 'lux', 'luxe', 'fox', 'six', 'wax', 'hex', 'next', 'text', 'flux',
+  'biz', 'topaz', 'jazz', 'buzz', 'quiz',
+  'dev', 'rev', 'nav', 'gov', 'tv', 'av', 'ev', 'uv', 'suv', 'faq', 'iq', 'hq', 'eq',
+  'toko', 'jasa', 'baju', 'skincare', 'lokal', 'murah', 'usaha', 'bisnis', 'dagang', 'niaga', 'lapak',
+  'barang', 'gudang', 'bintang', 'uang', 'ruang', 'peluang', 'pulang', 'tenang', 'senang', 'menang', 'sayang', 'bayang', 'siang', 'kampung', 'untung', 'gunung', 'burung', 'gedung', 'payung', 'jagung',
+  'berkah', 'amanah', 'rumah', 'sehat', 'sawah', 'cerah', 'indah', 'kasih', 'bersih', 'putih', 'cakap', 'cepat', 'tepat', 'hemat', 'aktif', 'kreatif', 'inovatif',
+  'khusus', 'khas', 'tarikh', 'akhir', 'syarat', 'syiar', 'syukur', 'nyaman', 'nyata', 'tanya', 'punya', 'dunia', 'mulia', 'raya', 'jaya', 'surya',
+  'bank', 'link', 'tech', 'app', 'web', 'net', 'ai', 'io', 'juara', 'suara', 'koin', 'poin', 'studio', 'media', 'audio', 'video', 'biaya', 'setia'
+]);
+const INDONESIAN_SUFFIX_EXCEPTIONS = Array.from(new Set([
+  'kopi', 'warung', 'karya', 'syariah', 'badak', 'kapak', 'bijak',
+  'max', 'pro', 'fix', 'ku', 'mu',
+  'toko', 'jasa', 'baju', 'lokal', 'murah', 'usaha', 'bisnis', 'dagang', 'niaga', 'lapak',
+  'barang', 'gudang', 'bintang', 'peluang', 'tenang', 'senang', 'menang', 'sayang', 'kampung', 'untung',
+  'berkah', 'amanah', 'rumah', 'sehat', 'cerah', 'indah', 'kasih', 'bersih', 'putih',
+  'cakap', 'cepat', 'tepat', 'hemat', 'aktif', 'kreatif', 'inovatif',
+  'khusus', 'khas', 'tarikh', 'akhir', 'syarat', 'syiar', 'syukur', 'nyaman', 'nyata', 'dunia', 'mulia', 'raya', 'jaya', 'surya',
+  'bank', 'link', 'tech', 'app', 'web', 'net', 'studio', 'media', 'audio', 'video',
+  ...ID_NICHE_STEMS.filter((w) => w.length >= 3)
+]));
+const INDONESIAN_EXACT_SHORT_ACRO_EXCEPTIONS = new Set(['id', 'ku', 'mu', 'in', 'tv', 'av', 'ev', 'uv', 'iq', 'hq', 'eq', 'ai', 'io']);
+const INDONESIAN_STANDARD_FINAL_2_CLUSTERS = new Set([
+  'ng', 'ny', 'kh', 'sy',
+  'st', 'nd', 'ld', 'ft', 'mp', 'nt', 'sk', 'sp', 'ct', 'pt', 'ck', 'ch', 'sh', 'th', 'ph',
+  'll', 'ss', 'ff', 'tt', 'dd', 'bb', 'gg', 'mm', 'nn', 'pp', 'rr',
+  'rk', 'rm', 'rn', 'rp', 'rt', 'rd', 'rl', 'rb', 'rg', 'rf', 'rs',
+  'lm', 'ln', 'lp', 'lf', 'lk', 'lt', 'lb', 'ls',
+  'nk', 'ns', 'ms', 'ps', 'ts', 'ds', 'ks', 'bs', 'gs', 'ws', 'fs', 'cs',
+  'sm', 'wh'
+]);
+const INDONESIAN_STANDARD_FINAL_3_CLUSTERS = new Set([
+  'nds', 'nts', 'sts', 'rts', 'rds', 'rks', 'mps', 'nks', 'ngs', 'cks', 'tch', 'nch', 'rch'
+]);
+const INDONESIAN_STIFF_CONSONANT_COMBOS_RE = /(?:qh|xh|zj)/;
+
+function computeIndonesianPronunciationPenalty(sld, rawTargetKeywords) {
+  const segments = String(sld || '').toLowerCase().split('-').filter(Boolean);
+  const lastSeg = (segments.length > 0 ? segments[segments.length - 1] : String(sld || '').toLowerCase()).replace(/[^a-z]/g, '');
+  const fullAlpha = String(sld || '').toLowerCase().replace(/[^a-z]/g, '');
+  if (!lastSeg) {
+    return { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
+  }
+
+  const targetKeywords = normalizeTargetKeywords(rawTargetKeywords);
+  const isExactTargetMatch = targetKeywords.some((kw) => lastSeg === kw || fullAlpha === kw);
+  const isSuffixTargetMatch = targetKeywords.some((kw) => kw.length >= 2 && lastSeg.endsWith(kw));
+  const isExactCommonWord = INDONESIAN_COMMON_PENALTY_EXCEPTIONS.has(lastSeg) || INDONESIAN_EXACT_SHORT_ACRO_EXCEPTIONS.has(lastSeg) || ID_NICHE_STEMS.includes(lastSeg);
+  const isSuffixCommonWord = INDONESIAN_SUFFIX_EXCEPTIONS.some((w) => lastSeg.endsWith(w));
+
+  if (isExactTargetMatch || isExactCommonWord) {
+    return {
+      penalty: 0,
+      type: 'exempt',
+      isExempt: true,
+      isExactExempt: true
+    };
+  }
+
+  if (INDONESIAN_STIFF_CONSONANT_COMBOS_RE.test(fullAlpha) && !targetKeywords.some((kw) => INDONESIAN_STIFF_CONSONANT_COMBOS_RE.test(kw))) {
+    return { penalty: 12, type: 'unnatural_combo', isExempt: false, isExactExempt: false };
+  }
+  if (/(?:cj|dj)$/.test(lastSeg)) {
+    return { penalty: 12, type: 'stiff_ending_cluster', isExempt: false, isExactExempt: false };
+  }
+
+  if (isSuffixTargetMatch || isSuffixCommonWord) {
+    return {
+      penalty: 0,
+      type: 'exempt',
+      isExempt: true,
+      isExactExempt: false
+    };
+  }
+
+  const clusterMatch = lastSeg.match(/[bcdfghjklmnpqrstvwxz]+$/);
+  if (clusterMatch) {
+    const cluster = clusterMatch[0];
+    if (/(?:ngk|nstr|bstr)$/.test(cluster)) {
+      return { penalty: cluster.length >= 4 ? 14 : 12, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+    if (cluster.length === 2 && !INDONESIAN_STANDARD_FINAL_2_CLUSTERS.has(cluster)) {
+      return { penalty: 11, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+    if (cluster.length === 3 && !INDONESIAN_STANDARD_FINAL_3_CLUSTERS.has(cluster)) {
+      return { penalty: 13, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+    if (cluster.length >= 4) {
+      return { penalty: 15, type: 'heavy_cluster', isExempt: false, isExactExempt: false };
+    }
+  }
+
+  if (/[jqvx]$/.test(lastSeg)) {
+    return { penalty: 8, type: 'abrupt_ending', isExempt: false, isExactExempt: false };
+  }
+
+  return { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
+}
+
 function computeOverallHeuristicScore(
   pronunciationComfort,
   brandability,
@@ -478,10 +665,16 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
   const isVowelChar = (ch) => ch === 'a' || ch === 'e' || ch === 'i' || ch === 'o' || ch === 'u';
   const stemAnalysis = analyzeSldStemsAndLang(sld);
   const extLower = ext.toLowerCase();
-  const isIdContext = stemAnalysis.detectedLang === 'id' ||
+  const isIdContext = uiLang === 'id' || stemAnalysis.detectedLang === 'id' ||
     ['.id', '.co.id', '.biz.id', '.web.id', '.my.id'].includes(extLower);
 
   const isKnownStem = stemAnalysis.exactStemHits >= 1;
+  const englishPenaltyInfo = uiLang === 'en'
+    ? computeEnglishPronunciationPenalty(sld, rawTargetKeywords)
+    : { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
+  const indonesianPenaltyInfo = uiLang === 'id'
+    ? computeIndonesianPronunciationPenalty(sld, rawTargetKeywords)
+    : { penalty: 0, type: 'none', isExempt: false, isExactExempt: false };
 
   // 1. Pronunciation Comfort Score (0-100): dedicated "radio test" smoothness, vowel-consonant flow & phonetic spelling clarity
   let pronunciationComfort = 58;
@@ -552,7 +745,7 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
     const transitionRatio = transitions / Math.max(1, alphaOnly.length - 1);
 
     let awkwardPhoneticPenalty = 0;
-    const hasStemContext = isKnownStem || stemAnalysis.containedStemHits >= 1;
+    const hasStemContext = isKnownStem || stemAnalysis.containedStemHits >= 1 || (uiLang === 'en' && englishPenaltyInfo.isExactExempt) || (uiLang === 'id' && indonesianPenaltyInfo.isExactExempt);
 
     // Vowel hiatus & unnatural diphthong checks (e.g., souj -> ouj, soik -> oi + k)
     if (!hasStemContext) {
@@ -578,51 +771,108 @@ function computeDomainScores(rawDomain, explicitExt, rawLang, rawTargetKeywords)
     }
 
     // Abrupt / tongue-stopping word endings & awkward permutation codas
-    if (/[jq]$/.test(alphaOnly)) {
-      awkwardPhoneticPenalty += 20;
-    } else if (!isKnownStem) {
-      if (/[iu]w$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 44;
-      } else if (/[^aeiou][vwzx]$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 10;
-      } else if (/[aeou]c$/.test(alphaOnly)) {
-        awkwardPhoneticPenalty += 40;
-      } else if (/ic$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 10;
-      } else if (/[aeiou]f$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 38;
-      } else if (/[aeiou][bg]$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 32;
-      } else if (/[aeiou]p$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 26;
-      } else if (!isIdContext && /[aeiou]h$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
-        awkwardPhoneticPenalty += 32;
+    if (uiLang === 'en') {
+      if (!englishPenaltyInfo.isExempt) {
+        if (englishPenaltyInfo.penalty > 0) {
+          awkwardPhoneticPenalty += englishPenaltyInfo.penalty;
+        } else if (!isKnownStem) {
+          if (/[iu]w$/.test(alphaOnly)) {
+            awkwardPhoneticPenalty += 44;
+          } else if (/[aeou]c$/.test(alphaOnly)) {
+            awkwardPhoneticPenalty += 40;
+          } else if (/ic$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+            awkwardPhoneticPenalty += 10;
+          } else if (/[aeiou]f$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+            awkwardPhoneticPenalty += 38;
+          } else if (/[aeiou][bg]$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+            awkwardPhoneticPenalty += 32;
+          } else if (/[aeiou]p$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+            awkwardPhoneticPenalty += 26;
+          }
+        }
+      }
+    } else if (uiLang === 'id') {
+      if (!indonesianPenaltyInfo.isExempt) {
+        if (indonesianPenaltyInfo.penalty > 0) {
+          awkwardPhoneticPenalty += indonesianPenaltyInfo.penalty;
+        } else if (!isKnownStem) {
+          if (/[iu]w$/.test(alphaOnly)) {
+            awkwardPhoneticPenalty += 12;
+          } else if (/[aeou]c$/.test(alphaOnly)) {
+            awkwardPhoneticPenalty += 12;
+          }
+        }
+      }
+    } else {
+      if (/[jq]$/.test(alphaOnly)) {
+        awkwardPhoneticPenalty += 20;
+      } else if (!isKnownStem) {
+        if (/[iu]w$/.test(alphaOnly)) {
+          awkwardPhoneticPenalty += 44;
+        } else if (/[^aeiou][vwzx]$/.test(alphaOnly)) {
+          awkwardPhoneticPenalty += 10;
+        } else if (/[aeou]c$/.test(alphaOnly)) {
+          awkwardPhoneticPenalty += 40;
+        } else if (/ic$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+          awkwardPhoneticPenalty += 10;
+        } else if (/[aeiou]f$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+          awkwardPhoneticPenalty += 38;
+        } else if (/[aeiou][bg]$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+          awkwardPhoneticPenalty += 32;
+        } else if (/[aeiou]p$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+          awkwardPhoneticPenalty += 26;
+        } else if (!isIdContext && /[aeiou]h$/.test(alphaOnly) && stemAnalysis.containedStemHits === 0) {
+          awkwardPhoneticPenalty += 32;
+        }
       }
     }
 
-    if (!isIdContext && !isKnownStem && /[iuo]k$/.test(alphaOnly)) {
+    if (!isIdContext && !isKnownStem && !(uiLang === 'en' && englishPenaltyInfo.isExempt) && /[iuo]k$/.test(alphaOnly)) {
       awkwardPhoneticPenalty += 6;
     }
 
     pronunciationComfort -= awkwardPhoneticPenalty;
 
     // Heavy/ambiguous phonetic letters
-    const qxzCount = (alphaOnly.match(/[qxz]/g) || []).length;
+    const qxzSource = (uiLang === 'en' && englishPenaltyInfo.type === 'heavy_ending')
+      ? alphaOnly.slice(0, -1)
+      : (uiLang === 'id' && indonesianPenaltyInfo.type === 'abrupt_ending')
+        ? alphaOnly.slice(0, -1)
+        : (uiLang === 'id' && indonesianPenaltyInfo.type === 'unnatural_combo')
+          ? alphaOnly.replace(/(?:qh|xh|zj)/g, '')
+          : alphaOnly;
+    const qxzCount = ((uiLang === 'en' && englishPenaltyInfo.isExactExempt) || (uiLang === 'id' && indonesianPenaltyInfo.isExactExempt))
+      ? 0
+      : (qxzSource.match(/[qxz]/g) || []).length;
     const kCount = (alphaOnly.match(/k/g) || []).length;
     pronunciationComfort -= Math.min(15, qxzCount * 5);
     if (!isIdContext && kCount > 0) {
       pronunciationComfort -= Math.min(6, kCount * 2);
     }
 
-    if (/(kk|qq|xx|zz)/.test(alphaOnly)) {
+    if (!(uiLang === 'en' && englishPenaltyInfo.isExactExempt) && !(uiLang === 'id' && indonesianPenaltyInfo.isExactExempt) && /(kk|qq|xx|zz)/.test(alphaOnly)) {
       pronunciationComfort -= 6;
     }
 
     // Jarring 2-consonant collisions in coined non-dictionary words (e.g., bk, tp, qj, xz)
+    let clusterCheckTarget = alphaOnly;
+    if (uiLang === 'en' && englishPenaltyInfo.type === 'heavy_cluster') {
+      clusterCheckTarget = alphaOnly.slice(0, -2);
+    } else if (uiLang === 'id' && indonesianPenaltyInfo.penalty > 0) {
+      if (indonesianPenaltyInfo.type === 'unnatural_combo') {
+        clusterCheckTarget = alphaOnly.replace(/(?:qh|xh|zj)/g, '');
+      } else if (indonesianPenaltyInfo.type === 'stiff_ending_cluster') {
+        clusterCheckTarget = alphaOnly.slice(0, -2);
+      } else if (indonesianPenaltyInfo.type === 'heavy_cluster') {
+        clusterCheckTarget = alphaOnly.replace(/[bcdfghjklmnpqrstvwxz]+$/, '');
+      }
+    }
     const hasJarringCluster =
       !isKnownStem &&
       stemAnalysis.containedStemHits === 0 &&
-      /(?:[jqxz][bcdfghjklmnpqrstvwxyz]|[bcdfghjklmnpqrstvwxyz][jqx]|(?:bk|bp|bt|bv|bz|cb|cd|cf|cg|cm|cn|cp|cv|cz|db|dc|df|dg|dk|dm|dn|dp|dv|dz|fb|fc|fd|fg|fk|fm|fp|fv|fz|gb|gc|gd|gf|gk|gm|gp|gv|gz|hb|hc|hd|hf|hg|hm|hn|hp|hv|hz|kb|kc|kd|kf|kg|km|kp|kv|kz|pb|pc|pd|pf|pg|pk|pv|pz|tb|tc|td|tf|tg|tk|tp|tv|tz|vb|vc|vd|vf|vg|vh|vk|vl|vm|vn|vp|vr|vs|vt|vw|vz))/.test(alphaOnly);
+      !(uiLang === 'en' && englishPenaltyInfo.isExactExempt) &&
+      !(uiLang === 'id' && indonesianPenaltyInfo.isExactExempt) &&
+      /(?:[jqxz][bcdfghjklmnpqrstvwxyz]|[bcdfghjklmnpqrstvwxyz][jqx]|(?:bk|bp|bt|bv|bz|cb|cd|cf|cg|cm|cn|cp|cv|cz|db|dc|df|dg|dk|dm|dn|dp|dv|dz|fb|fc|fd|fg|fk|fm|fp|fv|fz|gb|gc|gd|gf|gk|gm|gp|gv|gz|hb|hc|hd|hf|hg|hm|hn|hp|hv|hz|kb|kc|kd|kf|kg|km|kp|kv|kz|pb|pc|pd|pf|pg|pk|pv|pz|tb|tc|td|tf|tg|tk|tp|tv|tz|vb|vc|vd|vf|vg|vh|vk|vl|vm|vn|vp|vr|vs|vt|vw|vz))/.test(clusterCheckTarget);
     if (hasJarringCluster) {
       pronunciationComfort -= 20;
     }
