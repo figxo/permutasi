@@ -121,6 +121,16 @@ const INDEX_SEO_BY_LANG = {
 };
 
 const EXT_STRATEGY_BY_LANG = {
+  en: {
+    title: 'Domain Extension Strategy & Google SERP Signals (Target Market & Regional)',
+    intro: 'In Google Search algorithms and policies, domain extension choice provides strong geographical targeting (geotargeting) and brand authority signals:',
+    gTitle: 'gTLDs (.com, .net, .org)',
+    gDesc: 'Global generic extensions with no specific regional bias. Ideal for cross-border international target markets or general authority websites.',
+    locTitle: 'Local ccTLDs (.us, .co.uk, .ca)',
+    locDesc: 'Provide strong regional geotargeting signals to Google indicating the website targets local audiences. Great for boosting local SERP rankings.',
+    nTitle: 'nTLDs (.io, .app, .tech, .shop)',
+    nDesc: 'Modern thematic extensions signaling specific intent (SaaS, e-commerce, developer tool). Treated equally to gTLDs in SERP signals.'
+  },
   id: {
     title: 'Strategi Ekstensi Domain & Sinyal SERP Google (Target Market & Regional)',
     intro: 'Dalam algoritma dan kebijakan Google Search, pemilihan ekstensi domain memberikan sinyal penargetan geografis (geotargeting) dan otoritas brand yang kuat:',
@@ -194,6 +204,16 @@ const EXT_STRATEGY_BY_LANG = {
 };
 
 const DOMAIN_RISKS_BY_LANG = {
+  en: {
+    title: 'Domain Naming Risks & Google Penalty Warning',
+    intro: 'When researching and generating domain permutations (especially for bulk campaigns or expired/dropped domains), beware of fatal risks that can trigger algorithmic penalties:',
+    emdTitle: 'EMD (Exact Match Domain) Trap',
+    emdDesc: 'Using exact commercial keyword matches (e.g., best-cheap-shoes.com) without high content quality makes sites vulnerable to Google EMD updates.',
+    spamTitle: 'Low-Quality Automated Content Risk',
+    spamDesc: 'Search ranking systems actively filter thousands of thin, low-value automated pages that lack original substance for visitors.',
+    backlinkTitle: 'Prior Backlink & Reputation History (Aged Domains)',
+    backlinkDesc: 'When acquiring previously registered domains, always verify archive history (Wayback Machine) and link profiles to avoid inheriting algorithmic downgrades from low-quality link networks.'
+  },
   id: {
     title: 'Peringatan Risiko Penamaan Domain & Google Penalty',
     intro: 'Saat melakukan riset dan pembuatan permutasi domain (khususnya untuk proyek massal atau domain drop/expired), Anda harus mewaspadai beberapa risiko fatal yang dapat memicu penalti dari algoritma Google:',
@@ -796,10 +816,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: 'Generator Ide Nama Domain "business"',
         sub: 'Gabungkan kata kunci untuk menemukan ide nama domain yang singkat dan siap pakai dalam hitungan detik.',
         genTitle: 'Nama Bisnis Anda',
-        extLabel: 'Ekstensi Domain (mis. .com, .id):',
+        extLabel: 'Ekstensi Domain (mis. .com, .id)',
         genBtn: 'Buat Nama Domain',
         resetBtn: 'Mulai Ulang',
-        advLabel: 'Tambah / Sesuaikan',
+        genMicrocopy: '✓ Standar RFC 1035 · ✓ Tanpa pelacakan · ✓ Berjalan offline di browser',
+        advLabel: 'Opsi Lanjutan',
+        advHint: '(Kata Sekunder, Tersier, Acak Kata, Pola, Gaya Nama)',
+        quickExLabel: 'Contoh cepat:',
+        quickExamples: [['toko', 'kopi'], ['jasa', 'web'], ['baju', 'anak'], ['skincare', 'lokal']],
+        analysisTitle: 'Hasil Domain',
+        analysisSub: 'Cek ketersediaan, skor merek, riwayat backlink, atau arsip secara instan.',
+        availOnlyBtn: 'Hanya Available',
+        howToBadge: '3 Langkah Cepat',
+        howToTitle: 'Cara pakai alat ini dalam 3 langkah',
+        step1Title: '1. Masukkan kata kunci',
+        step1Desc: 'Ketik kata kunci utama dan pilih ekstensi domain yang diinginkan.',
+        step2Title: '2. Buat & filter hasil',
+        step2Desc: 'Bandingkan skor pengucapan lalu saring hanya domain yang masih tersedia.',
+        step3Title: '3. Cek ketersediaan & salin',
+        step3Desc: 'Salin atau ekspor kandidat terbaik, atau buka Opsi Lanjutan untuk pola khusus.',
+        ctaBestPractices: 'Panduan & Tips Penamaan Domain →',
+        ctaViewFaq: 'Lihat FAQ →',
+        shareSummaryTitle: 'Bagikan & Ekspor Tautan',
         editOptionsShortcut: 'Ubah Kata Kunci & Pola',
         wordPermLabel: 'Acak Urutan Kata Kunci',
         wordPermDesc: 'Otomatis acak urutan kata kunci untuk variasi nama lebih banyak.',
@@ -813,10 +851,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: 'Generador de Dominios "business"',
         sub: 'Combina tus palabras clave y encuentra ideas de dominios cortos y listos para usar al instante.',
         genTitle: 'Nombre de Tu Negocio',
-        extLabel: 'Extensiones (ej. .com, .es):',
+        extLabel: 'Extensiones (ej. .com, .es)',
         genBtn: 'Generar Nombres de Dominio',
         resetBtn: 'Empezar de Nuevo',
-        advLabel: 'Añadir / Personalizar',
+        genMicrocopy: '✓ Cumple RFC 1035 · ✓ Sin rastreo · ✓ Funciona offline tras cargar',
+        advLabel: 'Opciones Avanzadas',
+        advHint: '(Secundaria, Terciaria, Mezclar, Patrón, Estilos de Nombre)',
+        quickExLabel: 'Ejemplos rápidos:',
+        quickExamples: [['tienda', 'online'], ['ia', 'tools'], ['viajes', 'baratos'], ['curso', 'online']],
+        analysisTitle: 'Resultados de Dominios',
+        analysisSub: 'Revisa disponibilidad, puntuación de marca, backlinks y archivo al instante.',
+        availOnlyBtn: 'Solo disponibles',
+        howToBadge: '3 Pasos',
+        howToTitle: 'Cómo usar esta herramienta en 3 pasos',
+        step1Title: '1. Escribe tus palabras clave',
+        step1Desc: 'Ingresa tu palabra clave principal y elige las extensiones.',
+        step2Title: '2. Genera y filtra ideas',
+        step2Desc: 'Revisa nombres pronunciables y filtra por disponibilidad al instante.',
+        step3Title: '3. Verifica y exporta',
+        step3Desc: 'Copia o exporta tus favoritos, o abre Opciones Avanzadas para fórmulas.',
+        ctaBestPractices: 'Mejores Prácticas de Dominios →',
+        ctaViewFaq: 'Ver FAQ →',
+        shareSummaryTitle: 'Compartir y Exportar Enlace',
         editOptionsShortcut: 'Editar Palabras y Patrón',
         wordPermLabel: 'Combinar Orden de Palabras',
         wordPermDesc: 'Mezcla tus palabras clave automáticamente para crear más ideas.',
@@ -830,10 +886,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: 'Gerador de Domínios "business"',
         sub: 'Combine suas palavras-chave e encontre ideias de domínios curtos e prontos para usar em segundos.',
         genTitle: 'Nome do Seu Negócio',
-        extLabel: 'Extensões (ex. .com, .pt):',
+        extLabel: 'Extensões (ex. .com, .pt)',
         genBtn: 'Gerar Nomes de Domínio',
         resetBtn: 'Recomeçar',
-        advLabel: 'Adicionar / Personalizar',
+        genMicrocopy: '✓ Padrão RFC 1035 · ✓ Sem rastreamento · ✓ Funciona offline após carregar',
+        advLabel: 'Opções Avançadas',
+        advHint: '(Secundária, Terciária, Misturar, Padrão, Estilos de Nome)',
+        quickExLabel: 'Exemplos rápidos:',
+        quickExamples: [['loja', 'online'], ['ia', 'app'], ['renda', 'extra'], ['saude', 'digital']],
+        analysisTitle: 'Resultados de Domínios',
+        analysisSub: 'Confira disponibilidade, pontuação de marca, backlinks e histórico na hora.',
+        availOnlyBtn: 'Apenas disponíveis',
+        howToBadge: '3 Passos',
+        howToTitle: 'Como usar esta ferramenta em 3 passos',
+        step1Title: '1. Digite suas palavras-chave',
+        step1Desc: 'Informe sua palavra-chave principal e escolha as extensões.',
+        step2Title: '2. Gere e filtre resultados',
+        step2Desc: 'Compare nomes fáceis de pronunciar e filtre os disponíveis.',
+        step3Title: '3. Verifique e exporte',
+        step3Desc: 'Copie ou exporte sua lista, ou abra Opções Avançadas para padrões.',
+        ctaBestPractices: 'Boas Práticas de Domínios →',
+        ctaViewFaq: 'Ver FAQ →',
+        shareSummaryTitle: 'Compartilhar e Exportar Link',
         editOptionsShortcut: 'Editar Palavras e Padrão',
         wordPermLabel: 'Combinar Ordem das Palavras',
         wordPermDesc: 'Misture suas palavras-chave automaticamente para gerar mais ideias.',
@@ -847,10 +921,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: 'Générateur de Domaines « business »',
         sub: 'Combinez vos mots-clés pour trouver des idées de domaines courts et prêts à l’emploi en quelques secondes.',
         genTitle: 'Nom de Votre Entreprise',
-        extLabel: 'Extensions (ex. .com, .fr) :',
+        extLabel: 'Extensions (ex. .com, .fr)',
         genBtn: 'Générer des Noms de Domaine',
         resetBtn: 'Recommencer',
-        advLabel: 'Ajouter / Personnaliser',
+        genMicrocopy: '✓ Conforme RFC 1035 · ✓ Sans suivi · ✓ Fonctionne hors ligne',
+        advLabel: 'Options Avancées',
+        advHint: '(Secondaire, Tertiaire, Mélange, Modèle, Styles de Nom)',
+        quickExLabel: 'Exemples rapides :',
+        quickExamples: [['ia', 'outil'], ['mode', 'femme'], ['immo', 'paris'], ['boutique', 'bio']],
+        analysisTitle: 'Résultats de Domaines',
+        analysisSub: 'Vérifiez disponibilité, score de marque, backlinks et archives en un clic.',
+        availOnlyBtn: 'Disponibles uniquement',
+        howToBadge: '3 Étapes',
+        howToTitle: 'Comment utiliser cet outil en 3 étapes',
+        step1Title: '1. Saisissez vos mots-clés',
+        step1Desc: 'Entrez votre mot-clé principal et vos extensions favorites.',
+        step2Title: '2. Générez et filtrez',
+        step2Desc: 'Comparez la prononciation et filtrez les domaines libres.',
+        step3Title: '3. Vérifiez et exportez',
+        step3Desc: 'Copiez vos favoris ou ouvrez Options Avancées pour des formules.',
+        ctaBestPractices: 'Bonnes Pratiques de Domaines →',
+        ctaViewFaq: 'Voir la FAQ →',
+        shareSummaryTitle: 'Partager & Exporter le Lien',
         editOptionsShortcut: 'Modifier Mots & Modèles',
         wordPermLabel: 'Mélanger l’ordre des mots',
         wordPermDesc: 'Mélange vos mots-clés automatiquement pour créer plus d’idées.',
@@ -864,10 +956,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: '„business“ Domainnamen-Generator',
         sub: 'Kombinieren Sie Ihre Keywords und finden Sie in Sekunden kurze, sofort nutzbare Domain-Ideen.',
         genTitle: 'Ihr Firmenname',
-        extLabel: 'Endungen (z. B. .com, .de):',
+        extLabel: 'Endungen (z. B. .com, .de)',
         genBtn: 'Domainnamen generieren',
         resetBtn: 'Neu Starten',
-        advLabel: 'Hinzufügen / Anpassen',
+        genMicrocopy: '✓ RFC 1035-konform · ✓ Kein Tracking · ✓ Offline nutzbar',
+        advLabel: 'Erweiterte Optionen',
+        advHint: '(Sekundär, Tertiär, Mischen, Muster, Namensstile)',
+        quickExLabel: 'Schnellbeispiele:',
+        quickExamples: [['ki', 'tools'], ['online', 'shop'], ['solar', 'energie'], ['fitness', 'studio']],
+        analysisTitle: 'Domain-Ergebnisse',
+        analysisSub: 'Prüfen Sie Verfügbarkeit, Marken-Score, Backlinks und Archivdaten.',
+        availOnlyBtn: 'Nur freie',
+        howToBadge: '3 Schritte',
+        howToTitle: 'So nutzen Sie das Tool in 3 Schritten',
+        step1Title: '1. Keywords eingeben',
+        step1Desc: 'Geben Sie Ihr Haupt-Keyword und gewünschte Endungen ein.',
+        step2Title: '2. Generieren & filtern',
+        step2Desc: 'Bewerten Sie die Aussprechbarkeit und filtern Sie freie Domains.',
+        step3Title: '3. Prüfen & exportieren',
+        step3Desc: 'Kopieren Sie Favoriten oder öffnen Sie Erweiterte Optionen.',
+        ctaBestPractices: 'Domain-Naming Best Practices →',
+        ctaViewFaq: 'FAQ ansehen →',
+        shareSummaryTitle: 'Link teilen & exportieren',
         editOptionsShortcut: 'Keywords & Muster ändern',
         wordPermLabel: 'Wörter automatisch kombinieren',
         wordPermDesc: 'Kombiniert Ihre Keywords automatisch zu weiteren Namensideen.',
@@ -881,10 +991,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: 'Генератор доменов «business»',
         sub: 'Объединяйте ключевые слова и за секунды находите короткие, готовые к использованию доменные имена.',
         genTitle: 'Название Вашего Бизнеса',
-        extLabel: 'Доменные зоны (напр. .com, .ru):',
+        extLabel: 'Доменные зоны (напр. .com, .ru)',
         genBtn: 'Подобрать домены',
         resetBtn: 'Начать заново',
-        advLabel: 'Добавить / Настроить',
+        genMicrocopy: '✓ Стандарт RFC 1035 · ✓ Без отслеживания · ✓ Работает офлайн',
+        advLabel: 'Расширенные настройки',
+        advHint: '(Доп. слова, Перемешивание, Шаблон, Стили имен)',
+        quickExLabel: 'Быстрые примеры:',
+        quickExamples: [['ai', 'bot'], ['stroy', 'dom'], ['auto', 'servis'], ['tur', 'agentstvo']],
+        analysisTitle: 'Результаты доменов',
+        analysisSub: 'Проверяйте доступность, оценку бренда, ссылки и архив истории.',
+        availOnlyBtn: 'Только свободные',
+        howToBadge: '3 шага',
+        howToTitle: 'Как пользоваться генератором за 3 шага',
+        step1Title: '1. Введите ключевые слова',
+        step1Desc: 'Укажите главное слово и нужные доменные зоны.',
+        step2Title: '2. Создайте и отфильтруйте',
+        step2Desc: 'Оцените звучание и отберите только свободные домены.',
+        step3Title: '3. Проверьте и сохраните',
+        step3Desc: 'Скопируйте список или откройте Расширенные настройки.',
+        ctaBestPractices: 'Руководство по выбору домена →',
+        ctaViewFaq: 'Открыть FAQ →',
+        shareSummaryTitle: 'Поделиться и экспорт ссылки',
         editOptionsShortcut: 'Изменить слова и шаблон',
         wordPermLabel: 'Перемешать порядок слов',
         wordPermDesc: 'Автоматически меняет порядок слов для новых вариантов.',
@@ -898,10 +1026,28 @@ function localizeIndexHtml(rawHtml, lang, config) {
         title: '「business」ドメイン名ジェネレーター',
         sub: 'キーワードを組み合わせるだけで、短くて使いやすいドメイン候補を数秒で見つけられます。',
         genTitle: 'ビジネス名',
-        extLabel: 'ドメイン拡張子 (例: .com, .jp):',
+        extLabel: 'ドメイン拡張子 (例: .com, .jp)',
         genBtn: 'ドメイン名を生成',
         resetBtn: '最初からやり直す',
-        advLabel: '追加 / カスタマイズ',
+        genMicrocopy: '✓ RFC 1035準拠 · ✓ 追跡なし · ✓ 読み込み後はオフライン動作',
+        advLabel: '詳細オプション',
+        advHint: '(第2/第3キーワード・シャッフル・独自パターン・スタイル)',
+        quickExLabel: 'クイック例:',
+        quickExamples: [['ai', 'tool'], ['cafe', 'shop'], ['game', 'app'], ['beauty', 'salon']],
+        analysisTitle: 'ドメイン候補',
+        analysisSub: '空き状況・発音スコア・被リンク・過去履歴をすぐに確認できます。',
+        availOnlyBtn: '取得可能のみ',
+        howToBadge: '3ステップ',
+        howToTitle: '3ステップで使うドメイン作成',
+        step1Title: '1. キーワードを入力',
+        step1Desc: 'メインキーワードと拡張子（.com, .jpなど）を入力します。',
+        step2Title: '2. 生成と絞り込み',
+        step2Desc: '発音スコアを比較し、取得可能なドメインだけに絞り込みます。',
+        step3Title: '3. 確認してエクスポート',
+        step3Desc: '候補をコピーするか、詳細オプションで独自パターンを作成します。',
+        ctaBestPractices: 'ドメイン命名のベストプラクティス →',
+        ctaViewFaq: 'FAQを見る →',
+        shareSummaryTitle: 'リンクを共有・エクスポート',
         editOptionsShortcut: 'キーワード・パターンを変更',
         wordPermLabel: 'キーワードの組み合わせ設定',
         wordPermDesc: 'キーワードの順番を自動で組み合わせて候補を増やします。',
@@ -921,10 +1067,31 @@ function localizeIndexHtml(rawHtml, lang, config) {
       uiExtLabel: atf.extLabel,
       uiGenBtn: atf.genBtn,
       uiAdvGenBtn: atf.genBtn,
+      uiGenMicrocopy: atf.genMicrocopy,
       uiResetFormLabel: atf.resetBtn,
       uiResetAdvLabel: atf.resetBtn,
       uiResetAnalysisLabel: atf.resetBtn,
       uiAdvOptionsLabel: atf.advLabel,
+      uiAdvOptionsHint: atf.advHint,
+      uiQuickExLabel: atf.quickExLabel,
+      uiAnalysisTitle: atf.analysisTitle,
+      uiAnalysisSub: atf.analysisSub,
+      uiAvailOnlyBtn: atf.availOnlyBtn,
+      uiHowToBadge: atf.howToBadge,
+      uiHowToTitle: atf.howToTitle,
+      uiStep1Title: atf.step1Title,
+      uiStep1Desc: atf.step1Desc,
+      uiStep2Title: atf.step2Title,
+      uiStep2Desc: atf.step2Desc,
+      uiStep3Title: atf.step3Title,
+      uiStep3Desc: atf.step3Desc,
+      uiCtaBestPractices: atf.ctaBestPractices,
+      uiCtaViewFaq: atf.ctaViewFaq,
+      uiShareSummaryTitle: atf.shareSummaryTitle,
+      uiNavGuide: eduFaqPack.navGuide,
+      uiNavFaq: eduFaqPack.navFaq,
+      uiMobileNavGuide: eduFaqPack.navGuide,
+      uiMobileNavFaq: eduFaqPack.navFaq,
       uiEditOptionsShortcutLabel: atf.editOptionsShortcut,
       uiWordPermLabel: atf.wordPermLabel,
       uiWordPermDesc: atf.wordPermDesc,
@@ -984,6 +1151,18 @@ function localizeIndexHtml(rawHtml, lang, config) {
         html = setElementInnerTextById(html, id, text);
       }
     }
+
+    if (Array.isArray(atf.quickExamples)) {
+      atf.quickExamples.forEach((pair, idx) => {
+        if (!Array.isArray(pair)) return;
+        const btnId = `uiQuickExBtn${idx + 1}`;
+        const k1 = String(pair[0] || '');
+        const k2 = String(pair[1] || '');
+        const label = [k1, k2].filter(Boolean).join(' ');
+        const btnRegex = new RegExp(`(<button\\b[^>]*id="${btnId}"[^>]*data-kw1=")[^"]*("[^>]*data-kw2=")[^"]*("[^>]*>)([\\s\\S]*?)(<\\/button>)`, 'i');
+        html = html.replace(btnRegex, `$1${escapeHtmlAttr(k1)}$2${escapeHtmlAttr(k2)}$3${escapeHtmlText(label)}$5`);
+      });
+    }
   }
 
   const hubChromeByLang = {
@@ -1013,6 +1192,10 @@ function localizeIndexHtml(rawHtml, lang, config) {
   html = html.replace(
     /<a\s+href="\/(guides|research|tools)\/"([^>]*data-hub-section="\1"[^>]*)>/gi,
     (_m, sec, rest) => `<a href="${escapeHtmlAttr(getHubPath(sec, lang))}"${rest}>`
+  );
+  html = html.replace(
+    /href="\/(guide|faq)\.html"/gi,
+    (_m, page) => `href="${escapeHtmlAttr(trustI18n.localizeInternalHref(`${page}.html`, lang))}"`
   );
 
   html = updateSelectedLangOption(html, lang);
@@ -1104,6 +1287,19 @@ export function buildSitemapXml(config, rootDir = DEFAULT_ROOT_DIR) {
       priority: lang === 'en' ? '1.0' : '0.9',
       alternates: buildAlternates('index.html')
     });
+  }
+
+  for (const docPage of ['guide.html', 'faq.html']) {
+    const alternates = buildAlternates(docPage);
+    for (const lang of langs) {
+      urls.push({
+        loc: `${baseUrl}${trustI18n.localizeInternalHref(docPage, lang)}`,
+        lastmod: today,
+        changefreq: 'weekly',
+        priority: lang === 'en' ? '0.8' : '0.7',
+        alternates
+      });
+    }
   }
 
   for (const pagePath of TRUST_PAGE_PATHS) {
@@ -1483,11 +1679,14 @@ function getSectionLabel(hubsData, section, lang) {
     || section;
 }
 
-function buildEditorialHeaderNav(lang, activeSection, hubsData) {
+function getEditorialNavItems(lang, activeSection, hubsData) {
   const chrome = trustI18n.CHROME[lang] || trustI18n.CHROME.en;
+  const eduPack = EDU_FAQ_BY_LANG[lang] || EDU_FAQ_BY_LANG.en;
   const homeHref = lang === 'en' ? '/' : `/${lang}/`;
-  const navItems = [
+  return [
     { href: homeHref, label: chrome.navGenerator, active: false },
+    { href: trustI18n.localizeInternalHref('guide.html', lang), label: eduPack.navGuide || 'Guide', active: activeSection === 'guide' },
+    { href: trustI18n.localizeInternalHref('faq.html', lang), label: eduPack.navFaq || 'FAQ', active: activeSection === 'faq' },
     ...ARTICLE_SECTIONS.map((sec) => ({
       href: getHubPath(sec, lang),
       label: getSectionLabel(hubsData, sec, lang),
@@ -1496,12 +1695,23 @@ function buildEditorialHeaderNav(lang, activeSection, hubsData) {
     { href: trustI18n.localizeInternalHref('about.html', lang), label: chrome.navAbout, active: false },
     { href: trustI18n.localizeInternalHref('contact.html', lang), label: chrome.navContact, active: false }
   ];
+}
 
-  return navItems.map((item) => {
+function buildEditorialHeaderNav(lang, activeSection, hubsData) {
+  return getEditorialNavItems(lang, activeSection, hubsData).map((item) => {
     if (item.active) {
       return `<a href="${escapeHtmlAttr(item.href)}" aria-current="page" class="text-blue-600 dark:text-blue-400 font-semibold">${escapeHtmlText(item.label)}</a>`;
     }
     return `<a href="${escapeHtmlAttr(item.href)}" class="hover:text-slate-900 dark:hover:text-white transition-colors">${escapeHtmlText(item.label)}</a>`;
+  }).join('\n                ');
+}
+
+function buildEditorialMobileNav(lang, activeSection, hubsData) {
+  return getEditorialNavItems(lang, activeSection, hubsData).map((item) => {
+    if (item.active) {
+      return `<a href="${escapeHtmlAttr(item.href)}" aria-current="page" class="min-h-[44px] flex items-center px-3 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-semibold">${escapeHtmlText(item.label)}</a>`;
+    }
+    return `<a href="${escapeHtmlAttr(item.href)}" class="min-h-[44px] flex items-center px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900">${escapeHtmlText(item.label)}</a>`;
   }).join('\n                ');
 }
 
@@ -1973,6 +2183,302 @@ export function renderArticleHubPage(rootDir, section, lang = 'en', config = loa
     HUB_H1: escapeHtmlText(hubCopy.h1 || section),
     HUB_INTRO: escapeHtmlText(hubCopy.intro || ''),
     HUB_CARDS_HTML: cardsHtml,
+    FOOTER_SLOGAN: escapeHtmlText(chrome.footerSlogan),
+    SITE_HOST: escapeHtmlText(siteHost),
+    FOOTER_EDITIONS_TITLE: escapeHtmlText(chrome.footerEditions),
+    FOOTER_EDITIONS_LINKS: footerLinks,
+    FOOTER_LEGAL_TITLE: escapeHtmlText(chrome.footerLegal),
+    FOOTER_LEGAL_LINKS: buildEditorialFooterLinks(targetLang),
+    FOOTER_COPYRIGHT: escapeHtmlText(chrome.copyright)
+  });
+
+  return renderStaticHtml(html, config);
+}
+
+export function renderGuidePage(rootDir, lang = 'en', config = loadSiteConfig(rootDir)) {
+  const targetLang = SUPPORTED_LANGUAGES.includes(lang) ? lang : 'en';
+  const templatePath = path.join(rootDir, 'templates', 'guide.html');
+  const rawTemplate = fs.readFileSync(templatePath, 'utf8');
+  const hubsData = loadArticleHubs(rootDir);
+  const chrome = trustI18n.CHROME[targetLang] || trustI18n.CHROME.en;
+  const pack = EDU_FAQ_BY_LANG[targetLang] || EDU_FAQ_BY_LANG.en;
+  const extPack = EXT_STRATEGY_BY_LANG[targetLang] || EXT_STRATEGY_BY_LANG.en;
+  const riskPack = DOMAIN_RISKS_BY_LANG[targetLang] || DOMAIN_RISKS_BY_LANG.en;
+
+  const pagePath = trustI18n.localizeInternalHref('guide.html', targetLang);
+  const canonicalUrl = `${config.siteUrl}${pagePath}`;
+  const homeHref = targetLang === 'en' ? '/' : `/${targetLang}/`;
+  const faqHref = trustI18n.localizeInternalHref('faq.html', targetLang);
+
+  const hreflangLines = config.languages.map((l) => (
+    `<link rel="alternate" hreflang="${escapeHtmlAttr(l)}" href="${escapeHtmlAttr(`${config.siteUrl}${trustI18n.localizeInternalHref('guide.html', l)}`)}">`
+  ));
+  hreflangLines.push(
+    `<link rel="alternate" hreflang="x-default" href="${escapeHtmlAttr(`${config.siteUrl}/guide.html`)}">`
+  );
+
+  const { selectOptions, footerLinks } = buildLanguageTargetsMarkup(
+    targetLang,
+    config,
+    (code) => trustI18n.localizeInternalHref('guide.html', code)
+  );
+
+  const steps = Array.isArray(pack.guideSteps) ? pack.guideSteps : [];
+  const guideStepsHtml = steps.map((step, idx) => {
+    const spanClass = idx === steps.length - 1 && steps.length % 2 === 1 ? 'md:col-span-2' : '';
+    return `<article class="p-4 sm:p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2 ${spanClass}">
+      <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">${escapeHtmlText(step.title)}</h3>
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtmlText(step.text)}</p>
+    </article>`;
+  }).join('\n');
+
+  const stratCardsHtml = `
+    <article class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2.5">
+      <h3 class="text-base font-bold text-slate-900 dark:text-white">${escapeHtmlText(pack.stratKwTitle)}</h3>
+      <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <li>${escapeHtmlText(pack.stratKw1)}</li>
+        <li>${escapeHtmlText(pack.stratKw2)}</li>
+        <li>${escapeHtmlText(pack.stratKw3)}</li>
+      </ul>
+    </article>
+    <article class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2.5">
+      <h3 class="text-base font-bold text-slate-900 dark:text-white">${escapeHtmlText(pack.stratBpTitle)}</h3>
+      <ul class="list-disc pl-5 space-y-1.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        <li>${escapeHtmlText(pack.stratBp1)}</li>
+        <li>${escapeHtmlText(pack.stratBp2)}</li>
+        <li>${escapeHtmlText(pack.stratBp3)}</li>
+        <li>${escapeHtmlText(pack.stratBp4)}</li>
+      </ul>
+    </article>`;
+
+  const extStratCardsHtml = [
+    { title: extPack.gTitle, desc: extPack.gDesc },
+    { title: extPack.locTitle, desc: extPack.locDesc },
+    { title: extPack.nTitle, desc: extPack.nDesc }
+  ].map((c) => `<article class="p-4 sm:p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
+    <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">${escapeHtmlText(c.title)}</h3>
+    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHtmlText(c.desc)}</p>
+  </article>`).join('\n');
+
+  const riskCardsHtml = [
+    { title: riskPack.emdTitle, desc: riskPack.emdDesc },
+    { title: riskPack.spamTitle, desc: riskPack.spamDesc },
+    { title: riskPack.backlinkTitle, desc: riskPack.backlinkDesc }
+  ].map((c) => `<article class="p-4 sm:p-5 rounded-xl bg-amber-50/70 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/60 space-y-2">
+    <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white">${escapeHtmlText(c.title)}</h3>
+    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">${escapeHtmlText(c.desc)}</p>
+  </article>`).join('\n');
+
+  const tipsCardsHtml = [
+    { title: pack.tipsCheckTitle, items: [pack.tipsCheck1, pack.tipsCheck2, pack.tipsCheck3] },
+    { title: pack.tipsAvoidTitle, items: [pack.tipsAvoid1, pack.tipsAvoid2, pack.tipsAvoid3] },
+    { title: pack.tipsCureTitle, items: [pack.tipsCure1, pack.tipsCure2, pack.tipsCure3] }
+  ].map((t) => `<article class="p-4 sm:p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2.5">
+    <h4 class="text-sm font-bold text-slate-900 dark:text-white">${escapeHtmlText(t.title)}</h4>
+    <ul class="list-disc pl-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${t.items.map((it) => `<li>${escapeHtmlText(it)}</li>`).join('')}</ul>
+  </article>`).join('\n');
+
+  const badExCardsHtml = [1, 2, 3, 4].map((i) => `<article class="p-4 rounded-xl bg-rose-50/60 dark:bg-rose-950/20 border border-rose-200 dark:border-rose-900/50 space-y-1.5">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-white">${escapeHtmlText(pack[`bad${i}Title`])}</h3>
+    <p class="text-xs text-slate-700 dark:text-slate-300"><span class="font-semibold">${escapeHtmlText(pack.exampleLabel)}</span> <code class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-800 font-mono text-[11px] break-all">${escapeHtmlText(pack[`bad${i}Ex`])}</code></p>
+    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${escapeHtmlText(pack[`bad${i}Reason`])}</p>
+  </article>`).join('\n');
+
+  const goodExCardsHtml = [1, 2, 3, 4].map((i) => `<article class="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 space-y-1.5">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-white">${escapeHtmlText(pack[`good${i}Title`])}</h3>
+    <p class="text-xs text-slate-700 dark:text-slate-300"><span class="font-semibold">${escapeHtmlText(pack.exampleLabel)}</span> <code class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800 font-mono text-[11px] break-all">${escapeHtmlText(pack[`good${i}Ex`])}</code></p>
+    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">${escapeHtmlText(pack[`good${i}Reason`])}</p>
+  </article>`).join('\n');
+
+  const adsense = normalizeAdSenseIds(config.googleAdSense.publisherId);
+  const adSlot1 = adsense.clientId
+    ? `<div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="guide-mid-content" data-ad-recommended-size="728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[728px] mx-auto min-h-[100px] sm:min-h-[90px] bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl"></div>`
+    : '<!-- ADSENSE MANUAL SLOT 1: rendered when googleAdSense.publisherId is configured -->';
+  const adSlot2 = adsense.clientId
+    ? `<div role="region" aria-label="AdSense Placement Slot 2" data-ad-slot-position="guide-post-content" data-ad-recommended-size="728x250 / 336x280 (Desktop) | 336x280 (Mobile)" class="w-full max-w-[336px] sm:max-w-[728px] mx-auto min-h-[280px] sm:min-h-[250px] bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl"></div>`
+    : '<!-- ADSENSE MANUAL SLOT 2: rendered when googleAdSense.publisherId is configured -->';
+
+  const schemaGraph = [
+    {
+      '@type': 'TechArticle',
+      '@id': `${canonicalUrl}#article`,
+      mainEntityOfPage: canonicalUrl,
+      headline: pack.guideH1,
+      description: pack.guideMetaDesc,
+      inLanguage: targetLang,
+      author: {
+        '@type': 'Organization',
+        name: 'Domain Name',
+        url: `${config.siteUrl}${homeHref}`
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Domain Name',
+        url: `${config.siteUrl}/`,
+        email: config.contactEmail
+      }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: chrome.home, item: `${config.siteUrl}${homeHref}` },
+        { '@type': 'ListItem', position: 2, name: pack.navGuide || 'Guide', item: canonicalUrl }
+      ]
+    }
+  ];
+  const safeJsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': schemaGraph }, null, 2).replace(/</g, '\\u003c');
+  const siteHost = config.siteUrl.replace(/^https?:\/\//i, '');
+
+  const html = applyTemplateReplacements(rawTemplate, {
+    PAGE_LANG: escapeHtmlAttr(targetLang),
+    META_TITLE: escapeHtmlText(pack.guideMetaTitle),
+    META_DESC: escapeHtmlAttr(pack.guideMetaDesc),
+    CONTACT_EMAIL: escapeHtmlAttr(config.contactEmail),
+    CANONICAL_URL: escapeHtmlAttr(canonicalUrl),
+    HREFLANG_LINKS: hreflangLines.join('\n    '),
+    OG_LOCALE: escapeHtmlAttr(trustI18n.OG_LOCALE[targetLang] || 'en_US'),
+    OG_SITE_NAME: escapeHtmlAttr(INDEX_SEO_BY_LANG[targetLang]?.ogSiteName || 'Domain Name — domainname.web.id'),
+    JSON_LD: safeJsonLd,
+    HOME_HREF: escapeHtmlAttr(homeHref),
+    HOME_LABEL: escapeHtmlText(chrome.home),
+    FAQ_HREF: escapeHtmlAttr(faqHref),
+    BREADCRUMB_LABEL: escapeHtmlText(pack.navGuide || 'Guide'),
+    HEADER_NAV_LINKS: buildEditorialHeaderNav(targetLang, 'guide', hubsData),
+    MOBILE_NAV_LINKS: buildEditorialMobileNav(targetLang, 'guide', hubsData),
+    LANG_SELECT_OPTIONS: selectOptions,
+    GUIDE_EYEBROW: escapeHtmlText(pack.guideEyebrow),
+    GUIDE_H1: escapeHtmlText(pack.guideH1),
+    GUIDE_INTRO: escapeHtmlText(pack.guideIntro),
+    GUIDE_STEPS_TITLE: escapeHtmlText(pack.guideTitle),
+    GUIDE_STEPS_HTML: guideStepsHtml,
+    STRAT_TITLE: escapeHtmlText(pack.stratTitle),
+    STRAT_CARDS_HTML: stratCardsHtml,
+    ADSENSE_SLOT_1: adSlot1,
+    EXT_STRAT_TITLE: escapeHtmlText(extPack.title),
+    EXT_STRAT_INTRO: escapeHtmlText(extPack.intro),
+    EXT_STRAT_CARDS_HTML: extStratCardsHtml,
+    RISK_TITLE: escapeHtmlText(riskPack.title),
+    RISK_INTRO: escapeHtmlText(riskPack.intro),
+    RISK_CARDS_HTML: riskCardsHtml,
+    TIPS_TITLE: escapeHtmlText(pack.tipsTitle),
+    TIPS_CARDS_HTML: tipsCardsHtml,
+    BAD_EX_TITLE: escapeHtmlText(pack.badExTitle),
+    BAD_EX_CARDS_HTML: badExCardsHtml,
+    GOOD_EX_TITLE: escapeHtmlText(pack.goodExTitle),
+    GOOD_EX_CARDS_HTML: goodExCardsHtml,
+    ADSENSE_SLOT_2: adSlot2,
+    CTA_GEN_TITLE: escapeHtmlText(pack.ctaGenTitle),
+    CTA_GEN_DESC: escapeHtmlText(pack.ctaGenDesc),
+    CTA_GEN_BTN: escapeHtmlText(pack.ctaGenBtn),
+    CTA_FAQ_LINK: escapeHtmlText(pack.ctaFaqLink),
+    FOOTER_SLOGAN: escapeHtmlText(chrome.footerSlogan),
+    SITE_HOST: escapeHtmlText(siteHost),
+    FOOTER_EDITIONS_TITLE: escapeHtmlText(chrome.footerEditions),
+    FOOTER_EDITIONS_LINKS: footerLinks,
+    FOOTER_LEGAL_TITLE: escapeHtmlText(chrome.footerLegal),
+    FOOTER_LEGAL_LINKS: buildEditorialFooterLinks(targetLang),
+    FOOTER_COPYRIGHT: escapeHtmlText(chrome.copyright)
+  });
+
+  return renderStaticHtml(html, config);
+}
+
+export function renderFaqPage(rootDir, lang = 'en', config = loadSiteConfig(rootDir)) {
+  const targetLang = SUPPORTED_LANGUAGES.includes(lang) ? lang : 'en';
+  const templatePath = path.join(rootDir, 'templates', 'faq.html');
+  const rawTemplate = fs.readFileSync(templatePath, 'utf8');
+  const hubsData = loadArticleHubs(rootDir);
+  const chrome = trustI18n.CHROME[targetLang] || trustI18n.CHROME.en;
+  const pack = EDU_FAQ_BY_LANG[targetLang] || EDU_FAQ_BY_LANG.en;
+
+  const pagePath = trustI18n.localizeInternalHref('faq.html', targetLang);
+  const canonicalUrl = `${config.siteUrl}${pagePath}`;
+  const homeHref = targetLang === 'en' ? '/' : `/${targetLang}/`;
+  const guideHref = trustI18n.localizeInternalHref('guide.html', targetLang);
+
+  const hreflangLines = config.languages.map((l) => (
+    `<link rel="alternate" hreflang="${escapeHtmlAttr(l)}" href="${escapeHtmlAttr(`${config.siteUrl}${trustI18n.localizeInternalHref('faq.html', l)}`)}">`
+  ));
+  hreflangLines.push(
+    `<link rel="alternate" hreflang="x-default" href="${escapeHtmlAttr(`${config.siteUrl}/faq.html`)}">`
+  );
+
+  const { selectOptions, footerLinks } = buildLanguageTargetsMarkup(
+    targetLang,
+    config,
+    (code) => trustI18n.localizeInternalHref('faq.html', code)
+  );
+
+  const faqsList = Array.isArray(pack.faqs) ? pack.faqs : [];
+  const faqItemsHtml = faqsList.map((item, idx) => `<details${idx === 0 ? ' open' : ''} class="group bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+    <summary class="w-full min-h-[52px] px-5 py-4 flex items-center justify-between gap-4 text-left cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600">
+      <span class="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug">${escapeHtmlText(item.q)}</span>
+      <svg aria-hidden="true" class="w-4 h-4 text-slate-500 shrink-0 transition-transform duration-200 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </summary>
+    <div class="px-5 pb-5 pt-3 text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80">
+      <p>${escapeHtmlText(item.a)}</p>
+    </div>
+  </details>`).join('\n');
+
+  const adsense = normalizeAdSenseIds(config.googleAdSense.publisherId);
+  const adSlot1 = adsense.clientId
+    ? `<div role="region" aria-label="AdSense Placement Slot 1" data-ad-slot-position="faq-post-list" data-ad-recommended-size="728x90 (Desktop) | 320x100 (Mobile)" class="w-full max-w-[728px] mx-auto min-h-[100px] sm:min-h-[90px] bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl"></div>`
+    : '<!-- ADSENSE MANUAL SLOT 1: rendered when googleAdSense.publisherId is configured -->';
+
+  const schemaGraph = [
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      url: canonicalUrl,
+      inLanguage: targetLang,
+      mainEntity: faqsList.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.a
+        }
+      }))
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: chrome.home, item: `${config.siteUrl}${homeHref}` },
+        { '@type': 'ListItem', position: 2, name: pack.navFaq || 'FAQ', item: canonicalUrl }
+      ]
+    }
+  ];
+  const safeJsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': schemaGraph }, null, 2).replace(/</g, '\\u003c');
+  const siteHost = config.siteUrl.replace(/^https?:\/\//i, '');
+
+  const html = applyTemplateReplacements(rawTemplate, {
+    PAGE_LANG: escapeHtmlAttr(targetLang),
+    META_TITLE: escapeHtmlText(pack.faqMetaTitle),
+    META_DESC: escapeHtmlAttr(pack.faqMetaDesc),
+    CONTACT_EMAIL: escapeHtmlAttr(config.contactEmail),
+    CANONICAL_URL: escapeHtmlAttr(canonicalUrl),
+    HREFLANG_LINKS: hreflangLines.join('\n    '),
+    OG_LOCALE: escapeHtmlAttr(trustI18n.OG_LOCALE[targetLang] || 'en_US'),
+    OG_SITE_NAME: escapeHtmlAttr(INDEX_SEO_BY_LANG[targetLang]?.ogSiteName || 'Domain Name — domainname.web.id'),
+    JSON_LD: safeJsonLd,
+    HOME_HREF: escapeHtmlAttr(homeHref),
+    HOME_LABEL: escapeHtmlText(chrome.home),
+    GUIDE_HREF: escapeHtmlAttr(guideHref),
+    BREADCRUMB_LABEL: escapeHtmlText(pack.navFaq || 'FAQ'),
+    HEADER_NAV_LINKS: buildEditorialHeaderNav(targetLang, 'faq', hubsData),
+    MOBILE_NAV_LINKS: buildEditorialMobileNav(targetLang, 'faq', hubsData),
+    LANG_SELECT_OPTIONS: selectOptions,
+    FAQ_EYEBROW: escapeHtmlText(pack.faqEyebrow),
+    FAQ_H1: escapeHtmlText(pack.faqH1),
+    FAQ_SUB: escapeHtmlText(pack.faqSub),
+    FAQ_ITEMS_HTML: faqItemsHtml,
+    ADSENSE_SLOT_1: adSlot1,
+    CTA_GEN_TITLE: escapeHtmlText(pack.ctaGenTitle),
+    CTA_GEN_DESC: escapeHtmlText(pack.ctaGenDesc),
+    CTA_GEN_BTN: escapeHtmlText(pack.ctaGenBtn),
+    CTA_GUIDE_LINK: escapeHtmlText(pack.ctaGuideLink),
     FOOTER_SLOGAN: escapeHtmlText(chrome.footerSlogan),
     SITE_HOST: escapeHtmlText(siteHost),
     FOOTER_EDITIONS_TITLE: escapeHtmlText(chrome.footerEditions),

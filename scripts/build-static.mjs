@@ -9,6 +9,8 @@ import {
   validateArticleManifest,
   resolveArticleSlug,
   renderLocalizedPage,
+  renderGuidePage,
+  renderFaqPage,
   renderArticleHubPage,
   renderArticlePage,
   buildCloudflareRedirects,
@@ -51,6 +53,24 @@ for (const pageFile of STATIC_HTML_PAGES) {
     fs.writeFileSync(outPath, builtHtml, 'utf8');
     console.log(`Generated ${lang === 'en' ? `dist/${pageFile}` : `dist/${lang}/${pageFile}`}`);
   }
+}
+
+for (const lang of config.languages) {
+  const guideHtml = renderGuidePage(rootDir, lang, config);
+  const guideOut = lang === 'en'
+    ? path.join(distDir, 'guide.html')
+    : path.join(distDir, lang, 'guide.html');
+  fs.mkdirSync(path.dirname(guideOut), { recursive: true });
+  fs.writeFileSync(guideOut, guideHtml, 'utf8');
+  console.log(`Generated ${lang === 'en' ? 'dist/guide.html' : `dist/${lang}/guide.html`}`);
+
+  const faqHtml = renderFaqPage(rootDir, lang, config);
+  const faqOut = lang === 'en'
+    ? path.join(distDir, 'faq.html')
+    : path.join(distDir, lang, 'faq.html');
+  fs.mkdirSync(path.dirname(faqOut), { recursive: true });
+  fs.writeFileSync(faqOut, faqHtml, 'utf8');
+  console.log(`Generated ${lang === 'en' ? 'dist/faq.html' : `dist/${lang}/faq.html`}`);
 }
 
 for (const section of ARTICLE_SECTIONS) {

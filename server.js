@@ -11,6 +11,8 @@ import {
   findPublishedArticleByRoute,
   getHubPath,
   renderLocalizedPage,
+  renderGuidePage,
+  renderFaqPage,
   renderArticleHubPage,
   renderArticlePage,
   buildAdsTxt,
@@ -71,7 +73,23 @@ for (const pageFile of STATIC_HTML_PAGES) {
   });
 }
 
+app.get(['/guide', '/guide.html'], (req, res) => {
+  const queryLang = String(req.query?.lang || '').toLowerCase();
+  const lang = SUPPORTED_LANGUAGES.includes(queryLang) ? queryLang : 'en';
+  const config = loadSiteConfig(__dirname);
+  return res.type('html').send(renderGuidePage(__dirname, lang, config));
+});
+
+app.get(['/faq', '/faq.html'], (req, res) => {
+  const queryLang = String(req.query?.lang || '').toLowerCase();
+  const lang = SUPPORTED_LANGUAGES.includes(queryLang) ? queryLang : 'en';
+  const config = loadSiteConfig(__dirname);
+  return res.type('html').send(renderFaqPage(__dirname, lang, config));
+});
+
 app.get(['/en', '/en/'], (_req, res) => res.redirect(301, '/'));
+app.get(['/en/guide', '/en/guide.html'], (_req, res) => res.redirect(301, '/guide.html'));
+app.get(['/en/faq', '/en/faq.html'], (_req, res) => res.redirect(301, '/faq.html'));
 for (const pageFile of STATIC_HTML_PAGES) {
   const cleanSlug = pageFile.replace(/\.html$/i, '');
   const dest = pageFile === 'index.html' ? '/' : `/${pageFile}`;
@@ -81,6 +99,14 @@ for (const pageFile of STATIC_HTML_PAGES) {
 for (const lang of SUPPORTED_LANGUAGES) {
   if (lang === 'en') continue;
   app.get([`/${lang}`, `/${lang}/`], (_req, res) => sendRenderedPage(res, 'index.html', lang));
+  app.get([`/${lang}/guide`, `/${lang}/guide.html`], (_req, res) => {
+    const config = loadSiteConfig(__dirname);
+    return res.type('html').send(renderGuidePage(__dirname, lang, config));
+  });
+  app.get([`/${lang}/faq`, `/${lang}/faq.html`], (_req, res) => {
+    const config = loadSiteConfig(__dirname);
+    return res.type('html').send(renderFaqPage(__dirname, lang, config));
+  });
   for (const pageFile of STATIC_HTML_PAGES) {
     const cleanSlug = pageFile.replace(/\.html$/i, '');
     app.get([`/${lang}/${pageFile}`, `/${lang}/${cleanSlug}`], (_req, res) => {

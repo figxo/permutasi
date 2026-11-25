@@ -1,5 +1,164 @@
 {
+  "en": {
+    "navGuide": "Guide",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Domain Naming Guide, Best Practices & Risk Audit — Domain Name",
+    "guideMetaDesc": "Complete guide to domain permutation formulas, keyword strategy, gTLD vs ccTLD SEO signals, Google EMD penalty risks, and safe brandable examples.",
+    "guideEyebrow": "Complete Naming Playbook",
+    "guideH1": "Domain Naming Guide, SEO Strategy & Risk Audit",
+    "guideIntro": "Everything you need to craft short, brandable, RFC 1035-compliant domain names, pick the right TLD for your target market, and avoid trademark or SEO traps.",
+    "guideTitle": "How to Use the Domain Permutation Generator",
+    "guideSteps": [
+      {
+        "title": "1. Enter Keywords & Extensions",
+        "text": "Fill in your Primary Keyword and desired extensions (e.g. .com, .io, .net). Open Advanced Options anytime to add Secondary or Tertiary keywords."
+      },
+      {
+        "title": "2. Build Pattern Formulas & RFC 1035",
+        "text": "Use quick-insert tokens like [primary], [secondary], [vowel], [consonant], [number], and [dash], or click a Pronounceable Style preset. Every domain is automatically RFC 1035 sanitized."
+      },
+      {
+        "title": "3. Filter, Score & Copy Results",
+        "text": "Review shortest-first candidates with instant Pronunciation & Brandability scores, filter by Available status, and copy or export your shortlist as .txt or Markdown."
+      },
+      {
+        "title": "4. Check History & Backlinks Safely",
+        "text": "Use the BL, WM, and GG inspection links next to each domain to verify archive history on Wayback Machine, backlink profiles, and Google index status before registering."
+      },
+      {
+        "title": "5. Instant Start Over & Full Reset",
+        "text": "Use Start Over anytime to clear modified keywords, custom patterns, and filters back to default and jump cleanly to the top."
+      }
+    ],
+    "tipsTitle": "How to Check, Avoid & Resolve Domain Risks",
+    "faqMetaTitle": "Frequently Asked Questions (FAQ) — Domain Name",
+    "faqMetaDesc": "Technical and practical answers about RFC 1035 domain validation, permutation patterns, shortest-first ranking, availability checks, and browser privacy.",
+    "faqEyebrow": "Help & Documentation",
+    "faqH1": "Frequently Asked Questions (FAQ)",
+    "ctaGenTitle": "Ready to find your next domain name?",
+    "ctaGenDesc": "Test keywords, extensions, and pronounceable presets live in our fast client-side domain generator.",
+    "ctaGenBtn": "Open Domain Generator",
+    "ctaGuideLink": "Read Naming Guide →",
+    "ctaFaqLink": "View FAQ →",
+    "stratTitle": "Keyword Strategy & Domain Naming Best Practices",
+    "stratKwTitle": "Keyword Strategy",
+    "stratKw1": "Primary Keyword ([primary]): Core niche or main topic (e.g., calc, shop, travel). Must align with core business or audience intent.",
+    "stratKw2": "Secondary Keyword ([secondary]): Modifier or descriptive category (e.g., pro, fast, hub). Helps expand brand context and variations.",
+    "stratKw3": "Tertiary Keyword ([tertiary]): Format or platform suffix (e.g., app, go, io). Ideal for large-scale domain research.",
+    "stratBpTitle": "Domain Naming Best Practices",
+    "stratBp1": "Short & Memorable: Limit character length for easy typing and pronunciation (ideally 12-15 characters).",
+    "stratBp2": "Avoid Typos: Use natural combinations of vowels and consonants to prevent user confusion.",
+    "stratBp3": "Consider Dashes: Using [dash] aids multi-word readability, but use sparingly.",
+    "stratBp4": "Choose Right Extensions: Use .com for global reach, country-specific ccTLDs for local markets, or niche extensions.",
+    "tipsCheckTitle": "1. How to Check History & Domain Risks",
+    "tipsCheck1": "Wayback Machine (Archive.org): Verify whether the domain previously hosted unrelated, deceptive, or low-quality content.",
+    "tipsCheck2": "Backlink Checker (Ahrefs, Semrush, Moz): Audit referring links to ensure clean, natural anchor text distributions.",
+    "tipsCheck3": "Google Search Console (GSC): Check for historical Manual Actions or Security Issues if acquiring an aged domain.",
+    "tipsAvoidTitle": "2. How to Avoid Penalty Risks",
+    "tipsAvoid1": "Use unique brandable names or natural partial match combinations rather than pure EMDs.",
+    "tipsAvoid2": "For large-scale sites, ensure every page delivers unique, genuinely useful value for real users.",
+    "tipsAvoid3": "Conduct thorough due diligence before purchasing dropped or aged domains.",
+    "tipsCureTitle": "3. Resolution (Recoverable vs. Non-Recoverable)",
+    "tipsCure1": "Algorithmic EMD / Content Quality Cases: Gradually recoverable by upgrading editorial quality, pruning thin pages, and building authentic brand authority.",
+    "tipsCure2": "Manual Actions Cases: Recoverable by cleaning unnatural backlinks, submitting a Disavow file, and filing a Reconsideration Request via GSC.",
+    "tipsCure3": "Severe Negative History Domains: Very hard to recover. If an aged domain carries persistent manual flags or years of abusive history, starting fresh on a clean domain is strongly recommended.",
+    "badExTitle": "Examples of High-Risk / Poor Domain Names",
+    "exampleLabel": "Example:",
+    "bad1Title": "1. Quality Risk (Keyword Stuffing & EMD)",
+    "bad1Ex": "best-discount-leather-shoes-newyork.example",
+    "bad1Reason": "Excessive keyword stacking without distinct brand identity appears unnatural to search engines and users.",
+    "bad2Title": "2. Hard to Find / Unmemorable",
+    "bad2Ex": "b3st-onl1n3-calc-t00ls-2026.example",
+    "bad2Reason": "Confusing leet-speak numbers or excessive length lead to user typos and poor brand retention.",
+    "bad3Title": "3. Legal & Trademark Violation Risk",
+    "bad3Ex": "official-famousbrand-deals.example / popularbrand-outlet.example",
+    "bad3Reason": "Unauthorized use of registered trademarks. High risk of cease-and-desist, lawsuits, or domain dispute (UDRP).",
+    "bad4Title": "4. Low CTR / Untrustworthy Appearance",
+    "bad4Ex": "fast-bonus-portal-99.example / quick-files-hub.example",
+    "bad4Reason": "Generic promotional wording or low-trust naming patterns tend to earn lower click-through rates in search results.",
+    "goodExTitle": "Examples of Good, Legal, & Safe Domain Names",
+    "good1Title": "1. Brandable & Memorable",
+    "good1Ex": "calcly.com, shopiva.io, finit.app",
+    "good1Reason": "Short, unique, easy to spell, trademark-free, with strong long-term brand equity.",
+    "good2Title": "2. Geo-Marketing & Local Trust",
+    "good2Ex": "solusicalc.co.uk, coffeehouse.us, devhub.io",
+    "good2Reason": "Combines brand/function with local target extensions, providing strong regional relevance signals in local SERPs.",
+    "good3Title": "3. Safe Partial Match Domain (PMD)",
+    "good3Ex": "calcpro.com, fixshop.net, travelhub.io",
+    "good3Reason": "Contains relevant keywords combined with modifiers or short brand names, avoiding EMD penalties.",
+    "good4Title": "4. Legally Safe & High Trust (High CTR)",
+    "good4Ex": "gadgetfix.com, fintechku.io, payfast.io",
+    "good4Reason": "Trademark-free, utilizes trusted extensions (.com / .io), and builds instant user trust in SERP.",
+    "faqTitle": "Frequently Asked Questions",
+    "faqSub": "Technical and practical answers for domainers, SEO specialists, startup founders, and developers.",
+    "faqs": [
+      {
+        "q": "1. What is a Domain Permutation Generator and how does it work?",
+        "a": "A Domain Permutation Generator is a specialized tool built to help researchers, developers, startup founders, and domain investors instantly generate hundreds of unique, brandable domain name combinations. By inputting up to three keywords (Primary, Secondary, and Tertiary), the engine runs a recursive combinatorial algorithm to produce full 3-word permutations, 2-word subsets, and 1-word variants in both hyphenated (-) and joined (no-dash) formats."
+      },
+      {
+        "q": "2. Are the generated domains compliant with DNS standards (RFC 1035)?",
+        "a": "Yes. Every domain generated on domainname.web.id undergoes strict RFC 1035 validation and sanitization. All domain labels are normalized to lowercase letters (a-z), digits (0-9), and internal hyphens (-), with no leading or trailing hyphens, a maximum of 63 characters per DNS label, and an overall hostname length under 253 characters."
+      },
+      {
+        "q": "3. Why are the generated domains automatically sorted by shortest first?",
+        "a": "Short, punchy domains are significantly more valuable for branding, SEO memorability, and direct-navigation traffic. By default, the generator ranks all valid results from shortest character length to longest (capped at the top 200 domains) so you immediately spot the cleanest, most premium candidates at the top of the list."
+      },
+      {
+        "q": "4. How does the \"Add Your Own Patterns\" feature work?",
+        "a": "The custom pattern box lets advanced users craft tailored naming formulas using placeholders such as [primary], [secondary], [tertiary], [vowel], [consonant], [number], and [dash]. Click the quick-insert tags below the input to assemble your formula and expand it into targeted variations."
+      },
+      {
+        "q": "5. Can I perform quick research and backlink checks on the generated domains?",
+        "a": "Absolutely. Next to every domain in the analysis table, secure external shortcut buttons let you inspect historical snapshots on the Wayback Machine (WM), analyze backlink profiles on Ahrefs (BL), or check Google Search indexing via site: (GG) — all protected with target=\"_blank\" rel=\"nofollow noopener noreferrer\"."
+      },
+      {
+        "q": "6. How do language-adaptive extensions, localized sharing, and privacy work?",
+        "a": "Switching between the 8 supported languages automatically suggests popular regional TLDs (such as .com, .io, .net for English or .id, .my.id, .web.id for Indonesian) and adapts the share buttons to your region. All permutation processing runs 100% locally in your browser without tracking cookies."
+      }
+    ]
+  },
   "id": {
+    "navGuide": "Panduan",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Panduan Penamaan Domain, Best Practices & Audit Risiko — Domain Name",
+    "guideMetaDesc": "Panduan lengkap formula permutasi domain, strategi kata kunci, sinyal SEO gTLD vs ccTLD, risiko penalti EMD Google, serta contoh domain aman dan berisiko.",
+    "guideEyebrow": "Panduan Lengkap Penamaan",
+    "guideH1": "Panduan Penamaan Domain, Strategi SEO & Audit Risiko",
+    "guideIntro": "Semua yang perlu Anda ketahui untuk merangkai nama domain singkat yang mudah diingat, patuh standar RFC 1035, memilih ekstensi tepat, serta terhindar dari risiko merek dagang maupun penalti SEO.",
+    "guideTitle": "Cara Menggunakan Generator Permutasi Domain",
+    "guideSteps": [
+      {
+        "title": "1. Masukkan Keyword & Ekstensi",
+        "text": "Isi Keyword Utama dan ekstensi yang diinginkan (misal .com, .id, .io). Buka Opsi Lanjutan kapan saja untuk menambahkan keyword sekunder atau tersier."
+      },
+      {
+        "title": "2. Susun Formula Pola & Validasi RFC 1035",
+        "text": "Gunakan token cepat seperti [primary], [secondary], [vokal], [konsonan], [angka], dan [dash], atau pilih preset Gaya Nama. Setiap hasil otomatis divalidasi standar RFC 1035."
+      },
+      {
+        "title": "3. Filter, Skor & Salin Hasil",
+        "text": "Tinjau kandidat dari yang terpendek lengkap dengan skor Pelafalan & Brandability, filter status Available, lalu salin atau ekspor ke .txt / Markdown."
+      },
+      {
+        "title": "4. Cek Riwayat & Backlink dengan Aman",
+        "text": "Gunakan pintasan BL, WM, dan GG di tabel untuk mengecek arsip Wayback Machine, profil backlink, serta status indeks Google sebelum membeli domain."
+      },
+      {
+        "title": "5. Mulai Ulang Instan (Reset Total)",
+        "text": "Tekan Mulai Ulang kapan saja untuk membersihkan keyword, pola kustom, dan filter kembali ke kondisi awal bersih."
+      }
+    ],
+    "tipsTitle": "Cara Mengecek, Menghindari & Mengatasi Risiko Domain",
+    "faqMetaTitle": "Pertanyaan yang Sering Diajukan (FAQ) — Domain Name",
+    "faqMetaDesc": "Jawaban teknis dan praktis seputar validasi DNS RFC 1035, pola permutasi domain, pengurutan terpendek, cek ketersediaan, dan privasi browser.",
+    "faqEyebrow": "Bantuan & Dokumentasi",
+    "faqH1": "Pertanyaan yang Sering Diajukan (FAQ)",
+    "ctaGenTitle": "Siap menemukan ide nama domain Anda?",
+    "ctaGenDesc": "Uji kombinasi kata kunci, ekstensi, dan gaya nama secara langsung di generator domain cepat kami.",
+    "ctaGenBtn": "Buka Generator Domain",
+    "ctaGuideLink": "Baca Panduan Penamaan →",
+    "ctaFaqLink": "Lihat FAQ →",
     "stratTitle": "Strategi Keyword & Best Practices Pemilihan Nama Domain",
     "stratKwTitle": "Strategi Pemilihan Keyword",
     "stratKw1": "Keyword Utama ([primary]): Inti niche atau topik utama (contoh: calc, shop, travel). Harus relevan dengan core business atau intent audiens.",
@@ -79,6 +238,46 @@
     ]
   },
   "es": {
+    "navGuide": "Guía",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Guía de Nombres de Dominio, Mejores Prácticas y Riesgos — Domain Name",
+    "guideMetaDesc": "Guía completa de fórmulas de permutación, estrategia de palabras clave, señales SEO gTLD vs ccTLD, riesgos EMD y ejemplos seguros.",
+    "guideEyebrow": "Guía Completa de Naming",
+    "guideH1": "Guía de Nombres de Dominio, Estrategia SEO y Riesgos",
+    "guideIntro": "Todo lo necesario para crear dominios cortos y memorables conformes a RFC 1035, elegir la extensión adecuada y evitar riesgos legales o penalizaciones.",
+    "guideTitle": "Cómo Usar el Generador de Permutaciones",
+    "guideSteps": [
+      {
+        "title": "1. Ingresa Palabras Clave y Extensiones",
+        "text": "Escribe tu palabra clave principal y extensiones (ej. .com, .es, .io). Abre Opciones Avanzadas cuando quieras añadir palabras secundarias o terciarias."
+      },
+      {
+        "title": "2. Crea Fórmulas y Validación RFC 1035",
+        "text": "Usa fichas como [primary], [secondary], [vocal], [consonante], [número] y [dash], o elige un estilo pronunciable. Todo se valida automáticamente según RFC 1035."
+      },
+      {
+        "title": "3. Filtra, Evalúa y Copia",
+        "text": "Revisa los nombres más cortos con puntuación de pronunciación y marca, filtra por Disponibles y copia o exporta en .txt o Markdown."
+      },
+      {
+        "title": "4. Verifica Historial y Backlinks",
+        "text": "Usa los accesos BL, WM y GG junto a cada dominio para revisar Wayback Machine, backlinks e indexación en Google antes de registrar."
+      },
+      {
+        "title": "5. Reinicio Instantáneo",
+        "text": "Pulsa Empezar de Nuevo en cualquier momento para restablecer entradas, fórmulas y filtros al instante."
+      }
+    ],
+    "tipsTitle": "Cómo Verificar, Evitar y Resolver Riesgos de Dominio",
+    "faqMetaTitle": "Preguntas Frecuentes (FAQ) — Domain Name",
+    "faqMetaDesc": "Respuestas técnicas y prácticas sobre validación RFC 1035, patrones de permutación, verificación de disponibilidad y privacidad.",
+    "faqEyebrow": "Ayuda y Documentación",
+    "faqH1": "Preguntas Frecuentes (FAQ)",
+    "ctaGenTitle": "¿Listo para encontrar tu próximo dominio?",
+    "ctaGenDesc": "Prueba palabras clave, extensiones y estilos pronunciables en vivo en nuestro generador.",
+    "ctaGenBtn": "Abrir Generador de Dominios",
+    "ctaGuideLink": "Leer Guía de Naming →",
+    "ctaFaqLink": "Ver FAQ →",
     "stratTitle": "Estrategia de Palabras Clave y Mejores Prácticas de Dominios",
     "stratKwTitle": "Estrategia de Palabras Clave",
     "stratKw1": "Palabra Clave Principal ([primary]): Nicho o tema central (ej. calc, shop, travel). Debe alinearse con la intención del usuario.",
@@ -158,6 +357,46 @@
     ]
   },
   "pt": {
+    "navGuide": "Guia",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Guia de Domínios, Melhores Práticas e Auditoria de Riscos — Domain Name",
+    "guideMetaDesc": "Guia completo de fórmulas de permutação, estratégia de palavras-chave, sinais SEO gTLD vs ccTLD, riscos EMD e exemplos seguros.",
+    "guideEyebrow": "Guia Completo de Naming",
+    "guideH1": "Guia de Domínios, Estratégia SEO e Auditoria de Riscos",
+    "guideIntro": "Tudo o que você precisa para criar domínios curtos e memoráveis compatíveis com RFC 1035, escolher a extensão certa e evitar armadilhas legais ou de SEO.",
+    "guideTitle": "Como Usar o Gerador de Permutações",
+    "guideSteps": [
+      {
+        "title": "1. Insira Palavras-chave e Extensões",
+        "text": "Preencha sua palavra-chave principal e extensões (ex. .com, .pt, .io). Abra Opções Avançadas quando quiser adicionar palavras secundárias ou terciárias."
+      },
+      {
+        "title": "2. Monte Fórmulas e Validação RFC 1035",
+        "text": "Use marcadores como [primary], [secondary], [vogal], [consoante], [número] e [dash], ou escolha um estilo pronunciável. Tudo segue a norma RFC 1035."
+      },
+      {
+        "title": "3. Filtre, Avalie e Copie",
+        "text": "Analise os candidatos mais curtos com pontuação de pronúncia e marca, filtre por Disponíveis e copie ou exporte para .txt ou Markdown."
+      },
+      {
+        "title": "4. Verifique Histórico e Backlinks",
+        "text": "Use os atalhos BL, WM e GG na tabela para conferir Wayback Machine, perfil de links e indexação no Google antes de registrar."
+      },
+      {
+        "title": "5. Recomeçar Instantaneamente",
+        "text": "Clique em Recomeçar a qualquer momento para limpar campos, fórmulas e filtros instantaneamente."
+      }
+    ],
+    "tipsTitle": "Como Verificar, Evitar e Resolver Riscos de Domínio",
+    "faqMetaTitle": "Perguntas Frequentes (FAQ) — Domain Name",
+    "faqMetaDesc": "Respostas técnicas e práticas sobre validação DNS RFC 1035, padrões de permutação, verificação de disponibilidade e privacidade.",
+    "faqEyebrow": "Ajuda e Documentação",
+    "faqH1": "Perguntas Frequentes (FAQ)",
+    "ctaGenTitle": "Pronto para encontrar o nome do seu domínio?",
+    "ctaGenDesc": "Teste palavras-chave, extensões e estilos pronunciáveis ao vivo no nosso gerador.",
+    "ctaGenBtn": "Abrir Gerador de Domínios",
+    "ctaGuideLink": "Ler Guia de Naming →",
+    "ctaFaqLink": "Ver FAQ →",
     "stratTitle": "Estratégia de Palavras-chave e Melhores Práticas de Domínio",
     "stratKwTitle": "Estratégia de Palavras-chave",
     "stratKw1": "Palavra-chave Principal ([primary]): Nicho ou tópico central (ex: calc, shop, travel). Deve estar alinhada com a intenção do usuário.",
@@ -237,6 +476,46 @@
     ]
   },
   "fr": {
+    "navGuide": "Guide",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Guide des Noms de Domaine, Bonnes Pratiques & Risques — Domain Name",
+    "guideMetaDesc": "Guide complet des formules de permutation, stratégie de mots-clés, signaux SEO gTLD vs ccTLD, risques EMD et exemples sûrs.",
+    "guideEyebrow": "Guide Complet de Naming",
+    "guideH1": "Guide des Noms de Domaine, Stratégie SEO & Risques",
+    "guideIntro": "Tout pour créer des noms de domaine courts, mémorables et conformes RFC 1035, choisir la bonne extension et éviter les pièges juridiques ou SEO.",
+    "guideTitle": "Comment Utiliser le Générateur",
+    "guideSteps": [
+      {
+        "title": "1. Saisissez Mots-clés et Extensions",
+        "text": "Indiquez votre mot-clé principal et vos extensions (ex. .com, .fr, .io). Ouvrez les Options Avancées pour ajouter des mots-clés secondaires ou tertiaires."
+      },
+      {
+        "title": "2. Créez Vos Modèles (RFC 1035)",
+        "text": "Utilisez les balises [primary], [secondary], [voyelle], [consonne], [nombre] et [dash], ou choisissez un style prononçable validé RFC 1035."
+      },
+      {
+        "title": "3. Filtrez, Évaluez et Copiez",
+        "text": "Parcourez les candidats les plus courts avec score de prononciation et de marque, filtrez sur Disponibles et exportez en .txt ou Markdown."
+      },
+      {
+        "title": "4. Vérifiez l’Historique et les Backlinks",
+        "text": "Utilisez les raccourcis BL, WM et GG pour inspecter Wayback Machine, les backlinks et l’indexation Google avant d’enregistrer."
+      },
+      {
+        "title": "5. Réinitialisation Rapide",
+        "text": "Cliquez sur Recommencer à tout moment pour réinitialiser mots-clés, modèles et filtres."
+      }
+    ],
+    "tipsTitle": "Comment Vérifier, Éviter et Résoudre les Risques",
+    "faqMetaTitle": "Foire Aux Questions (FAQ) — Domain Name",
+    "faqMetaDesc": "Réponses techniques et pratiques sur la validation DNS RFC 1035, les modèles de permutation et la confidentialité.",
+    "faqEyebrow": "Aide & Documentation",
+    "faqH1": "Foire Aux Questions (FAQ)",
+    "ctaGenTitle": "Prêt à trouver votre nom de domaine ?",
+    "ctaGenDesc": "Testez vos mots-clés, extensions et styles prononçables en direct dans notre générateur.",
+    "ctaGenBtn": "Ouvrir le Générateur",
+    "ctaGuideLink": "Lire le Guide de Naming →",
+    "ctaFaqLink": "Voir la FAQ →",
     "stratTitle": "Stratégie de Mots-clés et Bonnes Pratiques de Naming",
     "stratKwTitle": "Stratégie de Mots-clés",
     "stratKw1": "Mot-clé Principal ([primary]) : Cœur de niche ou sujet principal (ex: calc, shop, travel). Doit correspondre à l'intention de l'audience.",
@@ -316,6 +595,46 @@
     ]
   },
   "de": {
+    "navGuide": "Leitfaden",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Domain-Leitfaden, Best Practices & Risiko-Check — Domain Name",
+    "guideMetaDesc": "Vollständiger Leitfaden zu Domain-Permutationen, Keyword-Strategie, gTLD vs ccTLD SEO-Signalen, EMD-Risiken und sicheren Beispielen.",
+    "guideEyebrow": "Naming-Handbuch",
+    "guideH1": "Domain-Leitfaden, SEO-Strategie & Risiko-Audit",
+    "guideIntro": "Alles, was Sie brauchen, um kurze, einprägsame, RFC-1035-konforme Domains zu finden, die passende Endung zu wählen und Abmahnungen oder SEO-Strafen zu vermeiden.",
+    "guideTitle": "So Nutzen Sie den Domain-Generator",
+    "guideSteps": [
+      {
+        "title": "1. Keywords & Endungen eingeben",
+        "text": "Geben Sie Ihr Haupt-Keyword und gewünschte Endungen ein (z. B. .com, .de, .io). Öffnen Sie die Erweiterten Optionen für weitere Keywords."
+      },
+      {
+        "title": "2. Muster & RFC-1035-Prüfung",
+        "text": "Nutzen Sie Platzhalter wie [primary], [secondary], [vokal], [konsonant], [nummer] und [dash] oder wählen Sie einen aussprechbaren Stil."
+      },
+      {
+        "title": "3. Filtern, Bewerten & Kopieren",
+        "text": "Vergleichen Sie die kürzesten Domains samt Score, filtern Sie nach Freien Domains und exportieren Sie als .txt oder Markdown."
+      },
+      {
+        "title": "4. Historie & Backlinks prüfen",
+        "text": "Prüfen Sie per BL-, WM- und GG-Button direkt Wayback Machine, Backlinks und den Google-Index vor der Registrierung."
+      },
+      {
+        "title": "5. Sofort Neu Starten",
+        "text": "Klicken Sie jederzeit auf Neu Starten, um alle Eingaben und Filter sauber zurückzusetzen."
+      }
+    ],
+    "tipsTitle": "Domain-Risiken prüfen, vermeiden & beheben",
+    "faqMetaTitle": "Häufig gestellte Fragen (FAQ) — Domain Name",
+    "faqMetaDesc": "Technische und praktische Antworten zu RFC 1035, Permutationsmustern, Verfügbarkeitsprüfung und Datenschutz.",
+    "faqEyebrow": "Hilfe & Dokumentation",
+    "faqH1": "Häufig gestellte Fragen (FAQ)",
+    "ctaGenTitle": "Bereit für Ihre nächste Domain?",
+    "ctaGenDesc": "Testen Sie Keywords, Endungen und Stile direkt in unserem Domain-Generator.",
+    "ctaGenBtn": "Domain-Generator öffnen",
+    "ctaGuideLink": "Naming-Leitfaden lesen →",
+    "ctaFaqLink": "FAQ ansehen →",
     "stratTitle": "Keyword-Strategie & Best Practices für Domain-Naming",
     "stratKwTitle": "Keyword-Strategie",
     "stratKw1": "Primäres Keyword ([primary]): Kernthema oder Hauptnische (z. B. calc, shop, travel). Muss zur Intention der Zielgruppe passen.",
@@ -395,6 +714,46 @@
     ]
   },
   "ru": {
+    "navGuide": "Руководство",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "Руководство по подбору доменов, SEO и рискам — Domain Name",
+    "guideMetaDesc": "Полное руководство по формулам перестановок, стратегии ключевых слов, выбору доменных зон, рискам EMD и безопасным примерам.",
+    "guideEyebrow": "Руководство по неймингу",
+    "guideH1": "Руководство по подбору доменов, SEO и проверке рисков",
+    "guideIntro": "Все необходимое для создания коротких и запоминающихся доменов по стандарту RFC 1035, выбора правильной доменной зоны и защиты от юридических и SEO-рисков.",
+    "guideTitle": "Как пользоваться генератором доменов",
+    "guideSteps": [
+      {
+        "title": "1. Введите ключевые слова и зоны",
+        "text": "Укажите основное слово и нужные доменные зоны (например, .com, .ru, .io). Для дополнительных слов откройте Расширенные настройки."
+      },
+      {
+        "title": "2. Настройте шаблоны и RFC 1035",
+        "text": "Используйте теги [primary], [secondary], [гласная], [согласная], [цифра] и [dash] или выберите звучный стиль. Проверка RFC 1035 срабатывает автоматически."
+      },
+      {
+        "title": "3. Фильтруйте, оценивайте и копируйте",
+        "text": "Изучайте самые короткие варианты с оценкой звучности и бренда, фильтруйте свободные домены и экспортируйте в .txt или Markdown."
+      },
+      {
+        "title": "4. Проверяйте историю и ссылки",
+        "text": "Используйте кнопки BL, WM и GG для быстрой проверки архива Wayback Machine, обратных ссылок и индексации Google."
+      },
+      {
+        "title": "5. Мгновенный сброс",
+        "text": "Нажмите Начать заново в любой момент, чтобы сбросить все поля и фильтры."
+      }
+    ],
+    "tipsTitle": "Как проверить, избежать и устранить риски домена",
+    "faqMetaTitle": "Часто задаваемые вопросы (FAQ) — Domain Name",
+    "faqMetaDesc": "Технические и практические ответы по стандарту RFC 1035, формулам перестановок, проверке занятости и приватности.",
+    "faqEyebrow": "Справка и документация",
+    "faqH1": "Часто задаваемые вопросы (FAQ)",
+    "ctaGenTitle": "Готовы подобрать идеальный домен?",
+    "ctaGenDesc": "Проверьте ключевые слова, доменные зоны и звучные стили в нашем генераторе.",
+    "ctaGenBtn": "Открыть генератор",
+    "ctaGuideLink": "Читать руководство →",
+    "ctaFaqLink": "Открыть FAQ →",
     "stratTitle": "Стратегия ключевых слов и лучшие практики именования",
     "stratKwTitle": "Стратегия ключевых слов",
     "stratKw1": "Основное ключевое слово ([primary]): Суть ниши или главная тема (например, calc, shop, travel). Должно соответствовать намерениям аудитории.",
@@ -474,6 +833,46 @@
     ]
   },
   "ja": {
+    "navGuide": "ガイド",
+    "navFaq": "FAQ",
+    "guideMetaTitle": "ドメイン命名ガイド・ベストプラクティス・リスク診断 — Domain Name",
+    "guideMetaDesc": "ドメイン置換式、キーワード戦略、gTLDとccTLDのSEOシグナル、EMDリスク対策、安全な実例を解説。",
+    "guideEyebrow": "ネーミング完全ガイド",
+    "guideH1": "ドメイン命名ガイド・SEO戦略・リスク診断",
+    "guideIntro": "RFC 1035準拠で短く覚えやすいドメイン名を作成し、最適なTLDを選び、商標やSEOペナルティを回避するための実践ガイドです。",
+    "guideTitle": "ドメイン置換ジェネレーターの使い方",
+    "guideSteps": [
+      {
+        "title": "1. キーワードと拡張子を入力",
+        "text": "メインキーワードと希望する拡張子（例: .com, .jp, .io）を入力します。追加キーワードや詳細設定は「詳細オプション」から開けます。"
+      },
+      {
+        "title": "2. パターン式とRFC 1035準拠検証",
+        "text": "[primary]、[secondary]、[母音]、[子音]、[数字]、[dash] や発音しやすいスタイルプリセットを選択。すべて自動でRFC 1035検証されます。"
+      },
+      {
+        "title": "3. 絞り込み・スコア確認・コピー",
+        "text": "最短順の候補を発音・ブランドスコア付きで確認し、取得可能フィルターや .txt / Markdown 出力を活用できます。"
+      },
+      {
+        "title": "4. 履歴と被リンクの安全確認",
+        "text": "各ドメイン横の BL / WM / GG ボタンから、Wayback Machine履歴、被リンク、Googleインデックスを安全に確認できます。"
+      },
+      {
+        "title": "5. ワンクリックでリセット",
+        "text": "「最初からやり直す」でキーワード・数式・フィルターをいつでも初期状態に戻せます。"
+      }
+    ],
+    "tipsTitle": "ドメインリスクの確認・回避・対処方法",
+    "faqMetaTitle": "よくある質問（FAQ）— Domain Name",
+    "faqMetaDesc": "RFC 1035検証、置換パターン、最短順ソート、空き状況確認、プライバシー保護に関するQ&A。",
+    "faqEyebrow": "ヘルプ・ドキュメント",
+    "faqH1": "よくある質問（FAQ）",
+    "ctaGenTitle": "理想のドメイン名を見つけましょう",
+    "ctaGenDesc": "キーワードや拡張子、発音スタイルを組み合わせて今すぐ候補を生成できます。",
+    "ctaGenBtn": "ジェネレーターを開く",
+    "ctaGuideLink": "命名ガイドを読む →",
+    "ctaFaqLink": "FAQを見る →",
     "stratTitle": "キーワード戦略 & ドメイン命名のベストプラクティス",
     "stratKwTitle": "キーワード戦略",
     "stratKw1": "メインキーワード ([primary]): ニッチの中心または主要トピック（例: calc, shop, travel）。コアビジネスやユーザーの意図と一致している必要があります。",
